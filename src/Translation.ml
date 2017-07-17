@@ -142,7 +142,7 @@ let factorial = (("x",Integer),If(Var("x",Integer),Int(1),ApplyM("fact",BinOp("-
 let result = bmc_translation (ApplyM("fact",Int(3)))
                              (Repo.add "fact" factorial (empty_repo))
                              (empty_counter)
-                             (empty_counter) True (nat_of_int 0)
+                             (empty_counter) True (nat_of_int 1)
 
 let _ = let (ret,phi,repo,c_counter,d_counter) = result in
         printf "Formula:\n %s\n" (string_of_proposition (phi));
