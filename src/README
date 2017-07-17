@@ -1,3 +1,9 @@
+Building:
 ocamlbuild -clean
 ocamlbuild Translation.native
 ./Translation.native
+
+Or:
+make clean
+make
+./bmc-2.exe
