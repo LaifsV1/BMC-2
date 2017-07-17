@@ -1,0 +1,16 @@
+### Starting build.
+# Target: Translation.ml.depends, tags: { extension:ml, file:Translation.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep.opt -modules Translation.ml > Translation.ml.depends
+# Target: AbstractSyntax.ml.depends, tags: { extension:ml, file:AbstractSyntax.ml, ocaml, ocamldep, quiet }
+/usr/bin/ocamldep.opt -modules AbstractSyntax.ml > AbstractSyntax.ml.depends # cached
+# Target: AbstractSyntax.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:AbstractSyntax.cmo, file:AbstractSyntax.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc.opt -c -o AbstractSyntax.cmo AbstractSyntax.ml # cached
+# Target: Translation.cmo, tags: { byte, compile, extension:cmo, extension:ml, file:Translation.cmo, file:Translation.ml, implem, ocaml, quiet }
+/usr/bin/ocamlc.opt -c -o Translation.cmo Translation.ml
+# Target: AbstractSyntax.cmx, tags: { compile, extension:cmx, extension:ml, file:AbstractSyntax.cmx, file:AbstractSyntax.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt.opt -c -o AbstractSyntax.cmx AbstractSyntax.ml # cached
+# Target: Translation.cmx, tags: { compile, extension:cmx, extension:ml, file:Translation.cmx, file:Translation.ml, implem, native, ocaml, quiet }
+/usr/bin/ocamlopt.opt -c -o Translation.cmx Translation.ml
+# Target: Translation.native, tags: { dont_link_with, extension:native, file:Translation.native, link, native, ocaml, program, quiet }
+/usr/bin/ocamlopt.opt AbstractSyntax.cmx Translation.cmx -o Translation.native
+# Compilation successful.

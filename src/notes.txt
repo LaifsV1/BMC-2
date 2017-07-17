@@ -1,0 +1,3 @@
+ocamlbuild -clean
+ocamlbuild Translation.native
+./Translation.native
