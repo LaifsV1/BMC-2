@@ -142,7 +142,9 @@ let rec bmc_translation
 (****************)
 (*** RUN TEST ***)
 (****************)
-let factorial = (("x",Integer),If(Var("x",Integer),Int(1),ApplyM("fact",BinOp("-",Var("x",Integer),Int(1)))),Arrow(Integer,Integer))
+let factorial = (("x",Integer),
+                 If(Var("x",Integer),Int(1),ApplyM("fact",BinOp("-",Var("x",Integer),Int(1)))),
+                 Arrow(Integer,Integer))
 
 let result = bmc_translation (ApplyM("fact",Int(3)))
                              (Repo.add "fact" factorial (empty_repo))
