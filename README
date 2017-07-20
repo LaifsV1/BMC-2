@@ -1,3 +1,12 @@
+Build:
+rm TopLevel.native
+ocamlbuild -I parser -use-menhir TopLevel.native
+
+Execute:
+./TopLevel <filepath>
+
+
+(****old, to be fixed****)
 Building:
 ocamlbuild -clean
 ocamlbuild Translation.native

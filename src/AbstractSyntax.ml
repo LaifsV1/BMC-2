@@ -1,6 +1,12 @@
-(*author: Yu-Yang Lin, date: 17/07/2017*)
+(* BMC-2 Abstract Syntax *)
+(*author: Yu-Yang Lin, date: 20/07/2017*)
 open Format
 
+(* Parse Exceptions *)
+type pos_range = (Lexing.position * Lexing.position)
+exception SyntaxError of string * pos_range
+exception ParseError of string * pos_range
+   
 (* Natural Numbers *)
 type nat = Nil | Suc of nat
 let rec nat_of_int (i : int) :(nat) =
@@ -47,8 +53,8 @@ let rec string_of_term (t : term) :(string) =
   | Var (x,t) -> sprintf "(%s : %s)" x (string_of_tp t)
   | Deref r -> sprintf "(!%s)" r
   | Lambda((x,tp),t,tp') ->
-     sprintf "(\\%s:%s.%s : %s)"
-             x (string_of_tp tp) (string_of_term t) (string_of_tp tp')
+     sprintf "(fun (%s:%s) :%s -> %s)"
+             x (string_of_tp tp) (string_of_tp tp') (string_of_term t)
   | Left t -> sprintf "(Left %s)" (string_of_term t)
   | Right t -> sprintf "(Right %s)" (string_of_term t)
   | Assign(r,t) -> sprintf "(%s := %s)" r (string_of_term t)

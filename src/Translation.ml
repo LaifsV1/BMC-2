@@ -1,3 +1,6 @@
+(* BMC-2 Translation *)
+(*author: Yu-Yang Lin, date: 20/07/2017*)
+
 open AbstractSyntax
 open Format
 
@@ -138,7 +141,7 @@ let rec bmc_translation
                   (x===mi) ==> ((f reti ret (ret===reti) qi) &&& c_wedge cn' di))
                 True ((mn,retn,phin,rn,cn,dn,qn)::xs) in
             (ret,(f ret0 ret pi q0) &&& phin,rn,cn',cn',qn))
-
+(*
 (****************)
 (*** RUN TEST ***)
 (****************)
@@ -154,3 +157,4 @@ let result = bmc_translation (ApplyM("fact",Int(3)))
 let _ = let (ret,phi,repo,c_counter,d_counter,q) = result in
         printf "Formula:\n %s\n" (string_of_proposition (phi));
         exit 0
+ *)
