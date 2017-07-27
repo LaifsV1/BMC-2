@@ -1,1 +1,11 @@
-fun x:Int :Int -> if (x:Int) then f ((x:Int)-1) else 1
+Store:
+r1 := 1;
+r2 := 2;
+
+Methods:
+f1 (x:Int) :(Int) = if (x:Int) then f1(x:Int-1) else 1
+f2 (x:Int) :(Int) = 2
+f3 (x:Int) :(Int) = 3
+
+Main:
+(f:Int->Int) (!r1)

@@ -6,7 +6,7 @@ open Format
 type pos_range = (Lexing.position * Lexing.position)
 exception SyntaxError of string * pos_range
 exception ParseError of string * pos_range
-   
+
 (* Natural Numbers *)
 type nat = Nil | Suc of nat
 let rec nat_of_int (i : int) :(nat) =
@@ -33,6 +33,7 @@ type _meth  = string       (* Methods *)
 type _ref   = string       (* References *)
 type _binop = string       (* Binary Operations *)
 type _ret   = string       (* Return Variable *)
+type _val   = string       (* Values for assignment: i|m *)
 
 let tfail = "fail"
 let tnil  = "nil"
@@ -76,7 +77,7 @@ let string_of_typed_term t tp = sprintf "(%s : %s)" (string_of_term t) (string_o
 (****************)
 type clause = string
 type proposition = True | False
-                 |Eq of clause * clause
+                 | Eq of clause * clause
                  | Neq of clause * clause
                  | Implies of proposition * proposition
                  | And of proposition * proposition
@@ -128,7 +129,7 @@ let get_methods map tp =
 (* partial map, references to int *)
 (* counter maps r to its assignments seen so far; i.e. if none, then zero *)
 module Counter = Map.Make(struct type t = _ref let compare = compare end)
-let cd_get    map key = try Counter.find key map with Not_found -> 0
+let cd_get    map key = try Counter.find key map with Not_found -> -1
 let c_update  map key = Counter.add key ((cd_get map key)+1) map
 let d_update  map key new_val = Counter.add key new_val map
 let ref_get   map key = sprintf "_%s%s_" key (string_of_int (cd_get map key))
@@ -140,3 +141,20 @@ let c_update_all map = Counter.map (fun i -> i+1) map
 
 let c_wedge c d =
   Counter.fold (fun r i acc -> ((string_of_ref r i)===ref_get d r) &&& acc) c True
+
+(*********************)
+(* File to Translate *)
+(*********************)
+type assignlist = (_ref * _val) list
+type methlist = (_meth * (_var * term * tp)) list
+type file = assignlist * methlist * term
+
+let rec build_cdphi counter phi assignments :(counter * proposition) =
+  match assignments with
+  | [] -> counter , phi
+  | (r,v)::xs -> build_cdphi (d_update counter r 0) ((r===v)&&&phi) xs
+
+let rec build_repo repo methods :(repo) =
+  match methods with
+  | [] -> repo
+  | (m,xttp)::xs -> build_repo (repo_update repo m xttp) xs

@@ -29,6 +29,7 @@ rule read = parse
   | ')'             { CLOSE_PAREN }
   | ','             { COMMA }
   | ':'             { COLON }
+  | ';'             { SEMICOLON }
   | "Int"           { Integer_TYPE }
   | "Unit"          { Unit_TYPE }
   | "->"            { ARROW_OP }
@@ -49,6 +50,9 @@ rule read = parse
   | "if"            { If_TERM }
   | "then"          { Then_TERM }
   | "else"          { Else_TERM }
+  | "Methods:"      { METHOD }
+  | "Store:"        { STORE }
+  | "Main:"         { MAIN }
   | name as x       { NAME x }
   | eof             { EOF }
   | open_comment    { comment lexbuf }

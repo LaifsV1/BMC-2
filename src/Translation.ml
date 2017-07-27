@@ -119,42 +119,27 @@ let rec bmc_translation
       | ApplyX((x,tp),t) ->
          let (ret0,phi0,r0,c0,d0,q0) = bmc_translation t r c d phi k in
          let r_tp = get_methods r0 tp in
-         let xs =
+         let phin,rn,cn,xs =
            List.fold_left
-             (fun ys (mi,xi,ti) ->
+             (fun (phii_,ri_,ci_,ys) (mi,xi,ti) ->
                match ys with
                | [] -> failwith "variable type does not match any existing method (1)"
-               | ((mi_,reti_,phii_,ri_,ci_,di_,qi_)::ys') ->
+               | ((mi_,reti_,di_,qi_)::ys') ->
                   let (reti,phii,ri,ci,di,qi) = bmc_translation (subs ti (Var (ret0,tp)) (x,tp))
                                                                 ri_ ci_ d0 phii_ k' in
                   if mi_ = "_not_a_method_"
-                  then [(mi,reti,phii,ri,ci,di,qi||qi_)]
-                  else (mi,reti,phii,ri,ci,di,qi||qi_)::ys)
-             ["_not_a_method_",ret0,phi0,r0,c0,d0,q0] r_tp in
+                  then phii,ri,ci,[(mi,reti,di,qi||qi_)]
+                  else phii,ri,ci,((mi,reti,di,qi||qi_)::ys))
+             (phi0,r0,c0,["_not_a_method_",ret0,d0,q0]) r_tp in
          match xs with
          | [] -> failwith "variable type does not match any existing method (2)"
-         | ((mn,retn,phin,rn,cn,dn,qn)::xs) ->
+         | (("_not_a_method_",retn,dn,qn)::xs) ->
+            failwith "variable type does not match any existing method (3)"
+         | ((mn,retn,dn,qn)::xs) ->
             let cn' = c_update_all cn in
             let pi =
               List.fold_left
-                (fun acc (mi,reti,_,_,_,di,qi) ->
-                  (x===mi) ==> ((f reti ret (ret===reti) qi) &&& c_wedge cn' di))
-                True ((mn,retn,phin,rn,cn,dn,qn)::xs) in
+                (fun acc (mi,reti,di,qi) ->
+                  (x===mi) ==> ((f reti ret (ret===reti) qi) &&& c_wedge cn' di)&&&acc)
+                True ((mn,retn,dn,qn)::xs) in
             (ret,(f ret0 ret pi q0) &&& phin,rn,cn',cn',qn))
-(*
-(****************)
-(*** RUN TEST ***)
-(****************)
-let factorial = (("x",Integer),
-                 If(Var("x",Integer),Int(1),ApplyM("fact",BinOp("-",Var("x",Integer),Int(1)))),
-                 Arrow(Integer,Integer))
-
-let result = bmc_translation (ApplyM("fact",Int(3)))
-                             (Repo.add "fact" factorial (empty_repo))
-                             (empty_counter)
-                             (empty_counter) True (nat_of_int 1)
-
-let _ = let (ret,phi,repo,c_counter,d_counter,q) = result in
-        printf "Formula:\n %s\n" (string_of_proposition (phi));
-        exit 0
- *)

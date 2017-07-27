@@ -30,8 +30,9 @@
 (*** OTHER-TOKENS ***)
 %token ARROW_OP
 %token TIMES_OP PLUS_OP MINUS_OP
-%token OPEN_PAREN CLOSE_PAREN COMMA COLON
+%token OPEN_PAREN CLOSE_PAREN COMMA COLON SEMICOLON
 %token EQUALS_OP
+%token STORE METHOD MAIN
 %token <string> NAME
 %token EOF
 
@@ -42,21 +43,23 @@
 	/* lowest precedence */
 	/*~~~~~~~~~~~~~~~~~~~*/
 (*** TERMS ***)
-%nonassoc COMMA            
+%nonassoc COMMA
 %nonassoc MINUS_OP PLUS_OP
 %nonassoc TIMES_OP
 
 %left Apply_TERM_OP  (* function application *)
 	/*~~~~~~~~~~~~~~~~~~~~*/
-	/* highest precedence */          
+	/* highest precedence */
 	/*~~~~~~~~~~~~~~~~~~~~*/
 
 /*=================================*/
 /*---- START SYMBOLS AND TYPES ----*/
 /*=================================*/
 
-%start term_toplevel
-%type <AbstractSyntax.term> term_toplevel
+%start file
+%type <AbstractSyntax.file> file
+%type <AbstractSyntax.assignlist> store
+%type <AbstractSyntax.methlist> repo
 %type <AbstractSyntax.term> term
 %type <AbstractSyntax.tp> tp
 %type <AbstractSyntax._var> var
@@ -67,17 +70,40 @@
 /*---- GRAMMAR ----*/
 /*=================*/
 
-(*** TERMS ***)
-term_toplevel:
-| term EOF { $1 }
+(*** FILE ***)
+file:
+| STORE store METHOD repo MAIN term EOF { $2,$4,$6 }
+| METHOD repo MAIN term EOF             { [],$2,$4 }
+| STORE store MAIN term EOF             { $2,[],$4 }
+| MAIN term EOF                         { [],[],$2 }
 
+(*** STORE ***)
+store:
+| store_elem store { $1::$2 }
+| store_elem       { [$1] }
+
+store_elem:
+| NAME Assign_TERM_OP Int_TERM SEMICOLON { $1,string_of_int $3 }
+| NAME Assign_TERM_OP NAME SEMICOLON { $1,$3 }
+
+(*** REPO ***)
+repo:
+| repo_elem repo { $1::$2 }
+| repo_elem      { [$1] }
+
+repo_elem:
+| NAME var COLON tp EQUALS_OP term { let (x,y) = $2 in
+                                     $1,($2,$6,Arrow(y,$4)) }
+
+(*** TERMS ***)
 term:
 | Fail_TERM                                  { Fail }
 | Skip_TERM                                  { Skip }
 | Int_TERM                                   { Int $1 }
 | var                                        { Var $1 }
 | Deref_TERM_OP NAME                         { Deref $2 }
-| Lambda_TERM var COLON tp ARROW_OP term     { Lambda($2,$6,$4) }
+| Lambda_TERM var COLON tp ARROW_OP term     { let (x,y) = $2 in
+                                               Lambda($2,$6,Arrow(y,$4)) }
 | Left_TERM_OP term                          { Left $2 }
 | Right_TERM_OP term                         { Right $2 }
 | NAME Assign_TERM_OP term                   { Assign($1,$3) }

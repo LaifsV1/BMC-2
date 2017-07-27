@@ -8,7 +8,7 @@ open Translation
 
 let line_sprintf p1 p2 = sprintf "(line %d , col %d) to (line %d , col %d)"
                                  (p1.pos_lnum) (p1.pos_cnum - p1.pos_bol) (p2.pos_lnum) (p2.pos_cnum - p2.pos_bol)
-                       
+
 let from_file file = Lexing.from_channel (open_in file);;
 let _ =
   try
@@ -24,16 +24,30 @@ let _ =
       close_box ();
       print_newline ();
       try
-        printf "    @[***Lexing and Parsing file.....";
-        let new_parser = Parser.term_toplevel Lexer.read in
-        let new_term = new_parser lexbuf in
+        printf "    @[***Lexing and Parsing file...";
+        let new_parser = Parser.file Lexer.read in
+        let new_store,new_meths,new_term = new_parser lexbuf in
         printf ".....[done]*** @]";
         print_newline ();
-        printf "    @[***Checking file...............";
-        (*TODO*)
+        printf "    @[***Building initial variables...";
+        let new_counter,new_phi = build_cdphi empty_counter True new_store in
+        let new_repo = build_repo empty_repo new_meths in
         printf ".....[done]*** @]";
+        print_newline ();
+        printf "    @[***Running bounded translation...";
+        let (_,phi,_,_,_,_) = bmc_translation new_term
+                                              new_repo
+                                              new_counter
+                                              new_counter
+                                              new_phi
+                                              (nat_of_int 10) in
+        printf ".....[done]*** @]";
+        print_newline ();
+        printf "    OUTPUT FORMULA: %s" (string_of_proposition phi);
         print_newline ();
         printf "    PARSED TERM: %s" (string_of_term new_term);
+        print_newline ();
+        print_newline ();
         exit 0
       with
       | ParseError (msg,(p1,p2)) -> let tok_error = Lexing.lexeme lexbuf in
@@ -58,7 +72,7 @@ let _ =
                         print_newline ();
                         exit 1)
   with
-  | Sys_error msg -> printf ".....[error]!***@]";
+  | Sys_error msg -> printf ".....[error]***@]";
                      print_newline ();
                      printf "    @[[SYSTEM ERROR]:@] @.";
                      printf "    @[%s @] @." msg;
