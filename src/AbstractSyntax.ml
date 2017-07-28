@@ -92,8 +92,8 @@ let rec string_of_proposition (p : proposition) :(string) =
   | And(a,b) -> sprintf "(%s && %s)" (string_of_proposition a) (string_of_proposition b)
   | Or(a,b) -> sprintf "(%s || %s)" (string_of_proposition a) (string_of_proposition b)
 
-let (===) s1 s2 = if s1 = s2 then True else Eq(s1,s2)
-let (=/=) s1 s2 = if s1 = s2 then Neq(s1,s2) else True
+let (===) s1 s2 = if s1 = s2 then True  else Eq(s1,s2)
+let (=/=) s1 s2 = if s1 = s2 then False else Neq(s1,s2)
 let (==>) p1 p2 = if p1 = True then p2 else Implies(p1,p2)
 let (&&&) p1 p2 =
   match p1,p2 with
