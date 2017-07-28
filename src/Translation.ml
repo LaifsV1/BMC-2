@@ -84,9 +84,10 @@ let rec bmc_translation
          (ret,(f ret1 ret (ret===(sprintf "(Right %s)" ret1)) q1) &&& phi1,r1,c1,d1,q1)
       | Assign(aref,t) ->
          let (ret1,phi1,r1,c1,d1,q1) = bmc_translation t r c d phi k in
-         let c1' = c_update c aref in
-         let d1' = d_update d aref (cd_get c1' aref) in
-         (ret,(f ret1 ret (ret===tskip) q1) &&& phi1,r1,c1',d1',q1)
+         let c1'   = c_update c aref in
+         let d1'   = d_update d aref (cd_get c1' aref) in
+         let d1_r' = ref_get d1' aref in
+         (ret,(f ret1 ret ((ret===tskip) &&& (d1_r'===ret1)) q1) &&& phi1,r1,c1',d1',q1)
       | Pair(t1,t2) ->
          let (ret1,phi1,r1,c1,d1,q1) = bmc_translation t1 r c d phi k in
          let (ret2,phi2,r2,c2,d2,q2) = bmc_translation t2 r1 c1 d1 phi1 k in
