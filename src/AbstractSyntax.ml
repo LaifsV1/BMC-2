@@ -92,6 +92,16 @@ let rec string_of_proposition (p : proposition) :(string) =
   | And(a,b) -> sprintf "(%s && %s)" (string_of_proposition a) (string_of_proposition b)
   | Or(a,b) -> sprintf "(%s || %s)" (string_of_proposition a) (string_of_proposition b)
 
+let rec z3_of_proposition (p : proposition) :(string) =
+  match p with
+  | True -> "true"
+  | False -> "false"
+  | Eq(a,b) -> sprintf "(= %s %s)" a b
+  | Neq(a,b) -> sprintf "(not (= %s %s))" a b
+  | Implies(a,b) -> sprintf "(=> %s %s)" (z3_of_proposition a) (z3_of_proposition b)
+  | And(a,b) -> sprintf "(and %s %s)" (z3_of_proposition a) (z3_of_proposition b)
+  | Or(a,b) -> sprintf "(or %s %s)" (z3_of_proposition a) (z3_of_proposition b)
+
 let (===) s1 s2 = if s1 = s2 then True  else Eq(s1,s2)
 let (=/=) s1 s2 = if s1 = s2 then False else Neq(s1,s2)
 let (==>) p1 p2 = if p1 = True then p2 else Implies(p1,p2)
@@ -152,7 +162,7 @@ type file = assignlist * methlist * term
 let rec build_cdphi counter phi assignments :(counter * proposition) =
   match assignments with
   | [] -> counter , phi
-  | (r,v)::xs -> build_cdphi (d_update counter r 0) ((r===v)&&&phi) xs
+  | (r,v)::xs -> build_cdphi (d_update counter r 0) (((string_of_ref r 0)===v)&&&phi) xs
 
 let rec build_repo repo methods :(repo) =
   match methods with

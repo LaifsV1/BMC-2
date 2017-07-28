@@ -43,7 +43,7 @@ let _ =
                                               (nat_of_int 10) in
         printf ".....[done]*** @]";
         print_newline ();
-        printf "    OUTPUT FORMULA: %s" (string_of_proposition phi);
+        printf "    OUTPUT FORMULA: %s" (z3_of_proposition phi);
         print_newline ();
         printf "    PARSED TERM: %s" (string_of_term new_term);
         print_newline ();
