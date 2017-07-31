@@ -114,12 +114,12 @@ let rec bmc_translation
          let (ret0,phi0,r0,c0,d0,q0) = bmc_translation t0 rb cb db phib k in
          let (ret1,phi1,r1,c1,d1,q1) = bmc_translation t1 r0 c0 d0 phi0 k in
          let c' = c_update_all c1 in
-         let pi0 = f ret0 ret ((retb === "0") ==> ((ret===ret0) &&& (c_wedge c' d0))) q0 in
-         let pi1 = f ret1 ret ((retb =/= "0") ==> ((ret===ret1) &&& (c_wedge c' d1))) q1 in
+         let pi0 = (retb === "0") ==> (f ret0 ret ((ret===ret0) &&& (c_wedge c' d0)) q0) in
+         let pi1 = (retb =/= "0") ==> (f ret1 ret ((ret===ret1) &&& (c_wedge c' d1)) q1) in
          (ret,(f retb ret (pi0 &&& pi1) qb) &&& phi1,r1,c',c',qb||q0||q1)
       | ApplyX((x,tp),t) ->
          let (ret0,phi0,r0,c0,d0,q0) = bmc_translation t r c d phi k in
-         let r_tp = get_methods r0 tp in
+         let r_tp = get_methods r tp in
          let phin,rn,cn,xs =
            List.fold_left
              (fun (phii_,ri_,ci_,ys) (mi,xi,ti) ->
