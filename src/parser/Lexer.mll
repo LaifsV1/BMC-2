@@ -16,7 +16,7 @@
 }
 
 let name = ['a'-'z']['A'-'Z' 'a'-'z' '0'-'9' '_' '\'']*
-let int = ['0'-'9'] ['0'-'9']*
+let int = '-'? ['0'-'9'] ['0'-'9']*
 let open_comment = "(*"
 let close_comment = "*)"
 let white = [' ' '\t']+
@@ -38,7 +38,6 @@ rule read = parse
   | "fail"          { Fail_TERM }
   | "skip"          { Skip_TERM }
   | int as i        { Int_TERM (int_of_string i) }
-  | '-'             { MINUS_OP }
   | "fun"           { Lambda_TERM }
   | "!"             { Deref_TERM_OP }
   | "left"          { Left_TERM_OP }
