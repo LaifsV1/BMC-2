@@ -26,24 +26,41 @@ let _ =
       try
         printf "    @[***Lexing and Parsing file...";
         let new_parser = Parser.file Lexer.read in
-        let new_store,new_meths,new_term = new_parser lexbuf in
+        let (new_store,new_meths,new_term),main_tp = new_parser lexbuf in (*get decl from parsing*)
         printf ".....[done]*** @]";
         print_newline ();
         printf "    @[***Building initial variables...";
-        let new_counter,new_phi = build_cdphi empty_counter True new_store in
+        let new_counter,new_phi,cd_decl = build_cdphi empty_counter True new_store [] in (*get decl from initial counters*)
         let new_repo = build_repo empty_repo new_meths in
         printf ".....[done]*** @]";
         print_newline ();
         printf "    @[***Running bounded translation...";
-        let (_,phi,_,_,_,_) = bmc_translation new_term
-                                              new_repo
-                                              new_counter
-                                              new_counter
-                                              new_phi
-                                              (nat_of_int 10) in
+        let (oret,ophi,oR,oC,oD,oq,odecl) = bmc_translation new_term (*get refs decl from translation*)
+                                                            new_repo
+                                                            new_counter
+                                                            new_counter
+                                                            new_phi
+                                                            (nat_of_int 10)
+                                                            main_tp
+                                                            cd_decl in
+        (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
+        let def_decl = decl_of_list "" get_default_decl in (*write decl from defaul_decl*)
+        let all_decl = decl_of_list def_decl odecl in  (*write decl from everything ontop of default decl*)
         printf ".....[done]*** @]";
         print_newline ();
-        printf "    OUTPUT FORMULA: %s" (z3_of_proposition phi);
+        print_newline ();
+        printf "    SMT-LIB FILE:";
+        print_newline ();
+        printf "%s" z3_default_type;
+        print_newline ();
+        print_newline ();
+        printf "%s" all_decl;
+        print_newline ();
+        printf "(assert %s)" (z3_of_proposition ophi);
+        print_newline ();
+        print_newline ();
+        printf "(check-sat)\n(get-model)";
+        print_newline ();
         print_newline ();
         printf "    PARSED TERM: %s" (string_of_term new_term);
         print_newline ();

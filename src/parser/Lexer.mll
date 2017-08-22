@@ -49,9 +49,9 @@ rule read = parse
   | "if"            { If_TERM }
   | "then"          { Then_TERM }
   | "else"          { Else_TERM }
-  | "Methods:"      { METHOD }
-  | "Store:"        { STORE }
-  | "Main:"         { MAIN }
+  | "Methods"       { METHOD }
+  | "Store"         { STORE }
+  | "Main"          { MAIN }
   | name as x       { NAME x }
   | eof             { EOF }
   | open_comment    { comment lexbuf }
