@@ -96,9 +96,5 @@ let _ =
                      print_newline ();
                      exit 1
   | e -> Printf.eprintf "    [UNEXPECTED EXCEPTION] : %s \n" (Printexc.to_string e);
-         Printf.eprintf "    Usage: \n";
-         Printf.eprintf "    Windows: .\\yup.exe <file path> \n";
-         Printf.eprintf "    Unix:    ./yup.exe <file path> \n";
-         Printf.eprintf "    for version number: ./yup.exe --version \n";
          Printexc.print_backtrace stderr;
          exit 1
