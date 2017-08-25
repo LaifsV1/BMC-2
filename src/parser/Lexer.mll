@@ -40,8 +40,8 @@ rule read = parse
   | int as i        { Int_TERM (int_of_string i) }
   | "fun"           { Lambda_TERM }
   | "!"             { Deref_TERM_OP }
-  | "left"          { Left_TERM_OP }
-  | "right"         { Right_TERM_OP }
+  | "fst"           { Left_TERM_OP }
+  | "snd"           { Right_TERM_OP }
   | ":="            { Assign_TERM_OP }
   | "="             { EQUALS_OP }
   | "let"           { Let_TERM }

@@ -46,9 +46,10 @@
 	/* lowest precedence */
 	/*~~~~~~~~~~~~~~~~~~~*/
 (*** TERMS ***)
-%nonassoc COMMA
-%nonassoc MINUS_OP PLUS_OP
-%nonassoc TIMES_OP
+%left ARROW_OP
+%right COMMA
+%right MINUS_OP PLUS_OP
+%right TIMES_OP
 
 %left Apply_TERM_OP  (* function application *)
 	/*~~~~~~~~~~~~~~~~~~~~*/
@@ -95,45 +96,47 @@ repo:
 | repo_elem      { [$1] }
 
 repo_elem:
-| NAME var COLON tp EQUALS_OP term SEMICOLON { let (x,tp) = $2 in
-                                               ptypes_seen:=ptypes_add (!ptypes_seen) x tp;
-                                               methods_seen:=prepo_update (!methods_seen) $1;
-                                               $1,((x,tp),$6,Arrow(tp,$4)) }
+| hack_evalorder_name var COLON tp EQUALS_OP term SEMICOLON { let (x,tp) = $2 in
+                                                              ptypes_seen:=ptypes_add (!ptypes_seen) x tp;
+                                                              $1,((x,tp),$6,Arrow(tp,$4)) }
+
+hack_evalorder_name:
+| NAME    { methods_seen:=prepo_update (!methods_seen) $1;$1 }
 
 (*** TERMS ***)
 term:
-| Fail_TERM                                  { Fail }
-| Skip_TERM                                  { Skip }
-| Int_TERM                                   { Int $1 }
-| NAME                                       { let b = prepo_exists (!methods_seen) $1 in
-                                               if b
-                                               then Method ($1)
-                                               else let x = $1 in
-                                                    let tp = ptypes_get (!ptypes_seen) x in
-                                                    Var (x,tp) }
-| Deref_TERM_OP NAME                         { let x = $2 in
-                                               let tp = ptypes_get (!ptypes_seen) x in
-                                               Deref (x,tp) }
-| Lambda_TERM var COLON tp ARROW_OP term     { let x,tp = $2 in
-                                               Lambda((x,tp),$6,Arrow(tp,$4)) }
-| Left_TERM_OP term                          { Left $2 }
-| Right_TERM_OP term                         { Right $2 }
-| NAME Assign_TERM_OP term                   { let x = $1 in
-                                               let tp = ptypes_get (!ptypes_seen) x in
-                                               Assign((x,tp),$3) }
-| term COMMA term                            { Pair($1,$3) }
-| term PLUS_OP term                          { BinOp("+",$1,$3) }
-| term MINUS_OP term                         { BinOp("-",$1,$3) }
-| term TIMES_OP term                         { BinOp("*",$1,$3) }
-| Let_TERM var EQUALS_OP term In_TERM term   { Let($2,$4,$6) }
-| NAME term                                  { let b = prepo_exists (!methods_seen) $1 in
-                                               if b
-                                               then ApplyM($1,$2)
-                                               else let x = $1 in
-                                                    let tp = ptypes_get (!ptypes_seen) x in
-                                                    ApplyX((x,tp),$2) } %prec Apply_TERM_OP
-| If_TERM term Then_TERM term Else_TERM term { If($2,$4,$6) }
-| OPEN_PAREN term CLOSE_PAREN                { $2 }
+| Fail_TERM                                          { Fail }
+| Skip_TERM                                          { Skip }
+| Int_TERM                                           { Int $1 }
+| NAME                                               { let b = prepo_exists (!methods_seen) $1 in
+                                                       if b
+                                                       then Method ($1)
+                                                       else let x = $1 in
+                                                            let tp = ptypes_get (!ptypes_seen) x in
+                                                            Var (x,tp) }
+| Deref_TERM_OP NAME                                 { let x = $2 in
+                                                       let tp = ptypes_get (!ptypes_seen) x in
+                                                       Deref (x,tp) }
+| Lambda_TERM var COLON tp ARROW_OP term             { let x,tp = $2 in
+                                                       Lambda((x,tp),$6,Arrow(tp,$4)) }
+| OPEN_PAREN Left_TERM_OP COLON tp CLOSE_PAREN term  { Left ($6,$4) }
+| OPEN_PAREN Right_TERM_OP COLON tp CLOSE_PAREN term { Right ($6,$4) }
+| NAME Assign_TERM_OP term                           { let x = $1 in
+                                                       let tp = ptypes_get (!ptypes_seen) x in
+                                                       Assign((x,tp),$3) }
+| term COMMA term                                    { Pair($1,$3) }
+| term PLUS_OP term                                  { BinOp("+",$1,$3) }
+| term MINUS_OP term                                 { BinOp("-",$1,$3) }
+| term TIMES_OP term                                 { BinOp("*",$1,$3) }
+| Let_TERM var EQUALS_OP term In_TERM term           { Let($2,$4,$6) }
+| NAME term                                          { let b = prepo_exists (!methods_seen) $1 in
+                                                       if b
+                                                       then ApplyM($1,$2)
+                                                       else let x = $1 in
+                                                            let tp = ptypes_get (!ptypes_seen) x in
+                                                            ApplyX((x,tp),$2) } %prec Apply_TERM_OP
+| If_TERM term Then_TERM term Else_TERM term         { If($2,$4,$6) }
+| OPEN_PAREN term CLOSE_PAREN                        { $2 }
 
 var:
 | NAME COLON tp              { ptypes_seen:=ptypes_add (!ptypes_seen) $1 $3;
@@ -144,5 +147,5 @@ tp:
 | Unit_TYPE                 { Unit }
 | Integer_TYPE              { Integer }
 | tp ARROW_OP tp            { Arrow($1,$3) }
-| tp COMMA tp               { Product($1,$3) }
+| tp TIMES_OP tp            { Product($1,$3) }
 | OPEN_PAREN tp CLOSE_PAREN { $2 }

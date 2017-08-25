@@ -28,12 +28,12 @@ let rec string_of_tp (t : tp) :(string) =
 let left_tp tp =
   match tp with
   | Product(t1,t2) -> t1
-  | _ -> failwith "left of not a pair"
+  | _ -> failwith (sprintf "type %s is not a pair" (string_of_tp tp))
 
 let right_tp tp =
   match tp with
   | Product(t1,t2) -> t2
-  | _ -> failwith "left of not a pair"
+  | _ -> failwith (sprintf "type %s is not a pair" (string_of_tp tp))
 
 type z3_tp = Unit | Int | Meth | Pair of z3_tp * z3_tp
 
@@ -61,7 +61,7 @@ let rec string_of_z3_tp tp =
   | Unit -> "Unit"
   | Int  -> "Int"
   | Meth -> "String"
-  | Pair(a,b) -> z3_pair_maker (string_of_z3_tp a) (string_of_z3_tp b)
+  | Pair(a,b) -> sprintf "(Pair %s %s)" (string_of_z3_tp a) (string_of_z3_tp b)
 
 let get_z3_tp tp = string_of_z3_tp (z3_of_tp tp)
 
@@ -102,7 +102,7 @@ let rec decl_of_list (s : string) (xs : _decl) =
 
 type term = Fail | Skip | Int of int | Method of _meth
             | Var of _var | Deref of _ref | Lambda of _var * term * tp (*syntax fun (x:arg type) :(ret type) -> M*)
-            | Left of term | Right of term | Assign of _ref * term
+            | Left of term * tp | Right of term * tp | Assign of _ref * term
             | Pair of term * term | BinOp of _binop * term * term
             | Let of _var * term * term | ApplyM of _meth * term
             | If of term * term * term | ApplyX of _var * term
@@ -117,8 +117,8 @@ let rec string_of_term (t : term) :(string) =
   | Lambda((x,tp),t,tp') ->
      sprintf "(fun (%s:%s) :%s -> %s)"
              x (string_of_tp tp) (string_of_tp tp') (string_of_term t)
-  | Left t -> sprintf "(Left %s)" (string_of_term t)
-  | Right t -> sprintf "(Right %s)" (string_of_term t)
+  | Left(t,tp) -> sprintf "((fst : %s) %s)" (string_of_tp tp) (string_of_term t)
+  | Right(t,tp) -> sprintf "((snd : %s) %s)" (string_of_tp tp) (string_of_term t)
   | Assign((r,tp),t) -> sprintf "(%s := %s)" r (string_of_term t)
   | Pair(t1,t2) -> sprintf "(%s,%s)" (string_of_term t1) (string_of_term t2)
   | BinOp(op,t1,t2) -> sprintf "(%s %s %s)" (string_of_term t1) op (string_of_term t2)

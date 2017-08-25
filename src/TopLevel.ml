@@ -40,7 +40,7 @@ let _ =
                                                             new_counter
                                                             new_counter
                                                             new_phi
-                                                            (nat_of_int 10)
+                                                            (nat_of_int 3)
                                                             main_tp
                                                             cd_decl in
         (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
