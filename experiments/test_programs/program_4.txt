@@ -1,0 +1,6 @@
+Main:(Unit):
+let (x: Int * Int) = (fail,fail) in
+let (y: Int * Unit) = (fail,skip) in
+let (z: Unit * Unit) = (fail,fail) in
+let (a: (Int->Int) * Unit) = (fail,fail) in
+skip

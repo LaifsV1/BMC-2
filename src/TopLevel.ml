@@ -56,6 +56,8 @@ let _ =
         print_newline ();
         printf "%s" all_decl;
         print_newline ();
+        printf "%s" (get_assertions (get_fail_neq_nil ()));
+        print_newline ();
         printf "(assert %s)" (z3_of_proposition ophi);
         print_newline ();
         print_newline ();

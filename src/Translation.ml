@@ -28,6 +28,15 @@ let get_type_number tp :(int * bool) =
   | -1 -> global_types := (types_add map tp (fresh_type ())); !types_seen,true
   | n  -> n,false
 
+let get_fail_neq_nil () =
+  let rec helper n acc = if n < 1 then acc else helper (n-1) (((tfail_n n)=/=(tnil_n n))::acc) in
+  helper (!types_seen) [tfail_i=/=tnil_i ; tfail_u=/=tnil_u ; tfail_m=/=tnil_m]
+
+let rec get_assertions xs =
+  match xs with
+  | [] -> ""
+  | x::xs -> sprintf "(assert %s)\n%s" (z3_of_proposition x) (get_assertions xs)
+        
 (**********************)
 (* Substitute: M{t/y} *)
 (**********************)
@@ -133,15 +142,7 @@ let rec bmc_translation
       | Skip -> (ret_tp,(ret===tskip) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps)
       | Int i -> (ret_tp,(ret===(string_of_int i)) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps)
       | Method m -> (ret_tp,(ret===(z3_method m)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps)
-      | Var(x,t) ->
-         (match etype with
-          | Unit    -> (ret_tp,(ret===x) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps)
-          | Integer -> (ret_tp,(ret===x) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps)
-          | Arrow _ -> (ret_tp,(ret===x) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps)
-          | Product (tp1,tp2) ->
-             let n,is_new = get_type_number etype in
-             let new_tps' = if is_new then (tfail_n n,z3_of_tp etype)::new_tps else new_tps in
-             (ret_tp,(ret===x) &&& (ret=/=(tfail_n n)) &&& (ret=/=(tnil_n n)) &&& phi,r,c,d,Val,new_tps'))
+      | Var(x,t) -> (ret_tp,(ret===x) &&& phi,r,c,d,Val,new_tps) (*adding != fail/nil is not sound here*)
       | Deref aref ->
          let d_r = ref_get d aref in
          (match etype with
