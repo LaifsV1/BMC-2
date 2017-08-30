@@ -1,0 +1,14 @@
+(*multiple arg functions become pairs: we don't have M M, and currying with side-effects is a lie*)
+Methods:
+ackermann (p : Int * Int) :(Int) =
+    let (m:Int) = (fst:Int*Int) p in
+    let (n:Int) = (snd:Int*Int) p in
+    if m
+    then
+      if n
+      then ackermann (m + -1,(ackermann (m,n + -1)))
+      else ackermann (m + -1,1)
+    else n+1;
+
+Main:(Int):
+ackermann (0,1)

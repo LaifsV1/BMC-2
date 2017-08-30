@@ -44,6 +44,15 @@ let rec z3_of_tp (tp : tp) =
   | Arrow _ -> Meth
   | Product(a,b) -> Pair(z3_of_tp a,z3_of_tp b)
 
+let rec string_of_z3_tp tp =
+  match tp with
+  | Unit -> "Unit"
+  | Int  -> "Int"
+  | Meth -> "String"
+  | Pair(a,b) -> sprintf "(Pair %s %s)" (string_of_z3_tp a) (string_of_z3_tp b)
+
+let get_z3_tp tp = string_of_z3_tp (z3_of_tp tp)
+
 let z3_decl var stype = sprintf "(declare-const %s %s)" var stype
 
 let z3_unit_type = "(declare-sort Unit)"
@@ -55,16 +64,7 @@ let z3_pair_decl left right = sprintf "(Pair %s %s)" left right
 let z3_pair_left  pair = sprintf "(left %s)"  pair
 let z3_pair_right pair = sprintf "(right %s)" pair
 let z3_binops a op b = sprintf "(%s %s %s)" op a b
-
-let rec string_of_z3_tp tp =
-  match tp with
-  | Unit -> "Unit"
-  | Int  -> "Int"
-  | Meth -> "String"
-  | Pair(a,b) -> sprintf "(Pair %s %s)" (string_of_z3_tp a) (string_of_z3_tp b)
-
-let get_z3_tp tp = string_of_z3_tp (z3_of_tp tp)
-
+                    
 (*********)
 (* Terms *)
 (*********)
@@ -90,6 +90,20 @@ let tskip = "skip"
 let tfail_n n = sprintf "%s_%s" tfail (string_of_int n)
 let tnil_n  n = sprintf "%s_%s" tnil (string_of_int n)
 
+let rec z3_fail_of_tp (tp : tp) =
+  match tp with
+  | Unit -> tfail_u
+  | Integer -> tfail_i
+  | Arrow _ -> tfail_m
+  | Product(t1,t2) -> z3_pair_maker (z3_fail_of_tp t1) (z3_fail_of_tp t2)
+
+let rec z3_nil_of_tp (tp : tp) =
+  match tp with
+  | Unit -> tnil_u
+  | Integer -> tnil_i
+  | Arrow _ -> tnil_m
+  | Product(t1,t2) -> z3_pair_maker (z3_nil_of_tp t1) (z3_nil_of_tp t2)
+              
 let get_default_decl = [(tfail_i,Int);(tnil_i,Int);
                         (tfail_u,Unit);(tnil_u,Unit);
                         (*(tfail_m,Meth);(tnil_m,Meth); (*they strings*)*)
@@ -163,6 +177,11 @@ let rec z3_of_proposition (p : proposition) :(string) =
   | And(a,b) -> sprintf "(and %s %s)" (z3_of_proposition a) (z3_of_proposition b)
   | Or(a,b) -> sprintf "(or %s %s)" (z3_of_proposition a) (z3_of_proposition b)
 
+let rec z3_assertions_of_list xs =
+  match xs with
+  | [] -> ""
+  | x::xs -> sprintf "(assert %s)\n%s" (z3_of_proposition x) (z3_assertions_of_list xs)
+             
 let (===) s1 s2 = if s1 = s2 then True  else Eq(s1,s2)
 let (=/=) s1 s2 = if s1 = s2 then False else Neq(s1,s2)
 let (==>) p1 p2 = if p1 = True then p2 else Implies(p1,p2)

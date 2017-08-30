@@ -56,7 +56,9 @@ let _ =
         print_newline ();
         printf "%s" all_decl;
         print_newline ();
-        printf "%s" (get_assertions (get_fail_neq_nil ()));
+        printf "%s" (z3_assertions_of_list (get_fail_neq_nil ()));
+        print_newline ();
+        printf "%s" (z3_assertions_of_list (get_global_types ()));
         print_newline ();
         printf "(assert %s)" (z3_of_proposition ophi);
         print_newline ();

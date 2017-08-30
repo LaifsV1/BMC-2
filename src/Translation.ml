@@ -18,6 +18,9 @@ let fresh_m   () = counter_m  := !counter_m + 1;
 let fresh_ret () = counter_ret := !counter_ret + 1;
                    sprintf "_ret_%s_" (string_of_int (!counter_ret))
 
+(****************************************)
+(* Types Seen for fail/nil declarations *)
+(****************************************)
 let types_seen = ref 0
 let fresh_type () = types_seen := !types_seen + 1;!types_seen
 
@@ -32,11 +35,9 @@ let get_fail_neq_nil () =
   let rec helper n acc = if n < 1 then acc else helper (n-1) (((tfail_n n)=/=(tnil_n n))::acc) in
   helper (!types_seen) [tfail_i=/=tnil_i ; tfail_u=/=tnil_u ; tfail_m=/=tnil_m]
 
-let rec get_assertions xs =
-  match xs with
-  | [] -> ""
-  | x::xs -> sprintf "(assert %s)\n%s" (z3_of_proposition x) (get_assertions xs)
-        
+let get_global_types () =
+  Types.fold (fun tp i acc -> ((tfail_n i)===z3_fail_of_tp tp)::((tnil_n i)===z3_nil_of_tp tp)::acc) (!global_types) []
+  
 (**********************)
 (* Substitute: M{t/y} *)
 (**********************)
