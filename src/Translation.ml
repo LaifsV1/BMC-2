@@ -37,7 +37,7 @@ let get_fail_neq_nil () =
 
 let get_global_types () =
   Types.fold (fun tp i acc -> ((tfail_n i)===z3_fail_of_tp tp)::((tnil_n i)===z3_nil_of_tp tp)::acc) (!global_types) []
-  
+
 (**********************)
 (* Substitute: M{t/y} *)
 (**********************)
@@ -182,7 +182,7 @@ let rec bmc_translation
       | BinOp(op,t1,t2) ->
          let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t1 r c d phi k (etype) new_tps in
          let (ret2,phi2,r2,c2,d2,q2,tps2) = bmc_translation t2 r1 c1 d1 phi1 k (etype) tps1 in
-         let guard_1,tpsg1 = (f ret2 ret_tp (ret===(z3_binops (fst ret1) op (fst ret2))) q2 tps2) in
+         let guard_1,tpsg1 = (f ret2 ret_tp ((ret===(z3_binops (fst ret1) op (fst ret2))) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i)) q2 tps2) in
          let guard_2,tpsg2 = (f ret1 ret_tp guard_1 q1 tpsg1) in
          (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2)
       | Let((x,tp),t1,t2) ->
