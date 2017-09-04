@@ -14,7 +14,7 @@ let counter_ret = ref 0
 let fresh_x   () = counter_x  := !counter_x + 1;
                    sprintf "_x_%s_"   (string_of_int (!counter_x))
 let fresh_m   () = counter_m  := !counter_m + 1;
-                   sprintf "\"_m_%s_\""   (string_of_int (!counter_m))
+                   sprintf "_m_%s_"   (string_of_int (!counter_m))
 let fresh_ret () = counter_ret := !counter_ret + 1;
                    sprintf "_ret_%s_" (string_of_int (!counter_ret))
 
@@ -45,11 +45,12 @@ let rec subs (m : term) (t : _var) (y : _var) =
   match m with
   | Fail | Skip | Int _ | Method _ | Deref _ -> m
   | Var x -> if x = y then Var(t) else m
-  | Lambda(x,t',tp) ->
-     if x = y
-     then let x' = (fresh_x (),snd x) in
-          Lambda(x',subs t' x' x,tp)
-     else Lambda(x,subs t' t y,tp)
+  | Lambda(xs,t',tp) ->
+     if List.mem t xs then failwith "accidental binding in subs"
+     else
+       if List.mem y xs
+       then (printf "\n WARNING: t = y \n"; Lambda(xs,t',tp)) (* WARNING: this is not standard *)
+       else Lambda(xs,subs t' t y,tp)
   | Left (t',tp) -> Left(subs t' t y,tp)
   | Right (t',tp) -> Right(subs t' t y,tp)
   | Assign(r,t') -> Assign(r,subs t' t y)
@@ -59,11 +60,17 @@ let rec subs (m : term) (t : _var) (y : _var) =
                     then let x' = (fresh_x (),snd x) in
                          Let(x',subs t1 t y,subs t2 x' x)
                     else Let(x,subs t1 t y,subs t2 t y)
-  | ApplyM(m,t') -> ApplyM(m,subs t' t y)
+  | ApplyM(m,t') -> ApplyM(m,List.map (fun ti -> subs ti t y) t')
   | If(tb,t1,t0) -> If(subs tb t y,subs t1 t y,subs t0 t y)
   | ApplyX(x,t') -> if x = y
-                    then ApplyX(t,subs t' t y)
-                    else ApplyX(x,subs t' t y)
+                    then ApplyX(t,List.map (fun ti -> subs ti t y) t')
+                    else ApplyX(x,List.map (fun ti -> subs ti t y) t')
+
+let rec subslist (m : term) (ts : _var list) (ys : _var list) =
+  match ts,ys with
+  | [t],[y] -> subs m t y
+  | t::ts, y::ys -> subslist (subs m t y) ts ys
+  | _ -> failwith "not same number of arguments"
 
 (*******************)
 (* BMC Translation *)
@@ -110,6 +117,13 @@ let f (a,tpa : _ret) (b,tpb : _ret) (p : proposition) (q : e_prop) (acc : _decl)
   let failb,nilb,decl2 = select_check tpb decl1 in
   pred faila failb nila nilb , decl2
 
+let rec f_rets_helper rets (b : _ret) (p : proposition) (acc : _decl) :(proposition * _decl) =
+  match rets with
+  | [] -> p , acc
+  | (a,q)::rets -> let p,decl = f a b p q acc in
+                   f_rets_helper rets b p decl
+let f_rets rets = f_rets_helper (List.rev rets)
+
 (* translation *)
 let rec bmc_translation
           (m : term) (r : repo) (c : counter) (d : counter)
@@ -142,8 +156,8 @@ let rec bmc_translation
              (ret_tp,(ret===(tfail_n n)) &&& phi,r,c,d,Fail,new_tps'))
       | Skip -> (ret_tp,(ret===tskip) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps)
       | Int i -> (ret_tp,(ret===(string_of_int i)) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps)
-      | Method m -> (ret_tp,(ret===(z3_method m)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps)
-      | Var(x,t) -> (ret_tp,(ret===x) &&& phi,r,c,d,Val,new_tps) (*adding != fail/nil is not sound here*)
+      | Method m -> printf "saw meth: %s;\n" m; (ret_tp,(ret===(z3_method m)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps)
+      | Var(x,t) -> ((x,t),phi,r,c,d,Both,new_tps) (*adding != fail/nil is not sound here*) (*warning: we removed ret, but we might want to add it back*)
       | Deref aref ->
          let d_r = ref_get d aref in
          (match etype with
@@ -155,7 +169,7 @@ let rec bmc_translation
          let new_meth = fresh_m () in
          let r' = repo_update r new_meth (x,t,tp') in
          (ret_tp,(ret===(z3_method new_meth)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,
-          r',c,d,Val,(new_meth,Meth)::new_tps)
+          r',c,d,Val,new_tps)
       (* inductive cases *)
       | Left (t,tp) ->
          let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t r c d phi k tp new_tps in
@@ -192,13 +206,13 @@ let rec bmc_translation
          let guard_1,tpsg1 = (f ret2 ret_tp (ret===(fst ret2)) q2 tps2) in
          let guard_2,tpsg2 = (f ret1 ret_tp guard_1 q1 tpsg1) in
          (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2)
-      | ApplyM(m,t) ->
-         let (x,n,tp) = repo_get r m in
-         let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t r c d phi k (snd x) new_tps in
-         let (ret2,phi2,r2,c2,d2,q2,tps2) = bmc_translation (subs n ret1 x)
+      | ApplyM(m,ts) ->
+         let (xs,n,tp) = repo_get r m in
+         let args,rets,phi1,r1,c1,d1,q1,tps1 = bmc_args (List.map snd xs) ts r c d phi k new_tps [] [] Val in
+         let (ret2,phi2,r2,c2,d2,q2,tps2) = bmc_translation (subslist n rets xs)
                                                             r1 c1 d1 phi1 k' etype tps1 in
          let guard_1,tpsg1 = (f ret2 ret_tp (ret===(fst ret2)) q2 tps2) in
-         let guard_2,tpsg2 = (f ret1 ret_tp guard_1 q1 tpsg1) in
+         let guard_2,tpsg2 = (f_rets args ret_tp guard_1 tpsg1) in
          (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2)
       | If(tb,t1,t0) ->
          let (retb,phib,rb,cb,db,qb,tpsb) = bmc_translation tb r c d phi k Integer new_tps in
@@ -211,27 +225,26 @@ let rec bmc_translation
          let pi1 = ((fst retb) =/= "0") ==> guard_1 in
          let guard_b,tpsgb = (f retb ret_tp (pi0 &&& pi1) qb tpsg1) in
          (ret_tp,guard_b &&& phi1,r1,c',c',qb+++q0+++q1,tpsgb)
-      | ApplyX((x,tp),t) ->
+      | ApplyX((x,tp),ts) ->
          (match tp with
           | Arrow(one,two) ->
-             (let (ret0,phi0,r0,c0,d0,q0,tps0) = bmc_translation t r c d phi k one new_tps in
+             (let args,rets,phi0,r0,c0,d0,q0,tps0 = bmc_args one ts r c d phi k new_tps [] [] Val in
               let r_tp = get_methods r tp in
               let phin,rn,cn,xs,tpsn =
                 List.fold_left
                   (fun (phii_,ri_,ci_,ys,tpsi_) (mi,xi,ti) ->  (*mi = \(xi).ti*)
                     match ys with
-                    | [] -> failwith "variable type does not match any existing method (1)"
+                    | [] ->
+                       let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subslist ti rets xi)
+                                                                          r0 c0 d0 phi0 k' etype tps0 in
+                       phii,ri,ci,[(mi,reti,di,qi+++q0)],tpsi
                     | ((mi_,reti_,di_,qi_)::ys') ->
-                       let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subs ti ret0 xi)
+                       let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subslist ti rets xi)
                                                                           ri_ ci_ d0 phii_ k' etype tpsi_ in
-                       if mi_ = "_not_a_method_"
-                       then phii,ri,ci,[(mi,reti,di,qi+++qi_)],tpsi
-                       else phii,ri,ci,((mi,reti,di,qi+++qi_)::ys),tpsi)
-                  (phi0,r0,c0,["_not_a_method_",ret0,d0,q0],tps0) r_tp in
+                       phii,ri,ci,((mi,reti,di,qi+++qi_)::ys),tpsi)
+                  (phi0,r0,c0,[],tps0) r_tp in
               match xs with
               | [] -> failwith "variable type does not match any existing method (2)"
-              | (("_not_a_method_",retn,dn,qn)::xs) ->
-                 failwith "variable type does not match any existing method (3)"
               | ((mn,retn,dn,qn)::xs) ->
                  let cn',varscn' = c_update_all cn tpsn in
                  let pi,tpsgs =
@@ -240,6 +253,14 @@ let rec bmc_translation
                        (let guard_i,tpsgi = (f reti ret_tp (ret===(fst reti)) qi decls) in
                         (x===(z3_method mi)) ==> (guard_i &&& c_wedge cn' di)&&&acc,tpsgi))
                      (True,varscn') ((mn,retn,dn,qn)::xs) in
-                 let guard_final,tpsgfinal = (f ret0 ret_tp pi q0 tpsgs) in
+                 let guard_final,tpsgfinal = (f_rets args ret_tp pi tpsgs) in
                  (ret_tp,guard_final &&& phin,rn,cn',cn',qn,tpsgfinal))
           | _ -> failwith "is not an arrow type"))
+  and bmc_args (xs : tp list) (ts : term list) (r:repo) (c:counter) (d:counter) (phi:proposition) (k:nat) (new_tps:(_name*z3_tp)list) acc rets q =
+    match xs,ts with
+    | [],[] -> List.rev acc,List.rev rets,phi,r,c,d,q,new_tps
+    | x::xs,t::ts -> let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t r c d phi k x new_tps in
+                     let new_acc = (ret1,q1)::acc in
+                     let new_rets = ret1::rets in
+                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q)
+    | _ -> failwith "number of arguments mismatch"

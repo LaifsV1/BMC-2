@@ -15,7 +15,7 @@
     SyntaxError (("error lexing "^ msg),(pos1,pos2))
 }
 
-let name = ['a'-'z']['A'-'Z' 'a'-'z' '0'-'9' '_' '\'']*
+let name = ['a'-'z']['A'-'Z''a'-'z''0'-'9''_''\'']*
 let int = '-'? ['0'-'9'] ['0'-'9']*
 let open_comment = "(*"
 let close_comment = "*)"
@@ -35,6 +35,7 @@ rule read = parse
   | "->"            { ARROW_OP }
   | '*'             { TIMES_OP }
   | '+'             { PLUS_OP }
+  | ">="            { GTE_OP }
   | "fail"          { Fail_TERM }
   | "skip"          { Skip_TERM }
   | int as i        { Int_TERM (int_of_string i) }
@@ -49,6 +50,7 @@ rule read = parse
   | "if"            { If_TERM }
   | "then"          { Then_TERM }
   | "else"          { Else_TERM }
+  | "Pair"          { PAIR_OP }
   | "Methods"       { METHOD }
   | "Store"         { STORE }
   | "Main"          { MAIN }

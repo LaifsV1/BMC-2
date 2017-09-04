@@ -1,6 +1,6 @@
 Main:(Unit):
-let (x: Int * Int) = (fail,fail) in
-let (y: Int * Unit) = (fail,skip) in
-let (z: Unit * Unit) = (fail,fail) in
-let (a: (Int->Int) * Unit) = (fail,fail) in
+let (x: Int * Int) = Pair(fail,fail) in
+let (y: Int * Unit) = Pair(fail,skip) in
+let (z: Unit * Unit) = Pair(fail,fail) in
+let (a: (Int->Int) * Unit) = Pair(fail,fail) in
 skip

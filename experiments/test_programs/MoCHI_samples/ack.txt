@@ -1,8 +1,5 @@
-(*multiple arg functions become pairs: we don't have M M, and currying with side-effects is a lie*)
 Methods:
-ackermann (p : Int * Int) :(Int) =
-    let (m:Int) = (fst:Int*Int) p in
-    let (n:Int) = (snd:Int*Int) p in
+ackermann (m:Int , n:Int) :(Int) =
     if m
     then
       if n
@@ -10,11 +7,5 @@ ackermann (p : Int * Int) :(Int) =
       else ackermann (m + -1,1)
     else n+1;
 
-Main:(Unit):
-  let (m:Int) = 1 in
-  let (n:Int) = 1 in
-  if m + n
-  then if (ackermann (m,n)) + (n*-1)
-       then skip
-       else fail
-  else skip
+Main:(Int):
+ackermann (1,1)

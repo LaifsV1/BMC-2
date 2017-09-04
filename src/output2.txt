@@ -1,0 +1,1308 @@
+sat
+(model 
+  ;; universe for Unit:
+  ;;   Unit!val!0 Unit!val!1 
+  ;; -----------
+  ;; definitions for universe elements:
+  (declare-fun Unit!val!0 () Unit)
+  (declare-fun Unit!val!1 () Unit)
+  ;; cardinality constraint:
+  (forall ((x Unit)) (or (= x Unit!val!0) (= x Unit!val!1)))
+  ;; -----------
+  (define-fun _ret_614_ () Int
+    4)
+  (define-fun _ret_260_ () Int
+    (- 2))
+  (define-fun _ret_474_ () Int
+    4)
+  (define-fun _ret_882_ () Int
+    4)
+  (define-fun _ret_308_ () Int
+    (- 1))
+  (define-fun _ret_718_ () Int
+    4)
+  (define-fun _ret_431_ () Int
+    0)
+  (define-fun _ret_898_ () Int
+    (- 1))
+  (define-fun _ret_758_ () Int
+    4)
+  (define-fun _ret_333_ () Int
+    0)
+  (define-fun _ret_327_ () Int
+    1)
+  (define-fun _ret_692_ () Int
+    (- 1))
+  (define-fun _ret_632_ () Int
+    4)
+  (define-fun _ret_812_ () Int
+    1)
+  (define-fun _ret_89_ () Int
+    (- 1))
+  (define-fun _ret_187_ () Int
+    4)
+  (define-fun _ret_12_ () Int
+    0)
+  (define-fun _ret_149_ () Int
+    4)
+  (define-fun _ret_888_ () Int
+    1)
+  (define-fun _ret_203_ () Int
+    1)
+  (define-fun _ret_483_ () Int
+    (- 1))
+  (define-fun _ret_446_ () Int
+    2)
+  (define-fun _ret_484_ () Int
+    4)
+  (define-fun _ret_651_ () Int
+    2)
+  (define-fun _ret_451_ () Int
+    2)
+  (define-fun _ret_465_ () Int
+    (- 1))
+  (define-fun _ret_753_ () Int
+    2)
+  (define-fun _ret_527_ () Int
+    4)
+  (define-fun _ret_413_ () Int
+    4)
+  (define-fun _ret_555_ () Int
+    1)
+  (define-fun _ret_142_ () Int
+    4)
+  (define-fun _ret_398_ () Int
+    (- 1))
+  (define-fun _ret_21_ () Int
+    4)
+  (define-fun _ret_239_ () Int
+    1)
+  (define-fun _ret_401_ () Int
+    (- 1))
+  (define-fun _ret_99_ () Int
+    4)
+  (define-fun _ret_78_ () Int
+    4)
+  (define-fun _ret_608_ () Int
+    4)
+  (define-fun _ret_557_ () Int
+    4)
+  (define-fun _ret_302_ () Int
+    (- 1))
+  (define-fun _ret_464_ () Int
+    4)
+  (define-fun _ret_585_ () Int
+    (- 1))
+  (define-fun _ret_906_ () Int
+    4)
+  (define-fun _ret_923_ () Int
+    4)
+  (define-fun _ret_140_ () Int
+    (- 1))
+  (define-fun _ret_792_ () Int
+    (- 1))
+  (define-fun _ret_125_ () Int
+    1)
+  (define-fun _ret_874_ () Int
+    1)
+  (define-fun _ret_924_ () Int
+    4)
+  (define-fun _ret_52_ () Int
+    4)
+  (define-fun _ret_316_ () Int
+    3)
+  (define-fun _ret_849_ () Int
+    4)
+  (define-fun _ret_659_ () Int
+    (- 1))
+  (define-fun _ret_297_ () Int
+    4)
+  (define-fun _ret_101_ () Int
+    1)
+  (define-fun _ret_345_ () Int
+    (- 1))
+  (define-fun _ret_146_ () Int
+    1)
+  (define-fun _ret_611_ () Int
+    (- 1))
+  (define-fun _ret_594_ () Int
+    4)
+  (define-fun _ret_361_ () Int
+    4)
+  (define-fun _ret_450_ () Int
+    1)
+  (define-fun _ret_554_ () Int
+    (- 1))
+  (define-fun _ret_384_ () Int
+    1)
+  (define-fun _ret_357_ () Int
+    (- 2))
+  (define-fun _ret_687_ () Int
+    4)
+  (define-fun _ret_470_ () Int
+    0)
+  (define-fun _ret_896_ () Int
+    0)
+  (define-fun _ret_104_ () Int
+    4)
+  (define-fun _ret_154_ () Int
+    4)
+  (define-fun _ret_386_ () Int
+    1)
+  (define-fun _ret_644_ () Int
+    4)
+  (define-fun _ret_225_ () Int
+    2)
+  (define-fun _ret_901_ () Int
+    4)
+  (define-fun _ret_609_ () Int
+    (- 2))
+  (define-fun _ret_280_ () Int
+    4)
+  (define-fun _ret_846_ () Int
+    2)
+  (define-fun _ret_80_ () Int
+    4)
+  (define-fun _ret_403_ () Int
+    (- 1))
+  (define-fun _ret_668_ () Int
+    0)
+  (define-fun _ret_467_ () Int
+    (- 1))
+  (define-fun _ret_522_ () Int
+    (- 1))
+  (define-fun _ret_263_ () Int
+    4)
+  (define-fun _ret_170_ () Int
+    0)
+  (define-fun _ret_478_ () Int
+    (- 1))
+  (define-fun _ret_353_ () Int
+    1)
+  (define-fun _ret_256_ () Int
+    (- 1))
+  (define-fun _ret_223_ () Int
+    4)
+  (define-fun _ret_53_ () Int
+    4)
+  (define-fun _ret_783_ () Int
+    (- 1))
+  (define-fun _ret_699_ () Int
+    4)
+  (define-fun _ret_489_ () Int
+    4)
+  (define-fun _ret_172_ () Int
+    (- 1))
+  (define-fun _ret_344_ () Int
+    4)
+  (define-fun _ret_366_ () Int
+    4)
+  (define-fun _ret_97_ () Int
+    4)
+  (define-fun _ret_561_ () Int
+    4)
+  (define-fun _ret_30_ () Int
+    2)
+  (define-fun _ret_805_ () Int
+    (- 1))
+  (define-fun _ret_879_ () Int
+    2)
+  (define-fun _ret_494_ () Int
+    (- 1))
+  (define-fun _ret_813_ () Int
+    4)
+  (define-fun _ret_806_ () Int
+    4)
+  (define-fun _ret_666_ () Int
+    4)
+  (define-fun _ret_180_ () Int
+    4)
+  (define-fun _ret_762_ () Int
+    1)
+  (define-fun _ret_169_ () Int
+    (- 1))
+  (define-fun _ret_808_ () Int
+    4)
+  (define-fun _ret_821_ () Int
+    4)
+  (define-fun _ret_497_ () Int
+    4)
+  (define-fun _ret_54_ () Int
+    (- 3))
+  (define-fun _ret_110_ () Int
+    4)
+  (define-fun _ret_27_ () Int
+    1)
+  (define-fun _ret_390_ () Int
+    (- 1))
+  (define-fun _ret_744_ () Int
+    4)
+  (define-fun _ret_87_ () Int
+    (- 2))
+  (define-fun _ret_676_ () Int
+    (- 1))
+  (define-fun _ret_530_ () Int
+    4)
+  (define-fun _ret_309_ () Int
+    4)
+  (define-fun _ret_303_ () Int
+    1)
+  (define-fun _ret_299_ () Int
+    4)
+  (define-fun _ret_404_ () Int
+    4)
+  (define-fun _ret_287_ () Int
+    (- 1))
+  (define-fun _ret_243_ () Int
+    (- 3))
+  (define-fun _ret_192_ () Int
+    4)
+  (define-fun _ret_885_ () Int
+    (- 2))
+  (define-fun _ret_155_ () Int
+    4)
+  (define-fun _ret_588_ () Int
+    1)
+  (define-fun _ret_124_ () Int
+    (- 1))
+  (define-fun _ret_654_ () Int
+    4)
+  (define-fun _ret_620_ () Int
+    4)
+  (define-fun _ret_560_ () Int
+    (- 1))
+  (define-fun _ret_568_ () Int
+    4)
+  (define-fun _ret_820_ () Int
+    4)
+  (define-fun _ret_844_ () Int
+    4)
+  (define-fun _ret_221_ () Int
+    4)
+  (define-fun _ret_546_ () Int
+    2)
+  (define-fun _ret_877_ () Int
+    4)
+  (define-fun _ret_775_ () Int
+    4)
+  (define-fun _ret_681_ () Int
+    (- 1))
+  (define-fun _ret_889_ () Int
+    4)
+  (define-fun _ret_544_ () Int
+    4)
+  (define-fun _ret_210_ () Int
+    1)
+  (define-fun _ret_798_ () Int
+    (- 1))
+  (define-fun _ret_519_ () Int
+    1)
+  (define-fun _ret_781_ () Int
+    0)
+  (define-fun _ret_694_ () Int
+    4)
+  (define-fun _ret_425_ () Int
+    0)
+  (define-fun _ret_213_ () Int
+    (- 2))
+  (define-fun _ret_3_ () Int
+    1)
+  (define-fun _ret_890_ () Int
+    4)
+  (define-fun _ret_194_ () Int
+    (- 2))
+  (define-fun _ret_95_ () Int
+    4)
+  (define-fun _ret_641_ () Int
+    1)
+  (define-fun _ret_581_ () Int
+    1)
+  (define-fun _ret_472_ () Int
+    (- 1))
+  (define-fun _ret_773_ () Int
+    4)
+  (define-fun _ret_834_ () Int
+    3)
+  (define-fun _ret_486_ () Int
+    (- 1))
+  (define-fun _ret_240_ () Int
+    4)
+  (define-fun _ret_197_ () Int
+    4)
+  (define-fun _ret_372_ () Int
+    4)
+  (define-fun _ret_843_ () Int
+    1)
+  (define-fun _ret_593_ () Int
+    (- 1))
+  (define-fun _ret_462_ () Int
+    1)
+  (define-fun _ret_531_ () Int
+    4)
+  (define-fun _ret_871_ () Int
+    (- 1))
+  (define-fun _ret_90_ () Int
+    4)
+  (define-fun _ret_324_ () Int
+    (- 1))
+  (define-fun _ret_552_ () Int
+    (- 2))
+  (define-fun _ret_335_ () Int
+    (- 1))
+  (define-fun _ret_108_ () Int
+    1)
+  (define-fun _ret_563_ () Int
+    0)
+  (define-fun _ret_819_ () Int
+    1)
+  (define-fun _ret_922_ () Int
+    (- 1))
+  (define-fun _ret_663_ () Int
+    (- 3))
+  (define-fun _ret_734_ () Int
+    2)
+  (define-fun _ret_830_ () Int
+    4)
+  (define-fun _ret_576_ () Int
+    (- 1))
+  (define-fun _ret_138_ () Int
+    (- 1))
+  (define-fun _ret_422_ () Int
+    (- 1))
+  (define-fun _ret_144_ () Int
+    2)
+  (define-fun _ret_36_ () Int
+    (- 2))
+  (define-fun _ret_376_ () Int
+    (- 1))
+  (define-fun _ret_797_ () Int
+    4)
+  (define-fun _ret_537_ () Int
+    4)
+  (define-fun _ret_24_ () Int
+    (- 1))
+  (define-fun _ret_410_ () Int
+    1)
+  (define-fun _ret_329_ () Int
+    1)
+  (define-fun _ret_166_ () Int
+    4)
+  (define-fun _ret_72_ () Int
+    (- 1))
+  (define-fun _ret_370_ () Int
+    (- 1))
+  (define-fun fail_unit () Unit
+    Unit!val!0)
+  (define-fun _ret_218_ () Int
+    (- 1))
+  (define-fun _ret_182_ () Int
+    4)
+  (define-fun _ret_405_ () Int
+    4)
+  (define-fun _ret_153_ () Int
+    1)
+  (define-fun _ret_540_ () Int
+    (- 1))
+  (define-fun _ret_137_ () Int
+    4)
+  (define-fun _ret_822_ () Int
+    (- 2))
+  (define-fun _ret_513_ () Int
+    4)
+  (define-fun _ret_791_ () Int
+    4)
+  (define-fun _ret_622_ () Int
+    (- 1))
+  (define-fun _ret_348_ () Int
+    1)
+  (define-fun _ret_856_ () Int
+    4)
+  (define-fun _ret_867_ () Int
+    4)
+  (define-fun _ret_750_ () Int
+    1)
+  (define-fun _ret_736_ () Int
+    1)
+  (define-fun _ret_701_ () Int
+    (- 1))
+  (define-fun _ret_516_ () Int
+    (- 1))
+  (define-fun _ret_158_ () Int
+    (- 1))
+  (define-fun _ret_623_ () Int
+    4)
+  (define-fun _ret_491_ () Int
+    4)
+  (define-fun _ret_118_ () Int
+    (- 1))
+  (define-fun _ret_690_ () Int
+    (- 2))
+  (define-fun _ret_660_ () Int
+    1)
+  (define-fun _ret_831_ () Int
+    4)
+  (define-fun _ret_566_ () Int
+    4)
+  (define-fun _ret_617_ () Int
+    (- 1))
+  (define-fun _ret_496_ () Int
+    4)
+  (define-fun _ret_206_ () Int
+    4)
+  (define-fun _ret_175_ () Int
+    0)
+  (define-fun _ret_189_ () Int
+    (- 1))
+  (define-fun _ret_382_ () Int
+    1)
+  (define-fun _ret_164_ () Int
+    4)
+  (define-fun _ret_532_ () Int
+    4)
+  (define-fun _ret_68_ () Int
+    4)
+  (define-fun _ret_488_ () Int
+    1)
+  (define-fun _ret_281_ () Int
+    4)
+  (define-fun _ret_199_ () Int
+    4)
+  (define-fun _ret_268_ () Int
+    4)
+  (define-fun _ret_248_ () Int
+    4)
+  (define-fun _ret_44_ () Int
+    1)
+  (define-fun _ret_270_ () Int
+    1)
+  (define-fun _ret_725_ () Int
+    4)
+  (define-fun _ret_868_ () Int
+    4)
+  (define-fun _ret_738_ () Int
+    (- 1))
+  (define-fun _ret_677_ () Int
+    4)
+  (define-fun _ret_418_ () Int
+    4)
+  (define-fun _ret_706_ () Int
+    4)
+  (define-fun _ret_429_ () Int
+    4)
+  (define-fun _ret_349_ () Int
+    4)
+  (define-fun _ret_455_ () Int
+    1)
+  (define-fun _ret_656_ () Int
+    4)
+  (define-fun _ret_729_ () Int
+    4)
+  (define-fun _ret_294_ () Int
+    4)
+  (define-fun _ret_63_ () Int
+    4)
+  (define-fun _ret_347_ () Int
+    (- 1))
+  (define-fun _ret_542_ () Int
+    (- 1))
+  (define-fun _ret_121_ () Int
+    4)
+  (define-fun _ret_127_ () Int
+    0)
+  (define-fun _ret_102_ () Int
+    4)
+  (define-fun _ret_774_ () Int
+    4)
+  (define-fun _ret_795_ () Int
+    1)
+  (define-fun _ret_765_ () Int
+    (- 2))
+  (define-fun _ret_776_ () Int
+    (- 1))
+  (define-fun _ret_319_ () Int
+    (- 1))
+  (define-fun _ret_903_ () Int
+    4)
+  (define-fun _ret_900_ () Int
+    4)
+  (define-fun _ret_815_ () Int
+    4)
+  (define-fun _ret_768_ () Int
+    4)
+  (define-fun _ret_539_ () Int
+    4)
+  (define-fun _ret_23_ () Int
+    4)
+  (define-fun _ret_234_ () Int
+    1)
+  (define-fun _ret_918_ () Int
+    4)
+  (define-fun _ret_84_ () Int
+    1)
+  (define-fun _ret_801_ () Int
+    4)
+  (define-fun _ret_679_ () Int
+    0)
+  (define-fun _ret_661_ () Int
+    4)
+  (define-fun _ret_582_ () Int
+    4)
+  (define-fun _ret_259_ () Int
+    4)
+  (define-fun _ret_365_ () Int
+    (- 1))
+  (define-fun _ret_94_ () Int
+    (- 1))
+  (define-fun _ret_507_ () Int
+    4)
+  (define-fun _ret_772_ () Int
+    (- 1))
+  (define-fun nil_unit () Unit
+    Unit!val!1)
+  (define-fun _ret_636_ () Int
+    1)
+  (define-fun _ret_807_ () Int
+    4)
+  (define-fun _ret_211_ () Int
+    4)
+  (define-fun _ret_185_ () Int
+    (- 1))
+  (define-fun _ret_596_ () Int
+    4)
+  (define-fun _ret_852_ () Int
+    (- 3))
+  (define-fun _ret_816_ () Int
+    (- 2))
+  (define-fun _ret_395_ () Int
+    4)
+  (define-fun _ret_551_ () Int
+    4)
+  (define-fun _ret_174_ () Int
+    (- 1))
+  (define-fun _ret_447_ () Int
+    0)
+  (define-fun _ret_524_ () Int
+    (- 1))
+  (define-fun _ret_746_ () Int
+    4)
+  (define-fun _ret_893_ () Int
+    (- 1))
+  (define-fun _ret_728_ () Int
+    4)
+  (define-fun _ret_282_ () Int
+    (- 2))
+  (define-fun _ret_894_ () Int
+    4)
+  (define-fun _ret_438_ () Int
+    (- 1))
+  (define-fun _ret_325_ () Int
+    2)
+  (define-fun _ret_247_ () Int
+    4)
+  (define-fun _ret_498_ () Int
+    0)
+  (define-fun _ret_860_ () Int
+    (- 1))
+  (define-fun _ret_891_ () Int
+    (- 2))
+  (define-fun _ret_624_ () Int
+    4)
+  (define-fun _ret_354_ () Int
+    4)
+  (define-fun _ret_803_ () Int
+    (- 1))
+  (define-fun _ret_866_ () Int
+    4)
+  (define-fun _ret_591_ () Int
+    (- 1))
+  (define-fun _ret_73_ () Int
+    4)
+  (define-fun _ret_887_ () Int
+    (- 1))
+  (define-fun _ret_912_ () Int
+    1)
+  (define-fun _ret_579_ () Int
+    4)
+  (define-fun _ret_733_ () Int
+    (- 1))
+  (define-fun _ret_237_ () Int
+    2)
+  (define-fun _ret_876_ () Int
+    (- 1))
+  (define-fun _ret_249_ () Int
+    (- 3))
+  (define-fun _ret_242_ () Int
+    4)
+  (define-fun _ret_396_ () Int
+    (- 1))
+  (define-fun _ret_653_ () Int
+    1)
+  (define-fun _ret_177_ () Int
+    0)
+  (define-fun _ret_186_ () Int
+    1)
+  (define-fun _ret_59_ () Int
+    0)
+  (define-fun _ret_14_ () Int
+    (- 1))
+  (define-fun _ret_909_ () Int
+    (- 3))
+  (define-fun _ret_11_ () Int
+    2)
+  (define-fun _ret_254_ () Int
+    0)
+  (define-fun _ret_209_ () Int
+    (- 1))
+  (define-fun _ret_755_ () Int
+    1)
+  (define-fun _ret_682_ () Int
+    4)
+  (define-fun _ret_322_ () Int
+    0)
+  (define-fun _ret_105_ () Int
+    (- 3))
+  (define-fun _ret_515_ () Int
+    4)
+  (define-fun _ret_291_ () Int
+    4)
+  (define-fun _ret_313_ () Int
+    (- 1))
+  (define-fun _ret_633_ () Int
+    (- 1))
+  (define-fun _ret_150_ () Int
+    (- 2))
+  (define-fun _ret_113_ () Int
+    (- 1))
+  (define-fun _ret_512_ () Int
+    1)
+  (define-fun _ret_743_ () Int
+    1)
+  (define-fun _ret_83_ () Int
+    (- 1))
+  (define-fun _ret_501_ () Int
+    4)
+  (define-fun _ret_163_ () Int
+    (- 1))
+  (define-fun _ret_411_ () Int
+    4)
+  (define-fun _ret_65_ () Int
+    (- 2))
+  (define-fun _ret_670_ () Int
+    (- 1))
+  (define-fun _ret_649_ () Int
+    4)
+  (define-fun _ret_4_ () Int
+    3)
+  (define-fun _ret_749_ () Int
+    (- 1))
+  (define-fun _ret_456_ () Int
+    4)
+  (define-fun _ret_161_ () Int
+    0)
+  (define-fun _ret_642_ () Int
+    4)
+  (define-fun _ret_613_ () Int
+    4)
+  (define-fun _ret_468_ () Int
+    4)
+  (define-fun _ret_577_ () Int
+    4)
+  (define-fun _ret_630_ () Int
+    4)
+  (define-fun _ret_220_ () Int
+    (- 1))
+  (define-fun _ret_207_ () Int
+    (- 2))
+  (define-fun _ret_759_ () Int
+    (- 2))
+  (define-fun _ret_18_ () Int
+    2)
+  (define-fun _ret_430_ () Int
+    4)
+  (define-fun nil_int () Int
+    4)
+  (define-fun _ret_601_ () Int
+    4)
+  (define-fun _ret_884_ () Int
+    4)
+  (define-fun _ret_571_ () Int
+    (- 1))
+  (define-fun _ret_45_ () Int
+    4)
+  (define-fun _ret_518_ () Int
+    (- 1))
+  (define-fun _ret_503_ () Int
+    (- 3))
+  (define-fun _ret_574_ () Int
+    4)
+  (define-fun _ret_428_ () Int
+    4)
+  (define-fun _ret_196_ () Int
+    (- 1))
+  (define-fun _ret_330_ () Int
+    2)
+  (define-fun _ret_710_ () Int
+    1)
+  (define-fun _ret_304_ () Int
+    4)
+  (define-fun _ret_914_ () Int
+    4)
+  (define-fun _ret_587_ () Int
+    (- 1))
+  (define-fun _ret_272_ () Int
+    1)
+  (define-fun _ret_492_ () Int
+    0)
+  (define-fun _ret_57_ () Int
+    4)
+  (define-fun _ret_6_ () Int
+    2)
+  (define-fun _ret_317_ () Int
+    0)
+  (define-fun _ret_342_ () Int
+    4)
+  (define-fun _ret_67_ () Int
+    (- 1))
+  (define-fun _ret_730_ () Int
+    4)
+  (define-fun _ret_374_ () Int
+    (- 1))
+  (define-fun _ret_188_ () Int
+    4)
+  (define-fun _ret_116_ () Int
+    4)
+  (define-fun _ret_684_ () Int
+    1)
+  (define-fun _ret_311_ () Int
+    4)
+  (define-fun _ret_201_ () Int
+    1)
+  (define-fun _ret_204_ () Int
+    4)
+  (define-fun _ret_673_ () Int
+    4)
+  (define-fun _ret_156_ () Int
+    (- 2))
+  (define-fun _ret_167_ () Int
+    (- 1))
+  (define-fun _ret_56_ () Int
+    (- 1))
+  (define-fun _ret_463_ () Int
+    4)
+  (define-fun _ret_534_ () Int
+    4)
+  (define-fun _ret_379_ () Int
+    0)
+  (define-fun _ret_32_ () Int
+    1)
+  (define-fun _ret_778_ () Int
+    (- 1))
+  (define-fun _ret_339_ () Int
+    2)
+  (define-fun _ret_917_ () Int
+    (- 1))
+  (define-fun _ret_837_ () Int
+    4)
+  (define-fun _ret_842_ () Int
+    (- 1))
+  (define-fun _ret_479_ () Int
+    4)
+  (define-fun _ret_35_ () Int
+    4)
+  (define-fun _ret_449_ () Int
+    (- 1))
+  (define-fun _ret_341_ () Int
+    1)
+  (define-fun _ret_851_ () Int
+    4)
+  (define-fun _ret_387_ () Int
+    4)
+  (define-fun _ret_394_ () Int
+    4)
+  (define-fun _ret_216_ () Int
+    4)
+  (define-fun _ret_86_ () Int
+    4)
+  (define-fun _ret_865_ () Int
+    (- 1))
+  (define-fun _ret_500_ () Int
+    (- 1))
+  (define-fun _ret_459_ () Int
+    (- 1))
+  (define-fun _ret_165_ () Int
+    4)
+  (define-fun _ret_129_ () Int
+    (- 1))
+  (define-fun _ret_290_ () Int
+    4)
+  (define-fun _ret_696_ () Int
+    (- 2))
+  (define-fun _ret_784_ () Int
+    1)
+  (define-fun _ret_720_ () Int
+    (- 3))
+  (define-fun _ret_416_ () Int
+    (- 1))
+  (define-fun _ret_51_ () Int
+    1)
+  (define-fun _ret_558_ () Int
+    (- 2))
+  (define-fun _ret_506_ () Int
+    4)
+  (define-fun _ret_674_ () Int
+    (- 2))
+  (define-fun _ret_122_ () Int
+    (- 1))
+  (define-fun _ret_600_ () Int
+    4)
+  (define-fun _ret_356_ () Int
+    4)
+  (define-fun _ret_647_ () Int
+    (- 1))
+  (define-fun _ret_565_ () Int
+    (- 1))
+  (define-fun _ret_359_ () Int
+    (- 1))
+  (define-fun _ret_794_ () Int
+    (- 1))
+  (define-fun _ret_693_ () Int
+    1)
+  (define-fun _ret_42_ () Int
+    2)
+  (define-fun _ret_615_ () Int
+    (- 2))
+  (define-fun _ret_461_ () Int
+    (- 1))
+  (define-fun _ret_789_ () Int
+    4)
+  (define-fun _ret_618_ () Int
+    4)
+  (define-fun _ret_275_ () Int
+    4)
+  (define-fun _ret_717_ () Int
+    1)
+  (define-fun _ret_444_ () Int
+    4)
+  (define-fun _ret_543_ () Int
+    1)
+  (define-fun _ret_284_ () Int
+    (- 1))
+  (define-fun _ret_520_ () Int
+    4)
+  (define-fun _ret_739_ () Int
+    2)
+  (define-fun _ret_279_ () Int
+    1)
+  (define-fun _ret_911_ () Int
+    (- 1))
+  (define-fun _ret_854_ () Int
+    (- 1))
+  (define-fun _ret_39_ () Int
+    1)
+  (define-fun _ret_235_ () Int
+    4)
+  (define-fun _ret_47_ () Int
+    4)
+  (define-fun _ret_761_ () Int
+    (- 1))
+  (define-fun _ret_70_ () Int
+    0)
+  (define-fun _ret_273_ () Int
+    4)
+  (define-fun _ret_227_ () Int
+    1)
+  (define-fun _ret_716_ () Int
+    (- 1))
+  (define-fun _ret_414_ () Int
+    (- 2))
+  (define-fun _ret_704_ () Int
+    4)
+  (define-fun _ret_292_ () Int
+    4)
+  (define-fun _ret_920_ () Int
+    4)
+  (define-fun _ret_747_ () Int
+    (- 1))
+  (define-fun _ret_40_ () Int
+    4)
+  (define-fun _ret_433_ () Int
+    (- 1))
+  (define-fun _ret_77_ () Int
+    1)
+  (define-fun _ret_147_ () Int
+    4)
+  (define-fun _ret_572_ () Int
+    4)
+  (define-fun _ret_423_ () Int
+    4)
+  (define-fun _ret_584_ () Int
+    4)
+  (define-fun _ret_28_ () Int
+    4)
+  (define-fun _ret_786_ () Int
+    1)
+  (define-fun _ret_362_ () Int
+    4)
+  (define-fun _ret_770_ () Int
+    0)
+  (define-fun _ret_818_ () Int
+    (- 1))
+  (define-fun _ret_698_ () Int
+    (- 1))
+  (define-fun _ret_360_ () Int
+    1)
+  (define-fun fail_int () Int
+    (- 4))
+  (define-fun _ret_731_ () Int
+    (- 1))
+  (define-fun _ret_222_ () Int
+    4)
+  (define-fun _ret_107_ () Int
+    (- 1))
+  (define-fun _ret_827_ () Int
+    0)
+  (define-fun _ret_855_ () Int
+    1)
+  (define-fun _ret_832_ () Int
+    4)
+  (define-fun _ret_627_ () Int
+    3)
+  (define-fun _ret_695_ () Int
+    4)
+  (define-fun _ret_191_ () Int
+    (- 1))
+  (define-fun _ret_705_ () Int
+    4)
+  (define-fun _ret_635_ () Int
+    (- 1))
+  (define-fun _ret_719_ () Int
+    4)
+  (define-fun _ret_267_ () Int
+    (- 1))
+  (define-fun _ret_648_ () Int
+    1)
+  (define-fun _ret_567_ () Int
+    4)
+  (define-fun _ret_525_ () Int
+    4)
+  (define-fun _ret_598_ () Int
+    (- 1))
+  (define-fun _ret_458_ () Int
+    4)
+  (define-fun _ret_399_ () Int
+    4)
+  (define-fun _ret_9_ () Int
+    3)
+  (define-fun _ret_257_ () Int
+    4)
+  (define-fun _ret_198_ () Int
+    4)
+  (define-fun _ret_33_ () Int
+    4)
+  (define-fun _ret_92_ () Int
+    (- 1))
+  (define-fun _ret_141_ () Int
+    1)
+  (define-fun _ret_589_ () Int
+    4)
+  (define-fun _ret_96_ () Int
+    4)
+  (define-fun _ret_419_ () Int
+    4)
+  (define-fun _ret_252_ () Int
+    4)
+  (define-fun _ret_62_ () Int
+    4)
+  (define-fun _ret_657_ () Int
+    (- 3))
+  (define-fun _ret_212_ () Int
+    4)
+  (define-fun _ret_381_ () Int
+    (- 1))
+  (define-fun _ret_861_ () Int
+    4)
+  (define-fun _ret_603_ () Int
+    4)
+  (define-fun _ret_481_ () Int
+    (- 2))
+  (define-fun _ret_38_ () Int
+    (- 1))
+  (define-fun _ret_606_ () Int
+    4)
+  (define-fun _ret_881_ () Int
+    1)
+  (define-fun _ret_689_ () Int
+    4)
+  (define-fun _ret_289_ () Int
+    (- 1))
+  (define-fun _ret_258_ () Int
+    4)
+  (define-fun _ret_278_ () Int
+    (- 1))
+  (define-fun _ret_756_ () Int
+    4)
+  (define-fun _ret_314_ () Int
+    4)
+  (define-fun _ret_2_ () Int
+    1)
+  (define-fun _ret_549_ () Int
+    4)
+  (define-fun _ret_373_ () Int
+    4)
+  (define-fun _ret_824_ () Int
+    (- 1))
+  (define-fun _ret_723_ () Int
+    4)
+  (define-fun _ret_285_ () Int
+    4)
+  (define-fun _ret_639_ () Int
+    2)
+  (define-fun _ret_179_ () Int
+    1)
+  (define-fun _ret_788_ () Int
+    1)
+  (define-fun _ret_320_ () Int
+    2)
+  (define-fun _ret_836_ () Int
+    1)
+  (define-fun _ret_741_ () Int
+    2)
+  (define-fun _ret_135_ () Int
+    4)
+  (define-fun _ret_727_ () Int
+    (- 1))
+  (define-fun _ret_420_ () Int
+    (- 2))
+  (define-fun _ret_767_ () Int
+    (- 1))
+  (define-fun _ret_109_ () Int
+    4)
+  (define-fun _ret_48_ () Int
+    (- 3))
+  (define-fun _ret_703_ () Int
+    (- 1))
+  (define-fun _ret_495_ () Int
+    1)
+  (define-fun _ret_368_ () Int
+    0)
+  (define-fun _ret_265_ () Int
+    0)
+  (define-fun _ret_848_ () Int
+    1)
+  (define-fun _ret_686_ () Int
+    1)
+  (define-fun _ret_839_ () Int
+    4)
+  (define-fun _ret_393_ () Int
+    1)
+  (define-fun _ret_913_ () Int
+    4)
+  (define-fun _ret_796_ () Int
+    4)
+  (define-fun _ret_556_ () Int
+    4)
+  (define-fun _ret_61_ () Int
+    (- 1))
+  (define-fun _ret_276_ () Int
+    (- 2))
+  (define-fun _ret_505_ () Int
+    (- 1))
+  (define-fun _ret_8_ () Int
+    1)
+  (define-fun _ret_436_ () Int
+    (- 1))
+  (define-fun _ret_764_ () Int
+    4)
+  (define-fun _ret_332_ () Int
+    2)
+  (define-fun _ret_230_ () Int
+    4)
+  (define-fun _ret_306_ () Int
+    (- 3))
+  (define-fun _ret_132_ () Int
+    1)
+  (define-fun _ret_672_ () Int
+    4)
+  (define-fun _ret_605_ () Int
+    1)
+  (define-fun _ret_569_ () Int
+    (- 1))
+  (define-fun _ret_111_ () Int
+    (- 3))
+  (define-fun _ret_119_ () Int
+    4)
+  (define-fun _ret_251_ () Int
+    (- 1))
+  (define-fun _ret_751_ () Int
+    4)
+  (define-fun _ret_434_ () Int
+    4)
+  (define-fun _ret_612_ () Int
+    1)
+  (define-fun _ret_159_ () Int
+    4)
+  (define-fun _ret_26_ () Int
+    (- 1))
+  (define-fun _ret_711_ () Int
+    4)
+  (define-fun _ret_905_ () Int
+    1)
+  (define-fun _ret_296_ () Int
+    1)
+  (define-fun _ret_548_ () Int
+    1)
+  (define-fun _ret_371_ () Int
+    4)
+  (define-fun _ret_406_ () Int
+    4)
+  (define-fun _ret_81_ () Int
+    (- 2))
+  (define-fun _ret_85_ () Int
+    4)
+  (define-fun _ret_869_ () Int
+    (- 2))
+  (define-fun _ret_825_ () Int
+    4)
+  (define-fun _ret_351_ () Int
+    2)
+  (define-fun _ret_300_ () Int
+    (- 3))
+  (define-fun _ret_315_ () Int
+    4)
+  (define-fun _ret_408_ () Int
+    2)
+  (define-fun _ret_427_ () Int
+    (- 1))
+  (define-fun _ret_337_ () Int
+    2)
+  (define-fun _ret_713_ () Int
+    4)
+  (define-fun _ret_392_ () Int
+    (- 1))
+  (define-fun _ret_665_ () Int
+    (- 1))
+  (define-fun _ret_441_ () Int
+    0)
+  (define-fun _ret_536_ () Int
+    1)
+  (define-fun _ret_662_ () Int
+    4)
+  (define-fun _ret_305_ () Int
+    4)
+  (define-fun _ret_183_ () Int
+    (- 1))
+  (define-fun _ret_637_ () Int
+    4)
+  (define-fun _ret_872_ () Int
+    4)
+  (define-fun _ret_510_ () Int
+    4)
+  (define-fun _ret_417_ () Int
+    1)
+  (define-fun _ret_233_ () Int
+    (- 1))
+  (define-fun _ret_246_ () Int
+    1)
+  (define-fun _ret_625_ () Int
+    3)
+  (define-fun _ret_671_ () Int
+    4)
+  (define-fun _ret_708_ () Int
+    4)
+  (define-fun _ret_16_ () Int
+    2)
+  (define-fun _ret_245_ () Int
+    (- 1))
+  (define-fun _ret_858_ () Int
+    (- 3))
+  (define-fun _ret_508_ () Int
+    4)
+  (define-fun _ret_377_ () Int
+    1)
+  (define-fun _ret_453_ () Int
+    2)
+  (define-fun _ret_1_ () Int
+    3)
+  (define-fun _ret_134_ () Int
+    1)
+  (define-fun _ret_336_ () Int
+    1)
+  (define-fun _ret_779_ () Int
+    1)
+  (define-fun _ret_475_ () Int
+    4)
+  (define-fun _ret_50_ () Int
+    (- 1))
+  (define-fun _ret_763_ () Int
+    4)
+  (define-fun _ret_231_ () Int
+    (- 2))
+  (define-fun _ret_521_ () Int
+    4)
+  (define-fun _ret_529_ () Int
+    (- 1))
+  (define-fun _ret_152_ () Int
+    (- 1))
+  (define-fun _ret_215_ () Int
+    (- 1))
+  (define-fun _ret_899_ () Int
+    4)
+  (define-fun _ret_389_ () Int
+    4)
+  (define-fun _ret_120_ () Int
+    4)
+  (define-fun _ret_443_ () Int
+    1)
+  (define-fun _ret_722_ () Int
+    (- 1))
+  (define-fun _ret_75_ () Int
+    1)
+  (define-fun _ret_599_ () Int
+    4)
+  (define-fun _ret_810_ () Int
+    2)
+  (define-fun _ret_857_ () Int
+    4)
+  (define-fun _ret_363_ () Int
+    (- 2))
+  (define-fun _ret_840_ () Int
+    (- 2))
+  (define-fun _ret_645_ () Int
+    (- 2))
+  (define-fun _ret_590_ () Int
+    4)
+  (define-fun _ret_15_ () Int
+    1)
+  (define-fun _ret_829_ () Int
+    (- 1))
+  (define-fun _ret_20_ () Int
+    1)
+  (define-fun _ret_130_ () Int
+    1)
+  (define-fun _ret_908_ () Int
+    4)
+  (define-fun _ret_915_ () Int
+    (- 3))
+  (define-fun _ret_714_ () Int
+    (- 3))
+  (define-fun _ret_476_ () Int
+    0)
+  (define-fun _ret_800_ () Int
+    (- 1))
+  (define-fun _ret_473_ () Int
+    4)
+  (define-fun _ret_439_ () Int
+    4)
+  (define-fun _ret_629_ () Int
+    1)
+  (define-fun _ret_114_ () Int
+    4)
+  (define-fun _ret_262_ () Int
+    (- 1))
+  (define-fun _ret_64_ () Int
+    4)
+  (define-fun _ret_863_ () Int
+    0)
+  (define-fun _ret_228_ () Int
+    4)
+)

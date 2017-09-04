@@ -1,4 +1,4 @@
 Main:(Int * Int * Int):
-1,2,3
+Pair(1,Pair(2,3))
 
 (*Right associative: (1,(2,3)) : (Int*(Int*Int)) *)

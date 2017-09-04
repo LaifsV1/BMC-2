@@ -1,0 +1,13 @@
+Methods:
+f (((arg1,arg2),arg2) : (Int*Int) * (Int->Unit)) :(Unit) =
+  if ((fst: Int * (Int->Unit)) arg) >= 0 then skip
+  else ((snd: Int * (Int->Unit)) arg) 0;
+g (n:Int) :(Unit) = if n then fail else skip;
+
+Main:(Unit):
+f (n,g) (ret1,ret2)
+
+f M M M ...
+(* let f n k = if n >= 0 then () else k 0 *)
+(* let g n = assert (n = 0) *)
+(* let main n = f n g *)

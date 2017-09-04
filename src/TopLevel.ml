@@ -18,6 +18,7 @@ let _ =
       (*assume param is a file path*)
       print_newline ();
       let file = Sys.argv.(1) in
+      let bound = int_of_string (Sys.argv.(2)) in
       printf "    @[***Opening file: %s" file;
       let lexbuf = from_file file in
       printf ".....[done]***";
@@ -40,7 +41,7 @@ let _ =
                                                             new_counter
                                                             new_counter
                                                             new_phi
-                                                            (nat_of_int 5)
+                                                            (nat_of_int bound)
                                                             main_tp
                                                             cd_decl in
         (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
@@ -53,6 +54,7 @@ let _ =
         print_newline ();
         printf "%s" z3_default_type;
         print_newline ();
+        printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
         print_newline ();
         printf "%s" all_decl;
         print_newline ();

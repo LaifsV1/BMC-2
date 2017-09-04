@@ -8,4 +8,4 @@ ackermann (m:Int , n:Int) :(Int) =
     else n+1;
 
 Main:(Int):
-ackermann (1,)
+ackermann (1,1)

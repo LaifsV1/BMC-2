@@ -17,13 +17,18 @@ let rec nat_of_int (i : int) :(nat) =
 (*********)
 (* Types *)
 (*********)
-type tp = Unit | Integer | Arrow of tp * tp | Product of tp * tp
+type tp = Unit | Integer | Arrow of tp list * tp | Product of tp * tp
+
 let rec string_of_tp (t : tp) :(string) =
   match t with
   | Unit -> "Unit"
   | Integer -> "Int"
-  | Arrow(t1,t2) -> sprintf "(%s -> %s)" (string_of_tp t1) (string_of_tp t2)
+  | Arrow(ts,t2) -> sprintf "(%s -> %s)" (string_of_tps ts) (string_of_tp t2)
   | Product(t1,t2) -> sprintf "(%s * %s)" (string_of_tp t1) (string_of_tp t2)
+and string_of_tps (tps : tp list) :(string) =
+  match tps with
+  | []      -> ""
+  | tp::tps -> sprintf "%s,%s" (string_of_tp tp) (string_of_tps tps)
 
 let left_tp tp =
   match tp with
@@ -64,7 +69,7 @@ let z3_pair_decl left right = sprintf "(Pair %s %s)" left right
 let z3_pair_left  pair = sprintf "(left %s)"  pair
 let z3_pair_right pair = sprintf "(right %s)" pair
 let z3_binops a op b = sprintf "(%s %s %s)" op a b
-                    
+
 (*********)
 (* Terms *)
 (*********)
@@ -103,7 +108,7 @@ let rec z3_nil_of_tp (tp : tp) =
   | Integer -> tnil_i
   | Arrow _ -> tnil_m
   | Product(t1,t2) -> z3_pair_maker (z3_nil_of_tp t1) (z3_nil_of_tp t2)
-              
+
 let get_default_decl = [(tfail_i,Int);(tnil_i,Int);
                         (tfail_u,Unit);(tnil_u,Unit);
                         (*(tfail_m,Meth);(tnil_m,Meth); (*they strings*)*)
@@ -114,12 +119,22 @@ let rec decl_of_list (s : string) (xs : _decl) =
   | (x,tp)::xs -> decl_of_list (sprintf "%s\n%s" (z3_decl x (string_of_z3_tp tp)) s) xs
   | [] -> s
 
+let rec string_of_args args =
+  match args with
+  | [] -> ""
+  | ((x,tp)::xs) -> sprintf "(%s:%s) %s" (x) (string_of_tp tp) (string_of_args xs)
+let rec string_of_vars vars =
+  match vars with
+  | [] -> failwith "string of empty vars"
+  | (x,tp)::[] -> x
+  | (x,tp)::xs -> sprintf "%s,%s" x (string_of_args xs)
+
 type term = Fail | Skip | Int of int | Method of _meth
-            | Var of _var | Deref of _ref | Lambda of _var * term * tp (*syntax fun (x:arg type) :(ret type) -> M*)
+            | Var of _var | Deref of _ref | Lambda of _var list * term * tp (*syntax fun (x:arg type) :(ret type) -> M*)
             | Left of term * tp | Right of term * tp | Assign of _ref * term
             | Pair of term * term | BinOp of _binop * term * term
-            | Let of _var * term * term | ApplyM of _meth * term
-            | If of term * term * term | ApplyX of _var * term
+            | Let of _var * term * term | ApplyM of _meth * term list
+            | If of term * term * term | ApplyX of _var * term list
 let rec string_of_term (t : term) :(string) =
   match t with
   | Fail -> tfail
@@ -128,22 +143,28 @@ let rec string_of_term (t : term) :(string) =
   | Method m -> m
   | Var (x,t) -> sprintf "%s" x
   | Deref (r,t) -> sprintf "(!%s)" r
-  | Lambda((x,tp),t,tp') ->
-     sprintf "(fun (%s:%s) :%s -> %s)"
-             x (string_of_tp tp) (string_of_tp tp') (string_of_term t)
+  | Lambda(xs,t,tp') ->
+     sprintf "(fun %s :%s -> %s)"
+             (string_of_args xs) (string_of_tp tp') (string_of_term t)
   | Left(t,tp) -> sprintf "((fst : %s) %s)" (string_of_tp tp) (string_of_term t)
   | Right(t,tp) -> sprintf "((snd : %s) %s)" (string_of_tp tp) (string_of_term t)
   | Assign((r,tp),t) -> sprintf "(%s := %s)" r (string_of_term t)
-  | Pair(t1,t2) -> sprintf "(%s,%s)" (string_of_term t1) (string_of_term t2)
+  | Pair(t1,t2) -> sprintf "Pair(%s,%s)" (string_of_term t1) (string_of_term t2)
   | BinOp(op,t1,t2) -> sprintf "(%s %s %s)" (string_of_term t1) op (string_of_term t2)
   | Let((x,tp),t1,t2) ->
      sprintf "(let (%s:%s) = %s in %s)"
              x (string_of_tp tp) (string_of_term t1) (string_of_term t2)
-  | ApplyM(m,t) -> sprintf "(%s %s)" m (string_of_term t)
+  | ApplyM(m,t) -> sprintf "(%s (%s))" m (List.fold_right (fun ti acc ->
+                                                          match acc with
+                                                          | "" -> string_of_term ti
+                                                          | _ -> sprintf "%s,%s" (string_of_term ti) acc) t "")
   | If(t,t1,t0) ->
      sprintf "(if %s then %s else %s)"
              (string_of_term t) (string_of_term t1) (string_of_term t0)
-  | ApplyX((x,tp),t) -> sprintf "(%s %s)" x (string_of_term t)
+  | ApplyX((x,tp),t) -> sprintf "(%s (%s))" x (List.fold_right (fun ti acc ->
+                                                          match acc with
+                                                          | "" -> string_of_term ti
+                                                          | _ -> sprintf "%s %s" (string_of_term ti) acc) t "")
 
 let string_of_typed_term t tp = sprintf "(%s : %s)" (string_of_term t) (string_of_tp tp)
 
@@ -181,7 +202,7 @@ let rec z3_assertions_of_list xs =
   match xs with
   | [] -> ""
   | x::xs -> sprintf "(assert %s)\n%s" (z3_of_proposition x) (z3_assertions_of_list xs)
-             
+
 let (===) s1 s2 = if s1 = s2 then True  else Eq(s1,s2)
 let (=/=) s1 s2 = if s1 = s2 then False else Neq(s1,s2)
 let (==>) p1 p2 = if p1 = True then p2 else Implies(p1,p2)
@@ -211,7 +232,7 @@ let repo_get map m =
     failwith (sprintf "***[error] : method '%s' not in repo." m)
 let repo_update map key record = Repo.add key record map
 
-type repo  = (_var * term * tp) Repo.t
+type repo  = (_var list * term * tp) Repo.t
 let empty_repo :(repo) = Repo.empty
 let get_methods map tp =
   Repo.fold (fun mi (xi,ti,tpi) acc -> if tpi = tp then (mi,xi,ti)::acc else acc) map []
@@ -267,11 +288,17 @@ let ptypes_get map key = try PTypes.find key map with Not_found -> failwith (spr
 let ptypes_add map key new_val = PTypes.add key new_val map
 let get_ptypes_decl map acc :(_decl) = PTypes.fold (fun key tp acc -> (key,z3_of_tp tp)::acc ) map acc
 
+let rec tps_from_vars (vars: _var list) :(tp list)=
+  match vars with
+  | (x,tp)::[] -> [tp]
+  | (x,tp)::vars -> tp::(tps_from_vars vars)
+  | [] -> failwith "arguments missing, can't build vars type"
+
 (*********************)
 (* File to Translate *)
 (*********************)
 type assignlist = (_ref * _val) list
-type methlist = (_meth * (_var * term * tp)) list
+type methlist = (_meth * (_var list * term * tp)) list
 type file = assignlist * methlist * term
 
 let rec build_cdphi counter phi (alist : assignlist) acc :(counter * proposition * _decl) =
