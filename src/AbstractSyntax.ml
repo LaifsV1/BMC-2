@@ -129,6 +129,12 @@ let rec string_of_vars vars =
   | (x,tp)::[] -> x
   | (x,tp)::xs -> sprintf "%s,%s" x (string_of_args xs)
 
+let rec tps_from_vars (vars: _var list) :(tp list)=
+  match vars with
+  | (x,tp)::[] -> [tp]
+  | (x,tp)::vars -> tp::(tps_from_vars vars)
+  | [] -> failwith "arguments missing, can't build vars type"
+
 type term = Fail | Skip | Int of int | Method of _meth
             | Var of _var | Deref of _ref | Lambda of _var list * term * tp (*syntax fun (x:arg type) :(ret type) -> M*)
             | Left of term * tp | Right of term * tp | Assign of _ref * term
@@ -275,6 +281,7 @@ let types_add map key new_val = Types.add key new_val map
 type types = int Types.t
 let empty_types :(types) = Types.empty
 
+(*generates fail and nil declarations for each complex type*)
 let get_types_decl map acc :(_decl) = Types.fold (fun tp i acc -> let tp' = z3_of_tp tp in (tfail_n i,tp')::(tnil_n i,tp')::acc ) map acc
 
 (********************************)
@@ -287,12 +294,6 @@ let empty_ptypes :(ptypes) = PTypes.empty
 let ptypes_get map key = try PTypes.find key map with Not_found -> failwith (sprintf "variable %s not found" key)
 let ptypes_add map key new_val = PTypes.add key new_val map
 let get_ptypes_decl map acc :(_decl) = PTypes.fold (fun key tp acc -> (key,z3_of_tp tp)::acc ) map acc
-
-let rec tps_from_vars (vars: _var list) :(tp list)=
-  match vars with
-  | (x,tp)::[] -> [tp]
-  | (x,tp)::vars -> tp::(tps_from_vars vars)
-  | [] -> failwith "arguments missing, can't build vars type"
 
 (*********************)
 (* File to Translate *)

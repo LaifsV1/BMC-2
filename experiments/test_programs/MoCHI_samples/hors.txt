@@ -1,0 +1,14 @@
+(**DOESN'T WORK**)
+Methods:
+c (q:Int) :(Unit) = skip;
+b (x:Int->Unit) :(Unit) = x 1;
+a (x:Int->Unit , y:Int->Unit , q:Int) :(Unit) =
+  if q == 0 then let (a:Unit) = x 0 in y 0 else fail;
+f (n:Int , x:Int->Unit , q:Int) :(Unit) =
+  if n <= 0 then x q else a (x,f (n + -1,b x),q);
+  (*argument mismatch, we don't have partial application*)
+s (g:Unit->Int , q:Int) :(Unit) = f (g,c,q);
+
+Main:(Unit):
+let (g : Unit->Int) = fun (u:Unit) :(Int) -> 5 in
+s (g,0)

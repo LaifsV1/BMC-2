@@ -1,7 +1,5 @@
 Methods:
-fact (arg:Int * (Int->Int)) :(Int) =
-  let (n:Int)        = (fst:Int * (Int->Int)) arg in
-  let (exn:Int->Int) = (snd:Int * (Int->Int)) arg in
+fact (n:Int , exn:(Int->Int)) :(Int) =
   if n
   then
     let (f:Int->Int) = fun (i:Int) :(Int) -> if i then exn i else 1 in
@@ -9,6 +7,8 @@ fact (arg:Int * (Int->Int)) :(Int) =
   else exn 0;
 
 Main:(Int):
-fact (2,(fun (x:Int) :(Int) -> fail))
+let (n:Int) = 2 in
+if n >= 1 then fact (n,(fun (x:Int) :(Int) -> fail))
+else -1
 
 (* points-to analysis would speed this up *)

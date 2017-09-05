@@ -7,5 +7,12 @@ ackermann (m:Int , n:Int) :(Int) =
       else ackermann (m + -1,1)
     else n+1;
 
-Main:(Int):
-ackermann (1,1)
+Main:(Unit):
+let (m:Int) = 1 in
+let (n:Int) = 1 in
+if m >= 0 then
+   if n >= 0 then
+      if (ackermann (m,n) >= n) then skip
+      else fail
+   else skip
+else skip

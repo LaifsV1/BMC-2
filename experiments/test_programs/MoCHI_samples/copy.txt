@@ -1,5 +1,6 @@
 Methods:
-copy (x:Int) :(Int) = if x then 1 + copy (x + -1) else 0;
+copy (x:Int) :(Int) = if x then 1 + (copy (x + -1)) else 0;
 
 Main:(Unit):
-if (copy (copy 3)) + -3 then fail else skip
+let (n:Int) = 3 in
+if (copy (copy n)) == n then skip else fail

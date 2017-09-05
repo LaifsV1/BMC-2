@@ -55,6 +55,8 @@ let _ =
         printf "%s" z3_default_type;
         print_newline ();
         printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
+        printf "(define-fun lte ((x Int) (y Int)) Int (if (<= x y) 1 0))\n";
+        printf "(define-fun eq ((x Int) (y Int)) Int (if (= x y) 1 0))\n";
         print_newline ();
         printf "%s" all_decl;
         print_newline ();

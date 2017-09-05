@@ -33,7 +33,7 @@
 
 (*** OTHER-TOKENS ***)
 %token ARROW_OP
-%token TIMES_OP PLUS_OP MINUS_OP GTE_OP
+%token TIMES_OP PLUS_OP MINUS_OP GTE_OP LTE_OP EQ_OP AND_OP OR_OP
 %token OPEN_PAREN CLOSE_PAREN COMMA COLON SEMICOLON
 %token EQUALS_OP
 %token STORE METHOD MAIN
@@ -47,7 +47,7 @@
 	/* lowest precedence */
 	/*~~~~~~~~~~~~~~~~~~~*/
 (*** TERMS ***)
-%nonassoc COMMA
+(*%nonassoc COMMA*)
 %left ARROW_OP
 %nonassoc GTE_OP
 %right MINUS_OP PLUS_OP
@@ -132,6 +132,8 @@ term:
 | term MINUS_OP term                                 { BinOp("-",$1,$3) }
 | term TIMES_OP term                                 { BinOp("*",$1,$3) }
 | term GTE_OP term                                   { BinOp("gte",$1,$3) }
+| term LTE_OP term                                   { BinOp("lte",$1,$3) }
+| term EQ_OP term                                    { BinOp("eq",$1,$3) }
 | Let_TERM var EQUALS_OP term In_TERM term           { Let($2,$4,$6) }
 | NAME terms                                         { let b = prepo_exists (!methods_seen) $1 in
                                                        if b
@@ -146,8 +148,8 @@ terms:
 | OPEN_PAREN terms_helper CLOSE_PAREN { $2 }
 
 terms_helper:
-| term COMMA terms   { $1::$3 }
-| term               { [$1] }
+| term COMMA terms_helper { $1::$3 }
+| term                    { [$1] }
 
 var:
 | NAME COLON tp              { ptypes_seen:=ptypes_add (!ptypes_seen) $1 $3; (* always call var to add var type to map *)
@@ -159,8 +161,8 @@ vars:
 | OPEN_PAREN vars_helper CLOSE_PAREN  { $2 }
 
 vars_helper:
-| var            { [$1] }
-| var COMMA vars { $1::$3 }
+| var                   { [$1] }
+| var COMMA vars_helper { $1::$3 }
 
 simple_tp:
 | OPEN_PAREN tp CLOSE_PAREN { $2 }
@@ -177,5 +179,5 @@ tps:
 | OPEN_PAREN tps_helper CLOSE_PAREN { $2 }
 
 tps_helper:
-| tp           { [$1] }
-| tp COMMA tps { $1::$3 }
+| tp                  { [$1] }
+| tp COMMA tps_helper { $1::$3 }

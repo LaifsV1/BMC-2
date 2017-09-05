@@ -36,6 +36,10 @@ rule read = parse
   | '*'             { TIMES_OP }
   | '+'             { PLUS_OP }
   | ">="            { GTE_OP }
+  | "<="            { LTE_OP }
+  | "=="            { EQ_OP }
+  | "&&"            { AND_OP }
+  | "||"            { OR_OP }
   | "fail"          { Fail_TERM }
   | "skip"          { Skip_TERM }
   | int as i        { Int_TERM (int_of_string i) }

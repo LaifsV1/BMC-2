@@ -1,0 +1,8 @@
+(**DOESN'T WORK**)
+Methods:
+f (g:Int->Int , x:Int) :(Int) = if x>=0 then g x else f (f g, g x);
+  (*wont' work, we don't have partial application*)
+succ (x:Int) :(Int) = x + 1;
+
+Main:(Unit):
+if (f(succ,n) >= 0) then skip else fail
