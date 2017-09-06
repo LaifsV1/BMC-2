@@ -5,6 +5,9 @@
 
   let ptypes_seen = ref empty_ptypes
   let methods_seen = ref empty_prepo
+
+  let parse_failure (msg : string) (pos1 : position) (pos2 : position) =
+    ParseError ((sprintf "    error parsing %s" msg),(pos1,pos2))
 %}
 
 /*=================*/
@@ -82,11 +85,13 @@ file:
 | METHOD COLON repo MAIN COLON tp COLON term EOF                   { ([],$3,$8), $6 }
 | STORE COLON store MAIN COLON tp COLON term EOF                   { ($3,[],$8), $6 }
 | MAIN COLON tp COLON term EOF                                     { ([],[],$5), $3 }
+| error                                                            { raise (parse_failure "file" $startpos $endpos) }
 
 (*** STORE ***)
 store:
 | store_elem store { $1::$2 }
 | store_elem       { [$1] }
+| error            { raise (parse_failure "store" $startpos $endpos) }
 
 store_elem:
 | var Assign_TERM_OP Int_TERM SEMICOLON  { $1,string_of_int $3 }
@@ -96,6 +101,7 @@ store_elem:
 repo:
 | repo_elem repo { $1::$2 }
 | repo_elem      { [$1] }
+| error          { raise (parse_failure "methods" $startpos $endpos) }
 
 repo_elem:
 | hack_evalorder_name vars COLON tp EQUALS_OP term SEMICOLON {$1,($2,$6,Arrow(tps_from_vars $2,$4)) }
@@ -142,6 +148,7 @@ term:
                                                             let tp = ptypes_get (!ptypes_seen) x in
                                                             ApplyX((x,tp),$2) }
 | If_TERM term Then_TERM term Else_TERM term         { If($2,$4,$6) }
+| error                                              { raise (parse_failure "term" $startpos $endpos) }
 
 terms:
 | term                                { [$1] }
