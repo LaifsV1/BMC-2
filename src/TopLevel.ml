@@ -9,6 +9,8 @@ open Translation
 let line_sprintf p1 p2 = sprintf "(line %d , col %d) to (line %d , col %d)"
                                  (p1.pos_lnum) (p1.pos_cnum - p1.pos_bol) (p2.pos_lnum) (p2.pos_cnum - p2.pos_bol)
 
+let debug = ref false
+
 let from_file file = Lexing.from_channel (open_in file);;
 let _ =
   try
@@ -19,23 +21,23 @@ let _ =
       print_newline ();
       let file = Sys.argv.(1) in
       let bound = int_of_string (Sys.argv.(2)) in
-      printf "    @[***Opening file: %s" file;
+      if !debug then printf "    @[***Opening file: %s" file;
       let lexbuf = from_file file in
-      printf ".....[done]***";
+      if !debug then printf ".....[done]***";
       close_box ();
       print_newline ();
       try
-        printf "    @[***Lexing and Parsing file...";
+        if !debug then printf "    @[***Lexing and Parsing file...";
         let new_parser = Parser.file Lexer.read in
         let (new_store,new_meths,new_term),main_tp = new_parser lexbuf in (*get decl from parsing*)
-        printf ".....[done]*** @]";
-        print_newline ();
-        printf "    @[***Building initial variables...";
+        if !debug then printf ".....[done]*** @]";
+        if !debug then print_newline ();
+        if !debug then printf "    @[***Building initial variables...";
         let new_counter,new_phi,cd_decl = build_cdphi empty_counter True new_store [] in (*get decl from initial counters*)
         let new_repo = build_repo empty_repo new_meths in
-        printf ".....[done]*** @]";
-        print_newline ();
-        printf "    @[***Running bounded translation...";
+        if !debug then printf ".....[done]*** @]";
+        if !debug then print_newline ();
+        if !debug then printf "    @[***Running bounded translation...";
         let (oret,ophi,oR,oC,oD,oq,odecl) = bmc_translation new_term (*get refs decl from translation*)
                                                             new_repo
                                                             new_counter
@@ -47,11 +49,11 @@ let _ =
         (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
         let def_decl = decl_of_list "" get_default_decl in (*write decl from defaul_decl*)
         let all_decl = decl_of_list def_decl odecl in  (*write decl from everything ontop of default decl*)
-        printf ".....[done]*** @]";
+        if !debug then printf ".....[done]*** @]";
         print_newline ();
         print_newline ();
-        printf "    SMT-LIB FILE:";
-        print_newline ();
+        if !debug then printf "    SMT-LIB FILE:";
+        if !debug then print_newline ();
         printf "%s" z3_default_type;
         print_newline ();
         printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
@@ -70,9 +72,9 @@ let _ =
         printf "(check-sat)\n(get-model)";
         print_newline ();
         print_newline ();
-        printf "    PARSED TERM: %s" (string_of_term new_term);
-        print_newline ();
-        print_newline ();
+        if !debug then printf "    PARSED TERM: %s" (string_of_term new_term);
+        if !debug then print_newline ();
+        if !debug then print_newline ();
         exit 0
       with
       | ParseError (msg,(p1,p2)) -> let tok_error = Lexing.lexeme lexbuf in

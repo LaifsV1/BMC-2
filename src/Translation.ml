@@ -156,7 +156,7 @@ let rec bmc_translation
              (ret_tp,(ret===(tfail_n n)) &&& phi,r,c,d,Fail,new_tps'))
       | Skip -> (ret_tp,(ret===tskip) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps)
       | Int i -> (ret_tp,(ret===(string_of_int i)) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps)
-      | Method m -> printf "saw meth: %s;\n" m; (ret_tp,(ret===(z3_method m)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps)
+      | Method m -> (ret_tp,(ret===(z3_method m)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps)
       | Var(x,t) -> ((x,t),phi,r,c,d,Both,new_tps) (*adding != fail/nil is not sound here*) (*warning: we removed ret, but we might want to add it back*)
       | Deref aref ->
          let d_r = ref_get d aref in
