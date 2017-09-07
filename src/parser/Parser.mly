@@ -52,11 +52,9 @@
 (*** TERMS ***)
 (*%nonassoc COMMA*)
 %left ARROW_OP
-%nonassoc GTE_OP
+%nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP
 %right MINUS_OP PLUS_OP
 %right TIMES_OP
-
-(*%left Apply_TERM_OP  (* function application, not used, we don't have M M*)*)
 	/*~~~~~~~~~~~~~~~~~~~~*/
 	/* highest precedence */
 	/*~~~~~~~~~~~~~~~~~~~~*/

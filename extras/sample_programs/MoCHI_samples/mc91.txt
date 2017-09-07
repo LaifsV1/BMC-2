@@ -1,0 +1,15 @@
+Methods:
+mc91 (x:Int) :(Int) =
+  if x >= 101 then
+    x + -10
+  else
+    mc91 (mc91 (x + 11));
+
+Main:Unit:
+let (n:Int) = 93 in
+if n <= 101 then
+  if (mc91 n) == 91 then skip
+  else fail
+else skip
+
+(* n=93 is computable with k = 10. Makes 17 calls to mc91. *)
