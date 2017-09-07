@@ -1,11 +1,11 @@
 Methods:
 ackermann (m:Int , n:Int) :(Int) =
-    if m
-    then
-      if n
-      then ackermann (0,(ackermann (m,n + -1)))
-      else 0
-    else n+1;
+  if m
+  then
+    if n
+    then ackermann (m + -1,(ackermann (m,n + -1)))
+    else ackermann (m + -1,1)
+  else n+1;
 
 Main:(Int):
-ackermann (1,1)
+ackermann (2,1)
