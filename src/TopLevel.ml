@@ -25,7 +25,7 @@ let _ =
       let lexbuf = from_file file in
       if !debug then printf ".....[done]***";
       close_box ();
-      print_newline ();
+      if !debug then print_newline ();
       try
         if !debug then printf "    @[***Lexing and Parsing file...";
         let new_parser = Parser.file Lexer.read in
@@ -50,8 +50,8 @@ let _ =
         let def_decl = decl_of_list "" get_default_decl in (*write decl from defaul_decl*)
         let all_decl = decl_of_list def_decl odecl in  (*write decl from everything ontop of default decl*)
         if !debug then printf ".....[done]*** @]";
-        print_newline ();
-        print_newline ();
+        if !debug then print_newline ();
+        if !debug then print_newline ();
         if !debug then printf "    SMT-LIB FILE:";
         if !debug then print_newline ();
         printf "%s" z3_default_type;
@@ -59,6 +59,8 @@ let _ =
         printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
         printf "(define-fun lte ((x Int) (y Int)) Int (if (<= x y) 1 0))\n";
         printf "(define-fun eq ((x Int) (y Int)) Int (if (= x y) 1 0))\n";
+        printf "(define-fun and_int ((x Int) (y Int)) Int (if (or (= x 0) (= y 0)) 0 1))\n";
+        printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n";
         print_newline ();
         printf "%s" all_decl;
         print_newline ();

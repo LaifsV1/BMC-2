@@ -138,6 +138,8 @@ term:
 | term GTE_OP term                                   { BinOp("gte",$1,$3) }
 | term LTE_OP term                                   { BinOp("lte",$1,$3) }
 | term EQ_OP term                                    { BinOp("eq",$1,$3) }
+| term AND_OP term                                   { BinOp("and_int",$1,$3) }
+| term OR_OP term                                    { BinOp("or_int",$1,$3) }
 | Let_TERM var EQUALS_OP term In_TERM term           { Let($2,$4,$6) }
 | NAME terms                                         { let b = prepo_exists (!methods_seen) $1 in
                                                        if b
