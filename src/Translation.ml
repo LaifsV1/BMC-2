@@ -233,14 +233,12 @@ let rec bmc_translation
               let phin,rn,cn,xs,tpsn =
                 List.fold_left
                   (fun (phii_,ri_,ci_,ys,tpsi_) (mi,xi,ti) ->  (*mi = \(xi).ti*)
+                    let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subslist ti rets xi)
+                                                                       ri_ ci_ d0 phii_ k' etype tpsi_ in
                     match ys with
                     | [] ->
-                       let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subslist ti rets xi)
-                                                                          r0 c0 d0 phi0 k' etype tps0 in
                        phii,ri,ci,[(mi,reti,di,qi+++q0)],tpsi
                     | ((mi_,reti_,di_,qi_)::ys') ->
-                       let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subslist ti rets xi)
-                                                                          ri_ ci_ d0 phii_ k' etype tpsi_ in
                        phii,ri,ci,((mi,reti,di,qi+++qi_)::ys),tpsi)
                   (phi0,r0,c0,[],tps0) r_tp in
               match xs with
