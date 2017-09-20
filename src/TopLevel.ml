@@ -9,10 +9,24 @@ open Translation
 let line_sprintf p1 p2 = sprintf "(line %d , col %d) to (line %d , col %d)"
                                  (p1.pos_lnum) (p1.pos_cnum - p1.pos_bol) (p2.pos_lnum) (p2.pos_cnum - p2.pos_bol)
 
-let debug = ref false
+let debug = ref true
+let timing = ref true
+
+let time f x s =
+    let t = Sys.time() in
+    let fx = f x in
+    if !timing then Printf.printf ";;    %s: %fs\n" s (Sys.time() -. t);
+    fx
+
+let print_custom_ops () = printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
+                          printf "(define-fun lte ((x Int) (y Int)) Int (if (<= x y) 1 0))\n";
+                          printf "(define-fun eq ((x Int) (y Int)) Int (if (= x y) 1 0))\n";
+                          printf "(define-fun and_int ((x Int) (y Int)) Int (if (or (= x 0) (= y 0)) 0 1))\n";
+                          printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n"
 
 let from_file file = Lexing.from_channel (open_in file);;
 let _ =
+  let main_body () =
   try
     (*check for params other than file paths first*)
     if Sys.argv.(1) = "--version" then (printf "    BMC-2 version: 0.0.0.0 \n";exit 0)
@@ -21,63 +35,60 @@ let _ =
       print_newline ();
       let file = Sys.argv.(1) in
       let bound = int_of_string (Sys.argv.(2)) in
-      if !debug then printf "    @[***Opening file: %s" file;
+      if !debug then printf ";;    @[***Opening file: %s" file;
       let lexbuf = from_file file in
       if !debug then printf ".....[done]***";
       close_box ();
       if !debug then print_newline ();
       try
-        if !debug then printf "    @[***Lexing and Parsing file...";
+        if !debug then printf ";;    @[***Lexing and Parsing file...";
         let new_parser = Parser.file Lexer.read in
-        let (new_store,new_meths,new_term),main_tp = new_parser lexbuf in (*get decl from parsing*)
+        let (new_store,new_meths,new_term),main_tp = time new_parser lexbuf "PARSER" in (*get decl from parsing*)
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
-        if !debug then printf "    @[***Building initial variables...";
+        if !debug then printf ";;    @[***Building initial variables...";
         let new_counter,new_phi,cd_decl = build_cdphi empty_counter True new_store [] in (*get decl from initial counters*)
         let new_repo = build_repo empty_repo new_meths in
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
-        if !debug then printf "    @[***Running bounded translation...";
-        let (oret,ophi,oR,oC,oD,oq,odecl) = bmc_translation new_term (*get refs decl from translation*)
-                                                            new_repo
-                                                            new_counter
-                                                            new_counter
-                                                            new_phi
-                                                            (nat_of_int bound)
-                                                            main_tp
-                                                            cd_decl in
+        if !debug then printf ";;    @[***Running bounded translation...";
+        let (oret,ophi,oR,oC,oD,oq,odecl) = time (bmc_translation new_term (*get refs decl from translation*)
+                                                                  new_repo
+                                                                  new_counter
+                                                                  new_counter
+                                                                  new_phi
+                                                                  (nat_of_int bound)
+                                                                  main_tp)
+                                                 cd_decl "BOUNDED TRANSLATION" in
         (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
         let def_decl = decl_of_list "" get_default_decl in (*write decl from defaul_decl*)
         let all_decl = decl_of_list def_decl odecl in  (*write decl from everything ontop of default decl*)
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
         if !debug then print_newline ();
-        if !debug then printf "    SMT-LIB FILE:";
+        if !debug then printf ";;    PARSED TERM: %s" (string_of_term new_term);
+        if !debug then print_newline ();
+        if !debug then print_newline ();
+        if !debug then printf ";;    SMT-LIB FILE:";
         if !debug then print_newline ();
         printf "%s" z3_default_type;
         print_newline ();
-        printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
-        printf "(define-fun lte ((x Int) (y Int)) Int (if (<= x y) 1 0))\n";
-        printf "(define-fun eq ((x Int) (y Int)) Int (if (= x y) 1 0))\n";
-        printf "(define-fun and_int ((x Int) (y Int)) Int (if (or (= x 0) (= y 0)) 0 1))\n";
-        printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n";
+        print_custom_ops ();
         print_newline ();
-        printf "%s" all_decl;
+        time (printf "%s") all_decl "GENERATING TYPE DECLARATIONS";
         print_newline ();
         printf "%s" (z3_assertions_of_list (get_fail_neq_nil ()));
         print_newline ();
-        printf "%s" (z3_assertions_of_list (get_global_types ()));
+        printf "%s" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES"));
         print_newline ();
-        printf "(assert %s)" (z3_of_proposition ophi);
+        printf "(assert ";
+        time print_z3_of_proposition ophi "GENERATING PROGRAM FORMULA";
+        printf ")";
         print_newline ();
         print_newline ();
         printf "(check-sat)\n(get-model)";
         print_newline ();
         print_newline ();
-        if !debug then printf "    PARSED TERM: %s" (string_of_term new_term);
-        if !debug then print_newline ();
-        if !debug then print_newline ();
-        exit 0
       with
       | ParseError (msg,(p1,p2)) -> let tok_error = Lexing.lexeme lexbuf in
                                     printf ".....[error]***@]";
@@ -110,3 +121,4 @@ let _ =
   | e -> Printf.eprintf "    [UNEXPECTED EXCEPTION] : %s \n" (Printexc.to_string e);
          Printexc.print_backtrace stderr;
          exit 1
+  in time main_body () "TOTAL EXECUTION TIME";exit 0

@@ -194,20 +194,50 @@ let rec string_of_proposition (p : proposition) :(string) =
   | And(a,b) -> sprintf "(%s && %s)" (string_of_proposition a) (string_of_proposition b)
   | Or(a,b) -> sprintf "(%s || %s)" (string_of_proposition a) (string_of_proposition b)
 
-let rec z3_of_proposition (p : proposition) :(string) =
+let id x = x
+
+let rec z3_of_proposition (p : proposition) (acc : string->string) :(string) =
   match p with
-  | True -> "true"
-  | False -> "false"
-  | Eq(a,b) -> sprintf "(= %s %s)" a b
-  | Neq(a,b) -> sprintf "(not (= %s %s))" a b
-  | Implies(a,b) -> sprintf "(=> %s %s)" (z3_of_proposition a) (z3_of_proposition b)
-  | And(a,b) -> sprintf "(and %s %s)" (z3_of_proposition a) (z3_of_proposition b)
-  | Or(a,b) -> sprintf "(or %s %s)" (z3_of_proposition a) (z3_of_proposition b)
+  | True -> acc "true"
+  | False -> acc "false"
+  | Eq(a,b) -> acc (sprintf "(= %s %s)" a b)
+  | Neq(a,b) -> acc (sprintf "(not (= %s %s))" a b)
+  | Implies(a,b) -> let a = (z3_of_proposition a (sprintf "(=> %s")) in
+                    let b = (z3_of_proposition b (sprintf "%s %s)" a)) in
+                    acc b
+  | And(a,b) -> let a = (z3_of_proposition a (sprintf "(and %s")) in
+                let b = (z3_of_proposition b (sprintf "%s %s)\n" a)) in
+                acc b
+  | Or(a,b) -> let a = (z3_of_proposition a (sprintf "(or %s")) in
+               let b = (z3_of_proposition b (sprintf "%s %s)" a)) in
+               acc b
+
+let rec print_z3_of_proposition (p : proposition) :(unit) =
+  match p with
+  | True -> printf "true"
+  | False -> printf "false"
+  | Eq(a,b) -> printf "(= %s %s)" a b
+  | Neq(a,b) -> printf "(not (= %s %s))" a b
+  | Implies(a,b) -> printf "(=> ";
+                    print_z3_of_proposition a;
+                    printf " ";
+                    print_z3_of_proposition b;
+                    printf ")"
+  | And(a,b) -> printf "(and ";
+                print_z3_of_proposition a;
+                printf " ";
+                print_z3_of_proposition b;
+                printf ")\n"
+  | Or(a,b) -> printf "(or ";
+               print_z3_of_proposition a;
+               printf " ";
+               print_z3_of_proposition b;
+               printf ")"
 
 let rec z3_assertions_of_list xs =
   match xs with
   | [] -> ""
-  | x::xs -> sprintf "(assert %s)\n%s" (z3_of_proposition x) (z3_assertions_of_list xs)
+  | x::xs -> sprintf "(assert %s)\n%s" (z3_of_proposition x id) (z3_assertions_of_list xs)
 
 let (===) s1 s2 = if s1 = s2 then True  else Eq(s1,s2)
 let (=/=) s1 s2 = if s1 = s2 then False else Neq(s1,s2)
