@@ -1,0 +1,14 @@
+Methods:
+fact (n:Int , exn:(Int->Int)) :(Int) =
+  if n <= 0
+  then
+    exn 0
+  else
+    let (f:Int->Int) = fun (i:Int) :(Int) -> if i==0 then 1 else exn i in
+    n * (fact (n + -1,f));
+exn (n:Int) :(Int) = fail;
+
+Main (n:Int) :(Unit):
+if n >= 1 then
+   let (x:Int) = fact (n,exn) in skip
+else skip

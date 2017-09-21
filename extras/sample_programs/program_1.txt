@@ -7,6 +7,6 @@ Methods:
 f (x:Int) :(Int) = x;
 g (y:Unit) :(Int) = 5;
 
-Main:(Int):
+Main () :(Int):
 let (a:Int->Int) = !r3 in
 a 5

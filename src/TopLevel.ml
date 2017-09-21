@@ -15,7 +15,7 @@ let timing = ref true
 let time f x s =
     let t = Sys.time() in
     let fx = f x in
-    if !timing then Printf.printf ";;    %s: %fs\n" s (Sys.time() -. t);
+    if !timing then Printf.printf "\n;;    %s: %fs\n" s (Sys.time() -. t);
     fx
 
 let print_custom_ops () = printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
@@ -43,11 +43,11 @@ let _ =
       try
         if !debug then printf ";;    @[***Lexing and Parsing file...";
         let new_parser = Parser.file Lexer.read in
-        let (new_store,new_meths,new_term),main_tp = time new_parser lexbuf "PARSER" in (*get decl from parsing*)
+        let (new_store,new_meths,new_term,init_decl,init_args_neq_fail_nil),main_tp = time new_parser lexbuf "PARSER" in (*get decl from parsing*)
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
         if !debug then printf ";;    @[***Building initial variables...";
-        let new_counter,new_phi,cd_decl = build_cdphi empty_counter True new_store [] in (*get decl from initial counters*)
+        let new_counter,new_phi,cd_decl = build_cdphi empty_counter True new_store init_decl in (*get decl from initial counters*)
         let new_repo = build_repo empty_repo new_meths in
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
@@ -76,6 +76,8 @@ let _ =
         print_custom_ops ();
         print_newline ();
         time (printf "%s") all_decl "GENERATING TYPE DECLARATIONS";
+        print_newline ();
+        printf "%s" (z3_assertions_of_list init_args_neq_fail_nil);
         print_newline ();
         printf "%s" (z3_assertions_of_list (get_fail_neq_nil ()));
         print_newline ();

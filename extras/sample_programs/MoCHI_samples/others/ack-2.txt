@@ -7,5 +7,5 @@ ackermann (m:Int , n:Int) :(Int) =
     else ackermann (m + -1,1)
   else n+1;
 
-Main:(Int):
+Main () :(Int):
 ackermann (2,1)

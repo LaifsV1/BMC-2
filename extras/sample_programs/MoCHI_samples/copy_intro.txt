@@ -1,0 +1,5 @@
+Methods:
+copy (x:Int) :(Int) = if x==0 then 0 else 1 + (copy (x + -1));
+
+Main (n:Int) :(Unit):
+if (copy (copy n)) == n then skip else fail

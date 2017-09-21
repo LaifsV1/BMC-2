@@ -2,10 +2,9 @@ Methods:
 max (max2:(Int,Int)->Int , x:Int) :((Int,Int)->Int) = fun (y:Int,z:Int) :(Int) -> max2(max2(x,y),z);
 f (x:Int, y:Int) :(Int) = if x >= y then x else y;
 
-Main:Unit:
-let (x:Int) = 2 in
-let (y:Int) = 3 in
-let (z:Int) = 1 in
+Main (x:Int,y:Int,z:Int) :Unit:
 let (m:(Int,Int)->Int) = max (f,x) in
 let (m':Int) = m (y,z) in
 if f(x,m') == m' then skip else fail
+
+(*TODO: `f(x,m')` but you need to bracket `f m'` or it does `f (m'==m')`. Find out why.*)

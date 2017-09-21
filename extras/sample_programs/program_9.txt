@@ -1,0 +1,2 @@
+Main (n:Int , m:Int) :Int:
+(n || m) == (n && m)

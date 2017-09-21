@@ -5,8 +5,7 @@ mc91 (x:Int) :(Int) =
   else
     mc91 (mc91 (x + 11));
 
-Main:Unit:
-let (n:Int) = 93 in
+Main (n:Int) :Unit:
 if n <= 101 then
   if (mc91 n) == 91 then skip
   else fail

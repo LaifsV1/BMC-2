@@ -1,2 +1,2 @@
-Main:(Unit):
+Main () :(Unit):
 if 1 then skip else fail

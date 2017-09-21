@@ -5,6 +5,8 @@
 
   let ptypes_seen = ref empty_ptypes
   let methods_seen = ref empty_prepo
+  let ptypes_main_args = ref empty_ptypes
+  let main_args_neq_nil_fail = ref []
 
   let parse_failure (msg : string) (pos1 : position) (pos2 : position) =
     ParseError ((sprintf "    error parsing %s" msg),(pos1,pos2))
@@ -53,8 +55,9 @@
 (*%nonassoc COMMA*)
 %left ARROW_OP
 %nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP
-%right MINUS_OP PLUS_OP
-%right TIMES_OP
+%left MINUS_OP PLUS_OP
+%left TIMES_OP
+(*%nonassoc Apply_TERM_OP*)
 	/*~~~~~~~~~~~~~~~~~~~~*/
 	/* highest precedence */
 	/*~~~~~~~~~~~~~~~~~~~~*/
@@ -79,11 +82,11 @@
 
 (*** FILE ***)
 file:
-| STORE COLON store METHOD COLON repo MAIN COLON tp COLON term EOF { ($3,$6,$11),$9 } (* file , expected main type, declaration list *)
-| METHOD COLON repo MAIN COLON tp COLON term EOF                   { ([],$3,$8), $6 }
-| STORE COLON store MAIN COLON tp COLON term EOF                   { ($3,[],$8), $6 }
-| MAIN COLON tp COLON term EOF                                     { ([],[],$5), $3 }
-| error                                                            { raise (parse_failure "file" $startpos $endpos) }
+| STORE COLON store METHOD COLON repo MAIN main_vars COLON tp COLON term EOF { let args = !ptypes_main_args in ($3,$6,$12,get_ptypes_decl args [],get_main_args_assertions args []),$10 }
+| METHOD COLON repo MAIN main_vars COLON tp COLON term EOF                   { let args = !ptypes_main_args in ([],$3,$9 ,get_ptypes_decl args [],get_main_args_assertions args []), $7 }
+| STORE COLON store MAIN main_vars COLON tp COLON term EOF                   { let args = !ptypes_main_args in ($3,[],$9 ,get_ptypes_decl args [],get_main_args_assertions args []), $7 }
+| MAIN main_vars COLON tp COLON term EOF                                     { let args = !ptypes_main_args in ([],[],$6 ,get_ptypes_decl args [],get_main_args_assertions args []), $4 }
+| error                                                                      { raise (parse_failure "file" $startpos $endpos) }
 
 (*** STORE ***)
 store:
@@ -109,9 +112,9 @@ hack_evalorder_name:
 
 (*** TERMS ***)
 simple_term:
-| Fail_TERM           { Fail }
-| Skip_TERM           { Skip }
-| Int_TERM            { Int $1 }
+| Fail_TERM { Fail }
+| Skip_TERM { Skip }
+| Int_TERM  { Int $1 }
 | NAME                { let b = prepo_exists (!methods_seen) $1 in
                         if b
                         then Method ($1)
@@ -121,42 +124,42 @@ simple_term:
 | Deref_TERM_OP NAME  { let x = $2 in
                         let tp = ptypes_get (!ptypes_seen) x in
                         Deref (x,tp) }
-| OPEN_PAREN term CLOSE_PAREN                        { $2 }
+| simple_term PLUS_OP  simple_term  { BinOp("+",$1,$3) }
+| simple_term MINUS_OP simple_term  { BinOp("-",$1,$3) }
+| simple_term TIMES_OP simple_term  { BinOp("*",$1,$3) }
+| simple_term GTE_OP   simple_term  { BinOp("gte",$1,$3) }
+| simple_term LTE_OP   simple_term  { BinOp("lte",$1,$3) }
+| simple_term EQ_OP    simple_term  { BinOp("eq",$1,$3) }
+| simple_term AND_OP   simple_term  { BinOp("and_int",$1,$3) }
+| simple_term OR_OP    simple_term  { BinOp("or_int",$1,$3) }
+| OPEN_PAREN term CLOSE_PAREN { $2 }
 
 term:
-| simple_term                                        { $1 }
-| Lambda_TERM vars COLON tp ARROW_OP term            { Lambda($2,$6,Arrow(tps_from_vars $2,$4)) }
-| OPEN_PAREN Left_TERM_OP COLON tp CLOSE_PAREN term  { Left ($6,$4) }
-| OPEN_PAREN Right_TERM_OP COLON tp CLOSE_PAREN term { Right ($6,$4) }
-| NAME Assign_TERM_OP term                           { let x = $1 in
-                                                       let tp = ptypes_get (!ptypes_seen) x in
-                                                       Assign((x,tp),$3) }
+| simple_term                                               { $1 }
+| Lambda_TERM vars COLON tp ARROW_OP term                   { Lambda($2,$6,Arrow(tps_from_vars $2,$4)) }
+| OPEN_PAREN Left_TERM_OP COLON tp CLOSE_PAREN simple_term  { Left ($6,$4) }
+| OPEN_PAREN Right_TERM_OP COLON tp CLOSE_PAREN simple_term { Right ($6,$4) }
+| NAME Assign_TERM_OP simple_term                           { let x = $1 in
+                                                              let tp = ptypes_get (!ptypes_seen) x in
+                                                              Assign((x,tp),$3) }
 | PAIR_OP OPEN_PAREN term COMMA term CLOSE_PAREN     { Pair($3,$5) }
-| term PLUS_OP term                                  { BinOp("+",$1,$3) }
-| term MINUS_OP term                                 { BinOp("-",$1,$3) }
-| term TIMES_OP term                                 { BinOp("*",$1,$3) }
-| term GTE_OP term                                   { BinOp("gte",$1,$3) }
-| term LTE_OP term                                   { BinOp("lte",$1,$3) }
-| term EQ_OP term                                    { BinOp("eq",$1,$3) }
-| term AND_OP term                                   { BinOp("and_int",$1,$3) }
-| term OR_OP term                                    { BinOp("or_int",$1,$3) }
 | Let_TERM var EQUALS_OP term In_TERM term           { Let($2,$4,$6) }
 | NAME terms                                         { let b = prepo_exists (!methods_seen) $1 in
                                                        if b
                                                        then ApplyM($1,$2)
                                                        else let x = $1 in
                                                             let tp = ptypes_get (!ptypes_seen) x in
-                                                            ApplyX((x,tp),$2) }
+                                                            ApplyX((x,tp),$2) } (*%prec Apply_TERM_OP*)
 | If_TERM term Then_TERM term Else_TERM term         { If($2,$4,$6) }
 | error                                              { raise (parse_failure "term" $startpos $endpos) }
 
 terms:
-| term                                { [$1] }
-| OPEN_PAREN terms_helper CLOSE_PAREN { $2 }
+| term                     { [$1] }
+| OPEN_PAREN terms_helper  { $2 }
 
 terms_helper:
 | term COMMA terms_helper { $1::$3 }
-| term                    { [$1] }
+| term CLOSE_PAREN        { [$1] }
 
 var:
 | NAME COLON tp              { ptypes_seen:=ptypes_add (!ptypes_seen) $1 $3; (* always call var to add var type to map *)
@@ -164,12 +167,21 @@ var:
 | OPEN_PAREN var CLOSE_PAREN { $2 }
 
 vars:
-| var                                 { [$1] }
-| OPEN_PAREN vars_helper CLOSE_PAREN  { $2 }
-
+| OPEN_PAREN vars_helper  { $2 }
 vars_helper:
-| var                   { [$1] }
+| var CLOSE_PAREN       { [$1] }
 | var COMMA vars_helper { $1::$3 }
+
+main_var:
+| NAME COLON tp  { ptypes_seen:=ptypes_add (!ptypes_seen) $1 $3; (* always call var to add var type to map *)
+                   ptypes_main_args:=ptypes_add (!ptypes_main_args) $1 $3; (* always call var to add args type to map *)
+                   () }
+main_vars:
+| OPEN_PAREN CLOSE_PAREN       { () }
+| OPEN_PAREN main_vars_helper  { () }
+main_vars_helper:
+| main_var  CLOSE_PAREN           { () }
+| main_var COMMA main_vars_helper { () }
 
 simple_tp:
 | OPEN_PAREN tp CLOSE_PAREN { $2 }

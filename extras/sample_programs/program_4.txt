@@ -1,4 +1,4 @@
-Main:(Unit):
+Main () :(Unit):
 let (x: Int * Int) = Pair(fail,fail) in
 let (y: Int * Unit) = Pair(fail,skip) in
 let (z: Unit * Unit) = Pair(fail,fail) in

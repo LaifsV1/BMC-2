@@ -2,6 +2,5 @@ Methods:
 f (x:Int,g:Int->Unit) :(Unit) = g (x+1);
 h (z:Int) :(Int->Unit) = fun (y:Int) :(Unit) -> if y <= z then fail else skip;
 
-Main:(Unit):
-let (n:Int) = 5 in
+Main (n:Int) :(Unit):
 if n>=0 then f(n,h n) else skip

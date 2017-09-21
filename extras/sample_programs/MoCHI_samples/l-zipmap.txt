@@ -1,14 +1,17 @@
 Methods:
 zip (x:Int,y:Int) :(Int) =
   if x==0 then
-    if y==0 then x
-    else fail
+    if y==0 then
+      x
+    else
+      fail
   else
-    if y==0 then fail
-    else 1 + zip (x + -1,y + -1);
+    if y==0 then
+      fail
+    else
+      1 + zip (x + -1,y + -1);
 map (x:Int) :(Int) =
   if x==0 then x else 1 + map (x + -1);
 
-Main:Unit:
-let (n:Int) = 5 in
+Main (n:Int) :Unit:
 if map (zip (n,n))==n then skip else fail

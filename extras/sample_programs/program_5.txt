@@ -1,2 +1,2 @@
-Main:((Int * Int) * Unit):
+Main () :((Int * Int) * Unit):
 if 1 then Pair(Pair(fail,1),skip) else Pair(Pair(1,0),skip)

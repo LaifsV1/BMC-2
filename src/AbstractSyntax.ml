@@ -205,8 +205,8 @@ let rec z3_of_proposition (p : proposition) (acc : string->string) :(string) =
   | Implies(a,b) -> let a = (z3_of_proposition a (sprintf "(=> %s")) in
                     let b = (z3_of_proposition b (sprintf "%s %s)" a)) in
                     acc b
-  | And(a,b) -> let a = (z3_of_proposition a (sprintf "(and %s")) in
-                let b = (z3_of_proposition b (sprintf "%s %s)\n" a)) in
+  | And(a,b) -> let a = (z3_of_proposition a (sprintf "\n(and %s")) in
+                let b = (z3_of_proposition b (sprintf "%s %s)" a)) in
                 acc b
   | Or(a,b) -> let a = (z3_of_proposition a (sprintf "(or %s")) in
                let b = (z3_of_proposition b (sprintf "%s %s)" a)) in
@@ -223,11 +223,11 @@ let rec print_z3_of_proposition (p : proposition) :(unit) =
                     printf " ";
                     print_z3_of_proposition b;
                     printf ")"
-  | And(a,b) -> printf "(and ";
+  | And(a,b) -> printf "\n(and ";
                 print_z3_of_proposition a;
                 printf " ";
                 print_z3_of_proposition b;
-                printf ")\n"
+                printf ")"
   | Or(a,b) -> printf "(or ";
                print_z3_of_proposition a;
                printf " ";
@@ -325,12 +325,19 @@ let ptypes_get map key = try PTypes.find key map with Not_found -> failwith (spr
 let ptypes_add map key new_val = PTypes.add key new_val map
 let get_ptypes_decl map acc :(_decl) = PTypes.fold (fun key tp acc -> (key,z3_of_tp tp)::acc ) map acc
 
+let rec get_neq_fail_nil args acc =
+  match args with
+  | (x,tp)::xs -> get_neq_fail_nil xs (((x=/=(z3_fail_of_tp tp))&&&(x=/=(z3_nil_of_tp tp)))::acc)
+  | [] -> acc
+
+let get_main_args_assertions map acc = get_neq_fail_nil (PTypes.bindings map) acc
+
 (*********************)
 (* File to Translate *)
 (*********************)
 type assignlist = (_ref * _val) list
 type methlist = (_meth * (_var list * term * tp)) list
-type file = assignlist * methlist * term
+type file = assignlist * methlist * term * _decl * proposition list
 
 let rec build_cdphi counter phi (alist : assignlist) acc :(counter * proposition * _decl) =
   match alist with

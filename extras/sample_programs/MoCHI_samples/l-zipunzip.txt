@@ -1,13 +1,21 @@
 Methods:
 f (g:(Int,Int)->Int) :((Int,Int)->Int) = fun (x:Int,y:Int) :(Int) -> g (x+1, y+1);
-unzip (x:Int, k:(Int,Int)->Int) :(Int) = if x==0 then k (0,0) else unzip (x + -1, f k);
+unzip (x:Int, k:(Int,Int)->Int) :(Int) =
+  if x==0 then
+    k (0,0)
+  else
+    unzip (x + -1, f k);
 zip (x:Int, y:Int) :(Int) =
   if x==0 then
-    if y==0 then 0
-    else fail
+    if y==0 then
+      0
+    else
+      fail
   else
-    if y==0 then fail
-    else 1 + zip (x + -1, y + -1);
+    if y==0 then
+      fail
+    else
+      1 + zip (x + -1, y + -1);
 
-Main:(Int):
-unzip (2,zip)
+Main (n:Int) :(Int):
+unzip (n,zip)
