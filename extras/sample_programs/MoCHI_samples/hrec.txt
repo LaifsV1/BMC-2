@@ -1,7 +1,11 @@
 Methods:
 f (g:Int->Int) :(Int->Int) =
-  fun (x:Int) :(Int) -> if x>=0 then g x else
-  let (f':Int->Int) = f (f g) in f' (g x);
+  fun (x:Int) :(Int) ->
+    if x>=0 then
+      g x
+    else
+      let (f':Int->Int) = f (f g) in
+      f' (g x);
 
 succ (x:Int) :(Int) = x + 1;
 

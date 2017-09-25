@@ -174,6 +174,11 @@ let rec string_of_term (t : term) :(string) =
 
 let string_of_typed_term t tp = sprintf "(%s : %s)" (string_of_term t) (string_of_tp tp)
 
+let rec z3_getval_of_decl (xs:_decl) =
+  match xs with
+  | [] -> printf ""
+  | (x,tp)::xs -> printf "(get-value (%s))" x; z3_getval_of_decl xs
+
 (****************)
 (* Propositions *)
 (****************)
@@ -234,6 +239,7 @@ let rec print_z3_of_proposition (p : proposition) :(unit) =
                print_z3_of_proposition b;
                printf ")"
 
+let print_z3_assertion (f,x) = printf "(assert\n";f x;printf ")"
 let rec z3_assertions_of_list xs =
   match xs with
   | [] -> ""

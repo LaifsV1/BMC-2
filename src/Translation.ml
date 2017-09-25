@@ -107,7 +107,7 @@ let f (a,tpa : _ret) (b,tpb : _ret) (p : proposition) (q : e_prop) (acc : _decl)
     match tp with
       | Unit         -> tfail_u,tnil_u,acc
       | Integer      -> tfail_i,tnil_i,acc
-      | Arrow(_,_)   -> tfail_m,tfail_m,acc
+      | Arrow(_,_)   -> tfail_m,tnil_m,acc
       | Product(a,b) -> let n,is_new = get_type_number tp in
                         let a,b = tfail_n n,tnil_n n in
                         if is_new

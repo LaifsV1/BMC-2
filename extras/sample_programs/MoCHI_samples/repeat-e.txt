@@ -1,0 +1,12 @@
+Methods:
+succ (x:Int) :Int = x + 1;
+repeat (f:Int->Int,n:Int,s:Int) :(Int) =
+  if n==0 then
+    s
+  else
+    f (repeat (f,n + -1,s));
+
+Main (n:Int) :(Unit):
+if (repeat(succ,n,0)) <= n then fail else skip
+
+(* should fail with n=0 *)

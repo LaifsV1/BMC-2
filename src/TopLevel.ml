@@ -11,6 +11,7 @@ let line_sprintf p1 p2 = sprintf "(line %d , col %d) to (line %d , col %d)"
 
 let debug = ref true
 let timing = ref true
+let assertfail = ref true
 
 let time f x s =
     let t = Sys.time() in
@@ -83,12 +84,12 @@ let _ =
         print_newline ();
         printf "%s" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES"));
         print_newline ();
-        printf "(assert ";
-        time print_z3_of_proposition ophi "GENERATING PROGRAM FORMULA";
-        printf ")";
+        time print_z3_assertion (print_z3_of_proposition,ophi) "GENERATING PROGRAM FORMULA";
+        if !assertfail then printf "(assert (= _ret_1_ %s))" (z3_fail_of_tp main_tp);
         print_newline ();
         print_newline ();
-        printf "(check-sat)\n(get-model)";
+        printf "(check-sat)\n;;(get-model)\n";
+        z3_getval_of_decl init_decl;
         print_newline ();
         print_newline ();
       with

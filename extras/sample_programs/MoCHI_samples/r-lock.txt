@@ -1,0 +1,7 @@
+Methods:
+lock (st:Int) :Int = if st==0 then 1 else fail;
+unlock (st:Int) :Int = if st==1 then 0 else fail;
+f (n:Int,st:Int) :Int = if n >= 1 then lock st else st;
+g (n:Int,st:Int) :Int = if n >= 1 then unlock st else st;
+
+Main (n:Int) :Unit : if (g(n,f(n,0)))==0 then skip else fail
