@@ -1,0 +1,11 @@
+Methods:
+mult (n:Int,m:Int) :(Int) =
+  if (n <= 0) || (m <= 0) then
+    0
+  else
+    n + (mult (n,m + -1));
+
+Main (n:Int) :Unit:
+if (n*n) <= (mult(n,n)) then skip else fail
+
+(* MoCHI fails when given this assertion *)

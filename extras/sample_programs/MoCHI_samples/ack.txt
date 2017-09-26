@@ -9,7 +9,7 @@ ackermann (m:Int , n:Int) :(Int) =
 
 Main (m:Int , n:Int) :(Unit):
 if (m >= 0) && (n >= 0) then
-  if (ackermann (m,n) >= n) then skip else fail
+  if (ackermann (m,n)) >= n then skip else fail
 else skip
 
 (* note: ackerman(2,1) computable with k=7 *)

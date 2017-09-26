@@ -5,6 +5,6 @@ f (x:Int, y:Int) :(Int) = if x >= y then x else y;
 Main (x:Int,y:Int,z:Int) :Unit:
 let (m:(Int,Int)->Int) = max (f,x) in
 let (m':Int) = m (y,z) in
-if f(x,m') == m' then skip else fail
+if (f(x,m')) == m' then skip else fail
 
 (*TODO: `f(x,m')` but you need to bracket `f m'` or it does `f (m'==m')`. Find out why.*)

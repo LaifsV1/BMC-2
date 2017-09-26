@@ -1,0 +1,11 @@
+Methods:
+sum (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum (n + -1));
+
+Main (n:Int) :Unit:
+if (n * n + 1) <= (sum (n * n)) then skip else fail
+
+(* MoCHI outputs an error when given this assertion *)

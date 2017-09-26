@@ -1,0 +1,11 @@
+Methods:
+mult (n:Int,m:Int) :(Int) =
+  if (n <= 0) || (m <= 0) then
+    0
+  else
+    n + (mult (n,m + -1));
+
+Main (n:Int,m:Int) :Unit:
+if (mult(m,m)) <= (mult(n,n)) then skip else fail
+
+(* should fail for n=0 and m=1, for instance *)

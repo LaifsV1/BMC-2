@@ -15,7 +15,7 @@ zip (x:Int, y:Int) :(Int) =
     if y==0 then
       fail
     else
-      1 + zip (x + -1, y + -1);
+      1 + (zip (x + -1, y + -1));
 
 Main (n:Int) :(Int):
 unzip (n,zip)
