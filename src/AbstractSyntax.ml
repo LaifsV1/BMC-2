@@ -278,6 +278,10 @@ type repo  = (_var list * term * tp) Repo.t
 let empty_repo :(repo) = Repo.empty
 let get_methods map tp =
   Repo.fold (fun mi (xi,ti,tpi) acc -> if tpi = tp then (mi,xi,ti)::acc else acc) map []
+let rec get_method_body_of_list map ms acc =
+  match ms with
+  | [] -> acc
+  | (m::ms) -> let x,t,tp = repo_get map m in get_method_body_of_list map ms ((m,x,t)::acc)
 
 let repo_get_decl map acc :(_decl) = Repo.fold (fun mi (xi,ti,tpi) acc -> (mi,z3_of_tp tpi)::acc) map acc
 
@@ -357,3 +361,52 @@ let rec build_repo repo methods :(repo) =
   match methods with
   | [] -> repo
   | (m,xttp)::xs -> build_repo (repo_update repo m xttp) xs
+
+(***********************)
+(* Points-to Analyisis *)
+(***********************)
+type _pts = Meths of (_meth list) | Pair of (_pts * _pts)
+
+let pts_left pts =
+  match pts with
+  | Meths _ -> failwith "tried to left project points-to set"
+  | Pair(a,b) -> a
+
+let pts_right pts =
+  match pts with
+  | Meths _ -> failwith "tried to right project points-to set"
+  | Pair(a,b) -> b
+
+let rec pts_union (a:_pts) (b:_pts) =
+  match a,b with
+  | Meths a, Meths b -> Meths (List.rev_append a b)
+  | Pair(a1,a2), Pair(b1,b2) -> Pair(pts_union a1 b1,pts_union a2 b2)
+  | _ -> failwith "pts type mismatch"
+
+(*we already have Counter which takes in a _ref*)
+type ptsmap = _pts Counter.t
+let empty_ptsmap :(ptsmap) = Counter.empty
+
+let rec print_meths ms =
+  match ms with
+  | Meths [] -> ""
+  | Meths (m::ms) -> sprintf "%s,%s" m (print_meths (Meths ms))
+  | _ -> failwith "tried to print not Meths"
+
+let pts_get  map key = try Counter.find key map with Not_found -> Meths []
+let pts_update  map key new_pts = Counter.add key new_pts map
+
+let pts_get_methods map key =
+  match pts_get map key with
+  | Meths m -> m
+  | _ -> failwith "pts set is not a set"
+
+let rec tfail_prod tp :(_pts)=
+  match tp with
+  | Product (a,b) -> Pair(tfail_prod a, tfail_prod b)
+  | _ -> Meths([tfail_m])
+
+let rec tnil_prod tp :(_pts)=
+  match tp with
+  | Product (a,b) -> Pair(tnil_prod a, tnil_prod b)
+  | _ -> Meths([tnil_m])

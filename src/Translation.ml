@@ -49,7 +49,7 @@ let rec subs (m : term) (t : _var) (y : _var) =
      if List.mem t xs then failwith "accidental binding in subs"
      else
        if List.mem y xs
-       then (printf "\n WARNING: t = y \n"; Lambda(xs,t',tp)) (* WARNING: this is not standard *)
+       then (printf "\n ;;;;;; WARNING: t = y \n"; Lambda(xs,t',tp)) (* WARNING: this is not standard *)
        else Lambda(xs,subs t' t y,tp)
   | Left (t',tp) -> Left(subs t' t y,tp)
   | Right (t',tp) -> Right(subs t' t y,tp)
@@ -128,137 +128,153 @@ let f_rets rets = f_rets_helper (List.rev rets)
 let rec bmc_translation
           (m : term) (r : repo) (c : counter) (d : counter)
           (phi : proposition) (k : nat) (etype : tp) (tps : (_name * z3_tp) list)
-        :(_ret * proposition * repo * counter * counter * e_prop * (_name * z3_tp) list) =
+          (ptc : ptsmap) (ptd : ptsmap)
+        :(_ret * proposition * repo * counter * counter * e_prop * (_name * z3_tp) list * ptsmap * ptsmap) =
   let ret = fresh_ret () in
   let ret_tp = ret,etype in
   let new_tps = (ret,z3_of_tp etype)::tps in (* (ret1,type1)::(ret2,type2)::tps *)
   match k with
   | Nil ->
      (match etype with
-      | Unit    -> (ret_tp,(ret===tnil_u) &&& phi,r,c,d,Nil,new_tps)
-      | Integer -> (ret_tp,(ret===tnil_i) &&& phi,r,c,d,Nil,new_tps)
-      | Arrow _ -> (ret_tp,(ret===tnil_m) &&& phi,r,c,d,Nil,new_tps)
+      | Unit    -> (ret_tp,(ret===tnil_u) &&& phi,r,c,d,Nil,new_tps,ptc,ptd)
+      | Integer -> (ret_tp,(ret===tnil_i) &&& phi,r,c,d,Nil,new_tps,ptc,ptd)
+      | Arrow _ -> (ret_tp,(ret===tnil_m) &&& phi,r,c,d,Nil,new_tps,ptc,ptd)
       | Product (tp1,tp2) ->
          let n,is_new = get_type_number etype in
          let new_tps' = if is_new then (tnil_n n,z3_of_tp etype)::new_tps else new_tps in
-         (ret_tp,(ret===(tnil_n n)) &&& phi,r,c,d,Nil,new_tps'))
+         (ret_tp,(ret===(tnil_n n)) &&& phi,r,c,d,Nil,new_tps',ptc,ptd))
   | Suc(k') ->
      (match m with
       (* base cases *)
       | Fail ->
          (match etype with
-          | Unit    -> (ret_tp,(ret===tfail_u) &&& phi,r,c,d,Fail,new_tps)
-          | Integer -> (ret_tp,(ret===tfail_i) &&& phi,r,c,d,Fail,new_tps)
-          | Arrow _ -> (ret_tp,(ret===tfail_m) &&& phi,r,c,d,Fail,new_tps)
+          | Unit    -> (ret_tp,(ret===tfail_u) &&& phi,r,c,d,Fail,new_tps,ptc,ptd)
+          | Integer -> (ret_tp,(ret===tfail_i) &&& phi,r,c,d,Fail,new_tps,ptc,ptd)
+          | Arrow _ -> (ret_tp,(ret===tfail_m) &&& phi,r,c,d,Fail,new_tps,ptc,ptd)
           | Product (tp1,tp2) ->
              let n,is_new = get_type_number etype in
              let new_tps' = if is_new then (tfail_n n,z3_of_tp etype)::new_tps else new_tps in
-             (ret_tp,(ret===(tfail_n n)) &&& phi,r,c,d,Fail,new_tps'))
-      | Skip -> (ret_tp,(ret===tskip) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps)
-      | Int i -> (ret_tp,(ret===(string_of_int i)) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps)
-      | Method m -> (ret_tp,(ret===(z3_method m)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps)
-      | Var(x,t) -> ((x,t),phi,r,c,d,Both,new_tps) (*adding != fail/nil is not sound here*) (*warning: we removed ret, but we might want to add it back*)
+             (ret_tp,(ret===(tfail_n n)) &&& phi,r,c,d,Fail,new_tps',ptc,ptd))
+      | Skip -> (ret_tp,(ret===tskip) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
+      | Int i -> (ret_tp,(ret===(string_of_int i)) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
+      | Method m ->  (ret_tp,(ret===(z3_method m)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps,
+                     pts_update ptc (ret_tp) (Meths [m]),pts_update ptd (ret_tp) (Meths [m]))
+      (*adding != fail/nil is not sound here vvv*) (*warning: we removed ret, but we might want to add it back*)
+      | Var(x,t) -> ((x,t),phi,r,c,d,Both,new_tps,
+                     pts_update ptc (ret_tp) (pts_get ptd (x,t)),pts_update ptd (ret_tp) (pts_get ptd (x,t)))
       | Deref aref ->
          let d_r = ref_get d aref in
          (match etype with
           | Unit    -> failwith "you shouldn't be able to store Unit in refs"
-          | Integer -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps)
-          | Arrow _ -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps)
+          | Integer -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
+          | Arrow _ -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps,
+                        pts_update ptc (ret_tp) (pts_get ptd aref),pts_update ptd (ret_tp) (pts_get ptd aref))
           | Product (tp1,tp2) -> failwith "you shouldn't be able to store products in refs")
       | Lambda(x,t,tp') ->
          let new_meth = fresh_m () in
          let r' = repo_update r new_meth (x,t,tp') in
          (ret_tp,(ret===(z3_method new_meth)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,
-          r',c,d,Val,new_tps)
+          r',c,d,Val,new_tps,pts_update ptc (ret_tp) (Meths [new_meth]),pts_update ptd (ret_tp) (Meths [new_meth]))
       (* inductive cases *)
       | Left (t,tp) ->
-         let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t r c d phi k tp new_tps in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t r c d phi k tp new_tps ptc ptd in
          let guard_1,tpsg1 = (f ret1 ret_tp (ret===(z3_pair_left (fst ret1))) q1 tps1) in
-         (ret_tp,guard_1 &&& phi1,r1,c1,d1,q1,tpsg1)
+         (ret_tp,guard_1 &&& phi1,r1,c1,d1,q1,tpsg1,
+          pts_update ptc1 (ret_tp) (pts_left (pts_get ptd1 ret_tp)),pts_update ptd1 (ret_tp) (pts_left (pts_get ptd1 ret_tp)))
       | Right (t,tp) ->
-         let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t r c d phi k tp new_tps in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t r c d phi k tp new_tps ptc ptd in
          let guard_1,tpsg1 = (f ret1 ret_tp (ret===(z3_pair_right (fst ret1))) q1 tps1) in
-         (ret_tp,guard_1 &&& phi1,r1,c1,d1,q1,tpsg1)
+         (ret_tp,guard_1 &&& phi1,r1,c1,d1,q1,tpsg1,
+          pts_update ptc1 (ret_tp) (pts_right (pts_get ptd1 ret_tp)),pts_update ptd1 (ret_tp) (pts_right (pts_get ptd1 ret_tp)))
       | Assign(aref,t) ->
-         let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t r c d phi k (snd aref) new_tps in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t r c d phi k (snd aref) new_tps ptc ptd in
          let c1',caref = c_update c aref in
          let d1',daref = d_update d aref (cd_get c1' aref) in
          let d1_r' = ref_get d1' aref in
          let guard_1,tpsg1 = (f ret1 ret_tp ((ret===tskip) &&& (d1_r'===(fst ret1))) q1 tps1) in
          (ret_tp,guard_1 &&& phi1,r1,c1',d1',q1,
-          (daref,z3_of_tp (snd aref))::(caref,z3_of_tp (snd aref))::tpsg1)
+          (daref,z3_of_tp (snd aref))::(caref,z3_of_tp (snd aref))::tpsg1,
+          pts_update ptc1 aref (pts_union (pts_get ptd1 aref) (pts_get ptd1 ret1)),pts_update ptd1 aref (pts_union (pts_get ptd1 aref) (pts_get ptd1 ret1)))
       | Pair(t1,t2) ->
-         let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t1 r c d phi k (left_tp etype) new_tps in
-         let (ret2,phi2,r2,c2,d2,q2,tps2) = bmc_translation t2 r1 c1 d1 phi1 k (right_tp etype) tps1 in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t1 r c d phi k (left_tp etype) new_tps ptc ptd in
+         let (ret2,phi2,r2,c2,d2,q2,tps2,ptc2,ptd2) = bmc_translation t2 r1 c1 d1 phi1 k (right_tp etype) tps1 ptc1 ptd1 in
          let guard_1,tpsg1 = (f ret2 ret_tp (ret===(z3_pair_maker (fst ret1) (fst ret2))) q2 tps2) in
          let guard_2,tpsg2 = (f ret1 ret_tp guard_1 q1 tpsg1) in
-         (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2)
+         (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2,
+          pts_update ptc2 ret_tp (Pair(pts_get ptd2 ret1,pts_get ptd2 ret2)),pts_update ptd2 ret_tp (Pair(pts_get ptd2 ret1,pts_get ptd2 ret2)))
       | BinOp(op,t1,t2) ->
-         let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t1 r c d phi k (etype) new_tps in
-         let (ret2,phi2,r2,c2,d2,q2,tps2) = bmc_translation t2 r1 c1 d1 phi1 k (etype) tps1 in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t1 r c d phi k (etype) new_tps ptc ptd in
+         let (ret2,phi2,r2,c2,d2,q2,tps2,ptc2,ptd2) = bmc_translation t2 r1 c1 d1 phi1 k (etype) tps1 ptc1 ptd1 in
          let guard_1,tpsg1 = (f ret2 ret_tp ((ret===(z3_binops (fst ret1) op (fst ret2))) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i)) q2 tps2) in
          let guard_2,tpsg2 = (f ret1 ret_tp guard_1 q1 tpsg1) in
-         (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2)
+         (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2,ptc2,ptd2)
       | Let((x,tp),t1,t2) ->
-         let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t1 r c d phi k tp new_tps in
-         let (ret2,phi2,r2,c2,d2,q2,tps2) = bmc_translation (subs t2 ret1 (x,tp))
-                                                            r1 c1 d1 phi1 k etype tps1 in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t1 r c d phi k tp new_tps ptc ptd in
+         let (ret2,phi2,r2,c2,d2,q2,tps2,ptc2,ptd2) = bmc_translation (subs t2 ret1 (x,tp))
+                                                                      r1 c1 d1 phi1 k etype tps1 ptc1 ptd1 in
          let guard_1,tpsg1 = (f ret2 ret_tp (ret===(fst ret2)) q2 tps2) in
          let guard_2,tpsg2 = (f ret1 ret_tp guard_1 q1 tpsg1) in
-         (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2)
+         (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2,
+          pts_update ptc2 ret_tp (pts_get ptd2 ret2),pts_update ptd2 ret_tp (pts_get ptd2 ret2))
       | ApplyM(m,ts) ->
          let (xs,n,tp) = repo_get r m in
-         let args,rets,phi1,r1,c1,d1,q1,tps1 = bmc_args (List.map snd xs) ts r c d phi k new_tps [] [] Val in
-         let (ret2,phi2,r2,c2,d2,q2,tps2) = bmc_translation (subslist n rets xs)
-                                                            r1 c1 d1 phi1 k' etype tps1 in
+         let args,rets,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1 = bmc_args (List.map snd xs) ts r c d phi k new_tps [] [] Val ptc ptd in
+         let (ret2,phi2,r2,c2,d2,q2,tps2,ptc2,ptd2) = bmc_translation (subslist n rets xs)
+                                                                      r1 c1 d1 phi1 k' etype tps1 ptc1 ptd1 in
          let guard_1,tpsg1 = (f ret2 ret_tp (ret===(fst ret2)) q2 tps2) in
          let guard_2,tpsg2 = (f_rets args ret_tp guard_1 tpsg1) in
-         (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2)
+         (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2,
+          pts_update ptc2 ret_tp (pts_get ptd2 ret2),pts_update ptd2 ret_tp (pts_get ptd2 ret2))
       | If(tb,t1,t0) ->
-         let (retb,phib,rb,cb,db,qb,tpsb) = bmc_translation tb r c d phi k Integer new_tps in
-         let (ret0,phi0,r0,c0,d0,q0,tps0) = bmc_translation t0 rb cb db phib k etype tpsb in
-         let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t1 r0 c0 d0 phi0 k etype tps0 in
+         let (retb,phib,rb,cb,db,qb,tpsb,ptcb,ptdb) = bmc_translation tb r c d phi k Integer new_tps ptc ptd in
+         let (ret0,phi0,r0,c0,d0,q0,tps0,ptc0,ptd0) = bmc_translation t0 rb cb db phib k etype tpsb ptcb ptdb in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t1 r0 c0 d0 phi0 k etype tps0 ptc0 ptdb in
          let c',varsc' = c_update_all c1 tps1 in
          let guard_0,tpsg0 = (f ret0 ret_tp ((ret===(fst ret0)) &&& (c_wedge c' d0)) q0 varsc') in
          let guard_1,tpsg1 = (f ret1 ret_tp ((ret===(fst ret1)) &&& (c_wedge c' d1)) q1 tpsg0) in
          let pi0 = ((fst retb) === "0") ==> guard_0 in
          let pi1 = ((fst retb) =/= "0") ==> guard_1 in
          let guard_b,tpsgb = (f retb ret_tp (pi0 &&& pi1) qb tpsg1) in
-         (ret_tp,guard_b &&& phi1,r1,c',c',qb+++q0+++q1,tpsgb)
+         let ptc1' = pts_update ptc1 ret_tp (pts_union (pts_get ptd0 ret0) (pts_get ptd1 ret1)) in
+         (ret_tp,guard_b &&& phi1,r1,c',c',qb+++q0+++q1,tpsgb,ptc1',ptc1')
       | ApplyX((x,tp),ts) ->
          (match tp with
           | Arrow(one,two) ->
-             (let args,rets,phi0,r0,c0,d0,q0,tps0 = bmc_args one ts r c d phi k new_tps [] [] Val in
-              let r_tp = get_methods r tp in
-              let phin,rn,cn,xs,tpsn =
-                List.fold_left
-                  (fun (phii_,ri_,ci_,ys,tpsi_) (mi,xi,ti) ->  (*mi = \(xi).ti*)
-                    let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subslist ti rets xi)
-                                                                       ri_ ci_ d0 phii_ k' etype tpsi_ in
-                    match ys with
-                    | [] ->
-                       phii,ri,ci,[(mi,reti,di,qi+++q0)],tpsi
-                    | ((mi_,reti_,di_,qi_)::ys') ->
-                       phii,ri,ci,((mi,reti,di,qi+++qi_)::ys),tpsi)
-                  (phi0,r0,c0,[],tps0) r_tp in
-              match xs with
-              | [] -> failwith "variable type does not match any existing method (2)"
-              | ((mn,retn,dn,qn)::xs) ->
-                 let cn',varscn' = c_update_all cn tpsn in
-                 let pi,tpsgs =
+             (let args,rets,phi0,r0,c0,d0,q0,tps0,ptc0,ptd0 = bmc_args one ts r c d phi k new_tps [] [] Val ptc ptd in
+              let r_tp = get_method_body_of_list r (pts_get_methods ptd0 (x,tp)) [] in
+              match r_tp with
+              | [] -> (ret_tp,phi0,r0,c0,c0,q0,tps0,ptc0,ptc0)
+              | _ ->
+                 let phin,rn,cn,xs,tpsn,ptcn =
                    List.fold_left
-                     (fun (acc,decls) (mi,reti,di,qi) ->
-                       (let guard_i,tpsgi = (f reti ret_tp (ret===(fst reti)) qi decls) in
-                        (x===(z3_method mi)) ==> (guard_i &&& c_wedge cn' di)&&&acc,tpsgi))
-                     (True,varscn') ((mn,retn,dn,qn)::xs) in
-                 let guard_final,tpsgfinal = (f_rets args ret_tp pi tpsgs) in
-                 (ret_tp,guard_final &&& phin,rn,cn',cn',qn,tpsgfinal))
+                     (fun (phii_,ri_,ci_,ys,tpsi_,ptci_) (mi,xi,ti) ->  (*mi = \(xi).ti*)
+                       let (reti,phii,ri,ci,di,qi,tpsi,ptci,ptdi) = bmc_translation (subslist ti rets xi)
+                                                                                    ri_ ci_ d0 phii_ k' etype tpsi_ ptci_ ptd0 in
+                       match ys with
+                       | [] ->
+                          phii,ri,ci,[(mi,reti,di,qi+++q0,ptdi)],tpsi,ptci
+                       | ((mi_,reti_,di_,qi_,ptdi_)::ys') ->
+                          phii,ri,ci,((mi,reti,di,qi+++qi_,ptdi)::ys),tpsi,ptci)
+                     (phi0,r0,c0,[],tps0,ptc0) r_tp in
+                 match xs with
+                 | [] -> failwith (sprintf "variable %s does not match any method." x)
+                 | ((mn,retn,dn,qn,ptdn)::xs) ->
+                    let cn',varscn' = c_update_all cn tpsn in
+                    let pi,tpsgs,pts =
+                      List.fold_left
+                        (fun (acc,decls,pts) (mi,reti,di,qi,ptdi) ->
+                          (let guard_i,tpsgi = (f reti ret_tp (ret===(fst reti)) qi decls) in
+                           (x===(z3_method mi)) ==> (guard_i &&& c_wedge cn' di)&&&acc,tpsgi,pts_union (pts_get ptdi reti) pts))
+                        (True,varscn',Meths []) ((mn,retn,dn,qn,ptdn)::xs) in
+                    let guard_final,tpsgfinal = (f_rets args ret_tp pi tpsgs) in
+                    let ptcn' = pts_update ptcn ret_tp pts in
+                    (ret_tp,guard_final &&& phin,rn,cn',cn',qn,tpsgfinal,ptcn',ptcn'))
           | _ -> failwith "is not an arrow type"))
-  and bmc_args (xs : tp list) (ts : term list) (r:repo) (c:counter) (d:counter) (phi:proposition) (k:nat) (new_tps:(_name*z3_tp)list) acc rets q =
+  and bmc_args (xs : tp list) (ts : term list) (r:repo) (c:counter) (d:counter) (phi:proposition) (k:nat) (new_tps:(_name*z3_tp)list) acc rets q ptc ptd =
     match xs,ts with
-    | [],[] -> List.rev acc,List.rev rets,phi,r,c,d,q,new_tps
-    | x::xs,t::ts -> let (ret1,phi1,r1,c1,d1,q1,tps1) = bmc_translation t r c d phi k x new_tps in
+    | [],[] -> List.rev acc,List.rev rets,phi,r,c,d,q,new_tps,ptc,ptd
+    | x::xs,t::ts -> let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t r c d phi k x new_tps ptc ptd in
                      let new_acc = (ret1,q1)::acc in
                      let new_rets = ret1::rets in
-                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q)
+                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q) ptc1 ptd1
     | _ -> failwith "number of arguments mismatch"

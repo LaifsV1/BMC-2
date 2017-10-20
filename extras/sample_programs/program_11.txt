@@ -1,0 +1,6 @@
+Methods:
+f (a:Int) :(Int->Int) = fun (x:Int) :(Int) -> a + x;
+
+Main (n:Int) :(Int):
+let (f' : Int -> Int) = f 5 in
+f' 5
