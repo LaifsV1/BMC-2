@@ -1,0 +1,3 @@
+Main (n:Int) :(Unit):
+let (f:Int->Int) = fail in
+f n

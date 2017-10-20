@@ -230,29 +230,32 @@ let rec bmc_translation
           | Arrow(one,two) ->
              (let args,rets,phi0,r0,c0,d0,q0,tps0 = bmc_args one ts r c d phi k new_tps [] [] Val in
               let r_tp = get_methods r tp in
-              let phin,rn,cn,xs,tpsn =
-                List.fold_left
-                  (fun (phii_,ri_,ci_,ys,tpsi_) (mi,xi,ti) ->  (*mi = \(xi).ti*)
-                    let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subslist ti rets xi)
-                                                                       ri_ ci_ d0 phii_ k' etype tpsi_ in
-                    match ys with
-                    | [] ->
-                       phii,ri,ci,[(mi,reti,di,qi+++q0)],tpsi
-                    | ((mi_,reti_,di_,qi_)::ys') ->
-                       phii,ri,ci,((mi,reti,di,qi+++qi_)::ys),tpsi)
-                  (phi0,r0,c0,[],tps0) r_tp in
-              match xs with
-              | [] -> failwith "variable type does not match any existing method (2)"
-              | ((mn,retn,dn,qn)::xs) ->
-                 let cn',varscn' = c_update_all cn tpsn in
-                 let pi,tpsgs =
+              match r_tp with
+              | [] -> (ret_tp,phi0,r0,c0,c0,q0,tps0)
+              | _ ->
+                 let phin,rn,cn,xs,tpsn =
                    List.fold_left
-                     (fun (acc,decls) (mi,reti,di,qi) ->
-                       (let guard_i,tpsgi = (f reti ret_tp (ret===(fst reti)) qi decls) in
+                     (fun (phii_,ri_,ci_,ys,tpsi_) (mi,xi,ti) ->  (*mi = \(xi).ti*)
+                       let (reti,phii,ri,ci,di,qi,tpsi) = bmc_translation (subslist ti rets xi)
+                                                                          ri_ ci_ d0 phii_ k' etype tpsi_ in
+                       match ys with
+                       | [] ->
+                          phii,ri,ci,[(mi,reti,di,qi+++q0)],tpsi
+                       | ((mi_,reti_,di_,qi_)::ys') ->
+                          phii,ri,ci,((mi,reti,di,qi+++qi_)::ys),tpsi)
+                     (phi0,r0,c0,[],tps0) r_tp in
+                 match xs with
+                 | [] -> failwith (sprintf "variable %s does not match any method." x)
+                 | (mn,retn,dn,qn)::xs' ->
+                    let cn',varscn' = c_update_all cn tpsn in
+                    let pi,tpsgs =
+                      List.fold_left
+                        (fun (acc,decls) (mi,reti,di,qi) ->
+                          (let guard_i,tpsgi = (f reti ret_tp (ret===(fst reti)) qi decls) in
                         (x===(z3_method mi)) ==> (guard_i &&& c_wedge cn' di)&&&acc,tpsgi))
-                     (True,varscn') ((mn,retn,dn,qn)::xs) in
-                 let guard_final,tpsgfinal = (f_rets args ret_tp pi tpsgs) in
-                 (ret_tp,guard_final &&& phin,rn,cn',cn',qn,tpsgfinal))
+                        (True,varscn') xs in
+                    let guard_final,tpsgfinal = (f_rets args ret_tp pi tpsgs) in
+                    (ret_tp,guard_final &&& phin,rn,cn',cn',qn,tpsgfinal))
           | _ -> failwith "is not an arrow type"))
   and bmc_args (xs : tp list) (ts : term list) (r:repo) (c:counter) (d:counter) (phi:proposition) (k:nat) (new_tps:(_name*z3_tp)list) acc rets q =
     match xs,ts with
