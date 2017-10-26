@@ -72,6 +72,13 @@ let rec subslist (m : term) (ts : _var list) (ys : _var list) =
   | t::ts, y::ys -> subslist (subs m t y) ts ys
   | _ -> failwith "not same number of arguments"
 
+let rec untyped_subslist (m : term) (ts : _name list) (ys : _var list) =
+  match ts,ys with
+  | [t],[y,tp] -> subs m (t,tp) (y,tp)
+  | t::ts, (y,tp)::ys -> untyped_subslist (subs m (t,tp) (y,tp)) ts ys
+  | _ -> failwith "not same number of arguments"
+
+       
 (*******************)
 (* BMC Translation *)
 (*******************)

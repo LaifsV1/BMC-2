@@ -82,10 +82,18 @@
 
 (*** FILE ***)
 file:
-| STORE COLON store METHOD COLON repo MAIN main_vars COLON tp COLON term EOF { let args = !ptypes_main_args in ($3,$6,$12,get_ptypes_decl args [],get_main_args_assertions args []),$10 }
-| METHOD COLON repo MAIN main_vars COLON tp COLON term EOF                   { let args = !ptypes_main_args in ([],$3,$9 ,get_ptypes_decl args [],get_main_args_assertions args []), $7 }
-| STORE COLON store MAIN main_vars COLON tp COLON term EOF                   { let args = !ptypes_main_args in ($3,[],$9 ,get_ptypes_decl args [],get_main_args_assertions args []), $7 }
-| MAIN main_vars COLON tp COLON term EOF                                     { let args = !ptypes_main_args in ([],[],$6 ,get_ptypes_decl args [],get_main_args_assertions args []), $4 }
+| STORE COLON store METHOD COLON repo MAIN main_vars COLON tp COLON term EOF { let args = !ptypes_main_args in
+  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in 
+  	      	    	   	      	   	     	      	    	       ($3,$6,$12,z3_args,var_args,get_main_args_assertions args []),$10 }
+| METHOD COLON repo MAIN main_vars COLON tp COLON term EOF                   { let args = !ptypes_main_args in
+  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in 
+                                                                               ([],$3,$9 ,z3_args,var_args,get_main_args_assertions args []), $7 }
+| STORE COLON store MAIN main_vars COLON tp COLON term EOF                   { let args = !ptypes_main_args in
+  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in 
+                                                                               ($3,[],$9 ,z3_args,var_args,get_main_args_assertions args []), $7 }
+| MAIN main_vars COLON tp COLON term EOF                                     { let args = !ptypes_main_args in
+  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in 
+                                                                               ([],[],$6 ,z3_args,var_args,get_main_args_assertions args []), $4 }
 | error                                                                      { raise (parse_failure "file" $startpos $endpos) }
 
 (*** STORE ***)

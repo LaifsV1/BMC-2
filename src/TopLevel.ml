@@ -44,11 +44,15 @@ let _ =
       try
         if !debug then printf ";;    @[***Lexing and Parsing file...";
         let new_parser = Parser.file Lexer.read in
-        let (new_store,new_meths,new_term,init_decl,init_args_neq_fail_nil),main_tp = time new_parser lexbuf "PARSER" in (*get decl from parsing*)
-        if !debug then printf ".....[done]*** @]";
-        if !debug then print_newline ();
+        let (new_store,new_meths,new_term,init_decl,main_args,init_args_neq_fail_nil),main_tp = time new_parser lexbuf "PARSER" in (*get decl from parsing*)
+        let fresh_args,fresh_main_phi,init_decl = z3_create_fresh_inputs fresh_x init_decl [] True init_decl in
+        (*^^^ freshen main inputs. added fresh type declarations into init_decl. REMEMBER: substitute in the term.*)
+        let new_term = untyped_subslist new_term fresh_args main_args in
+        (*^^^ substituted main inputs for fresh main inputs. REMEMBER: add (old = fresh) assertions.*)
+        if !debug then printf ".....[done]*** @]\n";
         if !debug then printf ";;    @[***Building initial variables...";
-        let new_counter,new_phi,cd_decl = build_cdphi empty_counter True new_store init_decl in (*get decl from initial counters*)
+        let new_counter,new_phi,cd_decl = build_cdphi empty_counter fresh_main_phi new_store init_decl in
+        (*^^^ get decl from initial counters. added fresh main inputs into new_phi.*)
         let new_repo = build_repo empty_repo new_meths in
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
@@ -68,32 +72,24 @@ let _ =
         let all_decl = decl_of_list def_decl odecl in  (*write decl from everything ontop of default decl*)
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
-        if !debug then print_newline ();
-        if !debug then printf ";;    PARSED TERM: %s" (string_of_term new_term);
-        if !debug then print_newline ();
+        if !debug then printf ";;    PARSED TERM: %s\n" (string_of_term new_term);
         if !debug then print_newline ();
         if !debug then printf ";;    SMT-LIB FILE:";
         if !debug then print_newline ();
-        printf "%s" z3_default_type;
-        print_newline ();
+        printf "%s\n" z3_default_type;
         print_custom_ops ();
         print_newline ();
-        time (printf "%s") all_decl "GENERATING TYPE DECLARATIONS";
-        print_newline ();
-        printf "%s" (z3_assertions_of_list init_args_neq_fail_nil);
-        print_newline ();
-        printf "%s" (z3_assertions_of_list (get_fail_neq_nil ()));
-        print_newline ();
-        printf "%s" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES"));
-        print_newline ();
+        time (printf "%s\n") all_decl "GENERATING TYPE DECLARATIONS";
+        printf "%s\n" (z3_assertions_of_list init_args_neq_fail_nil);
+        printf "%s\n" (z3_assertions_of_list (get_fail_neq_nil ()));
+        printf "%s\n" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES"));
         time print_z3_assertion (print_z3_of_proposition,ophi) "GENERATING PROGRAM FORMULA";
         if !assertfail then printf "(assert (= _ret_1_ %s))" (z3_fail_of_tp main_tp);
         print_newline ();
         print_newline ();
         printf "(check-sat)\n;;(get-model)\n";
         z3_getval_of_decl init_decl;
-        print_newline ();
-        print_newline ();
+        exit 0
       with
       | ParseError (msg,(p1,p2)) -> let tok_error = Lexing.lexeme lexbuf in
                                     printf ".....[error]***@]";

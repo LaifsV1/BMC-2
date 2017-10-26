@@ -52,3 +52,5 @@ Temporary Items
 *~
 *.native
 _build
+\#*
+.#*

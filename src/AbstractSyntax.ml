@@ -127,7 +127,7 @@ let rec string_of_vars vars =
   match vars with
   | [] -> failwith "string of empty vars"
   | (x,tp)::[] -> x
-  | (x,tp)::xs -> sprintf "%s,%s" x (string_of_args xs)
+  | (x,tp)::xs -> sprintf "%s,%s" x (string_of_vars xs)
 
 let rec tps_from_vars (vars: _var list) :(tp list)=
   match vars with
@@ -263,6 +263,13 @@ let (|||) p1 p2 =
   | _,False -> p1
   | _,_ -> Or(p1,p2)
 
+let rec z3_create_fresh_inputs fresh (xs:_decl) fresh_acc phi decl_acc :(_name list * proposition * _decl) =
+  match xs with
+  | [] -> fresh_acc,phi,decl_acc
+  | (x,tp)::xs ->
+     let fresh_x = fresh () in
+     z3_create_fresh_inputs fresh xs (fresh_x::fresh_acc) ((x===fresh_x) &&& phi) ((fresh_x,tp)::decl_acc)
+         
 (********************************************)
 (* Method Repository and Reference Counters *)
 (********************************************)
@@ -333,7 +340,7 @@ type ptypes = tp PTypes.t
 let empty_ptypes :(ptypes) = PTypes.empty
 let ptypes_get map key = try PTypes.find key map with Not_found -> failwith (sprintf "variable %s not found" key)
 let ptypes_add map key new_val = PTypes.add key new_val map
-let get_ptypes_decl map acc :(_decl) = PTypes.fold (fun key tp acc -> (key,z3_of_tp tp)::acc ) map acc
+let get_ptypes_decl map acc :(_decl * _var list) = PTypes.fold (fun key tp (decl_acc,var_acc) -> ((key,z3_of_tp tp)::decl_acc,(key,tp)::var_acc)) map acc
 
 let rec get_neq_fail_nil args acc =
   match args with
@@ -347,7 +354,7 @@ let get_main_args_assertions map acc = get_neq_fail_nil (PTypes.bindings map) ac
 (*********************)
 type assignlist = (_ref * _val) list
 type methlist = (_meth * (_var list * term * tp)) list
-type file = assignlist * methlist * term * _decl * proposition list
+type file = assignlist * methlist * term * _decl * _var list * proposition list
 
 let rec build_cdphi counter phi (alist : assignlist) acc :(counter * proposition * _decl) =
   match alist with
