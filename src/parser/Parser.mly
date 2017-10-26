@@ -34,6 +34,7 @@
 %token Then_TERM
 %token Else_TERM
 %token PAIR_OP
+%token Assert_TERM
 (*%token Apply_TERM_OP*)
 
 (*** OTHER-TOKENS ***)
@@ -54,7 +55,7 @@
 (*** TERMS ***)
 (*%nonassoc COMMA*)
 %left ARROW_OP
-%nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP
+(*%nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP*)
 %left MINUS_OP PLUS_OP
 %left TIMES_OP
 (*%nonassoc Apply_TERM_OP*)
@@ -83,16 +84,16 @@
 (*** FILE ***)
 file:
 | STORE COLON store METHOD COLON repo MAIN main_vars COLON tp COLON term EOF { let args = !ptypes_main_args in
-  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in 
+  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in
   	      	    	   	      	   	     	      	    	       ($3,$6,$12,z3_args,var_args,get_main_args_assertions args []),$10 }
 | METHOD COLON repo MAIN main_vars COLON tp COLON term EOF                   { let args = !ptypes_main_args in
-  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in 
+  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in
                                                                                ([],$3,$9 ,z3_args,var_args,get_main_args_assertions args []), $7 }
 | STORE COLON store MAIN main_vars COLON tp COLON term EOF                   { let args = !ptypes_main_args in
-  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in 
+  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in
                                                                                ($3,[],$9 ,z3_args,var_args,get_main_args_assertions args []), $7 }
 | MAIN main_vars COLON tp COLON term EOF                                     { let args = !ptypes_main_args in
-  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in 
+  	      	    	   	       	   	     	      	    	       let z3_args,var_args = get_ptypes_decl args ([],[]) in
                                                                                ([],[],$6 ,z3_args,var_args,get_main_args_assertions args []), $4 }
 | error                                                                      { raise (parse_failure "file" $startpos $endpos) }
 
@@ -132,6 +133,10 @@ simple_term:
 | Deref_TERM_OP NAME  { let x = $2 in
                         let tp = ptypes_get (!ptypes_seen) x in
                         Deref (x,tp) }
+| OPEN_PAREN term CLOSE_PAREN { $2 }
+
+term:
+| simple_term                       { $1 }
 | simple_term PLUS_OP  simple_term  { BinOp("+",$1,$3) }
 | simple_term MINUS_OP simple_term  { BinOp("-",$1,$3) }
 | simple_term TIMES_OP simple_term  { BinOp("*",$1,$3) }
@@ -140,10 +145,6 @@ simple_term:
 | simple_term EQ_OP    simple_term  { BinOp("eq",$1,$3) }
 | simple_term AND_OP   simple_term  { BinOp("and_int",$1,$3) }
 | simple_term OR_OP    simple_term  { BinOp("or_int",$1,$3) }
-| OPEN_PAREN term CLOSE_PAREN { $2 }
-
-term:
-| simple_term                                               { $1 }
 | Lambda_TERM vars COLON tp ARROW_OP term                   { Lambda($2,$6,Arrow(tps_from_vars $2,$4)) }
 | OPEN_PAREN Left_TERM_OP COLON tp CLOSE_PAREN simple_term  { Left ($6,$4) }
 | OPEN_PAREN Right_TERM_OP COLON tp CLOSE_PAREN simple_term { Right ($6,$4) }
@@ -159,6 +160,7 @@ term:
                                                             let tp = ptypes_get (!ptypes_seen) x in
                                                             ApplyX((x,tp),$2) } (*%prec Apply_TERM_OP*)
 | If_TERM term Then_TERM term Else_TERM term         { If($2,$4,$6) }
+| Assert_TERM simple_term                            { If($2,Skip,Fail) }
 | error                                              { raise (parse_failure "term" $startpos $endpos) }
 
 terms:

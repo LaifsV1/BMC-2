@@ -54,6 +54,7 @@ rule read = parse
   | "if"            { If_TERM }
   | "then"          { Then_TERM }
   | "else"          { Else_TERM }
+  | "assert"        { Assert_TERM }
   | "Pair"          { PAIR_OP }
   | "Methods"       { METHOD }
   | "Store"         { STORE }

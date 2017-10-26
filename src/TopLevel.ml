@@ -89,7 +89,6 @@ let _ =
         print_newline ();
         printf "(check-sat)\n;;(get-model)\n";
         z3_getval_of_decl init_decl;
-        exit 0
       with
       | ParseError (msg,(p1,p2)) -> let tok_error = Lexing.lexeme lexbuf in
                                     printf ".....[error]***@]";
