@@ -15,6 +15,6 @@ The command above prints the following
 
     real        0m0.028s
     user        0m0.018s
-    sys	        0m0.013s
+    sys         0m0.013s
 
 where program fails with input `n = 102`.
