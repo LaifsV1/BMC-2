@@ -55,7 +55,7 @@
 (*** TERMS ***)
 (*%nonassoc COMMA*)
 %left ARROW_OP
-(*%nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP*)
+%nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP
 %left MINUS_OP PLUS_OP
 %left TIMES_OP
 (*%nonassoc Apply_TERM_OP*)
@@ -137,14 +137,14 @@ simple_term:
 
 term:
 | simple_term                       { $1 }
-| simple_term PLUS_OP  simple_term  { BinOp("+",$1,$3) }
-| simple_term MINUS_OP simple_term  { BinOp("-",$1,$3) }
-| simple_term TIMES_OP simple_term  { BinOp("*",$1,$3) }
-| simple_term GTE_OP   simple_term  { BinOp("gte",$1,$3) }
-| simple_term LTE_OP   simple_term  { BinOp("lte",$1,$3) }
-| simple_term EQ_OP    simple_term  { BinOp("eq",$1,$3) }
-| simple_term AND_OP   simple_term  { BinOp("and_int",$1,$3) }
-| simple_term OR_OP    simple_term  { BinOp("or_int",$1,$3) }
+| term PLUS_OP  term  { BinOp("+",$1,$3) }
+| term MINUS_OP term  { BinOp("-",$1,$3) }
+| term TIMES_OP term  { BinOp("*",$1,$3) }
+| term GTE_OP   term  { BinOp("gte",$1,$3) }
+| term LTE_OP   term  { BinOp("lte",$1,$3) }
+| term EQ_OP    term  { BinOp("eq",$1,$3) }
+| term AND_OP   term  { BinOp("and_int",$1,$3) }
+| term OR_OP    term  { BinOp("or_int",$1,$3) }
 | Lambda_TERM vars COLON tp ARROW_OP term                   { Lambda($2,$6,Arrow(tps_from_vars $2,$4)) }
 | OPEN_PAREN Left_TERM_OP COLON tp CLOSE_PAREN simple_term  { Left ($6,$4) }
 | OPEN_PAREN Right_TERM_OP COLON tp CLOSE_PAREN simple_term { Right ($6,$4) }
