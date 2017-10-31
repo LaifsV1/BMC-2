@@ -70,15 +70,14 @@ let rec subslist (m : term) (ts : _var list) (ys : _var list) =
   match ts,ys with
   | [t],[y] -> subs m t y
   | t::ts, y::ys -> subslist (subs m t y) ts ys
-  | _ -> failwith "not same number of arguments"
+  | _ -> failwith "not same number of arguments (1)"
 
 let rec untyped_subslist (m : term) (ts : _name list) (ys : _var list) =
   match ts,ys with
-  | [t],[y,tp] -> subs m (t,tp) (y,tp)
+  | [],[] -> m
   | t::ts, (y,tp)::ys -> untyped_subslist (subs m (t,tp) (y,tp)) ts ys
-  | _ -> failwith "not same number of arguments"
+  | _ -> failwith (sprintf "not same number of arguments (2): %s" (string_of_term m))
 
-       
 (*******************)
 (* BMC Translation *)
 (*******************)
@@ -197,10 +196,9 @@ let rec bmc_translation
          let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t r c d phi k (snd aref) new_tps ptc ptd in
          let c1',caref = c_update c aref in
          let d1',daref = d_update d aref (cd_get c1' aref) in
-         let d1_r' = ref_get d1' aref in
-         let guard_1,tpsg1 = (f ret1 ret_tp ((ret===tskip) &&& (d1_r'===(fst ret1))) q1 tps1) in
+         let guard_1,tpsg1 = (f ret1 ret_tp ((ret===tskip) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& (daref===(fst ret1))) q1 tps1) in
          (ret_tp,guard_1 &&& phi1,r1,c1',d1',q1,
-          (daref,z3_of_tp (snd aref))::(caref,z3_of_tp (snd aref))::tpsg1,
+          (daref,z3_of_tp (snd aref))::tpsg1,
           pts_update ptc1 aref (pts_union (pts_get ptd1 aref) (pts_get ptd1 ret1)),pts_update ptd1 aref (pts_union (pts_get ptd1 aref) (pts_get ptd1 ret1)))
       | Pair(t1,t2) ->
          let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t1 r c d phi k (left_tp etype) new_tps ptc ptd in
@@ -235,7 +233,7 @@ let rec bmc_translation
       | If(tb,t1,t0) ->
          let (retb,phib,rb,cb,db,qb,tpsb,ptcb,ptdb) = bmc_translation tb r c d phi k Integer new_tps ptc ptd in
          let (ret0,phi0,r0,c0,d0,q0,tps0,ptc0,ptd0) = bmc_translation t0 rb cb db phib k etype tpsb ptcb ptdb in
-         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t1 r0 c0 d0 phi0 k etype tps0 ptc0 ptdb in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation t1 r0 c0 db phi0 k etype tps0 ptc0 ptdb in
          let c',varsc' = c_update_all c1 tps1 in
          let guard_0,tpsg0 = (f ret0 ret_tp ((ret===(fst ret0)) &&& (c_wedge c' d0)) q0 varsc') in
          let guard_1,tpsg1 = (f ret1 ret_tp ((ret===(fst ret1)) &&& (c_wedge c' d1)) q1 tpsg0) in

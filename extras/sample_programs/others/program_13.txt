@@ -1,0 +1,13 @@
+Store:
+r:Int := 1;
+
+Methods:
+f (x:Int) :(Unit->Int) =
+  if (x==0)
+  then (fun (y:Unit) :Int -> !r)
+  else let (a:Unit) = r := (!r + 1) in
+       f (x + -1);
+
+Main () :(Unit):
+let (g:Unit->Int) = f 5 in
+assert ((g skip) == 5)

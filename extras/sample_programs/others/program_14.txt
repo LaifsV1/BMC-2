@@ -1,0 +1,10 @@
+Store:
+r:Int := 1;
+
+Main () :(Unit):
+let (x:Unit) =
+if 1 then r := (!r + 1)
+     else if 0 then r := (!r + 2)
+               else r := (!r + 3)
+in
+assert(!r == 2)

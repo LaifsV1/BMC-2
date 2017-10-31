@@ -1,0 +1,2 @@
+Main (f:Int->Int) :(Int):
+f 5

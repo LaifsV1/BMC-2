@@ -269,7 +269,7 @@ let rec z3_create_fresh_inputs fresh (xs:_decl) fresh_acc phi decl_acc :(_name l
   | (x,tp)::xs ->
      let fresh_x = fresh () in
      z3_create_fresh_inputs fresh xs (fresh_x::fresh_acc) ((x===fresh_x) &&& phi) ((fresh_x,tp)::decl_acc)
-         
+
 (********************************************)
 (* Method Repository and Reference Counters *)
 (********************************************)
