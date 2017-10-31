@@ -248,7 +248,7 @@ let rec bmc_translation
              (let args,rets,phi0,r0,c0,d0,q0,tps0,ptc0,ptd0 = bmc_args one ts r c d phi k new_tps [] [] Val ptc ptd in
               let r_tp = get_method_body_of_list r (pts_get_methods ptd0 (x,tp)) [] in
               match r_tp with
-              | [] -> (ret_tp,phi0,r0,c0,c0,q0,tps0,ptc0,ptc0)
+              | [] -> (ret_tp,(ret =/= (z3_nil_of_tp etype)) &&& (ret =/= (z3_fail_of_tp etype)) &&& phi0,r0,c0,c0,q0,tps0,ptc0,ptc0)
               | _ ->
                  let phin,rn,cn,xs,tpsn,ptcn =
                    List.fold_left
