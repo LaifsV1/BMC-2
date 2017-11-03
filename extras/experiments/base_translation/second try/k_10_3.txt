@@ -1,0 +1,175 @@
+10
+ack
+
+real	0m10.009s
+user	0m9.970s
+sys	0m0.042s
+
+copy_intro
+unsat
+
+real	0m0.093s
+user	0m0.091s
+sys	0m0.006s
+
+e-fact
+unsat
+
+real	0m0.027s
+user	0m0.024s
+sys	0m0.007s
+
+e-simple
+unsat
+
+real	0m0.010s
+user	0m0.008s
+sys	0m0.005s
+
+hors
+unsat
+
+real	0m0.019s
+user	0m0.018s
+sys	0m0.005s
+
+hrec
+
+real	0m10.004s
+user	0m9.997s
+sys	0m0.008s
+
+intro1
+unsat
+
+real	0m0.010s
+user	0m0.008s
+sys	0m0.004s
+
+intro3
+unsat
+
+real	0m0.010s
+user	0m0.008s
+sys	0m0.004s
+
+l-zipmap
+unsat
+
+real	0m0.140s
+user	0m0.138s
+sys	0m0.005s
+
+l-zipunzip
+unsat
+
+real	0m0.060s
+user	0m0.057s
+sys	0m0.009s
+
+max
+unsat
+
+real	0m0.012s
+user	0m0.008s
+sys	0m0.007s
+
+mc91-e
+sat
+((n 102))
+
+real	0m10.442s
+user	0m10.431s
+sys	0m0.080s
+
+mc91
+unsat
+
+real	1m8.209s
+user	1m8.055s
+sys	0m0.209s
+
+mult-e-m1
+sat
+((n (- 2)))
+
+real	0m0.049s
+user	0m0.037s
+sys	0m0.007s
+
+mult-e-m2
+sat
+((n 4))
+((m 1))
+
+real	0m0.055s
+user	0m0.053s
+sys	0m0.007s
+
+mult-e
+sat
+((n 0))
+
+real	0m0.024s
+user	0m0.021s
+sys	0m0.006s
+
+mult-m1
+unsat
+
+real	0m0.392s
+user	0m0.385s
+sys	0m0.011s
+
+mult
+unsat
+
+real	0m0.048s
+user	0m0.046s
+sys	0m0.005s
+
+repeat-e
+sat
+((n 0))
+
+real	0m0.019s
+user	0m0.016s
+sys	0m0.006s
+
+r-lock-e
+sat
+((n 0))
+
+real	0m0.019s
+user	0m0.017s
+sys	0m0.004s
+
+r-lock
+unsat
+
+real	0m0.014s
+user	0m0.012s
+sys	0m0.005s
+
+sum-e-m1
+sat
+((n 0))
+
+real	0m0.016s
+user	0m0.015s
+sys	0m0.003s
+
+sum-e
+sat
+((n 1))
+
+real	0m0.037s
+user	0m0.037s
+sys	0m0.003s
+
+sum
+unsat
+
+real	0m0.050s
+user	0m0.048s
+sys	0m0.005s

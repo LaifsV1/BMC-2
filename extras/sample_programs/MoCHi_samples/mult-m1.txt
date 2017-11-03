@@ -6,6 +6,4 @@ mult (n:Int,m:Int) :(Int) =
     n + (mult (n,m + -1));
 
 Main (n:Int,m:Int) :Unit:
-assert ((mult(n,m)) == (mult(m,n)))
-
-(* should fail for n=0 and m=1, for instance *)
+if ((mult(n,m)) == (mult(m,n))) then skip else fail

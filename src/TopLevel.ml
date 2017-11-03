@@ -62,7 +62,7 @@ let _ =
                                                                             new_counter
                                                                             new_counter
                                                                             new_phi
-                                                                            (nat_of_int bound)
+                                                                            (Suc(nat_of_int bound))
                                                                             main_tp
                                                                             cd_decl
                                                                             empty_ptsmap)
