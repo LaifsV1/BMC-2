@@ -171,11 +171,14 @@ let rec bmc_translation
       | Deref aref ->
          let d_r = ref_get d aref in
          (match etype with
-          | Unit    -> failwith "you shouldn't be able to store Unit in refs"
+          | Unit    -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
           | Integer -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
           | Arrow _ -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps,
                         pts_update ptc (ret_tp) (pts_get ptd aref),pts_update ptd (ret_tp) (pts_get ptd aref))
-          | Product (tp1,tp2) -> failwith "you shouldn't be able to store products in refs")
+          | Product (tp1,tp2) ->
+             let n,is_new = get_type_number etype in
+             let new_tps' = if is_new then (tnil_n n,z3_of_tp etype)::(tfail_n n,z3_of_tp etype)::new_tps else new_tps in
+             (ret_tp,(ret===d_r) &&& (ret=/=tnil_n n) &&& (ret=/=tfail_n n) &&& phi,r,c,d,Nil,new_tps',ptc,ptd))
       | Lambda(x,t,tp') ->
          let new_meth = fresh_m () in
          let r' = repo_update r new_meth (x,t,tp') in
