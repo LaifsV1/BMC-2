@@ -29,6 +29,7 @@
 %token Right_TERM_OP
 %token Assign_TERM_OP
 %token Let_TERM
+%token Rec_TERM
 %token In_TERM
 %token If_TERM
 %token Then_TERM
@@ -54,7 +55,7 @@
 	/*~~~~~~~~~~~~~~~~~~~*/
 (*** TERMS ***)
 (*%nonassoc COMMA*)
-%left ARROW_OP
+%right ARROW_OP
 %nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP
 %left MINUS_OP PLUS_OP
 %left TIMES_OP
@@ -153,6 +154,9 @@ term:
                                                               Assign((x,tp),$3) }
 | PAIR_OP OPEN_PAREN term COMMA term CLOSE_PAREN     { Pair($3,$5) }
 | Let_TERM var EQUALS_OP term In_TERM term           { Let($2,$4,$6) }
+| Let_TERM Rec_TERM var EQUALS_OP
+  	   Lambda_TERM vars COLON tp ARROW_OP term
+	   In_TERM term                              { Letrec($3,$6,$10,$12) }
 | NAME terms                                         { let b = prepo_exists (!methods_seen) $1 in
                                                        if b
                                                        then ApplyM($1,$2)
@@ -204,7 +208,7 @@ tp:
 | tp TIMES_OP tp            { Product($1,$3) }
 
 tps:
-| tp                                { [$1] }
+| tp                         { [$1] }
 | OPEN_PAREN tps_helper CLOSE_PAREN { $2 }
 
 tps_helper:

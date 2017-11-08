@@ -141,6 +141,7 @@ type term = Fail | Skip | Int of int | Method of _meth
             | Pair of term * term | BinOp of _binop * term * term
             | Let of _var * term * term | ApplyM of _meth * term list
             | If of term * term * term | ApplyX of _var * term list
+            | Letrec of _var * _var list * term * term
 let rec string_of_term (t : term) :(string) =
   match t with
   | Fail -> tfail
@@ -171,7 +172,10 @@ let rec string_of_term (t : term) :(string) =
                                                           match acc with
                                                           | "" -> string_of_term ti
                                                           | _ -> sprintf "%s %s" (string_of_term ti) acc) t "")
-
+  | Letrec((x,tp),xs,t1,t2) ->
+     sprintf "(letrec (%s:%s) = fun %s :%s -> %s in %s)"
+             x (string_of_tp tp) (string_of_args xs) (string_of_tp tp) (string_of_term t1) (string_of_term t2)
+    
 let string_of_typed_term t tp = sprintf "(%s : %s)" (string_of_term t) (string_of_tp tp)
 
 let rec z3_getval_of_decl (xs:_decl) =

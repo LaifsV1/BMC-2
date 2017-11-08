@@ -65,6 +65,17 @@ let rec subs (m : term) (t : _var) (y : _var) =
   | ApplyX(x,t') -> if x = y
                     then ApplyX(t,List.map (fun ti -> subs ti t y) t')
                     else ApplyX(x,List.map (fun ti -> subs ti t y) t')
+  | Letrec(f,xs,t1,t2) ->
+     if f = y
+     then let f' = (fresh_x (),snd f) in
+          Letrec(f',xs,subs t1 f' f,subs t2 f' f)
+     else
+       if List.mem t xs then failwith "accidental binding in subs"
+       else 
+         if List.mem y xs 
+         then (printf "\n ;;;;;; WARNING: t = y \n";  (* WARNING: this is not standard *)
+               Letrec(f,xs,t1,subs t2 t y))
+         else Letrec(f,xs,subs t1 t y,subs t2 t y)
 
 let rec subslist (m : term) (ts : _var list) (ys : _var list) =
   match ts,ys with
@@ -171,14 +182,14 @@ let rec bmc_translation
       | Deref aref ->
          let d_r = ref_get d aref in
          (match etype with
-          | Unit    -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
-          | Integer -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
-          | Arrow _ -> (ret_tp,(ret===d_r) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps,
+          | Unit    -> (ret_tp,(ret===d_r) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
+          | Integer -> (ret_tp,(ret===d_r) &&& phi,r,c,d,Val,new_tps,ptc,ptd)
+          | Arrow _ -> (ret_tp,(ret===d_r) &&& phi,r,c,d,Val,new_tps,
                         pts_update ptc (ret_tp) (pts_get ptd aref),pts_update ptd (ret_tp) (pts_get ptd aref))
           | Product (tp1,tp2) ->
              let n,is_new = get_type_number etype in
              let new_tps' = if is_new then (tnil_n n,z3_of_tp etype)::(tfail_n n,z3_of_tp etype)::new_tps else new_tps in
-             (ret_tp,(ret===d_r) &&& (ret=/=tnil_n n) &&& (ret=/=tfail_n n) &&& phi,r,c,d,Nil,new_tps',ptc,ptd))
+             (ret_tp,(ret===d_r) &&& phi,r,c,d,Nil,new_tps',ptc,ptd))
       | Lambda(x,t,tp') ->
          let new_meth = fresh_m () in
          let r' = repo_update r new_meth (x,t,tp') in
@@ -224,6 +235,16 @@ let rec bmc_translation
          let guard_2,tpsg2 = (f ret1 ret_tp guard_1 q1 tpsg1) in
          (ret_tp,guard_2 &&& phi2,r2,c2,d2,q1+++q2,tpsg2,
           pts_update ptc2 ret_tp (pts_get ptd2 ret2),pts_update ptd2 ret_tp (pts_get ptd2 ret2))
+      | Letrec((f,tp),xs,t1,t2) ->
+         let new_meth = fresh_m () in
+         let new_f    = fresh_x () in
+         let r' = repo_update r new_meth (xs,subs t1 (new_f,tp) (f,tp),tp) in
+         let ptc' = pts_update ptc (new_f,tp) (Meths [new_meth]) in
+         let ptd' = pts_update ptd (new_f,tp) (Meths [new_meth]) in
+         let (ret1,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1) = bmc_translation (subs t2 (new_f,tp) (f,tp))
+                                                                      r' c d ((new_f === (sprintf "\"%s\""new_meth)) &&& phi) k etype
+                                                                      ((new_f,z3_of_tp tp)::new_tps) ptc' ptd' in
+         (ret_tp,(ret===(fst ret1))&&&phi1,r1,c1,d1,q1,tps1,ptc1,ptd1)
       | ApplyM(m,ts) ->
          let (xs,n,tp) = repo_get r m in
          let args,rets,phi1,r1,c1,d1,q1,tps1,ptc1,ptd1 = bmc_args (List.map snd xs) ts r c d phi k new_tps [] [] Val ptc ptd in

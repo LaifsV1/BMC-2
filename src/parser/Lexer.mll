@@ -50,6 +50,7 @@ rule read = parse
   | ":="            { Assign_TERM_OP }
   | "="             { EQUALS_OP }
   | "let"           { Let_TERM }
+  | "rec"           { Rec_TERM }
   | "in"            { In_TERM }
   | "if"            { If_TERM }
   | "then"          { Then_TERM }
