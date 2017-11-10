@@ -41,6 +41,7 @@ let get_global_types () =
 (**********************)
 (* Substitute: M{t/y} *)
 (**********************)
+(* THIS ASSUMES t IS ALWAYS FRESH, WHICH IT IS IN THE TRANSLATION *)
 let rec subs (m : term) (t : _var) (y : _var) =
   match m with
   | Fail | Skip | Int _ | Method _ | Deref _ -> m
@@ -57,8 +58,7 @@ let rec subs (m : term) (t : _var) (y : _var) =
   | Pair(t1,t2) -> Pair(subs t1 t y, subs t2 t y)
   | BinOp(op,t1,t2) -> BinOp(op,subs t1 t y,subs t2 t y)
   | Let(x,t1,t2) -> if x = y
-                    then let x' = (fresh_x (),snd x) in
-                         Let(x',subs t1 t y,subs t2 x' x)
+                    then Let(x,t1,t2)
                     else Let(x,subs t1 t y,subs t2 t y)
   | ApplyM(m,t') -> ApplyM(m,List.map (fun ti -> subs ti t y) t')
   | If(tb,t1,t0) -> If(subs tb t y,subs t1 t y,subs t0 t y)
@@ -67,12 +67,11 @@ let rec subs (m : term) (t : _var) (y : _var) =
                     else ApplyX(x,List.map (fun ti -> subs ti t y) t')
   | Letrec(f,xs,t1,t2) ->
      if f = y
-     then let f' = (fresh_x (),snd f) in
-          Letrec(f',xs,subs t1 f' f,subs t2 f' f)
+     then Letrec(f,xs,t1,t2)
      else
        if List.mem t xs then failwith "accidental binding in subs"
-       else 
-         if List.mem y xs 
+       else
+         if List.mem y xs
          then (printf "\n ;;;;;; WARNING: t = y \n";  (* WARNING: this is not standard *)
                Letrec(f,xs,t1,subs t2 t y))
          else Letrec(f,xs,subs t1 t y,subs t2 t y)

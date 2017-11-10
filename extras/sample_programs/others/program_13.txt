@@ -1,5 +1,5 @@
 Store:
-r:Int := 1;
+r:Int := 0;
 
 Main () :(Unit):
 let rec (f:Int->(Unit->Int)) =
