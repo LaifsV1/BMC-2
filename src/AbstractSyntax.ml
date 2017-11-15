@@ -13,6 +13,10 @@ let rec nat_of_int (i : int) :(nat) =
   match i > 0 with
   | true -> Suc(nat_of_int (i-1))
   | false -> Nil
+let rec int_of_nat (i : nat) :(int) =
+  match i with
+  | Nil -> -1
+  | Suc(k) -> int_of_nat k + 1
 
 (*********)
 (* Types *)
@@ -175,7 +179,7 @@ let rec string_of_term (t : term) :(string) =
   | Letrec((x,tp),xs,t1,t2) ->
      sprintf "(letrec (%s:%s) = fun %s :%s -> %s in %s)"
              x (string_of_tp tp) (string_of_args xs) (string_of_tp tp) (string_of_term t1) (string_of_term t2)
-    
+
 let string_of_typed_term t tp = sprintf "(%s : %s)" (string_of_term t) (string_of_tp tp)
 
 let rec z3_getval_of_decl (xs:_decl) =
@@ -377,8 +381,19 @@ let rec build_repo repo methods :(repo) =
 (* Points-to Analyisis *)
 (***********************)
 type _pts = Meths of (_meth list) | Pair of (_pts * _pts)
+
+let rec string_of_list xs =
+  match xs with
+  | [] -> ""
+  | x::xs -> sprintf "%s,%s" x (string_of_list xs)
+
+let rec string_of_pts (pts:_pts) =
+  match pts with
+  | Meths xs -> sprintf "[%s]" (string_of_list xs)
+  | Pair(a,b) -> sprintf "(%s,%s)" (string_of_pts a) (string_of_pts b)
+
 let empty_pts = Meths []
-                                          
+
 let pts_left pts =
   match pts with
   | Meths _ -> failwith "tried to left project points-to set"
@@ -391,14 +406,14 @@ let pts_right pts =
 
 let rec pts_union (a:_pts) (b:_pts) =
   match a,b with
-  | Meths a, Meths b -> Meths (List.rev_append a b)
+  | Meths a, Meths b -> Meths (List.sort_uniq compare (List.rev_append a b))
   | Pair(a1,a2), Pair(b1,b2) -> Pair(pts_union a1 b1,pts_union a2 b2)
   | _ -> failwith "pts type mismatch"
 
 (*we already have Counter which takes in a _ref*)
 type ptsmap = _pts Counter.t
 let empty_ptsmap :(ptsmap) = Counter.empty
-                           
+
 let rec print_meths ms =
   match ms with
   | Meths [] -> ""
@@ -406,12 +421,25 @@ let rec print_meths ms =
   | _ -> failwith "tried to print not Meths"
 
 let pts_get map key = try Counter.find key map with Not_found -> empty_pts
-let pts_update  map key new_pts = Counter.add key new_pts map
+let pts_update  map key new_pts =
+  (* printf "\n;;;ADDED KEY TO PTSMAP: (%s,%s) --> %s\n" (fst key) (string_of_tp (snd key)) (string_of_pts new_pts); *)
+  match snd key with
+  | Arrow _ -> Counter.add key new_pts map
+  | _ -> map
 
 let pts_get_methods map key =
   match pts_get map key with
   | Meths m -> m
   | _ -> failwith "pts set is not a set"
+
+let previous_time = ref (Sys.time())
+
+let time' f x =
+    let t = Sys.time() in
+    let fx = f x in
+    previous_time := (!previous_time +. (Sys.time() -. t));
+    printf "\n;;;; TIME TAKEN SO FAR: %fs\n" (!previous_time);
+    fx
 
 let ptsmap_merge (pt1:ptsmap) (pt2:ptsmap) =
   let f k a b =

@@ -148,7 +148,7 @@ let rec bmc_translation
   let ret = fresh_ret () in
   let ret_tp = ret,etype in
   let new_tps = (ret,z3_of_tp etype)::tps in (* (ret1,type1)::(ret2,type2)::tps *)
-  (*printf "%s,%s\n" ret (string_of_term m);*)
+  (* printf "%s,%d,%s\n" ret (int_of_nat k) (string_of_term m); *)
   match k with
   | Nil ->
      (match etype with
@@ -262,7 +262,7 @@ let rec bmc_translation
              (let args,rets,phi0,r0,c0,d0,q0,tps0,pt0 = bmc_args one ts r c d phi k new_tps [] [] Val pt in
               let r_tp = get_method_body_of_list r (pts_get_methods pt0 (x,tp)) [] in
               match r_tp with
-              | [] -> (ret_tp,(ret=/=(z3_nil_of_tp etype))&&&(ret=/=(z3_fail_of_tp etype))&&&phi0,r0,c0,c0,q0,tps0,empty_pts,pt0)
+              | [] -> (*printf "\n;;;;;;RET = %s \n" ret;*) (ret_tp,(ret=/=(z3_nil_of_tp etype))&&&(ret=/=(z3_fail_of_tp etype))&&&phi0,r0,c0,c0,q0,tps0,empty_pts,pt0)
               | _ ->
                  let phin,rn,cn,xs,tpsn,an',ptn' =
                    List.fold_left
@@ -296,5 +296,5 @@ let rec bmc_translation
     | x::xs,t::ts -> let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1) = bmc_translation t r c d phi k x new_tps pt in
                      let new_acc = (ret1,q1)::acc in
                      let new_rets = ret1::rets in
-                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q) pt1
+                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q) (pts_update pt1 ret1 a1)
     | _ -> failwith "number of arguments mismatch"

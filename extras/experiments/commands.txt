@@ -1,0 +1,23 @@
+grep -vwE "\(" results_1.txt > results_11.txt
+grep -vwE "(sat|unsat)" results_11.txt > results_12.txt
+grep -vwE "(sys|user)" results_12.txt > results_13.txt
+sed -i '/^$/d' results_13.txt
+
+grep -vwE "\(" results_2.txt > results_21.txt
+grep -vwE "(sat|unsat)" results_21.txt > results_22.txt
+grep -vwE "(sys|user)" results_22.txt > results_23.txt
+sed -i '/^$/d' results_23.txt
+
+grep -vwE "\(" results_3.txt > results_31.txt
+grep -vwE "(sat|unsat)" results_31.txt > results_32.txt
+grep -vwE "(sys|user)" results_32.txt > results_33.txt
+sed -i '/^$/d' results_33.txt
+
+
+THEN USE EMACS TO:
+REPLACE `\nreal` with nothing.
+REPLACE `s\n` with `\n`.
+REPLACE `0m` with nothing.
+Input C-q C-j
+
+THEN TRANSPOSE WITH LibreOffice
