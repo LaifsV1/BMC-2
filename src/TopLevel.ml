@@ -57,15 +57,14 @@ let _ =
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
         if !debug then printf ";;    @[***Running bounded translation...";
-        let (oret,ophi,oR,oC,oD,oq,odecl,ptco,ptdo) = time (bmc_translation new_term (*get refs decl from translation*)
-                                                                            new_repo
-                                                                            new_counter
-                                                                            new_counter
-                                                                            new_phi
-                                                                            (Suc(nat_of_int bound))
-                                                                            main_tp
-                                                                            cd_decl
-                                                                            empty_ptsmap)
+        let (oret,ophi,oR,oC,oD,oq,odecl,ao,pto) = time (bmc_translation new_term (*get refs decl from translation*)
+                                                                         new_repo
+                                                                         new_counter
+                                                                         new_counter
+                                                                         new_phi
+                                                                         (Suc(nat_of_int bound))
+                                                                         main_tp
+                                                                         cd_decl)
                                                            empty_ptsmap "BOUNDED TRANSLATION" in
         (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
         let def_decl = decl_of_list "" get_default_decl in (*write decl from defaul_decl*)

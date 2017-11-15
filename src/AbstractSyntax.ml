@@ -377,7 +377,8 @@ let rec build_repo repo methods :(repo) =
 (* Points-to Analyisis *)
 (***********************)
 type _pts = Meths of (_meth list) | Pair of (_pts * _pts)
-
+let empty_pts = Meths []
+                                          
 let pts_left pts =
   match pts with
   | Meths _ -> failwith "tried to left project points-to set"
@@ -397,14 +398,14 @@ let rec pts_union (a:_pts) (b:_pts) =
 (*we already have Counter which takes in a _ref*)
 type ptsmap = _pts Counter.t
 let empty_ptsmap :(ptsmap) = Counter.empty
-
+                           
 let rec print_meths ms =
   match ms with
   | Meths [] -> ""
   | Meths (m::ms) -> sprintf "%s,%s" m (print_meths (Meths ms))
   | _ -> failwith "tried to print not Meths"
 
-let pts_get  map key = try Counter.find key map with Not_found -> Meths []
+let pts_get map key = try Counter.find key map with Not_found -> empty_pts
 let pts_update  map key new_pts = Counter.add key new_pts map
 
 let pts_get_methods map key =
@@ -412,12 +413,20 @@ let pts_get_methods map key =
   | Meths m -> m
   | _ -> failwith "pts set is not a set"
 
-let rec tfail_prod tp :(_pts)=
-  match tp with
-  | Product (a,b) -> Pair(tfail_prod a, tfail_prod b)
-  | _ -> Meths([tfail_m])
+let ptsmap_merge (pt1:ptsmap) (pt2:ptsmap) =
+  let f k a b =
+    match a,b with
+    | None,None -> None
+    | x,None | None,x -> x
+    | Some a, Some b -> Some (pts_union a b)
+  in Counter.merge f pt1 pt2
 
-let rec tnil_prod tp :(_pts)=
-  match tp with
-  | Product (a,b) -> Pair(tnil_prod a, tnil_prod b)
-  | _ -> Meths([tnil_m])
+(* let rec tfail_prod tp :(_pts)=                        *)
+(*   match tp with                                       *)
+(*   | Product (a,b) -> Pair(tfail_prod a, tfail_prod b) *)
+(*   | _ -> Meths([tfail_m])                             *)
+(*                                                       *)
+(* let rec tnil_prod tp :(_pts)=                         *)
+(*   match tp with                                       *)
+(*   | Product (a,b) -> Pair(tnil_prod a, tnil_prod b)   *)
+(*   | _ -> Meths([tnil_m])                              *)
