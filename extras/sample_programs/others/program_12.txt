@@ -1,2 +1,12 @@
-Main (f:Int->Int) :(Int):
-f 5
+Store:
+r:Int := 0;
+
+Main () :(Unit):
+let (c:Unit) = r := 0 in
+let rec (f:Int->Unit) =
+  fun (x:Int) :(Unit) ->
+    if x then let (c:Unit) = r:=(!r + 1) in
+              f (x + -1)
+         else (fun (y:Int) :(Unit) -> if (y == (!r + x)) then skip else fail)
+in
+let (g:Int->Unit) = f 5 in g 5

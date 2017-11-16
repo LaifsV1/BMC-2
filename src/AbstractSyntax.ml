@@ -204,7 +204,7 @@ let rec string_of_proposition (p : proposition) :(string) =
   | Eq(a,b) -> sprintf "(%s == %s)" a b
   | Neq(a,b) -> sprintf "(%s != %s)" a b
   | Implies(a,b) -> sprintf "(%s => %s)" (string_of_proposition a) (string_of_proposition b)
-  | And(a,b) -> sprintf "(%s && %s)" (string_of_proposition a) (string_of_proposition b)
+  | And(a,b) -> sprintf "%s && %s" (string_of_proposition a) (string_of_proposition b)
   | Or(a,b) -> sprintf "(%s || %s)" (string_of_proposition a) (string_of_proposition b)
 
 let id x = x

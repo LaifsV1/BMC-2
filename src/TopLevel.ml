@@ -57,7 +57,7 @@ let _ =
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
         if !debug then printf ";;    @[***Running bounded translation...";
-        let (oret,ophi,oR,oC,oD,oq,odecl,ao,pto) = time (bmc_translation new_term (*get refs decl from translation*)
+        let (oret,ophi,oR,oC,oD,oq,odecl,oa,opt) = time (bmc_translation new_term (*get refs decl from translation*)
                                                                          new_repo
                                                                          new_counter
                                                                          new_counter
@@ -72,6 +72,8 @@ let _ =
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
         if !debug then printf ";;    PARSED TERM: %s\n" (string_of_term new_term);
+        if !debug then print_newline ();
+        if !debug then printf ";;    PROPOSITIONAL FORMULA: %s\n" (string_of_proposition ophi);
         if !debug then print_newline ();
         if !debug then printf ";;    SMT-LIB FILE:";
         if !debug then print_newline ();
