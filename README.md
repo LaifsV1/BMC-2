@@ -1,6 +1,7 @@
-Build:
+You can find two versions of the implementation: the base algorithm, and an implementation optimised with points-to analysis. The base algorithm is found in `base_algorithm_src`, while the optimised implementation is found in `src`.
 
-    rm TopLevel.native
+To compile:
+
     ocamlbuild -I parser -use-menhir TopLevel.native
 
 Checking a file:
