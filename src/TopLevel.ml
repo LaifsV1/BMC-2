@@ -73,8 +73,8 @@ let _ =
         if !debug then print_newline ();
         if !debug then printf ";;    PARSED TERM: %s\n" (string_of_term new_term);
         if !debug then print_newline ();
-        if !debug then printf ";;    PROPOSITIONAL FORMULA: %s\n" (string_of_proposition ophi);
-        if !debug then print_newline ();
+        (* if !debug then printf ";;    PROPOSITIONAL FORMULA: %s\n" (string_of_proposition ophi); *)
+        (* if !debug then print_newline (); *)
         if !debug then printf ";;    SMT-LIB FILE:";
         if !debug then print_newline ();
         printf "%s\n" z3_default_type;
