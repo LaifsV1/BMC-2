@@ -164,7 +164,7 @@ term:
                                                             let tp = ptypes_get (!ptypes_seen) x in
                                                             ApplyX((x,tp),$2) } (*%prec Apply_TERM_OP*)
 | If_TERM term Then_TERM term Else_TERM term         { If($2,$4,$6) }
-| Assert_TERM simple_term                            { If($2,Skip,Fail) }
+| Assert_TERM simple_term                            { Assert($2) }
 | error                                              { raise (parse_failure "term" $startpos $endpos) }
 
 terms:

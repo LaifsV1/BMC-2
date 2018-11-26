@@ -19,14 +19,11 @@ let time f x s =
     if !timing then Printf.printf "\n;;    %s: %fs\n" s (Sys.time() -. t);
     fx
 
-let print_custom_ops () = printf "(define-fun add ((x (Maybe Int)) (y (Maybe Int))) (Maybe Int) (maybe (+ (val x) (val y))))\n";
-                          printf "(define-fun minus ((x (Maybe Int)) (y (Maybe Int))) (Maybe Int) (maybe (- (val x) (val y))))\n";
-                          printf "(define-fun times ((x (Maybe Int)) (y (Maybe Int))) (Maybe Int) (maybe (* (val x) (val y))))\n";
-                          printf "(define-fun gte ((x (Maybe Int)) (y (Maybe Int))) (Maybe Int) (if (>= (val x) (val y)) (maybe 1) (maybe 0)))\n";
-                          printf "(define-fun lte ((x (Maybe Int)) (y (Maybe Int))) (Maybe Int) (if (<= (val x) (val y)) (maybe 1) (maybe 0)))\n";
-                          printf "(define-fun eq ((x (Maybe Int)) (y (Maybe Int))) (Maybe Int) (if (= x y) (maybe 1) (maybe 0)))\n";
-                          printf "(define-fun and_int ((x (Maybe Int)) (y (Maybe Int))) (Maybe Int) (if (or (= (val x) 0) (= (val y) 0)) (maybe 0) (maybe 1)))\n";
-                          printf "(define-fun or_int ((x (Maybe Int)) (y (Maybe Int))) (Maybe Int) (if (or (not (= (val x) 0)) (not (= (val y) 0))) (maybe 1) (maybe 0)))\n"
+let print_custom_ops () = printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
+                          printf "(define-fun lte ((x Int) (y Int)) Int (if (<= x y) 1 0))\n";
+                          printf "(define-fun eq ((x Int) (y Int)) Int (if (= x y) 1 0))\n";
+                          printf "(define-fun and_int ((x Int) (y Int)) Int (if (or (= x 0) (= y 0)) 0 1))\n";
+                          printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n"
 
 let from_file file = Lexing.from_channel (open_in file);;
 let _ =
@@ -60,15 +57,17 @@ let _ =
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
         if !debug then printf ";;    @[***Running bounded translation...";
-        let (oret,ophi,oR,oC,oD,oq,odecl,oa,opt) = time (bmc_translation new_term (*get refs decl from translation*)
+        let (oret,ophi,oR,oC,oD,oq,odecl,oa,opt,oass,opc) = time (bmc_translation new_term (*get refs decl from translation*)
                                                                          new_repo
                                                                          new_counter
                                                                          new_counter
                                                                          new_phi
                                                                          (Suc(nat_of_int bound))
                                                                          main_tp
-                                                                         cd_decl)
-                                                           empty_ptsmap "BOUNDED TRANSLATION" in
+                                                                         cd_decl
+                                                                         empty_ptsmap
+                                                                         True)
+                                                            True "BOUNDED TRANSLATION" in
         (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
         let def_decl = decl_of_list "" get_default_decl in (*write decl from defaul_decl*)
         let all_decl = decl_of_list def_decl odecl in  (*write decl from everything ontop of default decl*)
@@ -84,9 +83,9 @@ let _ =
         print_custom_ops ();
         print_newline ();
         time (printf "%s\n") all_decl "GENERATING TYPE DECLARATIONS";
-        printf "%s\n" (z3_assertions_of_list init_args_neq_fail_nil);
-        printf "%s\n" (z3_assertions_of_list (get_fail_neq_nil ()));
-        printf "%s\n" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES"));
+        (* printf "%s\n" (z3_assertions_of_list init_args_neq_fail_nil); *)
+        (* printf "%s\n" (z3_assertions_of_list (get_fail_neq_nil ())); *)
+        (* printf "%s\n" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES")); *)
         time print_z3_assertion (print_z3_of_proposition,ophi) "GENERATING PROGRAM FORMULA";
         if !assertfail then printf "(assert (= _ret_1_ %s))" (z3_fail_of_tp main_tp);
         print_newline ();

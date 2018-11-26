@@ -62,12 +62,9 @@ let rec string_of_z3_tp tp =
 
 let get_z3_tp tp = string_of_z3_tp (z3_of_tp tp)
 
-let z3_decl var stype = sprintf "(declare-const %s (Maybe %s))" var stype
+let z3_decl var stype = sprintf "(declare-const %s %s)" var stype
 
-let z3_unit_type =
-  "(declare-datatypes (T) ((Maybe Nil Fail (maybe (val T)))))\n
-(declare-datatypes () ((Unit Skip)))\n
-(define-fun skip () (Maybe Unit) (maybe Skip))"
+let z3_unit_type = "(declare-sort Unit)"
 let z3_pairs_type = "(declare-datatypes (T1 T2) ((Pair (mk-pair (left T1) (right T2)))))"
 let z3_default_type = sprintf "%s\n%s" z3_unit_type z3_pairs_type
 
@@ -89,18 +86,18 @@ type _binop = string       (* Binary Operations *)
 type _val   = string       (* Values for assignment: i|m *)
 type _decl  = (_name * z3_tp) list (* Name and Type for SMT-Lib declarations *)
 
-let tfail = "Fail"
-let tnil = "Nil"
-let tfail_i = "(as Fail (Maybe Int))"
-let tnil_i  = "(as Nil (Maybe Int))"
-let tfail_u = "(as Fail (Maybe Unit))"
-let tnil_u  = "(as Nil (Maybe Unit))"
-let tfail_m = "(as Fail (Maybe String))"
-let tnil_m  = "(as Nil (Maybe String))"
+let tfail = "fail"
+let tnil = "nil"
+let tfail_i = "fail_int"
+let tnil_i  = "nil_int"
+let tfail_u = "fail_unit"
+let tnil_u  = "nil_unit"
+let tfail_m = "\"fail_meth\""
+let tnil_m  = "\"nil_meth\""
 let tskip = "skip"
 
-let tfail_n n = "Fail"
-let tnil_n  n = "Nil"
+let tfail_n n = sprintf "%s_%s" tfail (string_of_int n)
+let tnil_n  n = sprintf "%s_%s" tnil (string_of_int n)
 
 let rec z3_fail_of_tp (tp : tp) =
   match tp with
@@ -116,7 +113,10 @@ let rec z3_nil_of_tp (tp : tp) =
   | Arrow _ -> tnil_m
   | Product(t1,t2) -> z3_pair_maker (z3_nil_of_tp t1) (z3_nil_of_tp t2)
 
-let get_default_decl = []
+let get_default_decl = [(tfail_i,Int);(tnil_i,Int);
+                        (tfail_u,Unit);(tnil_u,Unit);
+                        (*(tfail_m,Meth);(tnil_m,Meth); (*they strings*)*)
+                        (tskip,Unit)]
 
 let rec decl_of_list (s : string) (xs : _decl) =
   match xs with
@@ -146,6 +146,7 @@ type term = Fail | Skip | Int of int | Method of _meth
             | Let of _var * term * term | ApplyM of _meth * term list
             | If of term * term * term | ApplyX of _var * term list
             | Letrec of _var * _var list * term * term
+            | Assert of term
 let rec string_of_term (t : term) :(string) =
   match t with
   | Fail -> tfail
@@ -157,6 +158,7 @@ let rec string_of_term (t : term) :(string) =
   | Lambda(xs,t,tp') ->
      sprintf "(fun %s :%s -> %s)"
              (string_of_args xs) (string_of_tp tp') (string_of_term t)
+  | Assert(t) -> sprintf "(assert(%s))" (string_of_term t)
   | Left(t,tp) -> sprintf "((fst : %s) %s)" (string_of_tp tp) (string_of_term t)
   | Right(t,tp) -> sprintf "((snd : %s) %s)" (string_of_tp tp) (string_of_term t)
   | Assign((r,tp),t) -> sprintf "(%s := %s)" r (string_of_term t)
@@ -255,7 +257,8 @@ let rec z3_assertions_of_list xs =
 
 let (===) s1 s2 = if s1 = s2 then True  else Eq(s1,s2)
 let (=/=) s1 s2 = if s1 = s2 then False else Neq(s1,s2)
-let (==>) p1 p2 = if p1 = True then p2 else Implies(p1,p2)
+let (==>) p1 p2 = if p1 = True then p2 else
+                    if p1 = False then True else Implies(p1,p2)
 let (&&&) p1 p2 =
   match p1,p2 with
   | True,_ -> p2
