@@ -250,6 +250,7 @@ let rec print_z3_of_proposition (p : proposition) :(unit) =
                printf ")"
 
 let print_z3_assertion (f,x) = printf "(assert\n";f x;printf ")"
+let print_z3_not_assertion (f,x) = printf "(assert (not \n";f x;printf "))"
 let rec z3_assertions_of_list xs =
   match xs with
   | [] -> ""

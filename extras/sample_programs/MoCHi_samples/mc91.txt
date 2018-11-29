@@ -7,8 +7,7 @@ mc91 (x:Int) :(Int) =
 
 Main (n:Int) :Unit:
 if n <= 101 then
-  if (mc91 n) == 91 then skip
-  else fail
+  assert( (mc91 n) == 91 )
 else skip
 
 (* n=93 is computable with k = 10. Makes 17 calls to mc91. *)

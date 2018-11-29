@@ -138,9 +138,9 @@ simple_term:
 
 term:
 | simple_term                       { $1 }
-| term PLUS_OP  term  { BinOp("add",$1,$3) }
-| term MINUS_OP term  { BinOp("minus",$1,$3) }
-| term TIMES_OP term  { BinOp("times",$1,$3) }
+| term PLUS_OP  term  { BinOp("+",$1,$3) }
+| term MINUS_OP term  { BinOp("-",$1,$3) }
+| term TIMES_OP term  { BinOp("*",$1,$3) }
 | term GTE_OP   term  { BinOp("gte",$1,$3) }
 | term LTE_OP   term  { BinOp("lte",$1,$3) }
 | term EQ_OP    term  { BinOp("eq",$1,$3) }

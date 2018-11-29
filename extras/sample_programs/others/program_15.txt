@@ -1,0 +1,2 @@
+Main () :(Unit):
+assert(1)

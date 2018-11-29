@@ -87,7 +87,9 @@ let _ =
         (* printf "%s\n" (z3_assertions_of_list (get_fail_neq_nil ())); *)
         (* printf "%s\n" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES")); *)
         time print_z3_assertion (print_z3_of_proposition,ophi) "GENERATING PROGRAM FORMULA";
-        if !assertfail then printf "(assert (= _ret_1_ %s))" (z3_fail_of_tp main_tp);
+        (* if !assertfail then printf "(assert (= _ret_1_ %s))" (z3_fail_of_tp main_tp); *)
+        (* time print_z3_assertion (print_z3_of_proposition,opc) "GENERATING PROGRAM PATH CONDITIONS"; *)
+        time print_z3_not_assertion (print_z3_of_proposition,oass) "GENERATING PROGRAM ASSERTIONS";
         print_newline ();
         print_newline ();
         printf "(check-sat)\n;;(get-model)\n";
