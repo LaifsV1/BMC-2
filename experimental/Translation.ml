@@ -151,7 +151,7 @@ let rec bmc_translation
   let new_tps = (ret,z3_of_tp etype)::tps in (* (ret1,type1)::(ret2,type2)::tps *)
   (* printf "%s,%d,%s\n" ret (int_of_nat k) (string_of_term m); *)
   match k with
-  | Nil -> (ret_tp,phi,r,c,d,Nil,new_tps,empty_pts,pt,ass,False)
+  | Nil -> (ret_tp,phi,r,c,d,Nil,new_tps,empty_pts,pt,ass&&&(pc==>("__nil"==="1")),False)
   | Suc(k') ->
      (match m with
       (* base cases *)

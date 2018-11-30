@@ -23,7 +23,8 @@ let print_custom_ops () = printf "(define-fun gte ((x Int) (y Int)) Int (if (>= 
                           printf "(define-fun lte ((x Int) (y Int)) Int (if (<= x y) 1 0))\n";
                           printf "(define-fun eq ((x Int) (y Int)) Int (if (= x y) 1 0))\n";
                           printf "(define-fun and_int ((x Int) (y Int)) Int (if (or (= x 0) (= y 0)) 0 1))\n";
-                          printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n"
+                          printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n";
+                          printf "(declare-const __nil Int)\n"
 
 let from_file file = Lexing.from_channel (open_in file);;
 let _ =
@@ -91,6 +92,9 @@ let _ =
         (* time print_z3_assertion (print_z3_of_proposition,opc) "GENERATING PROGRAM PATH CONDITIONS"; *)
         time print_z3_not_assertion (print_z3_of_proposition,oass) "GENERATING PROGRAM ASSERTIONS";
         print_newline ();
+        printf "(assert (= __nil 1))\n";  (* we THINK this changes
+                                 * modes: 1 for failures, 0 for
+                                 * reaching nil *)
         print_newline ();
         printf "(check-sat)\n;;(get-model)\n";
         z3_getval_of_decl init_decl;

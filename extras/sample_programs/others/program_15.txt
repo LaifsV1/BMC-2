@@ -9,6 +9,7 @@ get (i:Int) :(Int) =
     let (f:Int) = (!r2) in (f i) ;
 
 set (i:Int, m:Int) :(Unit)=
+   let (z:Int) = (f (f 5)) in
    r2 := (fun (x: Int) :(Int) -> 
     if (x == i) then
         m
@@ -23,5 +24,5 @@ Main (n:Int) :Unit:
 let (x:Unit)= set(0,33) in
 let (x:Unit)= set(1,23) in
 let (x:Unit)= set(2,13) in
-sort skip
-
+let (x:Unit) = sort skip in
+assert(5 == 5)
