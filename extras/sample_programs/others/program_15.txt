@@ -1,2 +1,27 @@
-Main () :(Unit):
-assert(1)
+Store:
+r1:Int := 5;
+r2:Int->Int := f;
+
+Methods:
+f (i:Int) :(Int) = 0;
+
+get (i:Int) :(Int) =
+    let (f:Int) = (!r2) in (f i) ;
+
+set (i:Int, m:Int) :(Unit)=
+   r2 := (fun (x: Int) :(Int) -> 
+    if (x == i) then
+        m
+    else
+       get x );
+
+sort (x:Unit) :(Unit)=
+  skip;
+
+
+Main (n:Int) :Unit:
+let (x:Unit)= set(0,33) in
+let (x:Unit)= set(1,23) in
+let (x:Unit)= set(2,13) in
+sort skip
+
