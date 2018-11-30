@@ -156,11 +156,13 @@ let rec bmc_translation
      (match m with
       (* base cases *)
       | Fail -> failwith "fail no longer in language"
-      | Skip -> (ret_tp,(ret===tskip) &&& (ret=/=tfail_u) &&& (ret=/=tnil_u) &&& phi,r,c,d,Val,new_tps,empty_pts,pt,ass,True)
-      | Int i -> (ret_tp,(ret===(string_of_int i)) &&& (ret=/=tfail_i) &&& (ret=/=tnil_i) &&& phi,r,c,d,Val,new_tps,empty_pts,pt,ass,True)
-      | Method m ->  (ret_tp,(ret===(z3_method m)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,r,c,d,Val,new_tps,Meths [m],pt,ass,True)
+      | Skip -> (ret_tp,(ret===tskip) &&& phi,r,c,d,Val,new_tps,empty_pts,pt,ass,True)
+      | Int i -> (ret_tp,(ret===(string_of_int i)) &&& phi,r,c,d,Val,new_tps,empty_pts,pt,ass,True)
+      | Method m ->  (ret_tp,(ret===(z3_method m)) &&& phi,r,c,d,Val,new_tps,Meths [m],pt,ass,True)
       (*adding != fail/nil is not sound here vvv*) (*warning: we removed ret, but we might want to add it back*)
-      | Var(x,t) -> ((x,t),phi,r,c,d,Both,new_tps,pts_get pt (x,t),pt,ass,True)
+      | Var(x,t) -> 
+         (*printf "\nVar %s\n" x; *)
+         ((x,t),phi,r,c,d,Both,new_tps,pts_get pt (x,t),pt,ass,True)
       | Deref aref ->
          let d_r = ref_get d aref in
          (match etype with
@@ -212,9 +214,12 @@ let rec bmc_translation
          bmc_translation (subs t2 (new_f,tp) (f,tp)) r' c d ((new_f === (z3_method new_meth)) &&& phi) k
                          etype((new_f,z3_of_tp tp)::new_tps) pt' ass pc
       | ApplyM(m,ts) ->
+         (* printf "\nApplyM: pc = %s, ret = %s\n" (string_of_proposition pc) (fst ret_tp); *)
          let (xs,n,tp) = repo_get r m in
-         let args,rets,phi1,r1,c1,d1,q1,tps1,pt1,ass1,pc1 = bmc_args (List.map snd xs) ts r c d phi k new_tps [] [] Val pt ass pc in
+         let args,rets,phi1,r1,c1,d1,q1,tps1,pt1,ass1,pc1 = bmc_args (List.map snd xs) ts r c d phi k new_tps [] [] Val pt ass pc True in
+         (* printf "\nApplyM: pc1 = %s, ret = %s\n" (string_of_proposition pc1) (fst ret_tp);  *)
          let (ret2,phi2,r2,c2,d2,q2,tps2,a2,pt2,ass2,pc2) = bmc_translation (subslist n rets xs) r1 c1 d1 phi1 k' etype tps1 pt1 ass1 (pc&&&pc1) in
+         (* printf "\nApplyM: pc2 = %s, ret = %s\n" (string_of_proposition pc2) (fst ret_tp); *)
          (ret2,phi2,r2,c2,d2,q2,tps2,a2,pt2,ass2,pc2&&&pc1)
       | If(tb,t1,t0) ->
          let (retb,phib,rb,cb,db,qb,tpsb,ab,ptb,assb,pcb) = bmc_translation tb r c d phi k Integer new_tps pt ass pc in
@@ -231,7 +236,7 @@ let rec bmc_translation
       | ApplyX((x,tp),ts) ->
          (match tp with
           | Arrow(one,two) ->
-             (let args,rets,phi0,r0,c0,d0,q0,tps0,pt0,ass0,pc0 = bmc_args one ts r c d phi k new_tps [] [] Val pt ass pc in (***FIX THIS LATER***)
+             (let args,rets,phi0,r0,c0,d0,q0,tps0,pt0,ass0,pc0 = bmc_args one ts r c d phi k new_tps [] [] Val pt ass pc True in (***FIX THIS LATER***)
               let r_tp = get_method_body_of_list r (pts_get_methods pt0 (x,tp)) [] in
               match r_tp with
               | [] -> (ret_tp,phi0,r0,c0,c0,q0,tps0,empty_pts,pt0,ass0,pc0)
@@ -261,11 +266,11 @@ let rec bmc_translation
                         (True,True) results_list in
                     (ret_tp,pi &&& phin,rn,cn',cn',qn,varscn',an',ptn',ass',pcn' &&& pc0))
           | _ -> failwith "is not an arrow type"))
-  and bmc_args (xs : tp list) (ts : term list) (r:repo) (c:counter) (d:counter) (phi:proposition) (k:nat) (new_tps:(_name*z3_tp)list) acc rets q pt ass pc =
+  and bmc_args (xs : tp list) (ts : term list) (r:repo) (c:counter) (d:counter) (phi:proposition) (k:nat) (new_tps:(_name*z3_tp)list) acc rets q pt ass pc pcacc =
     match xs,ts with
-    | [],[] -> List.rev acc,List.rev rets,phi,r,c,d,q,new_tps,pt,ass,pc
+    | [],[] -> List.rev acc,List.rev rets,phi,r,c,d,q,new_tps,pt,ass,pcacc
     | x::xs,t::ts -> let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t r c d phi k x new_tps pt ass pc in
                      let new_acc = (ret1,q1)::acc in
                      let new_rets = ret1::rets in
-                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q) (pts_update pt1 ret1 a1) ass1 (pc&&&pc1) (***FIX THIS LATER***)
+                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q) (pts_update pt1 ret1 a1) ass1 pc (pcacc&&&pc1) (***FIX THIS LATER***)
     | _ -> failwith "number of arguments mismatch"

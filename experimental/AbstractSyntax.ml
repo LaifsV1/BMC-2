@@ -273,7 +273,7 @@ let (|||) p1 p2 =
   | _,True -> True
   | False,_ -> p2
   | _,False -> p1
-  | _,_ -> Or(p1,p2)
+  | _,_ -> Or(p1,p2) 
 
 let rec z3_create_fresh_inputs fresh (xs:_decl) fresh_acc phi decl_acc :(_name list * proposition * _decl) =
   match xs with
