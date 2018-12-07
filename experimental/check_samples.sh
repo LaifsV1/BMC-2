@@ -2,7 +2,7 @@
 d=exp
 rm -r $d 2> /dev/null
 mkdir -p $d
-for k in {0..6}
+for k in {0..12}
 do
 echo "===========================";
 echo "k=$k";

@@ -48,7 +48,7 @@ let _ =
         let (new_store,new_meths,new_term,init_decl,main_args,init_args_neq_fail_nil),main_tp = time new_parser lexbuf "PARSER" in (*get decl from parsing*)
         let fresh_args,fresh_main_phi,new_init_decl = z3_create_fresh_inputs fresh_x init_decl [] True init_decl in
         (*^^^ freshen main inputs. added fresh type declarations into init_decl. REMEMBER: substitute in the term.*)
-        let new_term = untyped_subslist new_term fresh_args main_args in
+        let new_term = untyped_subslist new_term (List.rev fresh_args) main_args in
         (*^^^ substituted main inputs for fresh main inputs. REMEMBER: add (old = fresh) assertions.*)
         if !debug then printf ".....[done]*** @]\n";
         if !debug then printf ";;    @[***Building initial variables...";

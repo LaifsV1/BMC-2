@@ -6,7 +6,7 @@
   let ptypes_seen = ref empty_ptypes
   let methods_seen = ref empty_prepo
   let ptypes_main_args = ref empty_ptypes
-  let main_args_neq_nil_fail = ref []
+  let main_args_list = ref []
 
   let parse_failure (msg : string) (pos1 : position) (pos2 : position) =
     ParseError ((sprintf "    error parsing %s" msg),(pos1,pos2))
