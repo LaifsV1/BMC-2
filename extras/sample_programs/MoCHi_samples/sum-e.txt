@@ -6,6 +6,6 @@ sum (n:Int) :(Int) =
     n + (sum (n + -1));
 
 Main (n:Int) :Unit:
-if (n+1) <= (sum n) then skip else fail
+assert( (n+1) <= (sum n) )
 
 (* should fail with n=0 or n=1 *)

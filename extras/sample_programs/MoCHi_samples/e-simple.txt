@@ -1,6 +1,6 @@
 Methods:
 f (n:Int , k:Int->Unit) :(Unit) = if n >= 0 then skip else k 0;
-g (n:Int) :(Unit) = if n==0 then skip else fail;
+g (n:Int) :(Unit) = assert( n==0 );
 
 Main (n:Int) :(Unit):
 f (n,g)

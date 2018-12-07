@@ -214,12 +214,9 @@ let rec bmc_translation
          bmc_translation (subs t2 (new_f,tp) (f,tp)) r' c d ((new_f === (z3_method new_meth)) &&& phi) k
                          etype((new_f,z3_of_tp tp)::new_tps) pt' ass pc
       | ApplyM(m,ts) ->
-         (* printf "\nApplyM: pc = %s, ret = %s\n" (string_of_proposition pc) (fst ret_tp); *)
          let (xs,n,tp) = repo_get r m in
          let args,rets,phi1,r1,c1,d1,q1,tps1,pt1,ass1,pc1 = bmc_args (List.map snd xs) ts r c d phi k new_tps [] [] Val pt ass pc True in
-         (* printf "\nApplyM: pc1 = %s, ret = %s\n" (string_of_proposition pc1) (fst ret_tp);  *)
          let (ret2,phi2,r2,c2,d2,q2,tps2,a2,pt2,ass2,pc2) = bmc_translation (subslist n rets xs) r1 c1 d1 phi1 k' etype tps1 pt1 ass1 (pc&&&pc1) in
-         (* printf "\nApplyM: pc2 = %s, ret = %s\n" (string_of_proposition pc2) (fst ret_tp); *)
          (ret2,phi2,r2,c2,d2,q2,tps2,a2,pt2,ass2,pc2&&&pc1)
       | If(tb,t1,t0) ->
          let (retb,phib,rb,cb,db,qb,tpsb,ab,ptb,assb,pcb) = bmc_translation tb r c d phi k Integer new_tps pt ass pc in
@@ -236,7 +233,7 @@ let rec bmc_translation
       | ApplyX((x,tp),ts) ->
          (match tp with
           | Arrow(one,two) ->
-             (let args,rets,phi0,r0,c0,d0,q0,tps0,pt0,ass0,pc0 = bmc_args one ts r c d phi k new_tps [] [] Val pt ass pc True in (***FIX THIS LATER***)
+             (let args,rets,phi0,r0,c0,d0,q0,tps0,pt0,ass0,pc0 = bmc_args one ts r c d phi k new_tps [] [] Val pt ass pc True in
               let r_tp = get_method_body_of_list r (pts_get_methods pt0 (x,tp)) [] in
               match r_tp with
               | [] -> (ret_tp,phi0,r0,c0,c0,q0,tps0,empty_pts,pt0,ass0,pc0)
@@ -245,7 +242,7 @@ let rec bmc_translation
                    List.fold_left
                      (fun (phii_,ri_,ci_,ys,tpsi_,ai_,pti_,assi_) (mi,xi,ti) ->  (*mi = \(xi).ti*)
                        let (reti,phii,ri,ci,di,qi,tpsi,ai,pti,assi,pci) = bmc_translation (subslist ti rets xi)
-                                                                                 ri_ ci_ d0 phii_ k' etype tpsi_ pt0 assi_ (pc&&&pc0 &&& (x===(z3_method mi))) in
+                                                                                 ri_ ci_ d0 phii_ k' etype tpsi_ pt0 assi_ (pc &&& pc0 &&& (x===(z3_method mi))) in
                        let ai'  = match ai_ with Meths [] -> ai | _ -> pts_union ai_ ai in
                        let pti' = ptsmap_merge pti_ pti in
                        match ys with
@@ -262,8 +259,8 @@ let rec bmc_translation
                       List.fold_left
                         (fun (acc,pcacc) (mi,reti,di,qi,pci) ->
                           (let guard_i = (ret===(fst reti)) in
-                           ((x===(z3_method mi)) ==> (guard_i &&& c_wedge cn' di))&&&acc),pci ||| pcacc)
-                        (True,True) results_list in
+                           ((x===(z3_method mi)) ==> (guard_i &&& c_wedge cn' di))&&&acc),(pci&&&(x===(z3_method mi))) ||| pcacc)
+                        (True,False) results_list in
                     (ret_tp,pi &&& phin,rn,cn',cn',qn,varscn',an',ptn',ass',pcn' &&& pc0))
           | _ -> failwith "is not an arrow type"))
   and bmc_args (xs : tp list) (ts : term list) (r:repo) (c:counter) (d:counter) (phi:proposition) (k:nat) (new_tps:(_name*z3_tp)list) acc rets q pt ass pc pcacc =
@@ -272,5 +269,5 @@ let rec bmc_translation
     | x::xs,t::ts -> let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t r c d phi k x new_tps pt ass pc in
                      let new_acc = (ret1,q1)::acc in
                      let new_rets = ret1::rets in
-                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q) (pts_update pt1 ret1 a1) ass1 pc (pcacc&&&pc1) (***FIX THIS LATER***)
+                     bmc_args xs ts r1 c1 d1 phi1 k tps1 new_acc new_rets (q1+++q) (pts_update pt1 ret1 a1) ass1 pc (pcacc&&&pc1)
     | _ -> failwith "number of arguments mismatch"

@@ -11,4 +11,4 @@ succ (x:Int) :(Int) = x + 1;
 
 Main (n:Int) :(Unit):
 let (f':Int->Int) = f succ in
-if (f' n) >= 0 then skip else fail
+assert( (f' n) >= 0 )

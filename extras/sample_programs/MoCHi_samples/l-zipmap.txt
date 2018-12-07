@@ -4,14 +4,14 @@ zip (x:Int,y:Int) :(Int) =
     if y==0 then
       x
     else
-      fail
+      let (z:Unit) = assert 0 in 1
   else
     if y==0 then
-      fail
+      let (z:Unit) = assert 0 in 1
     else
       1 + (zip (x + -1,y + -1));
 map (x:Int) :(Int) =
   if x==0 then x else 1 + (map (x + -1));
 
 Main (n:Int) :Unit:
-if (map (zip (n,n)))==n then skip else fail
+assert( (map (zip (n,n)))==n )

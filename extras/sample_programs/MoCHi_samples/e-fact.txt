@@ -6,7 +6,7 @@ fact (n:Int , exn:(Int->Int)) :(Int) =
   else
     let (f:Int->Int) = fun (i:Int) :(Int) -> if i==0 then 1 else exn i in
     n * (fact (n + -1,f));
-exn (n:Int) :(Int) = fail;
+exn (n:Int) :(Int) = let (x:Unit) = (assert 0) in 1;
 
 Main (n:Int) :(Unit):
 if n >= 1 then

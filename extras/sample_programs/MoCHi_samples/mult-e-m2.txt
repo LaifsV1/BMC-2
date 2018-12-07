@@ -5,7 +5,8 @@ mult (n:Int,m:Int) :(Int) =
   else
     n + (mult (n,m + -1));
 
-Main (n:Int,m:Int) :Unit:
-assert ((mult(m,m)) <= (mult(n,n)))
+Main (b:Int,a:Int) :Unit:
+assert ((mult(b,b)) <= (mult(a,a)))
 
 (* should fail for n=0 and m=1, for instance *)
+(* THIS FAILS WITH 0,4, even if it is a,b. FIGURE OUT WHY. *)

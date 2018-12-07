@@ -6,6 +6,6 @@ mult (n:Int,m:Int) :(Int) =
     n + (mult (n,m + -1));
 
 Main (n:Int) :Unit:
-if (n+1) <= (mult(n,n)) then skip else fail
+assert( (n+1) <= (mult(n,n)) )
 
 (* should fail with n=1 or n=0 *)

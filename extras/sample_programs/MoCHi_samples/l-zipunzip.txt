@@ -10,10 +10,10 @@ zip (x:Int, y:Int) :(Int) =
     if y==0 then
       0
     else
-      fail
+      let (z:Unit) = (assert(0)) in 1
   else
     if y==0 then
-      fail
+      let (z:Unit) = (assert(0)) in 1
     else
       1 + (zip (x + -1, y + -1));
 

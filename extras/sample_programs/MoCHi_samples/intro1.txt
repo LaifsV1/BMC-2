@@ -1,6 +1,6 @@
 Methods:
 f (x:Int,g:Int->Unit) :(Unit) = g(x+1);
-h (y:Int) :(Unit) = if y >= 1 then skip else fail;
+h (y:Int) :(Unit) = assert( y >= 1 );
 
 Main (n:Int) :(Unit):
 if n >= 1 then f (n,h) else skip

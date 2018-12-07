@@ -2,7 +2,7 @@ Methods:
 c (q:Int) :(Unit) = skip;
 b (x:Int->Unit) :(Int->Unit) = fun (q:Int) :(Unit) -> x 1;
 a (x:Int->Unit , y:Int->Unit , q:Int) :(Unit) =
-  if q == 0 then let (a:Unit) = x 0 in y 0 else fail;
+  if q == 0 then let (a:Unit) = x 0 in y 0 else assert(0);
 f (n:Int , x:Int->Unit) :(Int->Unit) =
   fun (q:Int) :(Unit) -> if n<=0 then x q else a (x,f (n + -1,b x),q);
 s (n:Int , q:Int) :(Unit) = let (f':Int->Unit) = f (n,c) in f' q;
