@@ -1,0 +1,5 @@
+Main (n:Int, z:Int, p:Int) :Unit:
+if (n >= 2) then 
+if (p >= 2) then assert( 0 <= z )
+else skip
+else skip
