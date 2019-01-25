@@ -205,7 +205,8 @@ let rec bmc_translation
       | Let((x,tp),t1,t2) ->
          let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t1 r c d phi k tp new_tps pt ass pc in
          let pt1' = pts_update pt1 ret1 a1 in
-         bmc_translation (subs t2 ret1 (x,tp)) r1 c1 d1 phi1 k etype tps1 pt1' ass1 (pc&&&pc1)
+         let (ret2,phi2,r2,c2,d2,q2,tps2,a2,pt2,ass2,pc2) = bmc_translation (subs t2 ret1 (x,tp)) r1 c1 d1 phi1 k etype tps1 pt1' ass1 (pc&&&pc1) in
+         (ret2,phi2,r2,c2,d2,q2,tps2,a2,pt2,ass2,pc2 &&& pc1)
       | Letrec((f,tp),xs,t1,t2) ->
          let new_meth = fresh_m () in
          let new_f    = fresh_x () in

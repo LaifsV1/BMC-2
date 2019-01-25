@@ -1,0 +1,6 @@
+Methods:
+f (i:Int) :(Int) = f i;
+
+Main (n:Int) :Unit:
+let (x:Int) = (let (x:Int) = f 5 in 5) in
+assert(0)
