@@ -146,6 +146,7 @@ type term = Fail | Skip | Int of int | Method of _meth
             | Let of _var * term * term | ApplyM of _meth * term list
             | If of term * term * term | ApplyX of _var * term list
             | Letrec of _var * _var list * term * term
+            | Assert of term
 let rec string_of_term (t : term) :(string) =
   match t with
   | Fail -> tfail
@@ -157,6 +158,7 @@ let rec string_of_term (t : term) :(string) =
   | Lambda(xs,t,tp') ->
      sprintf "(fun %s :%s -> %s)"
              (string_of_args xs) (string_of_tp tp') (string_of_term t)
+  | Assert(t) -> sprintf "(assert(%s))" (string_of_term t)
   | Left(t,tp) -> sprintf "((fst : %s) %s)" (string_of_tp tp) (string_of_term t)
   | Right(t,tp) -> sprintf "((snd : %s) %s)" (string_of_tp tp) (string_of_term t)
   | Assign((r,tp),t) -> sprintf "(%s := %s)" r (string_of_term t)
@@ -248,6 +250,7 @@ let rec print_z3_of_proposition (p : proposition) :(unit) =
                printf ")"
 
 let print_z3_assertion (f,x) = printf "(assert\n";f x;printf ")"
+let print_z3_not_assertion (f,x) = printf "(assert (not \n";f x;printf "))"
 let rec z3_assertions_of_list xs =
   match xs with
   | [] -> ""
@@ -255,7 +258,8 @@ let rec z3_assertions_of_list xs =
 
 let (===) s1 s2 = if s1 = s2 then True  else Eq(s1,s2)
 let (=/=) s1 s2 = if s1 = s2 then False else Neq(s1,s2)
-let (==>) p1 p2 = if p1 = True then p2 else Implies(p1,p2)
+let (==>) p1 p2 = if p1 = True then p2 else
+                    if p1 = False then True else Implies(p1,p2)
 let (&&&) p1 p2 =
   match p1,p2 with
   | True,_ -> p2
@@ -269,7 +273,7 @@ let (|||) p1 p2 =
   | _,True -> True
   | False,_ -> p2
   | _,False -> p1
-  | _,_ -> Or(p1,p2)
+  | _,_ -> Or(p1,p2) 
 
 let rec z3_create_fresh_inputs fresh (xs:_decl) fresh_acc phi decl_acc :(_name list * proposition * _decl) =
   match xs with

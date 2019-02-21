@@ -23,7 +23,8 @@ let print_custom_ops () = printf "(define-fun gte ((x Int) (y Int)) Int (if (>= 
                           printf "(define-fun lte ((x Int) (y Int)) Int (if (<= x y) 1 0))\n";
                           printf "(define-fun eq ((x Int) (y Int)) Int (if (= x y) 1 0))\n";
                           printf "(define-fun and_int ((x Int) (y Int)) Int (if (or (= x 0) (= y 0)) 0 1))\n";
-                          printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n"
+                          printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n";
+                          printf "(declare-const __nil Int)\n"
 
 let from_file file = Lexing.from_channel (open_in file);;
 let _ =
@@ -47,7 +48,7 @@ let _ =
         let (new_store,new_meths,new_term,init_decl,main_args,init_args_neq_fail_nil),main_tp = time new_parser lexbuf "PARSER" in (*get decl from parsing*)
         let fresh_args,fresh_main_phi,new_init_decl = z3_create_fresh_inputs fresh_x init_decl [] True init_decl in
         (*^^^ freshen main inputs. added fresh type declarations into init_decl. REMEMBER: substitute in the term.*)
-        let new_term = untyped_subslist new_term fresh_args main_args in
+        let new_term = untyped_subslist new_term (List.rev fresh_args) main_args in
         (*^^^ substituted main inputs for fresh main inputs. REMEMBER: add (old = fresh) assertions.*)
         if !debug then printf ".....[done]*** @]\n";
         if !debug then printf ";;    @[***Building initial variables...";
@@ -57,15 +58,17 @@ let _ =
         if !debug then printf ".....[done]*** @]";
         if !debug then print_newline ();
         if !debug then printf ";;    @[***Running bounded translation...";
-        let (oret,ophi,oR,oC,oD,oq,odecl,oa,opt) = time (bmc_translation new_term (*get refs decl from translation*)
+        let (oret,ophi,oR,oC,oD,oq,odecl,oa,opt,oass,opc) = time (bmc_translation new_term (*get refs decl from translation*)
                                                                          new_repo
                                                                          new_counter
                                                                          new_counter
                                                                          new_phi
                                                                          (Suc(nat_of_int bound))
                                                                          main_tp
-                                                                         cd_decl)
-                                                           empty_ptsmap "BOUNDED TRANSLATION" in
+                                                                         cd_decl
+                                                                         empty_ptsmap
+                                                                         True)
+                                                            True "BOUNDED TRANSLATION" in
         (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
         let def_decl = decl_of_list "" get_default_decl in (*write decl from defaul_decl*)
         let all_decl = decl_of_list def_decl odecl in  (*write decl from everything ontop of default decl*)
@@ -81,12 +84,17 @@ let _ =
         print_custom_ops ();
         print_newline ();
         time (printf "%s\n") all_decl "GENERATING TYPE DECLARATIONS";
-        printf "%s\n" (z3_assertions_of_list init_args_neq_fail_nil);
-        printf "%s\n" (z3_assertions_of_list (get_fail_neq_nil ()));
-        printf "%s\n" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES"));
+        (* printf "%s\n" (z3_assertions_of_list init_args_neq_fail_nil); *)
+        (* printf "%s\n" (z3_assertions_of_list (get_fail_neq_nil ())); *)
+        (* printf "%s\n" (z3_assertions_of_list (time get_global_types () "GENERATING ASSERTIONS FOR COMPLEX TYPES")); *)
         time print_z3_assertion (print_z3_of_proposition,ophi) "GENERATING PROGRAM FORMULA";
-        if !assertfail then printf "(assert (= _ret_1_ %s))" (z3_fail_of_tp main_tp);
+        (* if !assertfail then printf "(assert (= _ret_1_ %s))" (z3_fail_of_tp main_tp); *)
+        (* time print_z3_assertion (print_z3_of_proposition,opc) "GENERATING PROGRAM PATH CONDITIONS"; *)
+        time print_z3_not_assertion (print_z3_of_proposition,oass) "GENERATING PROGRAM ASSERTIONS";
         print_newline ();
+        printf "(assert (= __nil 1))\n";  (* we THINK this changes
+                                 * modes: 1 for failures, 0 for
+                                 * reaching nil *)
         print_newline ();
         printf "(check-sat)\n;;(get-model)\n";
         z3_getval_of_decl init_decl;
