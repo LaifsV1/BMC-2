@@ -1,20 +1,24 @@
-You can find two versions of the implementation: the base algorithm, and an implementation optimised with points-to analysis. The base algorithm is found in `base_algorithm_src`, while the optimised implementation is found in `src`.
+# BMC-2
 
-This tool translates the behaviour of functional programs with higher-order store into
-an SMT problem in SMT-LIB 2 format. For this, we recommend later
-versions of Z3 which are compatible with strings.
+`BMC-2` is a bounded model checking tool that translates the behaviour
+of higher-order programs into SMT-LIB 2 constraints. We recommend an SMT solver such as Z3 to check the output for satisfiability.
 
-Programs are written in a functional language similar to OCaml; refer
-to the sample programs under `/extras/sample_programs`.
+Programs are written in a functional language similar to OCaml. Sample programs can be found under `/extras/sample_programs`.
 
-To compile:
+## Compiling
+
+You will need `ocamlbuild`, `menhir`, and an OCaml 4.04 compiler or above. Run the following command from within `/src`.
 
     ocamlbuild -I parser -use-menhir TopLevel.native
 
-Checking a file:
-e.g. Check file `mc91-e.txt` with bound `4` for `10` seconds. Returns `sat` if `fail` is reachable.
+## Checking a file
 
-    time timeout 10 ./TopLevel.native ../extras/sample_programs/MoCHi_samples/mc91-e.txt 4 | z3 -in | grep -v "(error"
+To check a file `<somefile>`, use `TopLevel.native <somefile> <k>` where `<k>` is the desired depth for the analysis. The formula produced is satisfiable iff an assertion violation is reachable within `k`.
+
+### Example
+We check file `mc91-e.txt` with bound `4`.
+
+    time ./TopLevel.native ../extras/sample_programs/MoCHi_samples/mc91-e.txt 4 | z3 -in | grep -v "(error"
 
 The command above prints the following
 
@@ -25,4 +29,4 @@ The command above prints the following
     user        0m0.018s
     sys         0m0.013s
 
-where program fails with input `n = 102`.
+which means `mc91-e.txt` reaches a violation with input `n = 102`.
