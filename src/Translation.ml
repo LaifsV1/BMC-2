@@ -76,6 +76,8 @@ let rec subs (m : term) (t : _var) (y : _var) =
          then (printf "\n ;;;;;; WARNING: t = y \n";  (* WARNING: this is not standard *)
                Letrec(f,xs,t1,subs t2 t y))
          else Letrec(f,xs,subs t1 t y,subs t2 t y)
+  | Cons(t1,t2) -> Cons(subs t1 t y,subs t2 t y)
+  | EmptyList -> EmptyList
 
 let rec subslist (m : term) (ts : _var list) (ys : _var list) =
   match ts,ys with
@@ -129,7 +131,8 @@ let f (a,tpa : _ret) (b,tpb : _ret) (p : proposition) (q : e_prop) (acc : _decl)
                         let a,b = tfail_n n,tnil_n n in
                         if is_new
                         then a,b,(tfail_n n,z3_of_tp tp)::(tnil_n n,z3_of_tp tp)::acc
-                        else a,b,acc in
+                        else a,b,acc 
+      | ListInt      -> tfail_u,tnil_u,acc in (*this is broken, but uneeded*)
   let faila,nila,decl1 = select_check tpa acc in
   let failb,nilb,decl2 = select_check tpb decl1 in
   pred faila failb nila nilb , decl2
@@ -159,6 +162,7 @@ let rec bmc_translation
       | Skip -> (ret_tp,(ret===tskip) &&& phi,r,c,d,Val,new_tps,empty_pts,pt,ass,True)
       | Int i -> (ret_tp,(ret===(string_of_int i)) &&& phi,r,c,d,Val,new_tps,empty_pts,pt,ass,True)
       | Method m ->  (ret_tp,(ret===(z3_method m)) &&& phi,r,c,d,Val,new_tps,Meths [m],pt,ass,True)
+      | EmptyList -> (ret_tp,(ret==="nil") &&& phi,r,c,d,Val,new_tps,empty_pts,pt,ass,True)
       (*adding != fail/nil is not sound here vvv*) (*warning: we removed ret, but we might want to add it back*)
       | Var(x,t) -> 
          (*printf "\nVar %s\n" x; *)
@@ -172,13 +176,18 @@ let rec bmc_translation
           | Product (tp1,tp2) ->
              let n,is_new = get_type_number etype in
              let new_tps' = if is_new then (tnil_n n,z3_of_tp etype)::(tfail_n n,z3_of_tp etype)::new_tps else new_tps in
-             (ret_tp,(ret===d_r) &&& phi,r,c,d,Nil,new_tps',pts_get pt aref,pt,ass,True))
+             (ret_tp,(ret===d_r) &&& phi,r,c,d,Nil,new_tps',pts_get pt aref,pt,ass,True)
+          | ListInt -> (ret_tp,(ret===d_r) &&& phi,r,c,d,Val,new_tps,empty_pts,pt,ass,True))
       | Lambda(x,t,tp') ->
          let new_meth = fresh_m () in
          let r' = repo_update r new_meth (x,t,tp') in
          (ret_tp,(ret===(z3_method new_meth)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,
           r',c,d,Val,new_tps,Meths [new_meth],pt,ass,True)
       (* inductive cases *)
+      | Cons(t1,t2) -> 
+         let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t1 r c d phi k Integer new_tps pt ass pc in
+         let (ret2,phi2,r2,c2,d2,q2,tps2,a2,pt2,ass2,pc2) = bmc_translation t2 r1 c1 d1 phi1 k ListInt tps1 pt1 ass1 (pc&&&pc1) in
+         (ret_tp,(ret===(z3_list_maker (fst ret1) (fst ret2))) &&& phi2,r2,c2,d2,q1+++q2,tps2,empty_pts,pt2,ass2,pc1&&&pc2) (*empty_pts cuz only int lists*)
       | Assert(t) ->
          let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t r c d phi k Integer new_tps pt ass pc in
          (ret_tp,(ret===tskip) &&& phi1,r1,c1,d1,q1,tps1,a1,pt1,((pc&&&pc1)==>((fst ret1)=/="0")) &&& ass1, pc1)

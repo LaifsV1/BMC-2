@@ -21,7 +21,7 @@ let rec int_of_nat (i : nat) :(int) =
 (*********)
 (* Types *)
 (*********)
-type tp = Unit | Integer | Arrow of tp list * tp | Product of tp * tp
+type tp = Unit | Integer | Arrow of tp list * tp | Product of tp * tp | ListInt
 
 let rec string_of_tp (t : tp) :(string) =
   match t with
@@ -29,6 +29,7 @@ let rec string_of_tp (t : tp) :(string) =
   | Integer -> "Int"
   | Arrow(ts,t2) -> sprintf "(%s -> %s)" (string_of_tps ts) (string_of_tp t2)
   | Product(t1,t2) -> sprintf "(%s * %s)" (string_of_tp t1) (string_of_tp t2)
+  | ListInt -> "(Int List)"
 and string_of_tps (tps : tp list) :(string) =
   match tps with
   | []      -> ""
@@ -44,7 +45,7 @@ let right_tp tp =
   | Product(t1,t2) -> t2
   | _ -> failwith (sprintf "type %s is not a pair" (string_of_tp tp))
 
-type z3_tp = Unit | Int | Meth | Pair of z3_tp * z3_tp
+type z3_tp = Unit | Int | Meth | Pair of z3_tp * z3_tp | LstInt
 
 let rec z3_of_tp (tp : tp) =
   match tp with
@@ -52,6 +53,7 @@ let rec z3_of_tp (tp : tp) =
   | Integer -> Int
   | Arrow _ -> Meth
   | Product(a,b) -> Pair(z3_of_tp a,z3_of_tp b)
+  | ListInt -> LstInt
 
 let rec string_of_z3_tp tp =
   match tp with
@@ -59,20 +61,25 @@ let rec string_of_z3_tp tp =
   | Int  -> "Int"
   | Meth -> "String"
   | Pair(a,b) -> sprintf "(Pair %s %s)" (string_of_z3_tp a) (string_of_z3_tp b)
+  | LstInt -> "(Lst Int)"
 
 let get_z3_tp tp = string_of_z3_tp (z3_of_tp tp)
 
 let z3_decl var stype = sprintf "(declare-const %s %s)" var stype
 
+(**** insert new z3 type extensions here, and add to default_type ****)
 let z3_unit_type = "(declare-sort Unit)"
 let z3_pairs_type = "(declare-datatypes (T1 T2) ((Pair (mk-pair (left T1) (right T2)))))"
-let z3_default_type = sprintf "%s\n%s" z3_unit_type z3_pairs_type
+let z3_lists_type = "(declare-datatypes (T) ((Lst nil (cons (hd T) (tl Lst)))))"
+let z3_default_type = sprintf "%s\n%s\n%s" z3_unit_type z3_pairs_type z3_lists_type
 
 let z3_pair_maker left right = sprintf "(mk-pair %s %s)" left right
 let z3_pair_decl left right = sprintf "(Pair %s %s)" left right
 let z3_pair_left  pair = sprintf "(left %s)"  pair
 let z3_pair_right pair = sprintf "(right %s)" pair
 let z3_binops a op b = sprintf "(%s %s %s)" op a b
+let z3_list_maker x xs = sprintf "(cons %s %s)" x xs
+
 
 (*********)
 (* Terms *)
@@ -105,6 +112,7 @@ let rec z3_fail_of_tp (tp : tp) =
   | Integer -> tfail_i
   | Arrow _ -> tfail_m
   | Product(t1,t2) -> z3_pair_maker (z3_fail_of_tp t1) (z3_fail_of_tp t2)
+  | ListInt -> tfail_u (*this shouldn't be used anymore*)
 
 let rec z3_nil_of_tp (tp : tp) =
   match tp with
@@ -112,6 +120,7 @@ let rec z3_nil_of_tp (tp : tp) =
   | Integer -> tnil_i
   | Arrow _ -> tnil_m
   | Product(t1,t2) -> z3_pair_maker (z3_nil_of_tp t1) (z3_nil_of_tp t2)
+  | ListInt -> tnil_u (*this shouldn't be used anymore*)
 
 let get_default_decl = [(tfail_i,Int);(tnil_i,Int);
                         (tfail_u,Unit);(tnil_u,Unit);
@@ -147,6 +156,7 @@ type term = Fail | Skip | Int of int | Method of _meth
             | If of term * term * term | ApplyX of _var * term list
             | Letrec of _var * _var list * term * term
             | Assert of term
+            | EmptyList | Cons of term * term
 let rec string_of_term (t : term) :(string) =
   match t with
   | Fail -> tfail
@@ -181,6 +191,8 @@ let rec string_of_term (t : term) :(string) =
   | Letrec((x,tp),xs,t1,t2) ->
      sprintf "(letrec (%s:%s) = fun %s :%s -> %s in %s)"
              x (string_of_tp tp) (string_of_args xs) (string_of_tp tp) (string_of_term t1) (string_of_term t2)
+  | EmptyList -> "[]"
+  | Cons(t1,t2) -> sprintf "(%s :: %s)" (string_of_term t1) (string_of_term t2)
 
 let string_of_typed_term t tp = sprintf "(%s : %s)" (string_of_term t) (string_of_tp tp)
 

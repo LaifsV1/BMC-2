@@ -1,12 +1,12 @@
 Store:
-r1:Int := 0;
 r2:(Unit->Int) := f;
+r1:Int := 0;
 
 Methods:
 f (u:Unit) :(Int) = 0;
 
 get (u:Unit) :(Int) =
-    let (f:Int) = (!r2) in (f u);
+    let (g:Unit->Int) = (!r2) in (g u);
 
 set (n:Int) :(Unit)=
     r2 := (fun (u:Unit) :(Int) -> n);
@@ -14,4 +14,4 @@ set (n:Int) :(Unit)=
 Main (n:Int) :Unit:
 let (x:Unit)= set(n) in
 let (x:Unit)= (r1 := n) in
-assert( ((get skip) == (!r1)) )
+assert( (!r1) == (get skip) )

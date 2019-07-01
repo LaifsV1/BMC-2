@@ -37,6 +37,8 @@
 %token PAIR_OP
 %token Assert_TERM
 (*%token Apply_TERM_OP*)
+%token Cons_TERM_OP
+%token EmptyList_TERM
 
 (*** OTHER-TOKENS ***)
 %token ARROW_OP
@@ -57,6 +59,7 @@
 (*%nonassoc COMMA*)
 %right ARROW_OP
 %nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP NEQ_OP
+%right Cons_TERM_OP
 %left MINUS_OP PLUS_OP
 %left TIMES_OP
 (*%nonassoc Apply_TERM_OP*)
@@ -138,6 +141,7 @@ simple_term:
 
 term:
 | simple_term                       { $1 }
+| list                              { $1 }
 | term PLUS_OP  term  { BinOp("+",$1,$3) }
 | term MINUS_OP term  { BinOp("-",$1,$3) }
 | term TIMES_OP term  { BinOp("*",$1,$3) }
@@ -167,6 +171,10 @@ term:
 | If_TERM term Then_TERM term Else_TERM term         { If($2,$4,$6) }
 | Assert_TERM simple_term                            { Assert($2) }
 | error                                              { raise (parse_failure "term" $startpos $endpos) }
+
+list:
+| term Cons_TERM_OP  list  { Cons($1,$3) }
+| EmptyList_TERM           { EmptyList }
 
 terms:
 | term                     { [$1] }

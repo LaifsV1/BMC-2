@@ -49,6 +49,8 @@ rule read = parse
   | "fst"           { Left_TERM_OP }
   | "snd"           { Right_TERM_OP }
   | ":="            { Assign_TERM_OP }
+  | "::"            { Cons_TERM_OP }
+  | "[]"            { EmptyList_TERM }
   | "="             { EQUALS_OP }
   | "let"           { Let_TERM }
   | "rec"           { Rec_TERM }
