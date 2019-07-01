@@ -1,7 +1,0 @@
-Methods:
-f (x:Int) :(Int) = let (f':Int->Int) = if x then (fun (y:Int) :Int -> y) else (fun (y:Int) :Int -> y) in let (c:Unit) = if x then skip else skip in (f' x)+1;
-g (x:Int) :(Int) = let (g':Int->Int) = if x then (fun (y:Int) :Int -> y) else (fun (y:Int) :Int -> y) in let (c:Unit) = if x then skip else skip in (g' x)+ -1;
-
-Main (n:Int) :(Int):
-let (h:Int->Int) = if n then f else g in
-h 0

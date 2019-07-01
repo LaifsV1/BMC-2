@@ -38,6 +38,7 @@ rule read = parse
   | ">="            { GTE_OP }
   | "<="            { LTE_OP }
   | "=="            { EQ_OP }
+  | "!="            { NEQ_OP }
   | "&&"            { AND_OP }
   | "||"            { OR_OP }
   | "fail"          { Fail_TERM }

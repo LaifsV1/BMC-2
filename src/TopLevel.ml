@@ -22,6 +22,7 @@ let time f x s =
 let print_custom_ops () = printf "(define-fun gte ((x Int) (y Int)) Int (if (>= x y) 1 0))\n";
                           printf "(define-fun lte ((x Int) (y Int)) Int (if (<= x y) 1 0))\n";
                           printf "(define-fun eq ((x Int) (y Int)) Int (if (= x y) 1 0))\n";
+                          printf "(define-fun neq ((x Int) (y Int)) Int (if (= x y) 0 1))\n";
                           printf "(define-fun and_int ((x Int) (y Int)) Int (if (or (= x 0) (= y 0)) 0 1))\n";
                           printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n";
                           printf "(declare-const __nil Int)\n"

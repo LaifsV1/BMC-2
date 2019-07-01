@@ -1,0 +1,17 @@
+Store:
+r1:Int := 0;
+r2:(Unit->Int) := f;
+
+Methods:
+f (u:Unit) :(Int) = 0;
+
+get (u:Unit) :(Int) =
+    let (f:Int) = (!r2) in (f u);
+
+set (n:Int) :(Unit)=
+    r2 := (fun (u:Unit) :(Int) -> n);
+
+Main (n:Int) :Unit:
+let (x:Unit)= set(n) in
+let (x:Unit)= (r1 := n) in
+assert( ((get skip) == (!r1)) )

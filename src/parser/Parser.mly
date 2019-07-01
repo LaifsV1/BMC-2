@@ -40,7 +40,7 @@
 
 (*** OTHER-TOKENS ***)
 %token ARROW_OP
-%token TIMES_OP PLUS_OP MINUS_OP GTE_OP LTE_OP EQ_OP AND_OP OR_OP
+%token TIMES_OP PLUS_OP MINUS_OP GTE_OP LTE_OP EQ_OP AND_OP OR_OP NEQ_OP
 %token OPEN_PAREN CLOSE_PAREN COMMA COLON SEMICOLON
 %token EQUALS_OP
 %token STORE METHOD MAIN
@@ -56,7 +56,7 @@
 (*** TERMS ***)
 (*%nonassoc COMMA*)
 %right ARROW_OP
-%nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP
+%nonassoc GTE_OP LTE_OP EQ_OP AND_OP OR_OP NEQ_OP
 %left MINUS_OP PLUS_OP
 %left TIMES_OP
 (*%nonassoc Apply_TERM_OP*)
@@ -144,6 +144,7 @@ term:
 | term GTE_OP   term  { BinOp("gte",$1,$3) }
 | term LTE_OP   term  { BinOp("lte",$1,$3) }
 | term EQ_OP    term  { BinOp("eq",$1,$3) }
+| term NEQ_OP   term  { BinOp("neq",$1,$3) }
 | term AND_OP   term  { BinOp("and_int",$1,$3) }
 | term OR_OP    term  { BinOp("or_int",$1,$3) }
 | Lambda_TERM vars COLON tp ARROW_OP term                   { Lambda($2,$6,Arrow(tps_from_vars $2,$4)) }
