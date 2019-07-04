@@ -1,0 +1,344 @@
+Methods:
+copy (x:Int) :(Int) = if x==0 then 0 else 1 + (copy (x + -1));
+
+m1 (n:Int) :(Unit) = 
+assert( (copy (copy n)) == n );
+
+fact (n:Int , exn:(Int->Int)) :(Int) =
+  if n <= 0
+  then
+    exn 0
+  else
+    let (f:Int->Int) = fun (i:Int) :(Int) -> if i==0 then 1 else exn i in
+    n * (fact (n + -1,f));
+exn (n:Int) :(Int) = let (x:Unit) = (assert 0) in 1;
+
+m2 (n:Int) :(Unit) = 
+if n >= 1 then
+   let (x:Int) = fact (n,exn) in skip
+else skip;
+
+f3 (n:Int , k:Int->Unit) :(Unit) = if n >= 0 then skip else k 0;
+g3 (n:Int) :(Unit) = assert( n==0 );
+
+m3 (n:Int) :(Unit) = 
+f3 (n,g3);
+
+c (q:Int) :(Unit) = skip;
+b (x:Int->Unit) :(Int->Unit) = fun (q:Int) :(Unit) -> x 1;
+a (x:Int->Unit , y:Int->Unit , q:Int) :(Unit) =
+  if q == 0 then let (a:Unit) = x 0 in y 0 else assert(0);
+f4 (n:Int , x:Int->Unit) :(Int->Unit) =
+  fun (q:Int) :(Unit) -> if n<=0 then x q else a (x,f4 (n + -1,b x),q);
+s (n:Int , q:Int) :(Unit) = let (f':Int->Unit) = f4 (n,c) in f' q;
+
+m4 (n:Int) :(Unit) = 
+s (n,0);
+
+f5 (x:Int,g:Int->Unit) :(Unit) = g(x+1);
+h5 (y:Int) :(Unit) = assert( y >= 1 );
+
+m5 (n:Int) :(Unit) = 
+if n >= 1 then f5 (n,h5) else skip;
+
+f6 (x:Int,g6:Int->Unit) :(Unit) = g6 (x+1);
+h6 (z:Int) :(Int->Unit) = fun (y:Int) :(Unit) -> if y <= z then assert(0) else skip;
+
+m6 (n:Int) :(Unit) =
+if n>=0 then f6(n,h6 n) else skip;
+
+zip (x:Int,y:Int) :(Int) =
+  if x==0 then
+    if y==0 then
+      x
+    else
+      let (z:Unit) = assert 0 in 1
+  else
+    if y==0 then
+      let (z:Unit) = assert 0 in 1
+    else
+      1 + (zip (x + -1,y + -1));
+map (x:Int) :(Int) =
+  if x==0 then x else 1 + (map (x + -1));
+
+m7 (n:Int) :Unit =
+assert( (map (zip (n,n)))==n );
+
+max (max2:(Int,Int)->Int , x:Int) :((Int,Int)->Int) = fun (y:Int,z:Int) :(Int) -> max2(max2(x,y),z);
+f9 (x:Int, y:Int) :(Int) = if x >= y then x else y;
+
+m9 (x:Int,y:Int,z:Int) :Unit =
+let (m:(Int,Int)->Int) = max (f9,x) in
+let (m':Int) = m (y,z) in
+assert( (f9(x,m')) == m' );
+
+fu (gu:(Int,Int)->Int) :((Int,Int)->Int) = fun (x:Int,y:Int) :(Int) -> gu (x+1, y+1);
+unzip (x:Int, k:(Int,Int)->Int) :(Int) =
+  if x==0 then
+    k (0,0)
+  else
+    unzip (x + -1, fu k);
+zipu (x:Int, y:Int) :(Int) =
+  if x==0 then
+    if y==0 then
+      0
+    else
+      let (z:Unit) = (assert(0)) in 1
+  else
+    if y==0 then
+      let (z:Unit) = (assert(0)) in 1
+    else
+      1 + (zipu (x + -1, y + -1));
+
+m8 (n:Int) :(Unit) =
+let (u:Int) = unzip (n,zipu) in skip;
+
+mult (n:Int,m:Int) :(Int) =
+  if (n <= 0) || (m <= 0) then
+    0
+  else
+    n + (mult (n,m + -1));
+
+m11 (n:Int) :Unit =
+assert( n <= (mult(n,n)) );
+
+make_array (n:Int) :(Int->Int) =
+  fun (i:Int) :(Int) ->
+  let (u:Unit) = assert ((0 <= i) && (i <= (n + -1))) in 0;
+
+update (i:Int, n:Int, des:Int->Int, x:Int) :(Int -> Int) =
+       let (u:Unit) = des i in
+       let (a:Int -> Int) =
+           fun (j:Int) :(Int) -> if (i == j) then x else des i in a;
+
+print_int (n:Int) :(Unit) = skip;
+
+f20 (m:Int, src:Int->Int , des:Int->Int) :(Unit) =
+  let rec (bcopy:(Int,Int->Int,Int->Int,Int)->(Int->Int))=
+      fun (m:Int,src:Int->Int,des:Int->Int,i:Int) :(Int->Int) ->
+          if (i >= m) then des
+          else let (des:Int->Int) = update (i,m,des,src i) in
+          bcopy (m,src,des,i + 1)
+  in let rec (print_array: (Int,Int->Int,Int)->Unit) =
+     fun (m:Int, array:Int->Int, i:Int) :(Unit) ->
+         if (i >= m) then skip
+         else (let (u:Unit) = print_int (des i) in print_array (m,array,i + 1))
+  in let (array : Int->Int) = bcopy (m,src, des, 0) in
+  print_array (m,array,0);
+
+m12 (n:Int) :(Unit) =
+     let (array1 : Int->Int) = make_array n in
+     let (array2 : Int->Int) = make_array n in
+     if n >= 1 then f20(n,array1,array2)
+     else skip;
+
+lock (st:Int) :Int = let (u:Unit) = assert(st==0) in 1;
+unlock (st:Int) :Int = let (u:Unit) = assert(st==1) in 0;
+f13 (n:Int,st:Int) :Int = if n >= 1 then lock st else st;
+g13 (n:Int,st:Int) :Int = if n >= 1 then unlock st else st;
+
+m13 (n:Int) :Unit =
+assert( (g13(n,f13(n,0)))==0 );
+
+sum (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum (n + -1));
+
+m14 (n:Int) :Unit =
+assert( n <= (sum n) );
+
+mult (n:Int,m:Int) :(Int) =
+  if (n <= 0) || (m <= 0) then
+    0
+  else
+    n + (mult (n,m + -1));
+
+m15 (n:Int) :Unit =
+assert( (n+1) <= (mult(n,n)) );
+
+succ3 (x:Int) :Int = x + 1;
+repeat2 (f2:(Int->Int),n:Int,s4:Int) :(Int) =
+  if n==0 then
+    s4
+  else
+    f2 (repeat2 (f2,n + -1,s4));
+
+m16 (n:Int) :(Unit) =
+if ((repeat2(succ3,n,0)) <= n) then assert(0) else skip;
+
+lock (st:Int) :Int = let (u:Unit) = assert(st==0) in 1;
+unlock (st:Int) :Int = let (u:Unit) = assert(st==0) in 0;
+f17 (n:Int,st:Int) :Int = if n >= 1 then lock st else st;
+g17 (n:Int,st:Int) :Int = if n >= 0 then unlock st else st;
+
+m17 (n:Int) :Unit = 
+assert( (g17(n,f17(n,0)))==0 );
+
+sum (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum (n + -1));
+
+m18 (n:Int) :Unit =
+assert( (n+1) <= (sum n) );
+
+make_array21 (n:Int) :(Int->Int) =
+  fun (i:Int) :(Int) ->
+  let (u:Unit) = assert ((0 <= i) && (i <= (n + -1))) in 0;
+
+update21 (i:Int, a2:Int->Int, x:Int) :(Int -> Int) =
+  fun (j:Int) :(Int) ->
+  if (j == i) then x else a2 (j);
+
+init21 (i:Int,n:Int,a2:Int->Int) :(Int->Int) =
+  if (i >= n) then a2
+  else init21((i + 1),n,update21(i,a2,1));
+
+m21 (k:Int,n:Int,i:Int) :(Unit) =
+  if (k == 0) then
+    let (x:Int->Int) = init21(k,n,make_array21 (n)) in
+      if ((0 <= i) && (i <= (n + -1))) then
+        assert ((x i) >= 1)
+      else skip
+  else skip;
+
+make_array23 (n:Int) :(Int->Int) =
+  fun (i:Int) :(Int) -> (n +(i*(-1)));
+
+array_max23 (n:Int, i:Int, a23:Int->Int,m:Int) :(Int) =
+  if (i >= n) then
+    m
+  else
+    let (x:Int) = a23 i in
+    let (z:Int) = if x >= (m + 1) then x else m in
+    array_max23(n,i+1,a23,z);
+
+m23 (n:Int,i:Int) :(Unit) =
+  if ((n >= 1) && (i == 0)) then
+    let (m:Int) = array_max23(n,i,make_array23 n,-1) in
+    assert(m>=n)
+  else skip;
+
+make_array24 (n:Int) :(Int->Int) =
+  fun (i:Int) :(Int) -> (n +(i*(-1)));
+
+array_max24 (n:Int, i:Int, a24:Int->Int,m:Int) :(Int) =
+  if (i >= n) then
+    m
+  else
+    let (x:Int) = a24 i in
+    let (z:Int) = if x >= (m + 1) then x else m in
+    array_max24(n,i+1,a24,z);
+
+m24 (n:Int,i:Int) :(Unit) =
+  if ((n >= 1) && (i == 0)) then
+    let (m:Int) = array_max24(n,i,make_array24 n,-1) in
+    if n==m then assert(0) else skip
+  else skip;
+
+mult25 (n:Int,m:Int) :(Int) =
+  if (n <= 0) || (m <= 0) then
+    0
+  else
+    n + (mult (n,m + -1));
+
+m25 (n:Int,m:Int) :Unit =
+assert ((n*2) <= (mult25(n,m)));
+
+mult26 (n:Int,m:Int) :(Int) =
+  if (n <= 0) || (m <= 0) then
+    0
+  else
+    n + (mult26 (n,m + -1));
+
+m26 (n:Int,m:Int) :Unit =
+assert ((mult26(m,m)) <= (mult26(n,n)));
+
+make_array27 (n:Int) :(Int->Int) =
+  fun (i:Int) :(Int) ->
+  let (u:Unit) = assert ((0 <= i) && (i <= (n + -1))) in 0;
+
+update27 (i:Int, a27:Int->Int, x:Int) :(Int -> Int) =
+  fun (j:Int) :(Int) ->
+  if (j == i) then x else a27 (j);
+
+init27 (i:Int,n27:Int,a27:Int->Int) :(Int->Int) =
+  if (i >= n27) then a27
+  else init27((i + 1),n27,update27(i,a27,1) );
+
+m27 (k27:Int,n27:Int,i:Int) :(Unit) =
+  if (k27 == 0) then
+    let (x27:Int->Int) = init27(k27,n27,make_array27(n27)) in
+      if ((0 <= i) && (i <= (n27 + -1))) then
+        assert ((x27 i) == 0)
+      else skip
+  else skip;
+
+sum28 (n:Int, m:Int) :(Int) =
+  if n <= 0 then
+    m
+  else
+    1 + (sum28 (n + -1, m));
+
+mult_sum (n:Int, m:Int) :(Int) =
+  if n <= 0 then
+    0
+  else if n == 1 then
+         m
+       else
+         sum28(m,(mult_sum (n + -1, m)));
+  
+m28 (n:Int,m:Int) :Unit =
+assert( mult_sum(n,m) == (n*m) );
+
+Main (n:Int, m:Int) :Unit:
+if n == 1 then (m1 m)
+else
+if n == 2 then (m2 m)
+else
+if n == 3 then (m3 m)
+else
+if n == 4 then (m4 m)
+else
+if n == 5 then (m5 m)
+else
+if n == 6 then (m6 m)
+else
+if n == 7 then (m7 m)
+else
+if n == 8 then (m8 m)
+else
+if n == 9 then (m9(m,m,m))
+else
+if n == 11 then (m11 m)
+else
+if n == 12 then (m12 m)
+else
+if n == 13 then (m13 m)
+else
+if n == 14 then (m14 m)
+else
+if n == 15 then (m15 m)
+else
+if n == 16 then (m16 m)
+else
+if n == 17 then (m17 m)
+else
+if n == 18 then (m18 m)
+else
+if n == 21 then (m21 (m,m,m))
+else
+if n == 23 then (m23 (m,m))
+else
+if n == 24 then (m24 (m,m))
+else
+if n == 25 then (m25 (m,m))
+else
+if n == 26 then (m26 (m,m))
+else
+if n == 27 then (m27 (m,m,m))
+else
+m28 (m,m)

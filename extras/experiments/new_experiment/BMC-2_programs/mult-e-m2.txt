@@ -1,0 +1,12 @@
+Methods:
+mult (n:Int,m:Int) :(Int) =
+  if (n <= 0) || (m <= 0) then
+    0
+  else
+    n + (mult (n,m + -1));
+
+Main (a:Int,b:Int) :Unit:
+assert ((mult(b,b)) <= (mult(a,a)))
+
+(* should fail for n=0 and m=1, for instance *)
+(* THIS FAILS WITH 0,4, even if it is a,b. FIGURE OUT WHY. *)

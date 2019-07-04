@@ -1,0 +1,17 @@
+Methods:
+make_array (n:Int) :(Int->Int) =
+  fun (i:Int) :(Int) -> (n +(i*(-1)));
+
+array_max (n:Int, i:Int, a:Int->Int,m:Int) :(Int) =
+  if (i >= n) then
+    m
+  else
+    let (x:Int) = a i in
+    let (z:Int) = if x >= (m + 1) then x else m in
+    array_max(n,i+1,a,z);
+
+Main (n:Int,i:Int) :(Unit) :
+  if ((n >= 1) && (i == 0)) then
+    let (m:Int) = array_max(n,i,make_array n,-1) in
+    if n==m then assert(0) else skip
+  else skip

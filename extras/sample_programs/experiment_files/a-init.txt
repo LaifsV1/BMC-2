@@ -1,0 +1,20 @@
+Methods:
+make_array (n:Int) :(Int->Int) =
+  fun (i:Int) :(Int) ->
+  let (u:Unit) = assert ((0 <= i) && (i <= (n + -1))) in 0;
+
+update (i:Int, a:Int->Int, x:Int) :(Int -> Int) =
+  fun (j:Int) :(Int) ->
+  if (j == i) then x else a (j);
+
+init (i:Int,n:Int,a:Int->Int) :(Int->Int) =
+  if (i >= n) then a
+  else init((i + 1),n,update(i,a,1));
+
+Main (k:Int,n:Int,i:Int) :(Unit) :
+  if (k == 0) then
+    let (x:Int->Int) = init(k,n,make_array (n)) in
+      if ((0 <= i) && (i <= (n + -1))) then
+        assert ((x i) >= 1)
+      else skip
+  else skip

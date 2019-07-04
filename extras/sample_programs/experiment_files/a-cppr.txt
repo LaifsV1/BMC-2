@@ -1,0 +1,30 @@
+Methods:
+make_array (n:Int) :(Int->Int) =
+  fun (i:Int) :(Int) ->
+  let (u:Unit) = assert ((0 <= i) && (i <= (n + -1))) in 0;
+
+update (i:Int, n:Int, des:Int->Int, x:Int) :(Int -> Int) =
+       let (u:Unit) = des i in
+       let (a:Int -> Int) =
+           fun (j:Int) :(Int) -> if (i == j) then x else des i in a;
+
+print_int (n:Int) :(Unit) = skip;
+
+f (m:Int, src:Int->Int , des:Int->Int) :(Unit) =
+  let rec (bcopy:(Int,Int->Int,Int->Int,Int)->(Int->Int))=
+      fun (m:Int,src:Int->Int,des:Int->Int,i:Int) :(Int->Int) ->
+          if (i >= m) then des
+          else let (des:Int->Int) = update (i,m,des,src i) in
+          bcopy (m,src,des,i + 1)
+  in let rec (print_array: (Int,Int->Int,Int)->Unit) =
+     fun (m:Int, array:Int->Int, i:Int) :(Unit) ->
+         if (i >= m) then skip
+         else (let (u:Unit) = print_int (des i) in print_array (m,array,i + 1))
+  in let (array : Int->Int) = bcopy (m,src, des, 0) in
+  print_array (m,array,0);
+
+Main (n:Int) :(Unit) :
+     let (array1 : Int->Int) = make_array n in
+     let (array2 : Int->Int) = make_array n in
+     if n >= 1 then f(n,array1,array2)
+     else skip

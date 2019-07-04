@@ -1,0 +1,18 @@
+Methods:
+sum (n:Int, m:Int) :(Int) =
+  if n <= 0 then
+    m
+  else
+    1 + (sum (n + -1, m));
+
+mult_sum (n:Int, m:Int) :(Int) =
+  if n <= 0 then
+    0
+  else if n == 1 then
+         m
+       else
+         sum(m,(mult_sum (n + -1, m)));
+  
+
+Main (n:Int,m:Int) :Unit:
+assert( mult_sum(n,m) == (n*m) )

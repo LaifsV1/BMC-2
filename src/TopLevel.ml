@@ -9,7 +9,7 @@ open Translation
 let line_sprintf p1 p2 = sprintf "(line %d , col %d) to (line %d , col %d)"
                                  (p1.pos_lnum) (p1.pos_cnum - p1.pos_bol) (p2.pos_lnum) (p2.pos_cnum - p2.pos_bol)
 
-let debug = ref true
+let debug = ref false
 let timing = ref true
 let assertfail = ref true
 
@@ -74,7 +74,7 @@ let _ =
         (*let oRdecl = repo_get_decl oR odecl in (*get decl from output repo*) (*can't get from repo cuz they strings*)*)
         let def_decl = decl_of_list "" get_default_decl in (*write decl from defaul_decl*)
         let all_decl = decl_of_list def_decl odecl in  (*write decl from everything ontop of default decl*)
-        if !debug then printf ".....[done]*** @]";
+        if !debug then printf ";;.....[done]*** @]";
         if !debug then print_newline ();
         if !debug then printf ";;    PARSED TERM: %s\n" (string_of_term new_term);
         if !debug then print_newline ();

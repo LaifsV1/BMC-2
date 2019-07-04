@@ -1,0 +1,13 @@
+Methods:
+mc91 (x:Int) :(Int) =
+  if x >= 101 then
+    x + -10
+  else
+    mc91 (mc91 (x + 11));
+
+Main (n:Int) :Unit:
+if n <= 101 then
+  assert( (mc91 n) == 91 )
+else skip
+
+(* n=93 is computable with k = 10. Makes 17 calls to mc91. *)
