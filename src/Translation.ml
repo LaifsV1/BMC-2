@@ -78,6 +78,9 @@ let rec subs (m : term) (t : _var) (y : _var) =
          else Letrec(f,xs,subs t1 t y,subs t2 t y)
   | Cons(t1,t2) -> Cons(subs t1 t y,subs t2 t y)
   | EmptyList -> EmptyList
+  | Head(t1) -> Head(subs t1 t y)
+  | Tail(t1) -> Tail(subs t1 t y)
+  | IsNil(t1) -> IsNil(subs t1 t y)
 
 let rec subslist (m : term) (ts : _var list) (ys : _var list) =
   match ts,ys with
@@ -184,6 +187,15 @@ let rec bmc_translation
          (ret_tp,(ret===(z3_method new_meth)) &&& (ret=/=tfail_m) &&& (ret=/=tnil_m) &&& phi,
           r',c,d,Val,new_tps,Meths [new_meth],pt,ass,True)
       (* inductive cases *)
+      | Head(t) ->
+         let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t r c d phi k ListInt new_tps pt ass pc in (* int etype cuz only int list *)
+         (ret_tp,(ret===(z3_list_head (fst ret1))) &&& phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1, pc1 &&& ((fst ret1)=/= "nil"))
+      | Tail(t) ->
+         let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t r c d phi k ListInt new_tps pt ass pc in (* only int list *)
+         (ret_tp,(ret===(z3_list_tail (fst ret1))) &&& phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1, pc1 &&& ((fst ret1)=/= "nil"))
+      | IsNil(t) ->
+         let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t r c d phi k Integer new_tps pt ass pc in
+         (ret_tp,(ret===(z3_list_isnil (fst ret1))) &&& phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1, pc1)
       | Cons(t1,t2) -> 
          let (ret1,phi1,r1,c1,d1,q1,tps1,a1,pt1,ass1,pc1) = bmc_translation t1 r c d phi k Integer new_tps pt ass pc in
          let (ret2,phi2,r2,c2,d2,q2,tps2,a2,pt2,ass2,pc2) = bmc_translation t2 r1 c1 d1 phi1 k ListInt tps1 pt1 ass1 (pc&&&pc1) in

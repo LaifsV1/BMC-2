@@ -19,6 +19,7 @@
 (*** TYPE-TOKENS ***)
 %token Unit_TYPE
 %token Integer_TYPE
+%token IntList_TYPE
 
 (*** TERMS-TOKENS ***)
 %token Fail_TERM Skip_TERM
@@ -39,6 +40,9 @@
 (*%token Apply_TERM_OP*)
 %token Cons_TERM_OP
 %token EmptyList_TERM
+%token Head_TERM_OP
+%token Tail_TERM_OP
+%token IsEmpty_TERM_OP
 
 (*** OTHER-TOKENS ***)
 %token ARROW_OP
@@ -62,6 +66,7 @@
 %right Cons_TERM_OP
 %left MINUS_OP PLUS_OP
 %left TIMES_OP
+%nonassoc isEmpty_TERM_OP Tail_TERM_OP Head_TERM_OP
 (*%nonassoc Apply_TERM_OP*)
 	/*~~~~~~~~~~~~~~~~~~~~*/
 	/* highest precedence */
@@ -170,6 +175,9 @@ term:
                                                             ApplyX((x,tp),$2) } (*%prec Apply_TERM_OP*)
 | If_TERM term Then_TERM term Else_TERM term         { If($2,$4,$6) }
 | Assert_TERM simple_term                            { Assert($2) }
+| Head_TERM_OP term                                  { Head($2) }
+| Tail_TERM_OP term                                  { Tail($2) }
+| IsEmpty_TERM_OP term                               { IsNil($2) }
 | error                                              { raise (parse_failure "term" $startpos $endpos) }
 
 list:
@@ -210,6 +218,7 @@ simple_tp:
 | OPEN_PAREN tp CLOSE_PAREN { $2 }
 | Unit_TYPE                 { Unit }
 | Integer_TYPE              { Integer }
+| IntList_TYPE              { ListInt }
 
 tp:
 | simple_tp                 { $1 }

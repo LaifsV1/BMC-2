@@ -32,6 +32,7 @@ rule read = parse
   | ';'             { SEMICOLON }
   | "Int"           { Integer_TYPE }
   | "Unit"          { Unit_TYPE }
+  | "List"          { IntList_TYPE }
   | "->"            { ARROW_OP }
   | '*'             { TIMES_OP }
   | '+'             { PLUS_OP }
@@ -51,6 +52,9 @@ rule read = parse
   | ":="            { Assign_TERM_OP }
   | "::"            { Cons_TERM_OP }
   | "[]"            { EmptyList_TERM }
+  | "hd"            { Head_TERM_OP }
+  | "tl"            { Tail_TERM_OP }
+  | "is_empty"      { IsEmpty_TERM_OP }
   | "="             { EQUALS_OP }
   | "let"           { Let_TERM }
   | "rec"           { Rec_TERM }

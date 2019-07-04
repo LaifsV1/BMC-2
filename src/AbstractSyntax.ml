@@ -79,6 +79,9 @@ let z3_pair_left  pair = sprintf "(left %s)"  pair
 let z3_pair_right pair = sprintf "(right %s)" pair
 let z3_binops a op b = sprintf "(%s %s %s)" op a b
 let z3_list_maker x xs = sprintf "(cons %s %s)" x xs
+let z3_list_head xs = sprintf "(hd %s)" xs
+let z3_list_tail xs = sprintf "(tl %s)" xs
+let z3_list_isnil xs = sprintf "(isnil %s)" xs
 
 
 (*********)
@@ -157,6 +160,7 @@ type term = Fail | Skip | Int of int | Method of _meth
             | Letrec of _var * _var list * term * term
             | Assert of term
             | EmptyList | Cons of term * term
+            | Head of term | Tail of term | IsNil of term
 let rec string_of_term (t : term) :(string) =
   match t with
   | Fail -> tfail
@@ -193,6 +197,9 @@ let rec string_of_term (t : term) :(string) =
              x (string_of_tp tp) (string_of_args xs) (string_of_tp tp) (string_of_term t1) (string_of_term t2)
   | EmptyList -> "[]"
   | Cons(t1,t2) -> sprintf "(%s :: %s)" (string_of_term t1) (string_of_term t2)
+  | Head(t1) -> sprintf "(hd %s)" (string_of_term t1)
+  | Tail(t1) -> sprintf "(tl %s)" (string_of_term t1)
+  | IsNil(t1) -> sprintf "(is_empty %s)" (string_of_term t1)
 
 let string_of_typed_term t tp = sprintf "(%s : %s)" (string_of_term t) (string_of_tp tp)
 
@@ -268,6 +275,7 @@ let rec z3_assertions_of_list xs =
   | [] -> ""
   | x::xs -> sprintf "(assert %s)\n%s" (z3_of_proposition x id) (z3_assertions_of_list xs)
 
+let z3_not s = sprintf "(not %s)" s
 let (===) s1 s2 = if s1 = s2 then True  else Eq(s1,s2)
 let (=/=) s1 s2 = if s1 = s2 then False else Neq(s1,s2)
 let (==>) p1 p2 = if p1 = True then p2 else

@@ -25,6 +25,7 @@ let print_custom_ops () = printf "(define-fun gte ((x Int) (y Int)) Int (if (>= 
                           printf "(define-fun neq ((x Int) (y Int)) Int (if (= x y) 0 1))\n";
                           printf "(define-fun and_int ((x Int) (y Int)) Int (if (or (= x 0) (= y 0)) 0 1))\n";
                           printf "(define-fun or_int ((x Int) (y Int)) Int (if (or (not (= x 0)) (not (= y 0))) 1 0))\n";
+                          printf "(define-fun isnil ((ls (Lst Int))) Int (if (= ls nil) 1 0))\n";
                           printf "(declare-const __nil Int)\n"
 
 let from_file file = Lexing.from_channel (open_in file);;

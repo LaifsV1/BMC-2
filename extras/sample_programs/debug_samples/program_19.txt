@@ -1,0 +1,7 @@
+Methods:
+g (ls:List) :(Int) =
+ if is_empty ls then 0
+ else 1 + (g (tl ls));
+
+Main (ls:List) :(Unit):
+assert((g ls) <= 5)

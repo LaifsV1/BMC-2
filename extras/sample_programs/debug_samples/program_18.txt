@@ -1,0 +1,5 @@
+Methods:
+f (ls:List) :(Int) = hd ls;
+
+Main (ls:List) :(Unit):
+assert( (f (tl ls)) ==  (hd (tl (tl (6::5::4::[]) ))))
