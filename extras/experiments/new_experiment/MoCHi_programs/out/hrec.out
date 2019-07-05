@@ -1,0 +1,147 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 hrec.ml
+
+parsed:
+ let rec f_1199 g_1200 x_1201 = if x_1201 >= 0 then g_1200 x_1201 else f_1199 (f_1199 g_1200) (g_1200 x_1201) in
+ let succ_1202 x_1203 = x_1203 + 1 in
+ let main_1204 n_1205 = assert (f_1199 succ_1202 n_1205 >= 0) in
+ ()
+
+
+###set_main:
+ let rec f_1199 (g_1200:(int -> int)) (x_1201:int) =
+   if x_1201 >= 0 then g_1200 x_1201 else f_1199 (f_1199 g_1200) (g_1200 x_1201)
+ in
+ let succ_1202 (x_1203:int) = x_1203 + 1 in
+ let main_1204 (n_1205:int) = assert (f_1199 succ_1202 n_1205 >= 0) in
+ (let arg1_2034 = rand_int () in
+  main_1204 arg1_2034); ()
+
+###CPS:
+ (let rec f_1199 (g_1200:(int -> (int -> X) -> X)) (x_1201:int) (k_f_2188:(int -> X)) =
+    if x_1201 >= 0
+    then
+      g_1200 x_1201 k_f_2188
+    else
+      g_1200 x_1201 (fun (x_2232:int) -> f_1199 (f_1199 g_1200) x_2232 k_f_2188)
+  in
+  let succ_1202 (x_1203:int) (k_succ_2247:(int -> X)) = k_succ_2247 (x_1203 + 1) in
+  let main_2036 (k_main_2293:(unit -> X)) =
+    let arg1_2034 (k_main_arg1_2298:(int -> X)) = rand_int_cps () k_main_arg1_2298 in
+    arg1_2034
+      (fun (arg1_2314:int) ->
+         f_1199
+           succ_1202 arg1_2314 
+           (fun (x_2257:int) -> if x_2257 >= 0 then k_main_2293 () else <|fail|> () k_main_2293))
+  in
+  main_2036 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let rec f_1199 (g_1200:(int -> (int -> X) -> X)) (x_1201:int) (k_f_2188:(int -> X)) =
+    if x_1201 >= 0
+    then
+      g_1200 x_1201 k_f_2188
+    else
+      g_1200 x_1201 (fun (x_2232:int) -> f_1199 (f_1199 g_1200) x_2232 k_f_2188)
+  in
+  let succ_1202 (x_1203:int) (k_succ_2247:(int -> X)) = k_succ_2247 (x_1203 + 1) in
+  let main_2036 (k_main_2293:(unit -> X)) =
+    let arg1_2034 (k_main_arg1_2298:(int -> X)) = rand_int_cps () k_main_arg1_2298 in
+    arg1_2034
+      (fun (arg1_2314:int) ->
+         f_1199
+           succ_1202 arg1_2314 
+           (fun (x_2257:int) -> if x_2257 >= 0 then k_main_2293 () else <|fail|> () k_main_2293))
+  in
+  main_2036 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2464
+  main_2464 -> (main_2036 f_2468).
+  arg1_2034 k_main_arg1_2298 -> (rand_int k_main_arg1_2298).
+  f_1199 g_1200 x_1201 k_f_2188 when (x_1201 >= 0) -> (g_1200 x_1201 k_f_2188).
+  f_1199 g_1200 x_1201 k_f_2188 when (not (x_1201 >= 0)) -> (g_1200 x_1201 (f_f_2465 x_1201 g_1200 k_f_2188)).
+  f_2468 main_2315 -> end.
+  f_f_2465 x_1201 g_1200 k_f_2188 x_2232 -> (f_1199 (f_1199 g_1200) x_2232 k_f_2188).
+  f_f_main_2467 arg1_2314 k_main_2293 x_2257 when (x_2257 >= 0) -> (k_main_2293 ()).
+  f_f_main_2467 arg1_2314 k_main_2293 x_2257 when (not (x_2257 >= 0)) -> (fail_2469 true k_main_2293).
+  f_main_2466 k_main_2293 arg1_2314 -> (f_1199 succ_1202 arg1_2314 (f_f_main_2467 arg1_2314 k_main_2293)).
+  fail_2469 b k -> {fail} => (k ()).
+  main_2036 k_main_2293 -> (arg1_2034 (f_main_2466 k_main_2293)).
+  succ_1202 x_1203 k_succ_2247 -> (k_succ_2247 (x_1203 + 1)).
+Types:
+  main_2464 : X
+  f_1199 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_2469 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2464 ... --> 
+  main_2036 ... --> 
+  arg1_2034 ... --> 
+  f_main_2466 ... --> 
+  f_1199 [1/2] ... --> 
+  succ_1202 ... --> 
+  f_f_main_2467 [2/2] ... --> 
+  fail_2469 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_2464
+  main_2464 -> (main_2036 f_2468).
+  arg1_2034 k_main_arg1_2298 -> (rand_int k_main_arg1_2298).
+  f_1199 g_1200 x_1201 k_f_2188 when (x_1201 >= 0) -> (g_1200 x_1201 k_f_2188).
+  f_1199 g_1200 x_1201 k_f_2188 when (not (x_1201 >= 0)) -> (g_1200 x_1201 (f_f_2465 x_1201 g_1200 k_f_2188)).
+  f_2468 main_2315 -> end.
+  f_f_2465 x_1201 g_1200 k_f_2188 x_2232 -> (f_1199 (f_1199 g_1200) x_2232 k_f_2188).
+  f_f_main_2467 arg1_2314 k_main_2293 x_2257 when (x_2257 >= 0) -> (k_main_2293 ()).
+  f_f_main_2467 arg1_2314 k_main_2293 x_2257 when (not (x_2257 >= 0)) -> (fail_2469 true k_main_2293).
+  f_main_2466 k_main_2293 arg1_2314 -> (f_1199 succ_1202 arg1_2314 (f_f_main_2467 arg1_2314 k_main_2293)).
+  fail_2469 b k -> {fail} => (k ()).
+  main_2036 k_main_2293 -> (arg1_2034 (f_main_2466 k_main_2293)).
+  succ_1202 x_1203 k_succ_2247 -> (k_succ_2247 (x_1203 + 1)).
+Types:
+  main_2464 : X
+  f_1199 : ((x_3:int[x_3 >= 0] -> (x_5:int[1 <= x_5] -> X) -> X) -> int -> (x_10:int[1 <= x_10] -> X) -> X)
+  fail_2469 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+
+========================================================================================================================
+
+Safe!
+
+Refinement Types:
+  f: (((({x_36:int | x_36 < 0} -> int) /\ ({x_33:int | x_33 >= 0} -> {x_34:int | 1 <= x_34})) ->
+         int -> {x_31:int | 1 <= x_31}) /\
+      ((int -> Bot) -> int -> Bot))
+
+CEGAR-cycles: 2
+total: 0.866 sec
+  abst: 0.310 sec
+  mc: 0.026 sec
+  refine: 0.169 sec
+0.867

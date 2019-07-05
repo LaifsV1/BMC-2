@@ -1,0 +1,3 @@
+unsat
+(error "line 932 column 15: model is not available")
+0.099

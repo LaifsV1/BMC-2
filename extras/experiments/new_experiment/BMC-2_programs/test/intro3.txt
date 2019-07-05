@@ -1,6 +1,0 @@
-Methods:
-f (x:Int,g:Int->Unit) :(Unit) = g (x+1);
-h (z:Int) :(Int->Unit) = fun (y:Int) :(Unit) -> if y <= z then assert(0) else skip;
-
-Main (n:Int) :(Unit):
-if n>=0 then f(n,h n) else skip

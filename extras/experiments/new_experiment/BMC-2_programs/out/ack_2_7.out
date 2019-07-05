@@ -1,0 +1,4 @@
+unsat
+(error "line 422381 column 15: model is not available")
+(error "line 422381 column 30: model is not available")
+11.503

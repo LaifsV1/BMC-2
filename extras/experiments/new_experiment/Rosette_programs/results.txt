@@ -1,0 +1,329 @@
+mc91-e, k = 1: (cex 102)
+cpu time: 27 real time: 54 gc time: 0
+
+mc91-e, k = 2: (cex 102)
+cpu time: 9 real time: 41 gc time: 0
+
+mc91-e, k = 3: (cex 102)
+cpu time: 40 real time: 236 gc time: 27
+
+mc91-e, k = 4: (cex 102)
+cpu time: 26 real time: 236 gc time: 0
+
+mc91-e, k = 5: (cex 102)
+cpu time: 58 real time: 266 gc time: 17
+
+mc91-e, k = 6: (cex 102)
+cpu time: 96 real time: 314 gc time: 10
+
+mc91-e, k = 7: (cex 102)
+cpu time: 237 real time: 495 gc time: 44
+
+mc91-e, k = 8: (cex 102)
+cpu time: 502 real time: 813 gc time: 78
+
+mc91-e, k = 9: (cex 102)
+cpu time: 872 real time: 1579 gc time: 162
+
+mc91-e, k = 10: (cex 102)
+cpu time: 1897 real time: 3649 gc time: 398
+
+mc91-e, k = 11: (cex 102)
+cpu time: 5093 real time: 12511 gc time: 1752
+
+mc91-e, k = 12: (cex 102)
+cpu time: 13474 real time: 56378 gc time: 4526
+
+multi-e, k = 1: (cex 1)
+cpu time: 5 real time: 29 gc time: 0
+
+multi-e, k = 2: (cex 1)
+cpu time: 3 real time: 8 gc time: 0
+
+multi-e, k = 3: (cex 1)
+cpu time: 3 real time: 8 gc time: 0
+
+multi-e, k = 4: (cex 1)
+cpu time: 3 real time: 7 gc time: 0
+
+multi-e, k = 5: (cex 1)
+cpu time: 2 real time: 7 gc time: 0
+
+multi-e, k = 6: (cex 1)
+cpu time: 2 real time: 6 gc time: 0
+
+multi-e, k = 7: (cex 1)
+cpu time: 3 real time: 5 gc time: 0
+
+multi-e, k = 8: (cex 1)
+cpu time: 2 real time: 5 gc time: 0
+
+multi-e, k = 9: (cex 1)
+cpu time: 2 real time: 5 gc time: 0
+
+multi-e, k = 10: (cex 1)
+cpu time: 2 real time: 5 gc time: 0
+
+multi-e, k = 11: (cex 1)
+cpu time: 2 real time: 5 gc time: 0
+
+multi-e, k = 12: (cex 1)
+cpu time: 4 real time: 5 gc time: 0
+
+multi-e, k = 13: (cex 1)
+cpu time: 2 real time: 6 gc time: 0
+
+multi-e, k = 14: (cex 1)
+cpu time: 3 real time: 5 gc time: 0
+
+multi-e, k = 15: (cex 1)
+cpu time: 57 real time: 61 gc time: 52
+
+repeat-e, k = 1: (cex 1)
+cpu time: 3 real time: 7 gc time: 0
+
+repeat-e, k = 2: (cex 0)
+cpu time: 3 real time: 8 gc time: 0
+
+repeat-e, k = 3: (cex 0)
+cpu time: 4 real time: 8 gc time: 0
+
+repeat-e, k = 4: (cex 0)
+cpu time: 4 real time: 7 gc time: 0
+
+repeat-e, k = 5: (cex 0)
+cpu time: 5 real time: 10 gc time: 0
+
+repeat-e, k = 6: (cex 0)
+cpu time: 6 real time: 10 gc time: 0
+
+repeat-e, k = 7: (cex 0)
+cpu time: 6 real time: 10 gc time: 0
+
+repeat-e, k = 8: (cex 0)
+cpu time: 7 real time: 12 gc time: 0
+
+repeat-e, k = 9: (cex 0)
+cpu time: 6 real time: 12 gc time: 0
+
+repeat-e, k = 10: (cex 0)
+cpu time: 7 real time: 12 gc time: 0
+
+repeat-e, k = 11: (cex 0)
+cpu time: 60 real time: 59 gc time: 50
+
+repeat-e, k = 12: (cex 0)
+cpu time: 10 real time: 16 gc time: 0
+
+repeat-e, k = 13: (cex 0)
+cpu time: 10 real time: 16 gc time: 0
+
+repeat-e, k = 14: (cex 0)
+cpu time: 10 real time: 14 gc time: 0
+
+repeat-e, k = 15: (cex 0)
+cpu time: 11 real time: 15 gc time: 0
+
+r-lock-e, k = 1: (cex 0)
+cpu time: 2 real time: 5 gc time: 0
+
+r-lock-e, k = 2: (cex 0)
+cpu time: 2 real time: 5 gc time: 0
+
+r-lock-e, k = 3: (cex 0)
+cpu time: 2 real time: 5 gc time: 0
+
+r-lock-e, k = 4: (cex 0)
+cpu time: 1 real time: 4 gc time: 0
+
+r-lock-e, k = 5: (cex 0)
+cpu time: 2 real time: 5 gc time: 0
+
+r-lock-e, k = 6: (cex 0)
+cpu time: 2 real time: 5 gc time: 0
+
+r-lock-e, k = 7: (cex 0)
+cpu time: 1 real time: 5 gc time: 0
+
+r-lock-e, k = 8: (cex 0)
+cpu time: 1 real time: 4 gc time: 0
+
+r-lock-e, k = 9: (cex 0)
+cpu time: 2 real time: 5 gc time: 0
+
+r-lock-e, k = 10: (cex 0)
+cpu time: 2 real time: 5 gc time: 0
+
+r-lock-e, k = 11: (cex 0)
+cpu time: 2 real time: 6 gc time: 0
+
+r-lock-e, k = 12: (cex 0)
+cpu time: 146 real time: 149 gc time: 106
+
+r-lock-e, k = 13: (cex 0)
+cpu time: 2 real time: 7 gc time: 0
+
+r-lock-e, k = 14: (cex 0)
+cpu time: 3 real time: 7 gc time: 0
+
+r-lock-e, k = 15: (cex 0)
+cpu time: 2 real time: 5 gc time: 0
+
+r-lock, k = 1: (unsat)
+cpu time: 1 real time: 2 gc time: 0
+
+r-lock, k = 2: (unsat)
+cpu time: 2 real time: 1 gc time: 0
+
+r-lock, k = 3: (unsat)
+cpu time: 1 real time: 2 gc time: 0
+
+r-lock, k = 4: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 5: (unsat)
+cpu time: 1 real time: 2 gc time: 0
+
+r-lock, k = 6: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 7: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 8: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 9: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 10: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 11: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 12: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 13: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+r-lock, k = 14: (unsat)
+cpu time: 0 real time: 1 gc time: 0
+
+r-lock, k = 15: (unsat)
+cpu time: 1 real time: 1 gc time: 0
+
+sum-e, k = 1: (cex 1)
+cpu time: 2 real time: 6 gc time: 0
+
+sum-e, k = 2: (cex 0)
+cpu time: 1 real time: 5 gc time: 0
+
+sum-e, k = 3: (cex 1)
+cpu time: 2 real time: 6 gc time: 0
+
+sum-e, k = 4: (cex 0)
+cpu time: 2 real time: 6 gc time: 0
+
+sum-e, k = 5: (cex 0)
+cpu time: 2 real time: 7 gc time: 0
+
+sum-e, k = 6: (cex 1)
+cpu time: 3 real time: 7 gc time: 0
+
+sum-e, k = 7: (cex 0)
+cpu time: 56 real time: 62 gc time: 52
+
+sum-e, k = 8: (cex 1)
+cpu time: 5 real time: 9 gc time: 0
+
+sum-e, k = 9: (cex 0)
+cpu time: 4 real time: 8 gc time: 0
+
+sum-e, k = 10: (cex 1)
+cpu time: 8 real time: 10 gc time: 0
+
+sum-e, k = 11: (cex 1)
+cpu time: 4 real time: 9 gc time: 0
+
+sum-e, k = 12: (cex 1)
+cpu time: 5 real time: 9 gc time: 0
+
+sum-e, k = 13: (cex 0)
+cpu time: 4 real time: 10 gc time: 0
+
+sum-e, k = 14: (cex 1)
+cpu time: 6 real time: 9 gc time: 0
+
+sum-e, k = 15: (cex 1)
+cpu time: 57 real time: 63 gc time: 51
+
+hrec, k = 1: (unsat)
+cpu time: 2 real time: 5 gc time: 0
+
+hrec, k = 2: (unsat)
+cpu time: 3 real time: 7 gc time: 0
+
+hrec, k = 3: (unsat)
+cpu time: 3 real time: 6 gc time: 0
+
+hrec, k = 4: (unsat)
+cpu time: 11 real time: 14 gc time: 0
+
+hrec, k = 5: (unsat)
+cpu time: 13 real time: 17 gc time: 0
+
+hrec, k = 6: (unsat)
+cpu time: 120 real time: 298 gc time: 50
+
+hrec, k = 7: (unsat)
+cpu time: 163 real time: 336 gc time: 52
+
+hrec, k = 8: (unsat)
+cpu time: 681 real time: 869 gc time: 265
+
+hrec, k = 9: (unsat)
+cpu time: 1103 real time: 1306 gc time: 443
+
+hrec, k = 10: (unsat)
+cpu time: 3962 real time: 4265 gc time: 1468
+
+hrec, k = 11: (unsat)
+cpu time: 6432 real time: 6754 gc time: 2471
+
+hrec, k = 12: (unsat)
+cpu time: 26450 real time: 26958 gc time: 9288
+
+ack, k = 1: (unsat)
+cpu time: 3 real time: 18 gc time: 0
+
+ack, k = 2: (unsat)
+cpu time: 5 real time: 9 gc time: 0
+
+ack, k = 3: (unsat)
+cpu time: 88 real time: 96 gc time: 76
+
+ack, k = 4: (unsat)
+cpu time: 25 real time: 217 gc time: 0
+
+ack, k = 5: (unsat)
+cpu time: 205 real time: 400 gc time: 141
+
+ack, k = 6: (unsat)
+cpu time: 346 real time: 572 gc time: 187
+
+ack, k = 7: (unsat)
+cpu time: 964 real time: 1251 gc time: 575
+
+ack, k = 8: (unsat)
+cpu time: 2258 real time: 3061 gc time: 1259
+
+ack, k = 9: (unsat)
+cpu time: 5807 real time: 8313 gc time: 3060
+
+ack, k = 10: (unsat)
+cpu time: 13753 real time: 24251 gc time: 7206
+
+ack, k = 11: (unsat)
+cpu time: 75318 real time: 133830 gc time: 53110

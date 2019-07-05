@@ -1,0 +1,5 @@
+Store:
+r1:Int := 0;
+
+Main (n:Int) :Unit:
+let (x:Unit) = r1 := n in assert((!r1) != n)

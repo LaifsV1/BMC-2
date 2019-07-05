@@ -1,0 +1,76 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 intro1.ml
+
+parsed:
+ let f_1199 x_1200 g_1201 = g_1201 (x_1200 + 1) in
+ let h_1202 y_1203 = assert (y_1203 > 0) in
+ let main_1204 n_1205 = if n_1205 > 0 then f_1199 n_1205 h_1202 in
+ ()
+
+
+###set_main:
+ let f_1199 (x_1200:int) (g_1201:(int -> unit)) = g_1201 (x_1200 + 1) in
+ let h_1202 (y_1203:int) = assert (y_1203 > 0) in
+ let main_1204 (n_1205:int) = if n_1205 > 0 then f_1199 n_1205 h_1202 in
+ (let arg1_2026 = rand_int () in
+  main_1204 arg1_2026); ()
+
+###CPS:
+ (let h_1202 (y_1203:int) (k_h_2157:(unit -> X)) = if y_1203 > 0 then k_h_2157 () else <|fail|> () k_h_2157 in
+  let main_1204 (n_1205:int) (k_main_2175:(unit -> X)) =
+    if n_1205 > 0 then h_1202 (n_1205 + 1) k_main_2175 else k_main_2175 ()
+  in
+  let main_2028 (k_main_2209:(unit -> X)) =
+    let arg1_2026 (k_main_arg1_2214:(int -> X)) = rand_int_cps () k_main_arg1_2214 in
+    arg1_2026 (fun (arg1_2230:int) -> main_1204 arg1_2230 k_main_2209)
+  in
+  main_2028 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let h_1202 (y_1203:int) (k_h_2157:(unit -> X)) = if y_1203 > 0 then k_h_2157 () else <|fail|> () k_h_2157 in
+  let main_1204 (n_1205:int) (k_main_2175:(unit -> X)) =
+    if n_1205 > 0 then h_1202 (n_1205 + 1) k_main_2175 else k_main_2175 ()
+  in
+  let main_2028 (k_main_2209:(unit -> X)) =
+    let arg1_2026 (k_main_arg1_2214:(int -> X)) = rand_int_cps () k_main_arg1_2214 in
+    arg1_2026 (fun (arg1_2230:int) -> main_1204 arg1_2230 k_main_2209)
+  in
+  main_2028 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2339
+  main_2339 -> (main_2028 f_2341).
+  arg1_2026 k_main_arg1_2214 -> (rand_int k_main_arg1_2214).
+  f_2341 main_2231 -> end.
+  f_main_2340 k_main_2209 arg1_2230 -> (main_1204 arg1_2230 k_main_2209).
+  fail_2342 b k -> {fail} => (k ()).
+  h_1202 y_1203 k_h_2157 when (y_1203 > 0) -> (k_h_2157 ()).
+  h_1202 y_1203 k_h_2157 when (not (y_1203 > 0)) -> (fail_2342 true k_h_2157).
+  main_1204 n_1205 k_main_2175 when (n_1205 > 0) -> (h_1202 (n_1205 + 1) k_main_2175).
+  main_1204 n_1205 k_main_2175 when (not (n_1205 > 0)) -> (k_main_2175 ()).
+  main_2028 k_main_2209 -> (arg1_2026 (f_main_2340 k_main_2209)).
+Types:
+  main_2339 : X
+  fail_2342 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+
+========================================================================================================================
+
+Safe!
+
+CEGAR-cycles: 1
+total: 0.120 sec
+  abst: 0.051 sec
+  mc: 0.004 sec
+  refine: 0.000 sec
+0.123

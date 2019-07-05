@@ -1,0 +1,139 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 mult-e-m3.ml
+
+parsed:
+ let rec mult_1199 n_1200 m_1201 = if n_1200 <= 0 || m_1201 <= 0 then 0 else n_1200 + mult_1199 n_1200 (m_1201 - 1) in
+ let main_1202 n_1203 m_1204 = assert (n_1203 * 2 <= mult_1199 n_1203 m_1204) in
+ ()
+
+
+###set_main:
+ let rec mult_1199 (n_1200:int) (m_1201:int) =
+   if n_1200 <= 0 || m_1201 <= 0 then 0 else n_1200 + mult_1199 n_1200 (m_1201 - 1)
+ in
+ let main_1202 (n_1203:int) (m_1204:int) = assert (n_1203 * 2 <= mult_1199 n_1203 m_1204) in
+ (let arg1_2030 = rand_int () in
+  let arg2_2032 = rand_int () in
+  main_1202 arg1_2030 arg2_2032); ()
+
+###Eliminate_redundant_arguments:
+ let rec mult_1199 (n_1200:int) (m_1201:int) =
+   if n_1200 <= 0 || m_1201 <= 0 then 0 else n_1200 + mult_1199 n_1200 (m_1201 - 1)
+ in
+ let main_1202 (n_1203:int) (m_1204:int) = assert (n_1203 * 2 <= mult_1199 n_1203 m_1204) in
+ (let arg1_2030 = rand_int () in
+  let arg2_2032 = rand_int () in
+  main_1202 arg1_2030 arg2_2032); ()
+
+###CPS:
+ (let rec mult_1199 (n_1200:int) (m_1201:int) (k_mult_2173:(int -> X)) =
+    if n_1200 <= 0 || m_1201 <= 0
+    then
+      k_mult_2173 0
+    else
+      mult_1199 n_1200 (m_1201 - 1) (fun (x_2177:int) -> k_mult_2173 (n_1200 + x_2177))
+  in
+  let main_2034 (k_main_2234:(unit -> X)) =
+    let arg1_2030 (k_main_arg1_2239:(int -> X)) = rand_int_cps () k_main_arg1_2239 in
+    arg1_2030
+      (fun (arg1_2269:int) ->
+         let arg2_2032 (k_main_arg2_2251:(int -> X)) = rand_int_cps () k_main_arg2_2251 in
+         arg2_2032
+           (fun (arg2_2268:int) ->
+              mult_1199
+                arg1_2269 arg2_2268 
+                (fun (x_2204:int) -> if arg1_2269 * 2 <= x_2204 then k_main_2234 () else <|fail|> () k_main_2234)))
+  in
+  main_2034 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let rec mult_1199 (n_1200:int) (m_1201:int) (k_mult_2173:(int -> X)) =
+    if n_1200 <= 0 || m_1201 <= 0
+    then
+      k_mult_2173 0
+    else
+      mult_1199 n_1200 (m_1201 - 1) (fun (x_2177:int) -> k_mult_2173 (n_1200 + x_2177))
+  in
+  let main_2034 (k_main_2234:(unit -> X)) =
+    let arg1_2030 (k_main_arg1_2239:(int -> X)) = rand_int_cps () k_main_arg1_2239 in
+    arg1_2030
+      (fun (arg1_2269:int) ->
+         let arg2_2032 (k_main_arg2_2251:(int -> X)) = rand_int_cps () k_main_arg2_2251 in
+         arg2_2032
+           (fun (arg2_2268:int) ->
+              mult_1199
+                arg1_2269 arg2_2268 
+                (fun (x_2204:int) -> if arg1_2269 * 2 <= x_2204 then k_main_2234 () else <|fail|> () k_main_2234)))
+  in
+  main_2034 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2416
+  main_2416 -> (main_2034 f_2421).
+  arg1_2030 k_main_arg1_2239 -> (rand_int k_main_arg1_2239).
+  arg2_2032 arg1_2269 k_main_arg2_2251 -> (rand_int k_main_arg2_2251).
+  f_2421 main_2270 -> end.
+  f_f_f_main_2420 arg1_2269 arg2_2268 k_main_2234 x_2204 when ((arg1_2269 * 2) <= x_2204) -> (k_main_2234 ()).
+  f_f_f_main_2420 arg1_2269 arg2_2268 k_main_2234 x_2204 when (not ((arg1_2269 * 2) <= x_2204)) ->
+      (fail_2422 true k_main_2234).
+  f_f_main_2419 arg1_2269 k_main_2234 arg2_2268 ->
+      (mult_1199 arg1_2269 arg2_2268 (f_f_f_main_2420 arg1_2269 arg2_2268 k_main_2234)).
+  f_main_2418 k_main_2234 arg1_2269 -> (arg2_2032 arg1_2269 (f_f_main_2419 arg1_2269 k_main_2234)).
+  f_mult_2417 m_1201 n_1200 k_mult_2173 x_2177 -> (k_mult_2173 (n_1200 + x_2177)).
+  fail_2422 b k -> {fail} => (k ()).
+  main_2034 k_main_2234 -> (arg1_2030 (f_main_2418 k_main_2234)).
+  mult_1199 n_1200 m_1201 k_mult_2173 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_2173 0).
+  mult_1199 n_1200 m_1201 k_mult_2173 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_2417 m_1201 n_1200 k_mult_2173)).
+Types:
+  main_2416 : X
+  fail_2422 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  mult_1199 : (int -> int -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2416 ... --> 
+  main_2034 ... --> 
+  arg1_2030 ... --> 
+  f_main_2418 ... --> 
+  arg2_2032 ... --> 
+  f_f_main_2419 ... --> 
+  mult_1199 [1/2] ... --> 
+  f_f_f_main_2420 [2/2] ... --> 
+  fail_2422 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+
+========================================================================================================================
+
+Unsafe!
+
+Input for main:
+  1; 0
+Error trace:
+  main 1 0 ->
+    mult 1 0 ->
+      if true then ... ->
+    if false then ... ->
+  FAIL!
+
+CEGAR-cycles: 1
+total: 0.152 sec
+  abst: 0.040 sec
+  mc: 0.002 sec
+  refine: 0.034 sec
+0.153

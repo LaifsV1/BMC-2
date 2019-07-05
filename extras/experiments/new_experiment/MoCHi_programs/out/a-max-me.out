@@ -1,0 +1,281 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 a-max-me.ml
+
+parsed:
+ let make_array_1199 n_1200 i_1201 = n_1200 - i_1201 in
+ let rec array_max_1202 x_2018 i_1204 x_2025 m_1206 =
+   if i_1204 >= x_2018
+   then
+     m_1206
+   else
+     let x_1207 = x_2025 i_1204 in
+     let z_1208 = if x_1207 > m_1206 then x_1207 else m_1206 in
+     array_max_1202 x_2018 (i_1204 + 1) x_2025 z_1208
+ in
+ let main_1209 n_1210 i_1211 =
+   if n_1210 > 0 && (i_1211 >= 0 && i_1211 <= 0)
+   then
+     let m_1212 = array_max_1202 n_1210 i_1211 (make_array_1199 n_1210) (-1) in
+     assert (m_1212 <> n_1210)
+ in
+ ()
+
+
+###set_main:
+ let make_array_1199 (n_1200:int) (i_1201:int) = n_1200 - i_1201 in
+ let rec array_max_1202 (x_2018:int) (i_1204:int) (x_2025:(int -> int)) (m_1206:int) =
+   if i_1204 >= x_2018
+   then
+     m_1206
+   else
+     let x_1207 = x_2025 i_1204 in
+     let z_1208 = if x_1207 > m_1206 then x_1207 else m_1206 in
+     array_max_1202 x_2018 (i_1204 + 1) x_2025 z_1208
+ in
+ let main_1209 (n_1210:int) (i_1211:int) =
+   if n_1210 > 0 && (i_1211 >= 0 && i_1211 <= 0)
+   then
+     let m_1212 = array_max_1202 n_1210 i_1211 (make_array_1199 n_1210) (-1) in
+     assert (m_1212 <> n_1210)
+ in
+ (let arg1_2068 = rand_int () in
+  let arg2_2070 = rand_int () in
+  main_1209 arg1_2068 arg2_2070); ()
+
+###Eliminate_redundant_arguments:
+ let make_array_1199 (n_1200:int) (i_1201:int) = n_1200 - i_1201 in
+ let rec array_max_1202 (x_2018:int) (i_1204:int) (x_2025:(int -> int)) (m_1206:int) =
+   if i_1204 >= x_2018
+   then
+     m_1206
+   else
+     let x_1207 = x_2025 i_1204 in
+     let z_1208 = if x_1207 > m_1206 then x_1207 else m_1206 in
+     array_max_1202 x_2018 (i_1204 + 1) x_2025 z_1208
+ in
+ let main_1209 (n_1210:int) (i_1211:int) =
+   if n_1210 > 0 && (i_1211 >= 0 && i_1211 <= 0)
+   then
+     let m_1212 = array_max_1202 n_1210 i_1211 (make_array_1199 n_1210) (-1) in
+     assert (m_1212 <> n_1210)
+ in
+ (let arg1_2068 = rand_int () in
+  let arg2_2070 = rand_int () in
+  main_1209 arg1_2068 arg2_2070); ()
+
+###CPS:
+ (let make_array_1199 (n_1200:int) (i_1201:int) (k_make_array_2277:(int -> X)) = k_make_array_2277 (n_1200 - i_1201) in
+  let rec array_max_1202 (x_2018:int) (i_1204:int) (x_2025:(int -> (int -> X) -> X)) 
+                        (m_1206:int) (k_array_max_2288:(int -> X)) =
+    if i_1204 >= x_2018
+    then
+      k_array_max_2288 m_1206
+    else
+      x_2025
+        i_1204 
+        (fun (x_2327:int) ->
+           let z_1208 (k_array_max_z_2304:(int -> X)) =
+             if x_2327 > m_1206 then k_array_max_z_2304 x_2327 else k_array_max_z_2304 m_1206
+           in
+           z_1208 (fun (z_2326:int) -> array_max_1202 x_2018 (i_1204 + 1) x_2025 z_2326 k_array_max_2288))
+  in
+  let main_1209 (n_1210:int) (i_1211:int) (k_main_2344:(unit -> X)) =
+    if n_1210 > 0 && (i_1211 >= 0 && i_1211 <= 0)
+    then
+      array_max_1202
+        n_1210 i_1211 (make_array_1199 n_1210) (-1) 
+        (fun (m_2378:int) -> if m_2378 <> n_1210 then k_main_2344 () else <|fail|> () k_main_2344)
+    else
+      k_main_2344 ()
+  in
+  let main_2072 (k_main_2390:(unit -> X)) =
+    let arg1_2068 (k_main_arg1_2395:(int -> X)) = rand_int_cps () k_main_arg1_2395 in
+    arg1_2068
+      (fun (arg1_2425:int) ->
+         let arg2_2070 (k_main_arg2_2407:(int -> X)) = rand_int_cps () k_main_arg2_2407 in
+         arg2_2070 (fun (arg2_2424:int) -> main_1209 arg1_2425 arg2_2424 k_main_2390))
+  in
+  main_2072 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let make_array_1199 (n_1200:int) (i_1201:int) (k_make_array_2277:(int -> X)) = k_make_array_2277 (n_1200 - i_1201) in
+  let rec array_max_1202 (x_2018:int) (i_1204:int) (x_2025:(int -> (int -> X) -> X)) 
+                        (m_1206:int) (k_array_max_2288:(int -> X)) =
+    if i_1204 >= x_2018
+    then
+      k_array_max_2288 m_1206
+    else
+      x_2025
+        i_1204 
+        (fun (x_2327:int) ->
+           let z_1208 (k_array_max_z_2304:(int -> X)) =
+             if x_2327 > m_1206 then k_array_max_z_2304 x_2327 else k_array_max_z_2304 m_1206
+           in
+           z_1208 (fun (z_2326:int) -> array_max_1202 x_2018 (i_1204 + 1) x_2025 z_2326 k_array_max_2288))
+  in
+  let main_1209 (n_1210:int) (i_1211:int) (k_main_2344:(unit -> X)) =
+    if n_1210 > 0 && (i_1211 >= 0 && i_1211 <= 0)
+    then
+      array_max_1202
+        n_1210 i_1211 (make_array_1199 n_1210) (-1) 
+        (fun (m_2378:int) -> if m_2378 <> n_1210 then k_main_2344 () else <|fail|> () k_main_2344)
+    else
+      k_main_2344 ()
+  in
+  let main_2072 (k_main_2390:(unit -> X)) =
+    let arg1_2068 (k_main_arg1_2395:(int -> X)) = rand_int_cps () k_main_arg1_2395 in
+    arg1_2068
+      (fun (arg1_2425:int) ->
+         let arg2_2070 (k_main_arg2_2407:(int -> X)) = rand_int_cps () k_main_arg2_2407 in
+         arg2_2070 (fun (arg2_2424:int) -> main_1209 arg1_2425 arg2_2424 k_main_2390))
+  in
+  main_2072 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2661
+  main_2661 -> (main_2072 f_2667).
+  arg1_2068 k_main_arg1_2395 -> (rand_int k_main_arg1_2395).
+  arg2_2070 arg1_2425 k_main_arg2_2407 -> (rand_int k_main_arg2_2407).
+  array_max_1202 x_2018 i_1204 x_2025 m_1206 k_array_max_2288 when (i_1204 >= x_2018) -> (k_array_max_2288 m_1206).
+  array_max_1202 x_2018 i_1204 x_2025 m_1206 k_array_max_2288 when (not (i_1204 >= x_2018)) ->
+      (x_2025 i_1204 (f_array_max_2662 i_1204 m_1206 x_2018 k_array_max_2288 x_2025)).
+  f_2667 main_2426 -> end.
+  f_array_max_2662 i_1204 m_1206 x_2018 k_array_max_2288 x_2025 x_2327 ->
+      (z_1208 i_1204 m_1206 x_2018 x_2327 (f_f_array_max_2663 i_1204 m_1206 x_2018 x_2327 k_array_max_2288 x_2025)).
+  f_f_array_max_2663 i_1204 m_1206 x_2018 x_2327 k_array_max_2288 x_2025 z_2326 ->
+      (array_max_1202 x_2018 (i_1204 + 1) x_2025 z_2326 k_array_max_2288).
+  f_f_main_2666 arg1_2425 k_main_2390 arg2_2424 -> (main_1209 arg1_2425 arg2_2424 k_main_2390).
+  f_main_2664 i_1211 n_1210 k_main_2344 m_2378 when (not (m_2378 = n_1210)) -> (k_main_2344 ()).
+  f_main_2664 i_1211 n_1210 k_main_2344 m_2378 when (not (not (m_2378 = n_1210))) -> (fail_2668 true k_main_2344).
+  f_main_2665 k_main_2390 arg1_2425 -> (arg2_2070 arg1_2425 (f_f_main_2666 arg1_2425 k_main_2390)).
+  fail_2668 b k -> {fail} => (k ()).
+  main_1209 n_1210 i_1211 k_main_2344 when ((n_1210 > 0) && ((i_1211 >= 0) && (i_1211 <= 0))) ->
+      (array_max_1202 n_1210 i_1211 (make_array_1199 n_1210) (-1) (f_main_2664 i_1211 n_1210 k_main_2344)).
+  main_1209 n_1210 i_1211 k_main_2344 when (not ((n_1210 > 0) && ((i_1211 >= 0) && (i_1211 <= 0)))) ->
+      (k_main_2344 ()).
+  main_2072 k_main_2390 -> (arg1_2068 (f_main_2665 k_main_2390)).
+  make_array_1199 n_1200 i_1201 k_make_array_2277 -> (k_make_array_2277 (n_1200 - i_1201)).
+  z_1208 i_1204 m_1206 x_2018 x_2327 k_array_max_z_2304 when (x_2327 > m_1206) -> (k_array_max_z_2304 x_2327).
+  z_1208 i_1204 m_1206 x_2018 x_2327 k_array_max_z_2304 when (not (x_2327 > m_1206)) -> (k_array_max_z_2304 m_1206).
+Types:
+  main_2661 : X
+  array_max_1202 : (int -> int -> (int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_2668 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2661 ... --> 
+  main_2072 ... --> 
+  arg1_2068 ... --> 
+  f_main_2665 ... --> 
+  arg2_2070 ... --> 
+  f_f_main_2666 ... --> 
+  main_1209 [1/2] ... --> 
+  array_max_1202 [1/2] ... --> 
+  f_main_2664 [2/2] ... --> 
+  fail_2668 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_2661
+  main_2661 -> (main_2072 f_2667).
+  arg1_2068 k_main_arg1_2395 -> (rand_int k_main_arg1_2395).
+  arg2_2070 arg1_2425 k_main_arg2_2407 -> (rand_int k_main_arg2_2407).
+  array_max_1202 x_2018 i_1204 x_2025 m_1206 k_array_max_2288 when (i_1204 >= x_2018) -> (k_array_max_2288 m_1206).
+  array_max_1202 x_2018 i_1204 x_2025 m_1206 k_array_max_2288 when (not (i_1204 >= x_2018)) ->
+      (x_2025 i_1204 (f_array_max_2662 i_1204 m_1206 x_2018 k_array_max_2288 x_2025)).
+  f_2667 main_2426 -> end.
+  f_array_max_2662 i_1204 m_1206 x_2018 k_array_max_2288 x_2025 x_2327 ->
+      (z_1208 i_1204 m_1206 x_2018 x_2327 (f_f_array_max_2663 i_1204 m_1206 x_2018 x_2327 k_array_max_2288 x_2025)).
+  f_f_array_max_2663 i_1204 m_1206 x_2018 x_2327 k_array_max_2288 x_2025 z_2326 ->
+      (array_max_1202 x_2018 (i_1204 + 1) x_2025 z_2326 k_array_max_2288).
+  f_f_main_2666 arg1_2425 k_main_2390 arg2_2424 -> (main_1209 arg1_2425 arg2_2424 k_main_2390).
+  f_main_2664 i_1211 n_1210 k_main_2344 m_2378 when (not (m_2378 = n_1210)) -> (k_main_2344 ()).
+  f_main_2664 i_1211 n_1210 k_main_2344 m_2378 when (not (not (m_2378 = n_1210))) -> (fail_2668 true k_main_2344).
+  f_main_2665 k_main_2390 arg1_2425 -> (arg2_2070 arg1_2425 (f_f_main_2666 arg1_2425 k_main_2390)).
+  fail_2668 b k -> {fail} => (k ()).
+  main_1209 n_1210 i_1211 k_main_2344 when ((n_1210 > 0) && ((i_1211 >= 0) && (i_1211 <= 0))) ->
+      (array_max_1202 n_1210 i_1211 (make_array_1199 n_1210) (-1) (f_main_2664 i_1211 n_1210 k_main_2344)).
+  main_1209 n_1210 i_1211 k_main_2344 when (not ((n_1210 > 0) && ((i_1211 >= 0) && (i_1211 <= 0)))) ->
+      (k_main_2344 ()).
+  main_2072 k_main_2390 -> (arg1_2068 (f_main_2665 k_main_2390)).
+  make_array_1199 n_1200 i_1201 k_make_array_2277 -> (k_make_array_2277 (n_1200 - i_1201)).
+  z_1208 i_1204 m_1206 x_2018 x_2327 k_array_max_z_2304 when (x_2327 > m_1206) -> (k_array_max_z_2304 x_2327).
+  z_1208 i_1204 m_1206 x_2018 x_2327 k_array_max_z_2304 when (not (x_2327 > m_1206)) -> (k_array_max_z_2304 m_1206).
+Types:
+  main_2661 : X
+  array_max_1202 : (x_2:int -> x_3:int -> (int -> (int -> X) -> X) -> int[1 <= x_2 - x_3] -> (int -> X) -> X)
+  fail_2668 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2661 ... --> 
+  main_2072 ... --> 
+  arg1_2068 ... --> 
+  f_main_2665 ... --> 
+  arg2_2070 ... --> 
+  f_f_main_2666 ... --> 
+  main_1209 [1/2] ... --> 
+  array_max_1202 [2/2] ... --> 
+  make_array_1199 ... --> 
+  f_array_max_2662 ... --> 
+  z_1208 [1/2] ... --> 
+  f_f_array_max_2663 ... --> 
+  array_max_1202 [1/2] ... --> 
+  f_main_2664 [2/2] ... --> 
+  fail_2668 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 1; 0
+
+(2-3) Checking counterexample ... DONE!
+
+
+========================================================================================================================
+
+Unsafe!
+
+Input for main:
+  1; 0
+Error trace:
+  main 1 0 ->
+    if true then ... ->
+    array_max 1 0 <fun> (-1) ->
+      if false then ... ->
+      make_array 1 0 ->
+      if true then ... ->
+      array_max 1 1 <fun> 1 ->
+        if true then ... ->
+    if false then ... ->
+  FAIL!
+
+CEGAR-cycles: 2
+total: 0.635 sec
+  abst: 0.241 sec
+  mc: 0.008 sec
+  refine: 0.230 sec
+0.636

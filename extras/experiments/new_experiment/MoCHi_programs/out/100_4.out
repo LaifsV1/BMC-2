@@ -1,0 +1,2370 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 100_4.ml
+
+parsed:
+ let lock12_1199 st_1200 = assert (st_1200 = 0); 1 in
+ let unlock12_1201 st_1202 = assert (st_1202 = 1); 0 in
+ let f12_1203 n_1204 st_1205 = if n_1204 > 0 then lock12_1199 st_1205 else st_1205 in
+ let g12_1206 n_1207 st_1208 = if n_1207 > 0 then unlock12_1201 st_1208 else st_1208 in
+ let m12_1209 n_1210 = assert (g12_1206 n_1210 (f12_1203 n_1210 0) = 0) in
+ let rec fact_1211 n_1212 exn_1213 =
+   if n_1212 <= 0
+   then
+     exn_1213 0
+   else
+     let exn_1214 n_1215 = if n_1215 = 0 then 1 else exn_1213 n_1215 in
+     n_1212 * fact_1211 (n_1212 - 1) exn_1214
+ in
+ let exn_1216 _ = assert false; 1 in
+ let m2_1218 n_1219 = if n_1219 > 0 then let x_1220 = fact_1211 n_1219 exn_1216 in
+                                       () in
+ let f3_1221 n_1222 k_1223 = if n_1222 >= 0 then () else k_1223 0 in
+ let g3_1224 n_1225 = assert (n_1225 = 0) in
+ let m3_1226 n_1227 = f3_1221 n_1227 g3_1224 in
+ let f5_1228 x_1229 g_1230 = g_1230 (x_1229 + 1) in
+ let h5_1231 y_1232 = assert (y_1232 > 0) in
+ let m5_1233 n_1234 = if n_1234 > 0 then f5_1228 n_1234 h5_1231 in
+ let f6_1235 x_1236 g_1237 = g_1237 (x_1236 + 1) in
+ let h6_1238 z_1239 y_1240 = assert (y_1240 > z_1239) in
+ let m6_1241 n_1242 = if n_1242 >= 0 then f6_1235 n_1242 (h6_1238 n_1242) in
+ let rec zip_1243 x_1244 y_1245 =
+   if x_1244 = 0
+   then
+     if y_1245 = 0 then x_1244 else assert false
+   else
+     if y_1245 = 0
+     then
+       assert false
+     else
+       1 + zip_1243 (x_1244 - 1) (y_1245 - 1)
+ in
+ let rec map_1246 x_1247 =
+   if x_1247 = 0 then x_1247 else 1 + map_1246 (x_1247 - 1)
+ in
+ let m7_1248 n_1249 =
+   assert (map_1246 (zip_1243 n_1249 n_1249) = n_1249)
+ in
+ let rec mult_1250 n_1251 m_1252 =
+   if n_1251 <= 0 || m_1252 <= 0
+   then
+     0
+   else
+     n_1251 + mult_1250 n_1251 (m_1252 - 1)
+ in
+ let m16_1253 n_1254 =
+   assert (n_1254 <= mult_1250 n_1254 n_1254)
+ in
+ let succ_1255 x_1256 = x_1256 + 1 in
+ let rec repeat_1257 x_2219 n_1259 s_1260 =
+   if n_1259 = 0
+   then
+     s_1260
+   else
+     x_2219 (repeat_1257 x_2219 (n_1259 - 1) s_1260)
+ in
+ let m17_1261 n_1262 =
+   assert (repeat_1257 succ_1255 n_1262 0 > n_1262)
+ in
+ let main_1263 n_1264 m_1265 =
+   if n_1264 = 12
+   then
+     m12_1209 m_1265
+   else
+     if n_1264 = 2
+     then
+       m2_1218 m_1265
+     else
+       if n_1264 = 3
+       then
+         m3_1226 m_1265
+       else
+         if n_1264 = 5
+         then
+           m5_1233 m_1265
+         else
+           if n_1264 = 6
+           then
+             m6_1241 m_1265
+           else
+             if n_1264 = 7
+             then
+               m7_1248 m_1265
+             else
+               if n_1264 = 9
+               then
+                 m16_1253 m_1265
+               else
+                 m17_1261 m_1265
+ in
+ ()
+
+
+###set_main:
+ let lock12_1199 (st_1200:int) = assert (st_1200 = 0); 1 in
+ let unlock12_1201 (st_1202:int) = assert (st_1202 = 1); 0 in
+ let f12_1203 (n_1204:int) (st_1205:int) = if n_1204 > 0 then lock12_1199 st_1205 else st_1205 in
+ let g12_1206 (n_1207:int) (st_1208:int) = if n_1207 > 0 then unlock12_1201 st_1208 else st_1208 in
+ let m12_1209 (n_1210:int) = assert (g12_1206 n_1210 (f12_1203 n_1210 0) = 0) in
+ let rec fact_1211 (n_1212:int) (exn_1213:(int -> int)) =
+   if n_1212 <= 0
+   then
+     exn_1213 0
+   else
+     let exn_1214 (n_1215:int) = if n_1215 = 0 then 1 else exn_1213 n_1215 in
+     n_1212 * fact_1211 (n_1212 - 1) exn_1214
+ in
+ let exn_1216 (_:!!!) = assert false; 1 in
+ let m2_1218 (n_1219:int) = if n_1219 > 0 then let x_1220 = fact_1211 n_1219 exn_1216 in
+                                             () in
+ let f3_1221 (n_1222:int) (k_1223:(int -> unit)) = if n_1222 >= 0 then () else k_1223 0 in
+ let g3_1224 (n_1225:int) = assert (n_1225 = 0) in
+ let m3_1226 (n_1227:int) = f3_1221 n_1227 g3_1224 in
+ let f5_1228 (x_1229:int) (g_1230:(int -> unit)) = g_1230 (x_1229 + 1) in
+ let h5_1231 (y_1232:int) = assert (y_1232 > 0) in
+ let m5_1233 (n_1234:int) = if n_1234 > 0 then f5_1228 n_1234 h5_1231 in
+ let f6_1235 (x_1236:int) (g_1237:(int -> unit)) = g_1237 (x_1236 + 1) in
+ let h6_1238 (z_1239:!!!) (y_1240:!!!) = assert (y_1240 > z_1239) in
+ let m6_1241 (n_1242:int) =
+   if n_1242 >= 0 then f6_1235 n_1242 (h6_1238 n_1242)
+ in
+ let rec zip_1243 (x_1244:int) (y_1245:int) =
+   if x_1244 = 0
+   then
+     if y_1245 = 0 then x_1244 else assert false
+   else
+     if y_1245 = 0
+     then
+       assert false
+     else
+       1 + zip_1243 (x_1244 - 1) (y_1245 - 1)
+ in
+ let rec map_1246 (x_1247:int) =
+   if x_1247 = 0 then x_1247 else 1 + map_1246 (x_1247 - 1)
+ in
+ let m7_1248 (n_1249:int) =
+   assert (map_1246 (zip_1243 n_1249 n_1249) = n_1249)
+ in
+ let rec mult_1250 (n_1251:int) (m_1252:int) =
+   if n_1251 <= 0 || m_1252 <= 0
+   then
+     0
+   else
+     n_1251 + mult_1250 n_1251 (m_1252 - 1)
+ in
+ let m16_1253 (n_1254:int) =
+   assert (n_1254 <= mult_1250 n_1254 n_1254)
+ in
+ let succ_1255 (x_1256:int) = x_1256 + 1 in
+ let rec repeat_1257 (x_2219:(int -> int)) (n_1259:int) 
+                    (s_1260:int) =
+   if n_1259 = 0
+   then
+     s_1260
+   else
+     x_2219 (repeat_1257 x_2219 (n_1259 - 1) s_1260)
+ in
+ let m17_1261 (n_1262:int) =
+   assert (repeat_1257 succ_1255 n_1262 0 > n_1262)
+ in
+ let main_1263 (n_1264:int) (m_1265:int) =
+   if n_1264 = 12
+   then
+     m12_1209 m_1265
+   else
+     if n_1264 = 2
+     then
+       m2_1218 m_1265
+     else
+       if n_1264 = 3
+       then
+         m3_1226 m_1265
+       else
+         if n_1264 = 5
+         then
+           m5_1233 m_1265
+         else
+           if n_1264 = 6
+           then
+             m6_1241 m_1265
+           else
+             if n_1264 = 7
+             then
+               m7_1248 m_1265
+             else
+               if n_1264 = 9
+               then
+                 m16_1253 m_1265
+               else
+                 m17_1261 m_1265
+ in
+ (let arg1_2271 = rand_int () in
+  let arg2_2273 = rand_int () in
+  main_1263 arg1_2271 arg2_2273);
+ ()
+
+###Copy_poly:
+ let lock12_1199 (st_1200:int) = assert (st_1200 = 0); 1 in
+ let unlock12_1201 (st_1202:int) = assert (st_1202 = 1); 0 in
+ let f12_1203 (n_1204:int) (st_1205:int) = if n_1204 > 0 then lock12_1199 st_1205 else st_1205 in
+ let g12_1206 (n_1207:int) (st_1208:int) = if n_1207 > 0 then unlock12_1201 st_1208 else st_1208 in
+ let m12_1209 (n_1210:int) = assert (g12_1206 n_1210 (f12_1203 n_1210 0) = 0) in
+ let rec fact_1211 (n_1212:int) (exn_1213:(int -> int)) =
+   if n_1212 <= 0
+   then
+     exn_1213 0
+   else
+     let exn_1214 (n_1215:int) = if n_1215 = 0 then 1 else exn_1213 n_1215 in
+     n_1212 * fact_1211 (n_1212 - 1) exn_1214
+ in
+ let exn_2277 (_:int) = assert false; 1 in
+ let m2_1218 (n_1219:int) = if n_1219 > 0 then let x_1220 = fact_1211 n_1219 exn_2277 in
+                                             () in
+ let f3_1221 (n_1222:int) (k_1223:(int -> unit)) = if n_1222 >= 0 then () else k_1223 0 in
+ let g3_1224 (n_1225:int) = assert (n_1225 = 0) in
+ let m3_1226 (n_1227:int) = f3_1221 n_1227 g3_1224 in
+ let f5_1228 (x_1229:int) (g_1230:(int -> unit)) = g_1230 (x_1229 + 1) in
+ let h5_1231 (y_1232:int) = assert (y_1232 > 0) in
+ let m5_1233 (n_1234:int) = if n_1234 > 0 then f5_1228 n_1234 h5_1231 in
+ let f6_1235 (x_1236:int) (g_1237:(int -> unit)) = g_1237 (x_1236 + 1) in
+ let h6_2276 (z_1239:int) (y_1240:int) = assert (y_1240 > z_1239) in
+ let m6_1241 (n_1242:int) =
+   if n_1242 >= 0 then f6_1235 n_1242 (h6_2276 n_1242)
+ in
+ let rec zip_1243 (x_1244:int) (y_1245:int) =
+   if x_1244 = 0
+   then
+     if y_1245 = 0 then x_1244 else assert false
+   else
+     if y_1245 = 0
+     then
+       assert false
+     else
+       1 + zip_1243 (x_1244 - 1) (y_1245 - 1)
+ in
+ let rec map_1246 (x_1247:int) =
+   if x_1247 = 0 then x_1247 else 1 + map_1246 (x_1247 - 1)
+ in
+ let m7_1248 (n_1249:int) =
+   assert (map_1246 (zip_1243 n_1249 n_1249) = n_1249)
+ in
+ let rec mult_1250 (n_1251:int) (m_1252:int) =
+   if n_1251 <= 0 || m_1252 <= 0
+   then
+     0
+   else
+     n_1251 + mult_1250 n_1251 (m_1252 - 1)
+ in
+ let m16_1253 (n_1254:int) =
+   assert (n_1254 <= mult_1250 n_1254 n_1254)
+ in
+ let succ_1255 (x_1256:int) = x_1256 + 1 in
+ let rec repeat_1257 (x_2219:(int -> int)) (n_1259:int) 
+                    (s_1260:int) =
+   if n_1259 = 0
+   then
+     s_1260
+   else
+     x_2219 (repeat_1257 x_2219 (n_1259 - 1) s_1260)
+ in
+ let m17_1261 (n_1262:int) =
+   assert (repeat_1257 succ_1255 n_1262 0 > n_1262)
+ in
+ let main_1263 (n_1264:int) (m_1265:int) =
+   if n_1264 = 12
+   then
+     m12_1209 m_1265
+   else
+     if n_1264 = 2
+     then
+       m2_1218 m_1265
+     else
+       if n_1264 = 3
+       then
+         m3_1226 m_1265
+       else
+         if n_1264 = 5
+         then
+           m5_1233 m_1265
+         else
+           if n_1264 = 6
+           then
+             m6_1241 m_1265
+           else
+             if n_1264 = 7
+             then
+               m7_1248 m_1265
+             else
+               if n_1264 = 9
+               then
+                 m16_1253 m_1265
+               else
+                 m17_1261 m_1265
+ in
+ (let arg1_2271 = rand_int () in
+  let arg2_2273 = rand_int () in
+  main_1263 arg1_2271 arg2_2273);
+ ()
+
+###Eliminate_redundant_arguments:
+ let lock12_1199 (st_1200:int) = assert (st_1200 = 0); 1 in
+ let unlock12_1201 (st_1202:int) = assert (st_1202 = 1); 0 in
+ let f12_1203 (n_1204:int) (st_1205:int) = if n_1204 > 0 then lock12_1199 st_1205 else st_1205 in
+ let g12_1206 (n_1207:int) (st_1208:int) = if n_1207 > 0 then unlock12_1201 st_1208 else st_1208 in
+ let m12_1209 (n_1210:int) = assert (g12_1206 n_1210 (f12_1203 n_1210 0) = 0) in
+ let rec fact_1211 (n_1212:int) (exn_1213:(int -> int)) =
+   if n_1212 <= 0
+   then
+     exn_1213 0
+   else
+     let exn_1214 (n_1215:int) = if n_1215 = 0 then 1 else exn_1213 n_1215 in
+     n_1212 * fact_1211 (n_1212 - 1) exn_1214
+ in
+ let exn_2277 (_:int) = assert false; 1 in
+ let m2_1218 (n_1219:int) = if n_1219 > 0 then let x_1220 = fact_1211 n_1219 exn_2277 in
+                                             () in
+ let f3_1221 (n_1222:int) (k_1223:(int -> unit)) = if n_1222 >= 0 then () else k_1223 0 in
+ let g3_1224 (n_1225:int) = assert (n_1225 = 0) in
+ let m3_1226 (n_1227:int) = f3_1221 n_1227 g3_1224 in
+ let f5_1228 (x_1229:int) (g_1230:(int -> unit)) = g_1230 (x_1229 + 1) in
+ let h5_1231 (y_1232:int) = assert (y_1232 > 0) in
+ let m5_1233 (n_1234:int) = if n_1234 > 0 then f5_1228 n_1234 h5_1231 in
+ let f6_1235 (x_1236:int) (g_1237:(int -> unit)) = g_1237 (x_1236 + 1) in
+ let h6_2276 (z_1239:int) (y_1240:int) = assert (y_1240 > z_1239) in
+ let m6_1241 (n_1242:int) =
+   if n_1242 >= 0 then f6_1235 n_1242 (h6_2276 n_1242)
+ in
+ let rec zip_1243 (x_1244:int) (y_1245:int) =
+   if x_1244 = 0
+   then
+     if y_1245 = 0 then x_1244 else assert false
+   else
+     if y_1245 = 0
+     then
+       assert false
+     else
+       1 + zip_1243 (x_1244 - 1) (y_1245 - 1)
+ in
+ let rec map_1246 (x_1247:int) =
+   if x_1247 = 0 then x_1247 else 1 + map_1246 (x_1247 - 1)
+ in
+ let m7_1248 (n_1249:int) =
+   assert (map_1246 (zip_1243 n_1249 n_1249) = n_1249)
+ in
+ let rec mult_1250 (n_1251:int) (m_1252:int) =
+   if n_1251 <= 0 || m_1252 <= 0
+   then
+     0
+   else
+     n_1251 + mult_1250 n_1251 (m_1252 - 1)
+ in
+ let m16_1253 (n_1254:int) =
+   assert (n_1254 <= mult_1250 n_1254 n_1254)
+ in
+ let succ_1255 (x_1256:int) = x_1256 + 1 in
+ let rec repeat_1257 (x_2219:(int -> int)) (n_1259:int) 
+                    (s_1260:int) =
+   if n_1259 = 0
+   then
+     s_1260
+   else
+     x_2219 (repeat_1257 x_2219 (n_1259 - 1) s_1260)
+ in
+ let m17_1261 (n_1262:int) =
+   assert (repeat_1257 succ_1255 n_1262 0 > n_1262)
+ in
+ let main_1263 (n_1264:int) (m_1265:int) =
+   if n_1264 = 12
+   then
+     m12_1209 m_1265
+   else
+     if n_1264 = 2
+     then
+       m2_1218 m_1265
+     else
+       if n_1264 = 3
+       then
+         m3_1226 m_1265
+       else
+         if n_1264 = 5
+         then
+           m5_1233 m_1265
+         else
+           if n_1264 = 6
+           then
+             m6_1241 m_1265
+           else
+             if n_1264 = 7
+             then
+               m7_1248 m_1265
+             else
+               if n_1264 = 9
+               then
+                 m16_1253 m_1265
+               else
+                 m17_1261 m_1265
+ in
+ (let arg1_2271 = rand_int () in
+  let arg2_2273 = rand_int () in
+  main_1263 arg1_2271 arg2_2273);
+ ()
+
+###CPS:
+ (let lock12_1199 (st_1200:int) (k_lock12_3012:(int -> X)) =
+    let u_2006 (k_lock12_u_3023:(unit -> X)) =
+      if st_1200 = 0 then k_lock12_u_3023 () else <|fail|> () k_lock12_u_3023
+    in
+    u_2006 (fun (():unit) -> k_lock12_3012 1)
+  in
+  let unlock12_1201 (st_1202:int) (k_unlock12_3033:(int -> X)) =
+    let u_2011 (k_unlock12_u_3044:(unit -> X)) =
+      if st_1202 = 1 then k_unlock12_u_3044 () else <|fail|> () k_unlock12_u_3044
+    in
+    u_2011 (fun (():unit) -> k_unlock12_3033 0)
+  in
+  let f12_1203 (n_1204:int) (st_1205:int) (k_f12_3054:(int -> X)) =
+    if n_1204 > 0 then lock12_1199 st_1205 k_f12_3054 else k_f12_3054 st_1205
+  in
+  let g12_1206 (n_1207:int) (st_1208:int) (k_g12_3076:(int -> X)) =
+    if n_1207 > 0 then unlock12_1201 st_1208 k_g12_3076 else k_g12_3076 st_1208
+  in
+  let rec fact_1211 (n_1212:int) (exn_1213:(int -> (int -> X) -> X)) 
+                   (k_fact_3145:(int -> X)) =
+    if n_1212 <= 0
+    then
+      exn_1213 0 k_fact_3145
+    else
+      let exn_1214 (n_1215:int) (k_fact_exn_3159:(int -> X)) =
+        if n_1215 = 0 then k_fact_exn_3159 1 else exn_1213 n_1215 k_fact_exn_3159
+      in
+      fact_1211
+        (n_1212 - 1) exn_1214 
+        (fun (x_3180:int) -> k_fact_3145 (n_1212 * x_3180))
+  in
+  let exn_2277 (_:int) (_:(int -> X)) = <|fail|> () (fun (():unit) -> _|_) in
+  let m2_1218 (n_1219:int) (k_m2_3244:(unit -> X)) =
+    if n_1219 > 0
+    then
+      fact_1211 n_1219 exn_2277 (fun (_:int) -> k_m2_3244 ())
+    else
+      k_m2_3244 ()
+  in
+  let f3_1221 (n_1222:int) (k_1223:(int -> (unit -> X) -> X)) 
+             (k_f3_3284:(unit -> X)) =
+    if n_1222 >= 0 then k_f3_3284 () else k_1223 0 k_f3_3284
+  in
+  let g3_1224 (n_1225:int) (k_g3_3309:(unit -> X)) =
+    if n_1225 = 0 then k_g3_3309 () else <|fail|> () k_g3_3309
+  in
+  let h5_1231 (y_1232:int) (k_h5_3381:(unit -> X)) =
+    if y_1232 > 0
+    then
+      k_h5_3381 ()
+    else
+      <|fail|> () k_h5_3381
+  in
+  let m5_1233 (n_1234:int) (k_m5_3399:(unit -> X)) =
+    if n_1234 > 0
+    then
+      h5_1231 (n_1234 + 1) k_m5_3399
+    else
+      k_m5_3399 ()
+  in
+  let h6_2276 (z_1239:int) (y_1240:int) (k_h6_3457:(unit -> X)) =
+    if y_1240 > z_1239
+    then
+      k_h6_3457 ()
+    else
+      <|fail|> () k_h6_3457
+  in
+  let m6_1241 (n_1242:int) (k_m6_3476:(unit -> X)) =
+    if n_1242 >= 0
+    then
+      (h6_2276 n_1242) (n_1242 + 1) k_m6_3476
+    else
+      k_m6_3476 ()
+  in
+  let rec zip_1243 (x_1244:int) (y_1245:int) 
+                  (k_zip_3511:(int -> X)) =
+    if x_1244 = 0
+    then
+      if y_1245 = 0
+      then
+        k_zip_3511 x_1244
+      else
+        <|fail|> () (fun (():unit) -> _|_)
+    else
+      if y_1245 = 0
+      then
+        <|fail|> () (fun (():unit) -> _|_)
+      else
+        zip_1243
+          (x_1244 - 1) (y_1245 - 1) 
+          (fun (x_3543:int) -> k_zip_3511 (1 + x_3543))
+  in
+  let rec map_1246 (x_1247:int) (k_map_3570:(int -> X)) =
+    if x_1247 = 0
+    then
+      k_map_3570 x_1247
+    else
+      map_1246
+        (x_1247 - 1) 
+        (fun (x_3574:int) -> k_map_3570 (1 + x_3574))
+  in
+  let rec mult_1250 (n_1251:int) (m_1252:int) 
+                   (k_mult_3638:(int -> X)) =
+    if n_1251 <= 0 || m_1252 <= 0
+    then
+      k_mult_3638 0
+    else
+      mult_1250
+        n_1251 (m_1252 - 1) 
+        (fun (x_3642:int) -> k_mult_3638 (n_1251 + x_3642))
+  in
+  let succ_1255 (x_1256:int) (k_succ_3698:(int -> X)) =
+    k_succ_3698 (x_1256 + 1)
+  in
+  let rec repeat_1257 (x_2219:(int -> (int -> X) -> X)) 
+                     (n_1259:int) (s_1260:int) 
+                     (k_repeat_3708:(int -> X)) =
+    if n_1259 = 0
+    then
+      k_repeat_3708 s_1260
+    else
+      repeat_1257
+        x_2219 (n_1259 - 1) s_1260 
+        (fun (x_3736:int) -> x_2219 x_3736 k_repeat_3708)
+  in
+  let main_1263 (n_1264:int) (m_1265:int) 
+               (k_main_3792:(unit -> X)) =
+    if n_1264 = 12
+    then
+      f12_1203
+        m_1265 0 
+        (fun (x_3124:int) ->
+           g12_1206
+             m_1265 x_3124 
+             (fun (x_3101:int) ->
+                if x_3101 = 0
+                then
+                  k_main_3792 ()
+                else
+                  <|fail|> () k_main_3792))
+    else
+      if n_1264 = 2
+      then
+        m2_1218 m_1265 k_main_3792
+      else
+        if n_1264 = 3
+        then
+          f3_1221 m_1265 g3_1224 k_main_3792
+        else
+          if n_1264 = 5
+          then
+            m5_1233 m_1265 k_main_3792
+          else
+            if n_1264 = 6
+            then
+              m6_1241 m_1265 k_main_3792
+            else
+              if n_1264 = 7
+              then
+                zip_1243
+                  m_1265 m_1265 
+                  (fun (x_3620:int) ->
+                     map_1246
+                       x_3620 
+                       (fun (x_3598:int) ->
+                          if x_3598 = m_1265
+                          then
+                            k_main_3792 ()
+                          else
+                            <|fail|> () k_main_3792))
+              else
+                if n_1264 = 9
+                then
+                  mult_1250
+                    m_1265 m_1265 
+                    (fun (x_3669:int) ->
+                       if m_1265 <= x_3669
+                       then
+                         k_main_3792 ()
+                       else
+                         <|fail|> () k_main_3792)
+                else
+                  repeat_1257
+                    succ_1255 m_1265 0 
+                    (fun (x_3755:int) ->
+                       if x_3755 > m_1265
+                       then
+                         k_main_3792 ()
+                       else
+                         <|fail|> () k_main_3792)
+  in
+  let main_2275 (k_main_3908:(unit -> X)) =
+    let arg1_2271 (k_main_arg1_3913:(int -> X)) =
+      rand_int_cps () k_main_arg1_3913
+    in
+    arg1_2271
+      (fun (arg1_3943:int) ->
+         let arg2_2273 (k_main_arg2_3925:(int -> X)) =
+           rand_int_cps () k_main_arg2_3925
+         in
+         arg2_2273
+           (fun (arg2_3942:int) ->
+              main_1263 arg1_3943 arg2_3942 k_main_3908))
+  in
+  main_2275 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let lock12_1199 (st_1200:int) (k_lock12_3012:(int -> X)) =
+    let u_2006 (k_lock12_u_3023:(unit -> X)) =
+      if st_1200 = 0 then k_lock12_u_3023 () else <|fail|> () k_lock12_u_3023
+    in
+    u_2006 (fun (():unit) -> k_lock12_3012 1)
+  in
+  let unlock12_1201 (st_1202:int) (k_unlock12_3033:(int -> X)) =
+    let u_2011 (k_unlock12_u_3044:(unit -> X)) =
+      if st_1202 = 1 then k_unlock12_u_3044 () else <|fail|> () k_unlock12_u_3044
+    in
+    u_2011 (fun (():unit) -> k_unlock12_3033 0)
+  in
+  let f12_1203 (n_1204:int) (st_1205:int) (k_f12_3054:(int -> X)) =
+    if n_1204 > 0 then lock12_1199 st_1205 k_f12_3054 else k_f12_3054 st_1205
+  in
+  let g12_1206 (n_1207:int) (st_1208:int) (k_g12_3076:(int -> X)) =
+    if n_1207 > 0 then unlock12_1201 st_1208 k_g12_3076 else k_g12_3076 st_1208
+  in
+  let rec fact_1211 (n_1212:int) (exn_1213:(int -> (int -> X) -> X)) 
+                   (k_fact_3145:(int -> X)) =
+    if n_1212 <= 0
+    then
+      exn_1213 0 k_fact_3145
+    else
+      let exn_1214 (n_1215:int) (k_fact_exn_3159:(int -> X)) =
+        if n_1215 = 0 then k_fact_exn_3159 1 else exn_1213 n_1215 k_fact_exn_3159
+      in
+      fact_1211
+        (n_1212 - 1) exn_1214 
+        (fun (x_3180:int) -> k_fact_3145 (n_1212 * x_3180))
+  in
+  let exn_2277 (_:int) (_:(int -> X)) = <|fail|> () (fun (():unit) -> _|_) in
+  let m2_1218 (n_1219:int) (k_m2_3244:(unit -> X)) =
+    if n_1219 > 0
+    then
+      fact_1211 n_1219 exn_2277 (fun (_:int) -> k_m2_3244 ())
+    else
+      k_m2_3244 ()
+  in
+  let f3_1221 (n_1222:int) (k_1223:(int -> (unit -> X) -> X)) 
+             (k_f3_3284:(unit -> X)) =
+    if n_1222 >= 0 then k_f3_3284 () else k_1223 0 k_f3_3284
+  in
+  let g3_1224 (n_1225:int) (k_g3_3309:(unit -> X)) =
+    if n_1225 = 0 then k_g3_3309 () else <|fail|> () k_g3_3309
+  in
+  let h5_1231 (y_1232:int) (k_h5_3381:(unit -> X)) =
+    if y_1232 > 0
+    then
+      k_h5_3381 ()
+    else
+      <|fail|> () k_h5_3381
+  in
+  let m5_1233 (n_1234:int) (k_m5_3399:(unit -> X)) =
+    if n_1234 > 0
+    then
+      h5_1231 (n_1234 + 1) k_m5_3399
+    else
+      k_m5_3399 ()
+  in
+  let h6_2276 (z_1239:int) (y_1240:int) (k_h6_3457:(unit -> X)) =
+    if y_1240 > z_1239
+    then
+      k_h6_3457 ()
+    else
+      <|fail|> () k_h6_3457
+  in
+  let m6_1241 (n_1242:int) (k_m6_3476:(unit -> X)) =
+    if n_1242 >= 0
+    then
+      h6_2276 n_1242 (n_1242 + 1) k_m6_3476
+    else
+      k_m6_3476 ()
+  in
+  let rec zip_1243 (x_1244:int) (y_1245:int) 
+                  (k_zip_3511:(int -> X)) =
+    if x_1244 = 0
+    then
+      if y_1245 = 0
+      then
+        k_zip_3511 x_1244
+      else
+        <|fail|> () (fun (():unit) -> _|_)
+    else
+      if y_1245 = 0
+      then
+        <|fail|> () (fun (():unit) -> _|_)
+      else
+        zip_1243
+          (x_1244 - 1) (y_1245 - 1) 
+          (fun (x_3543:int) -> k_zip_3511 (1 + x_3543))
+  in
+  let rec map_1246 (x_1247:int) (k_map_3570:(int -> X)) =
+    if x_1247 = 0
+    then
+      k_map_3570 x_1247
+    else
+      map_1246
+        (x_1247 - 1) 
+        (fun (x_3574:int) -> k_map_3570 (1 + x_3574))
+  in
+  let rec mult_1250 (n_1251:int) (m_1252:int) 
+                   (k_mult_3638:(int -> X)) =
+    if n_1251 <= 0 || m_1252 <= 0
+    then
+      k_mult_3638 0
+    else
+      mult_1250
+        n_1251 (m_1252 - 1) 
+        (fun (x_3642:int) -> k_mult_3638 (n_1251 + x_3642))
+  in
+  let succ_1255 (x_1256:int) (k_succ_3698:(int -> X)) =
+    k_succ_3698 (x_1256 + 1)
+  in
+  let rec repeat_1257 (x_2219:(int -> (int -> X) -> X)) 
+                     (n_1259:int) (s_1260:int) 
+                     (k_repeat_3708:(int -> X)) =
+    if n_1259 = 0
+    then
+      k_repeat_3708 s_1260
+    else
+      repeat_1257
+        x_2219 (n_1259 - 1) s_1260 
+        (fun (x_3736:int) -> x_2219 x_3736 k_repeat_3708)
+  in
+  let main_1263 (n_1264:int) (m_1265:int) 
+               (k_main_3792:(unit -> X)) =
+    if n_1264 = 12
+    then
+      f12_1203
+        m_1265 0 
+        (fun (x_3124:int) ->
+           g12_1206
+             m_1265 x_3124 
+             (fun (x_3101:int) ->
+                if x_3101 = 0
+                then
+                  k_main_3792 ()
+                else
+                  <|fail|> () k_main_3792))
+    else
+      if n_1264 = 2
+      then
+        m2_1218 m_1265 k_main_3792
+      else
+        if n_1264 = 3
+        then
+          f3_1221 m_1265 g3_1224 k_main_3792
+        else
+          if n_1264 = 5
+          then
+            m5_1233 m_1265 k_main_3792
+          else
+            if n_1264 = 6
+            then
+              m6_1241 m_1265 k_main_3792
+            else
+              if n_1264 = 7
+              then
+                zip_1243
+                  m_1265 m_1265 
+                  (fun (x_3620:int) ->
+                     map_1246
+                       x_3620 
+                       (fun (x_3598:int) ->
+                          if x_3598 = m_1265
+                          then
+                            k_main_3792 ()
+                          else
+                            <|fail|> () k_main_3792))
+              else
+                if n_1264 = 9
+                then
+                  mult_1250
+                    m_1265 m_1265 
+                    (fun (x_3669:int) ->
+                       if m_1265 <= x_3669
+                       then
+                         k_main_3792 ()
+                       else
+                         <|fail|> () k_main_3792)
+                else
+                  repeat_1257
+                    succ_1255 m_1265 0 
+                    (fun (x_3755:int) ->
+                       if x_3755 > m_1265
+                       then
+                         k_main_3792 ()
+                       else
+                         <|fail|> () k_main_3792)
+  in
+  let main_2275 (k_main_3908:(unit -> X)) =
+    let arg1_2271 (k_main_arg1_3913:(int -> X)) =
+      rand_int_cps () k_main_arg1_3913
+    in
+    arg1_2271
+      (fun (arg1_3943:int) ->
+         let arg2_2273 (k_main_arg2_3925:(int -> X)) =
+           rand_int_cps () k_main_arg2_3925
+         in
+         arg2_2273
+           (fun (arg2_3942:int) ->
+              main_1263 arg1_3943 arg2_3942 k_main_3908))
+  in
+  main_2275 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (int -> (int -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (int -> (int -> X) -> X)
+  mult_1250 : (int -> int -> (int -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (int -> int -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [1/2] ... --> 
+  m2_1218 [1/2] ... --> 
+  fact_1211 [2/2] ... --> 
+  fact_1211 [1/2] ... --> 
+  exn_1214 [2/2] ... --> 
+  exn_2277 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 1; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (int -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (int -> (int -> X) -> X)
+  mult_1250 : (int -> int -> (int -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (int -> int -> (int -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [1/2] ... --> 
+  m2_1218 [1/2] ... --> 
+  fact_1211 [1/2] ... --> 
+  exn_2277 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0
+
+(2-3) Checking counterexample ... DONE!
+
+(2-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 3)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (int -> (int -> X) -> X)
+  mult_1250 : (int -> int -> (int -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (int -> int -> (int -> X) -> X)
+
+(3-1) Abstracting ... DONE!
+
+(3-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [2/2] ... --> 
+  br_main_4955 [2/2] ... --> 
+  br_main_4953 [2/2] ... --> 
+  br_main_4951 [2/2] ... --> 
+  br_main_4949 [1/2] ... --> 
+  zip_1243 [2/2] ... --> 
+  br_zip_4945 [1/2] ... --> 
+  fail_4965 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 1; 0; 0
+
+(3-3) Checking counterexample ... DONE!
+
+(3-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 1; 0
+
+Program with abstraction types (CEGAR-cycle 4)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (int -> (int -> X) -> X)
+  mult_1250 : (int -> int -> (int -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (x_2:int -> x_3:int[x_3 = x_2] -> (int -> X) -> X)
+
+(4-1) Abstracting ... DONE!
+
+(4-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [2/2] ... --> 
+  br_main_4955 [2/2] ... --> 
+  br_main_4953 [2/2] ... --> 
+  br_main_4951 [2/2] ... --> 
+  br_main_4949 [1/2] ... --> 
+  zip_1243 [1/2] ... --> 
+  br_zip_4943 [1/2] ... --> 
+  f_main_4936 ... --> 
+  map_1246 [1/2] ... --> 
+  f_f_main_4937 [2/2] ... --> 
+  fail_4967 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+(4-3) Checking counterexample ... DONE!
+
+(4-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 5)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (int -> (x_4:int[x_4 = 0] -> X) -> X)
+  mult_1250 : (int -> int -> (int -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (x_2:int -> x_3:int[x_3 = x_2] -> (int[x_3 = 0] -> X) -> X)
+
+(5-1) Abstracting ... DONE!
+
+(5-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [2/2] ... --> 
+  br_main_4955 [2/2] ... --> 
+  br_main_4953 [2/2] ... --> 
+  br_main_4951 [2/2] ... --> 
+  br_main_4949 [1/2] ... --> 
+  zip_1243 [2/2] ... --> 
+  br_zip_4945 [2/2] ... --> 
+  zip_1243 [1/2] ... --> 
+  br_zip_4943 [1/2] ... --> 
+  f_zip_4930 ... --> 
+  f_main_4936 ... --> 
+  map_1246 [2/2] ... --> 
+  map_1246 [1/2] ... --> 
+  f_map_4931 ... --> 
+  f_f_main_4937 [2/2] ... --> 
+  fail_4967 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 1; 1; 0; 0; 0; 0; 1; 0; 0; 1; 0
+
+(5-3) Checking counterexample ... DONE!
+
+(5-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 1; 1; 0; 0; 0; 0; 1; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 6)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (int -> (x_4:int[1 = x_4; x_4 = 0] -> X) -> X)
+  mult_1250 : (int -> int -> (int -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (x_2:int -> x_3:int[x_3 = x_2] -> (int[1 = x_3; x_3 = 0] -> X) -> X)
+
+(6-1) Abstracting ... DONE!
+
+(6-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [2/2] ... --> 
+  br_main_4955 [2/2] ... --> 
+  br_main_4953 [2/2] ... --> 
+  br_main_4951 [2/2] ... --> 
+  br_main_4949 [1/2] ... --> 
+  zip_1243 [2/2] ... --> 
+  br_zip_4945 [2/2] ... --> 
+  zip_1243 [1/2] ... --> 
+  br_zip_4943 [1/2] ... --> 
+  f_zip_4930 ... --> 
+  f_main_4936 ... --> 
+  map_1246 [1/2] ... --> 
+  f_f_main_4937 [2/2] ... --> 
+  fail_4967 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+(6-3) Checking counterexample ... DONE!
+
+(6-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 1; 1; 0; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 7)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (x_2:int[1 <= x_2] -> (x_4:int[1 = x_4; x_4 = 0] -> X) -> X)
+  mult_1250 : (int -> int -> (int -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (x_2:int -> x_3:int[x_3 = x_2] -> (x_5:int[x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] -> X) -> X)
+
+(7-1) Abstracting ... DONE!
+
+(7-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [2/2] ... --> 
+  br_main_4955 [2/2] ... --> 
+  br_main_4953 [2/2] ... --> 
+  br_main_4951 [2/2] ... --> 
+  br_main_4949 [1/2] ... --> 
+  zip_1243 [2/2] ... --> 
+  br_zip_4945 [2/2] ... --> 
+  zip_1243 [1/2] ... --> 
+  br_zip_4943 [1/2] ... --> 
+  f_zip_4930 ... --> 
+  f_main_4936 ... --> 
+  map_1246 [2/2] ... --> 
+  map_1246 [2/2] ... --> 
+  map_1246 [2/2] ... --> 
+  map_1246 [1/2] ... --> 
+  f_map_4931 ... --> 
+  f_map_4931 ... --> 
+  f_map_4931 ... --> 
+  f_f_main_4937 [2/2] ... --> 
+  fail_4967 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 1; 1; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1; 0
+
+(7-3) Checking counterexample ... DONE!
+
+(7-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 1; 1; 0; 0; 0; 0; 1; 1
+
+Program with abstraction types (CEGAR-cycle 8)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (x_2:int[x_2 = 0; 1 = x_2; 1 <= x_2] -> (x_4:int[1 = x_4; x_4 = 0] -> X) -> X)
+  mult_1250 : (int -> int -> (int -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (x_2:int ->
+              x_3:int[x_3 = x_2] -> (x_5:int[x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] -> X) -> X)
+
+(8-1) Abstracting ... DONE!
+
+(8-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [2/2] ... --> 
+  br_main_4955 [2/2] ... --> 
+  br_main_4953 [2/2] ... --> 
+  br_main_4951 [2/2] ... --> 
+  br_main_4949 [2/2] ... --> 
+  br_main_4947 [1/2] ... --> 
+  mult_1250 [1/2] ... --> 
+  f_main_4938 [2/2] ... --> 
+  fail_4968 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 1; 0
+
+(8-3) Checking counterexample ... DONE!
+
+(8-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 9)::
+Main: main_4922
+  main_4922 -> (main_2275 f_4942).
+  arg1_2271 k_main_arg1_3913 -> (rand_int k_main_arg1_3913).
+  arg2_2273 arg1_3943 k_main_arg2_3925 -> (rand_int k_main_arg2_3925).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when b_4948 ->
+      (mult_1250 m_1265 m_1265 (f_main_4938 m_1265 n_1264 k_main_3792)).
+  br_main_4947 b_4948 n_1264 m_1265 k_main_3792 when (not b_4948) ->
+      (repeat_1257 succ_1255 m_1265 0 (f_main_4939 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when b_4950 ->
+      (zip_1243 m_1265 m_1265 (f_main_4936 m_1265 n_1264 k_main_3792)).
+  br_main_4949 b_4950 n_1264 m_1265 k_main_3792 when (not b_4950) ->
+      (br_main_4947 (n_1264 = 9) n_1264 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when b_4952 -> (m6_1241 m_1265 k_main_3792).
+  br_main_4951 b_4952 n_1264 m_1265 k_main_3792 when (not b_4952) ->
+      (br_main_4949 (n_1264 = 7) n_1264 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when b_4954 -> (m5_1233 m_1265 k_main_3792).
+  br_main_4953 b_4954 n_1264 m_1265 k_main_3792 when (not b_4954) ->
+      (br_main_4951 (n_1264 = 6) n_1264 m_1265 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when b_4956 -> (f3_1221 m_1265 g3_1224 k_main_3792).
+  br_main_4955 b_4956 n_1264 m_1265 k_main_3792 when (not b_4956) ->
+      (br_main_4953 (n_1264 = 5) n_1264 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when b_4958 -> (m2_1218 m_1265 k_main_3792).
+  br_main_4957 b_4958 n_1264 m_1265 k_main_3792 when (not b_4958) ->
+      (br_main_4955 (n_1264 = 3) n_1264 m_1265 k_main_3792).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when b_4944 -> (k_zip_3511 x_1244).
+  br_zip_4943 b_4944 x_1244 y_1245 k_zip_3511 when (not b_4944) -> (fail_4964 true (f_zip_4928 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when b_4946 -> (fail_4965 true (f_zip_4929 x_1244 y_1245)).
+  br_zip_4945 b_4946 x_1244 y_1245 k_zip_3511 when (not b_4946) ->
+      (zip_1243 (x_1244 - 1) (y_1245 - 1) (f_zip_4930 x_1244 y_1245 k_zip_3511)).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (n_1215 = 0) -> (k_fact_exn_3159 1).
+  exn_1214 n_1212 exn_1213 n_1215 k_fact_exn_3159 when (not (n_1215 = 0)) -> (exn_1213 n_1215 k_fact_exn_3159).
+  exn_2277 n_1217 k_exn_3222 -> {fail} => (f_exn_4926 n_1217 ()).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (n_1204 > 0) -> (lock12_1199 st_1205 k_f12_3054).
+  f12_1203 n_1204 st_1205 k_f12_3054 when (not (n_1204 > 0)) -> (k_f12_3054 st_1205).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (n_1222 >= 0) -> (k_f3_3284 ()).
+  f3_1221 n_1222 k_1223 k_f3_3284 when (not (n_1222 >= 0)) -> (k_1223 0 k_f3_3284).
+  f_4942 main_3944 -> end.
+  f_exn_4926 n_1217 u_3236 -> _|_.
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (x_3101 = 0) -> (k_main_3792 ()).
+  f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792 x_3101 when (not (x_3101 = 0)) -> (fail_4966 true k_main_3792).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (x_3598 = m_1265) -> (k_main_3792 ()).
+  f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792 x_3598 when (not (x_3598 = m_1265)) -> (fail_4967 true k_main_3792).
+  f_f_main_4941 arg1_3943 k_main_3908 arg2_3942 -> (main_1263 arg1_3943 arg2_3942 k_main_3908).
+  f_fact_4925 n_1212 k_fact_3145 x_3180 -> (k_fact_3145 (n_1212 * x_3180)).
+  f_lock12_4923 st_1200 k_lock12_3012 u_3026 -> (k_lock12_3012 1).
+  f_m2_4927 n_1219 k_m2_3244 x_3270 -> (k_m2_3244 ()).
+  f_main_4934 m_1265 n_1264 k_main_3792 x_3124 ->
+      (g12_1206 m_1265 x_3124 (f_f_main_4935 m_1265 n_1264 x_3124 k_main_3792)).
+  f_main_4936 m_1265 n_1264 k_main_3792 x_3620 -> (map_1246 x_3620 (f_f_main_4937 m_1265 n_1264 x_3620 k_main_3792)).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (m_1265 <= x_3669) -> (k_main_3792 ()).
+  f_main_4938 m_1265 n_1264 k_main_3792 x_3669 when (not (m_1265 <= x_3669)) -> (fail_4968 true k_main_3792).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (x_3755 > m_1265) -> (k_main_3792 ()).
+  f_main_4939 m_1265 n_1264 k_main_3792 x_3755 when (not (x_3755 > m_1265)) -> (fail_4969 true k_main_3792).
+  f_main_4940 k_main_3908 arg1_3943 -> (arg2_2273 arg1_3943 (f_f_main_4941 arg1_3943 k_main_3908)).
+  f_map_4931 x_1247 k_map_3570 x_3574 -> (k_map_3570 (1 + x_3574)).
+  f_mult_4932 m_1252 n_1251 k_mult_3638 x_3642 -> (k_mult_3638 (n_1251 + x_3642)).
+  f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219 x_3736 -> (x_2219 x_3736 k_repeat_3708).
+  f_unlock12_4924 st_1202 k_unlock12_3033 u_3047 -> (k_unlock12_3033 0).
+  f_zip_4928 x_1244 y_1245 u_3523 -> _|_.
+  f_zip_4929 x_1244 y_1245 u_3539 -> _|_.
+  f_zip_4930 x_1244 y_1245 k_zip_3511 x_3543 -> (k_zip_3511 (1 + x_3543)).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (n_1212 <= 0) -> (exn_1213 0 k_fact_3145).
+  fact_1211 n_1212 exn_1213 k_fact_3145 when (not (n_1212 <= 0)) ->
+      (fact_1211 (n_1212 - 1) (exn_1214 n_1212 exn_1213) (f_fact_4925 n_1212 k_fact_3145)).
+  fail_4959 b k -> {fail} => (k ()).
+  fail_4960 b k -> {fail} => (k ()).
+  fail_4961 b k -> {fail} => (k ()).
+  fail_4962 b k -> {fail} => (k ()).
+  fail_4963 b k -> {fail} => (k ()).
+  fail_4964 b k -> {fail} => (k ()).
+  fail_4965 b k -> {fail} => (k ()).
+  fail_4966 b k -> {fail} => (k ()).
+  fail_4967 b k -> {fail} => (k ()).
+  fail_4968 b k -> {fail} => (k ()).
+  fail_4969 b k -> {fail} => (k ()).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (n_1207 > 0) -> (unlock12_1201 st_1208 k_g12_3076).
+  g12_1206 n_1207 st_1208 k_g12_3076 when (not (n_1207 > 0)) -> (k_g12_3076 st_1208).
+  g3_1224 n_1225 k_g3_3309 when (n_1225 = 0) -> (k_g3_3309 ()).
+  g3_1224 n_1225 k_g3_3309 when (not (n_1225 = 0)) -> (fail_4961 true k_g3_3309).
+  h5_1231 y_1232 k_h5_3381 when (y_1232 > 0) -> (k_h5_3381 ()).
+  h5_1231 y_1232 k_h5_3381 when (not (y_1232 > 0)) -> (fail_4962 true k_h5_3381).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (y_1240 > z_1239) -> (k_h6_3457 ()).
+  h6_2276 z_1239 y_1240 k_h6_3457 when (not (y_1240 > z_1239)) -> (fail_4963 true k_h6_3457).
+  lock12_1199 st_1200 k_lock12_3012 -> (u_2006 st_1200 (f_lock12_4923 st_1200 k_lock12_3012)).
+  m2_1218 n_1219 k_m2_3244 when (n_1219 > 0) -> (fact_1211 n_1219 exn_2277 (f_m2_4927 n_1219 k_m2_3244)).
+  m2_1218 n_1219 k_m2_3244 when (not (n_1219 > 0)) -> (k_m2_3244 ()).
+  m5_1233 n_1234 k_m5_3399 when (n_1234 > 0) -> (h5_1231 (n_1234 + 1) k_m5_3399).
+  m5_1233 n_1234 k_m5_3399 when (not (n_1234 > 0)) -> (k_m5_3399 ()).
+  m6_1241 n_1242 k_m6_3476 when (n_1242 >= 0) -> (h6_2276 n_1242 (n_1242 + 1) k_m6_3476).
+  m6_1241 n_1242 k_m6_3476 when (not (n_1242 >= 0)) -> (k_m6_3476 ()).
+  main_1263 n_1264 m_1265 k_main_3792 when (n_1264 = 12) ->
+      (f12_1203 m_1265 0 (f_main_4934 m_1265 n_1264 k_main_3792)).
+  main_1263 n_1264 m_1265 k_main_3792 when (not (n_1264 = 12)) ->
+      (br_main_4957 (n_1264 = 2) n_1264 m_1265 k_main_3792).
+  main_2275 k_main_3908 -> (arg1_2271 (f_main_4940 k_main_3908)).
+  map_1246 x_1247 k_map_3570 when (x_1247 = 0) -> (k_map_3570 x_1247).
+  map_1246 x_1247 k_map_3570 when (not (x_1247 = 0)) -> (map_1246 (x_1247 - 1) (f_map_4931 x_1247 k_map_3570)).
+  mult_1250 n_1251 m_1252 k_mult_3638 when ((n_1251 <= 0) || (m_1252 <= 0)) -> (k_mult_3638 0).
+  mult_1250 n_1251 m_1252 k_mult_3638 when (not ((n_1251 <= 0) || (m_1252 <= 0))) ->
+      (mult_1250 n_1251 (m_1252 - 1) (f_mult_4932 m_1252 n_1251 k_mult_3638)).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (n_1259 = 0) -> (k_repeat_3708 s_1260).
+  repeat_1257 x_2219 n_1259 s_1260 k_repeat_3708 when (not (n_1259 = 0)) ->
+      (repeat_1257 x_2219 (n_1259 - 1) s_1260 (f_repeat_4933 n_1259 s_1260 k_repeat_3708 x_2219)).
+  succ_1255 x_1256 k_succ_3698 -> (k_succ_3698 (x_1256 + 1)).
+  u_2006 st_1200 k_lock12_u_3023 when (st_1200 = 0) -> (k_lock12_u_3023 ()).
+  u_2006 st_1200 k_lock12_u_3023 when (not (st_1200 = 0)) -> (fail_4959 true k_lock12_u_3023).
+  u_2011 st_1202 k_unlock12_u_3044 when (st_1202 = 1) -> (k_unlock12_u_3044 ()).
+  u_2011 st_1202 k_unlock12_u_3044 when (not (st_1202 = 1)) -> (fail_4960 true k_unlock12_u_3044).
+  unlock12_1201 st_1202 k_unlock12_3033 -> (u_2011 st_1202 (f_unlock12_4924 st_1202 k_unlock12_3033)).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (x_1244 = 0) -> (br_zip_4943 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+  zip_1243 x_1244 y_1245 k_zip_3511 when (not (x_1244 = 0)) -> (br_zip_4945 (y_1245 = 0) x_1244 y_1245 k_zip_3511).
+Types:
+  main_4922 : X
+  exn_2277 : (int -> (int -> X) -> X)
+  fact_1211 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4959 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4960 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4963 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4964 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4965 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4966 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4967 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4968 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4969 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1246 : (x_2:int[x_2 = 0; 1 = x_2; 1 <= x_2] -> (x_4:int[1 = x_4; x_4 = 0] -> X) -> X)
+  mult_1250 : (x_2:int -> x_3:int[x_3 <= x_2] -> (x_5:int[x_5 >= x_3] -> X) -> X)
+  repeat_1257 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  zip_1243 : (x_2:int ->
+              x_3:int[x_3 = x_2] -> (x_5:int[x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] -> X) -> X)
+
+(9-1) Abstracting ... DONE!
+
+(9-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4922 ... --> 
+  main_2275 ... --> 
+  arg1_2271 ... --> 
+  f_main_4940 ... --> 
+  arg2_2273 ... --> 
+  f_f_main_4941 ... --> 
+  main_1263 [2/2] ... --> 
+  br_main_4957 [2/2] ... --> 
+  br_main_4955 [2/2] ... --> 
+  br_main_4953 [2/2] ... --> 
+  br_main_4951 [2/2] ... --> 
+  br_main_4949 [2/2] ... --> 
+  br_main_4947 [2/2] ... --> 
+  repeat_1257 [2/2] ... --> 
+  repeat_1257 [1/2] ... --> 
+  f_repeat_4933 ... --> 
+  succ_1255 ... --> 
+  f_main_4939 [2/2] ... --> 
+  fail_4969 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 1; 0
+
+(9-3) Checking counterexample ... DONE!
+
+
+========================================================================================================================
+
+Unsafe!
+
+Input for main:
+  13; 1
+Error trace:
+  main 13 1 ->
+    if false then ... ->
+    if false then ... ->
+    if false then ... ->
+    if false then ... ->
+    if false then ... ->
+    if false then ... ->
+    if false then ... ->
+    m17 1 ->
+      repeat <fun> 1 0 ->
+        if false then ... ->
+        repeat <fun> 0 0 ->
+          if true then ... ->
+        succ 0 ->
+      if false then ... ->
+  FAIL!
+
+CEGAR-cycles: 9
+total: 13.545 sec
+  abst: 9.676 sec
+  mc: 0.443 sec
+  refine: 2.360 sec
+13.547

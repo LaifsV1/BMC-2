@@ -1,0 +1,751 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 a-cppr.ml
+
+parsed:
+ let make_array_1199 n_1200 i_1201 = assert (0 <= i_1201 && i_1201 < n_1200); 0 in
+ let update_1202 x_2025 _ des_1205 x_1206 =
+   let u_2046 = des_1205 x_2025 in
+   let a_1207 j_1208 = if x_2025 = j_1208 then x_1206 else des_1205 x_2025 in
+   a_1207
+ in
+ let print_int_1209 _ = () in
+ let f_1211 x_2059 src_1213 des_1214 =
+   let rec bcopy_1215 x_2079 src_1217 des_1218 i_1219 =
+     if i_1219 >= x_2079
+     then
+       des_1218
+     else
+       let des_1220 = update_1202 i_1219 x_2079 des_1218 (src_1217 i_1219) in
+       bcopy_1215 x_2079 src_1217 des_1220 (i_1219 + 1)
+   in
+   let rec print_array_1221 m_1222 x_2132 i_1224 =
+     if i_1224 >= m_1222
+     then
+       ()
+     else
+       print_int_1209 (des_1214 i_1224); print_array_1221 m_1222 x_2132 (i_1224 + 1)
+   in
+   let array_1225 = bcopy_1215 x_2059 src_1213 des_1214 0 in
+   print_array_1221 x_2059 array_1225 0
+ in
+ let main_1226 n_1227 =
+   let array1_1228 = make_array_1199 n_1227 in
+   let array2_1229 = make_array_1199 n_1227 in
+   if n_1227 > 0 then f_1211 n_1227 array1_1228 array2_1229
+ in
+ ()
+
+
+###set_main:
+ let make_array_1199 (n_1200:int) (i_1201:int) = assert (0 <= i_1201 && i_1201 < n_1200); 0 in
+ let update_1202 (x_2025:int) (_:int) (des_1205:(int -> int)) (x_1206:int) =
+   let u_2046 = des_1205 x_2025 in
+   let a_1207 (j_1208:int) = if x_2025 = j_1208 then x_1206 else des_1205 x_2025 in
+   a_1207
+ in
+ let print_int_1209 (_:int) = () in
+ let f_1211 (x_2059:int) (src_1213:(int -> int)) (des_1214:(int -> int)) =
+   let rec bcopy_1215 (x_2079:int) (src_1217:(int -> int)) (des_1218:(int -> int)) (i_1219:int) =
+     if i_1219 >= x_2079
+     then
+       des_1218
+     else
+       let des_1220 = update_1202 i_1219 x_2079 des_1218 (src_1217 i_1219) in
+       bcopy_1215 x_2079 src_1217 des_1220 (i_1219 + 1)
+   in
+   let rec print_array_1221 (m_1222:int) (x_2132:(int -> int)) (i_1224:int) =
+     if i_1224 >= m_1222
+     then
+       ()
+     else
+       print_int_1209 (des_1214 i_1224); print_array_1221 m_1222 x_2132 (i_1224 + 1)
+   in
+   let array_1225 = bcopy_1215 x_2059 src_1213 des_1214 0 in
+   print_array_1221 x_2059 array_1225 0
+ in
+ let main_1226 (n_1227:int) =
+   let array1_1228 = make_array_1199 n_1227 in
+   let array2_1229 = make_array_1199 n_1227 in
+   if n_1227 > 0 then f_1211 n_1227 array1_1228 array2_1229
+ in
+ (let arg1_2185 = rand_int () in
+  main_1226 arg1_2185); ()
+
+###Eliminate_redundant_arguments:
+ let make_array_1199 (n_1200:int) (i_1201:int) = assert (0 <= i_1201 && i_1201 < n_1200); 0 in
+ let update_1202 (x_2025:int) (_:int) (des_1205:(int -> int)) (x_1206:int) =
+   let u_2046 = des_1205 x_2025 in
+   let a_1207 (j_1208:int) = if x_2025 = j_1208 then x_1206 else des_1205 x_2025 in
+   a_1207
+ in
+ let print_int_1209 (_:int) = () in
+ let f_1211 (x_2059:int) (src_1213:(int -> int)) (des_1214:(int -> int)) =
+   let rec bcopy_1215 (des_1218:(int -> int)) (i_1219:int) =
+     if i_1219 >= x_2059
+     then
+       des_1218
+     else
+       let des_1220 = update_1202 i_1219 x_2059 des_1218 (src_1213 i_1219) in
+       bcopy_1215 des_1220 (i_1219 + 1)
+   in
+   let rec print_array_1221 (x_2132:(int -> int)) (i_1224:int) =
+     if i_1224 >= x_2059
+     then
+       ()
+     else
+       print_int_1209 (des_1214 i_1224); print_array_1221 x_2132 (i_1224 + 1)
+   in
+   let array_1225 = bcopy_1215 des_1214 0 in
+   print_array_1221 array_1225 0
+ in
+ let main_1226 (n_1227:int) =
+   let array1_1228 = make_array_1199 n_1227 in
+   let array2_1229 = make_array_1199 n_1227 in
+   if n_1227 > 0 then f_1211 n_1227 array1_1228 array2_1229
+ in
+ (let arg1_2185 = rand_int () in
+  main_1226 arg1_2185); ()
+
+###CPS:
+ (let make_array_1199 (n_1200:int) (i_1201:int) (k_make_array_2513:(int -> X)) =
+    let u_2013 (k_make_array_u_2524:(unit -> X)) =
+      if 0 <= i_1201 && i_1201 < n_1200 then k_make_array_u_2524 () else <|fail|> () k_make_array_u_2524
+    in
+    u_2013 (fun (():unit) -> k_make_array_2513 0)
+  in
+  let f_1211 (x_2059:int) (src_1213:(int -> (int -> X) -> X)) (des_1214:(int -> (int -> X) -> X)) 
+            (k_f_2608:(unit -> X)) =
+    let rec bcopy_1215 (des_1218:(int -> (int -> X) -> X)) (i_1219:int) 
+                      (k_f_bcopy_2618:((int -> (int -> X) -> X) -> X)) =
+      if i_1219 >= x_2059
+      then
+        k_f_bcopy_2618 des_1218
+      else
+        src_1213
+          i_1219 
+          (fun (x_2664:int) ->
+             des_1218
+               i_1219 
+               (fun (_:int) ->
+                  (fun (des_2697:(int -> (int -> X) -> X)) -> bcopy_1215 des_2697 (i_1219 + 1) k_f_bcopy_2618)
+                    (let a_1207 (j_1208:int) (k_update_a_2561:(int -> X)) =
+                       if i_1219 = j_1208 then k_update_a_2561 x_2664 else des_1218 i_1219 k_update_a_2561
+                     in
+                     a_1207)))
+    in
+    let rec print_array_1221 (x_2132:(int -> (int -> X) -> X)) (i_1224:int) 
+                            (k_f_print_array_2721:(unit -> X)) =
+      if i_1224 >= x_2059
+      then
+        k_f_print_array_2721 ()
+      else
+        des_1214
+          i_1224 
+          (fun (_:int) ->
+             (fun (():unit) -> print_array_1221 x_2132 (i_1224 + 1) k_f_print_array_2721) ())
+    in
+    bcopy_1215
+      des_1214 0 (fun (array_2824:(int -> (int -> X) -> X)) -> print_array_1221 array_2824 0 k_f_2608)
+  in
+  let main_1226 (n_1227:int) (k_main_2858:(unit -> X)) =
+    if n_1227 > 0
+    then
+      f_1211 n_1227 (make_array_1199 n_1227) (make_array_1199 n_1227) k_main_2858
+    else
+      k_main_2858 ()
+  in
+  let main_2187 (k_main_2925:(unit -> X)) =
+    let arg1_2185 (k_main_arg1_2930:(int -> X)) = rand_int_cps () k_main_arg1_2930 in
+    arg1_2185 (fun (arg1_2946:int) -> main_1226 arg1_2946 k_main_2925)
+  in
+  main_2187 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let make_array_1199 (n_1200:int) (i_1201:int) (k_make_array_2513:(int -> X)) =
+    let u_2013 (k_make_array_u_2524:(unit -> X)) =
+      if 0 <= i_1201 && i_1201 < n_1200 then k_make_array_u_2524 () else <|fail|> () k_make_array_u_2524
+    in
+    u_2013 (fun (():unit) -> k_make_array_2513 0)
+  in
+  let f_1211 (x_2059:int) (src_1213:(int -> (int -> X) -> X)) (des_1214:(int -> (int -> X) -> X)) 
+            (k_f_2608:(unit -> X)) =
+    let rec bcopy_1215 (des_1218:(int -> (int -> X) -> X)) (i_1219:int) 
+                      (k_f_bcopy_2618:((int -> (int -> X) -> X) -> X)) =
+      if i_1219 >= x_2059
+      then
+        k_f_bcopy_2618 des_1218
+      else
+        src_1213
+          i_1219 
+          (fun (x_2664:int) ->
+             des_1218
+               i_1219 
+               (fun (_:int) ->
+                  (fun (des_2697:(int -> (int -> X) -> X)) -> bcopy_1215 des_2697 (i_1219 + 1) k_f_bcopy_2618)
+                    (let a_1207 (j_1208:int) (k_update_a_2561:(int -> X)) =
+                       if i_1219 = j_1208 then k_update_a_2561 x_2664 else des_1218 i_1219 k_update_a_2561
+                     in
+                     a_1207)))
+    in
+    let rec print_array_1221 (x_2132:(int -> (int -> X) -> X)) (i_1224:int) 
+                            (k_f_print_array_2721:(unit -> X)) =
+      if i_1224 >= x_2059
+      then
+        k_f_print_array_2721 ()
+      else
+        des_1214 i_1224 (fun (_:int) -> print_array_1221 x_2132 (i_1224 + 1) k_f_print_array_2721)
+    in
+    bcopy_1215
+      des_1214 0 (fun (array_2824:(int -> (int -> X) -> X)) -> print_array_1221 array_2824 0 k_f_2608)
+  in
+  let main_1226 (n_1227:int) (k_main_2858:(unit -> X)) =
+    if n_1227 > 0
+    then
+      f_1211 n_1227 (make_array_1199 n_1227) (make_array_1199 n_1227) k_main_2858
+    else
+      k_main_2858 ()
+  in
+  let main_2187 (k_main_2925:(unit -> X)) =
+    let arg1_2185 (k_main_arg1_2930:(int -> X)) = rand_int_cps () k_main_arg1_2930 in
+    arg1_2185 (fun (arg1_2946:int) -> main_1226 arg1_2946 k_main_2925)
+  in
+  main_2187 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_3287
+  main_3287 -> (main_2187 f_3295).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (i_1219 = j_1208) -> (k_update_a_2561 x_2664).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (not (i_1219 = j_1208)) -> (des_1218 i_1219 k_update_a_2561).
+  arg1_2185 k_main_arg1_2930 -> (rand_int k_main_arg1_2930).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (i_1219 >= x_2059) -> (k_f_bcopy_2618 des_1218).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (not (i_1219 >= x_2059)) ->
+      (src_1213 i_1219 (f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213)).
+  f_1211 x_2059 src_1213 des_1214 k_f_2608 ->
+      (bcopy_1215 x_2059 src_1213 des_1214 0 (f_f_3293 x_2059 des_1214 k_f_2608)).
+  f_3295 main_2947 -> end.
+  f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213 x_2664 ->
+      (des_1218 i_1219 (f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213)).
+  f_f_3293 x_2059 des_1214 k_f_2608 array_2824 -> (print_array_1221 x_2059 des_1214 array_2824 0 k_f_2608).
+  f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213 u_2579 ->
+      (f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213
+       (a_1207 i_1219 u_2579 x_2059 x_2664 des_1218)).
+  f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213 des_2697 ->
+      (bcopy_1215 x_2059 src_1213 des_2697 (i_1219 + 1) k_f_bcopy_2618).
+  f_main_3294 k_main_2925 arg1_2946 -> (main_1226 arg1_2946 k_main_2925).
+  f_make_array_3288 i_1201 n_1200 k_make_array_2513 u_2527 -> (k_make_array_2513 0).
+  f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132 x_2743 ->
+      (print_array_1221 x_2059 des_1214 x_2132 (i_1224 + 1) k_f_print_array_2721).
+  fail_3296 b k -> {fail} => (k ()).
+  main_1226 n_1227 k_main_2858 when (n_1227 > 0) ->
+      (f_1211 n_1227 (make_array_1199 n_1227) (make_array_1199 n_1227) k_main_2858).
+  main_1226 n_1227 k_main_2858 when (not (n_1227 > 0)) -> (k_main_2858 ()).
+  main_2187 k_main_2925 -> (arg1_2185 (f_main_3294 k_main_2925)).
+  make_array_1199 n_1200 i_1201 k_make_array_2513 ->
+      (u_2013 i_1201 n_1200 (f_make_array_3288 i_1201 n_1200 k_make_array_2513)).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (i_1224 >= x_2059) -> (k_f_print_array_2721 ()).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (not (i_1224 >= x_2059)) ->
+      (des_1214 i_1224 (f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132)).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2524 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_3296 true k_make_array_u_2524).
+Types:
+  main_3287 : X
+  bcopy_1215 : (int ->
+                (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> ((int -> (int -> X) -> X) -> X) -> X)
+  fail_3296 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  print_array_1221 : (int -> (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> (unit -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_3287 ... --> 
+  main_2187 ... --> 
+  arg1_2185 ... --> 
+  f_main_3294 ... --> 
+  main_1226 [1/2] ... --> 
+  f_1211 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_bcopy_3289 ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_f_bcopy_3290 ... --> 
+  f_f_f_bcopy_3291 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_bcopy_3289 ... --> 
+  a_1207 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_3296 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_3287
+  main_3287 -> (main_2187 f_3295).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (i_1219 = j_1208) -> (k_update_a_2561 x_2664).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (not (i_1219 = j_1208)) -> (des_1218 i_1219 k_update_a_2561).
+  arg1_2185 k_main_arg1_2930 -> (rand_int k_main_arg1_2930).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (i_1219 >= x_2059) -> (k_f_bcopy_2618 des_1218).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (not (i_1219 >= x_2059)) ->
+      (src_1213 i_1219 (f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213)).
+  f_1211 x_2059 src_1213 des_1214 k_f_2608 ->
+      (bcopy_1215 x_2059 src_1213 des_1214 0 (f_f_3293 x_2059 des_1214 k_f_2608)).
+  f_3295 main_2947 -> end.
+  f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213 x_2664 ->
+      (des_1218 i_1219 (f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213)).
+  f_f_3293 x_2059 des_1214 k_f_2608 array_2824 -> (print_array_1221 x_2059 des_1214 array_2824 0 k_f_2608).
+  f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213 u_2579 ->
+      (f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213
+       (a_1207 i_1219 u_2579 x_2059 x_2664 des_1218)).
+  f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213 des_2697 ->
+      (bcopy_1215 x_2059 src_1213 des_2697 (i_1219 + 1) k_f_bcopy_2618).
+  f_main_3294 k_main_2925 arg1_2946 -> (main_1226 arg1_2946 k_main_2925).
+  f_make_array_3288 i_1201 n_1200 k_make_array_2513 u_2527 -> (k_make_array_2513 0).
+  f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132 x_2743 ->
+      (print_array_1221 x_2059 des_1214 x_2132 (i_1224 + 1) k_f_print_array_2721).
+  fail_3296 b k -> {fail} => (k ()).
+  main_1226 n_1227 k_main_2858 when (n_1227 > 0) ->
+      (f_1211 n_1227 (make_array_1199 n_1227) (make_array_1199 n_1227) k_main_2858).
+  main_1226 n_1227 k_main_2858 when (not (n_1227 > 0)) -> (k_main_2858 ()).
+  main_2187 k_main_2925 -> (arg1_2185 (f_main_3294 k_main_2925)).
+  make_array_1199 n_1200 i_1201 k_make_array_2513 ->
+      (u_2013 i_1201 n_1200 (f_make_array_3288 i_1201 n_1200 k_make_array_2513)).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (i_1224 >= x_2059) -> (k_f_print_array_2721 ()).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (not (i_1224 >= x_2059)) ->
+      (des_1214 i_1224 (f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132)).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2524 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_3296 true k_make_array_u_2524).
+Types:
+  main_3287 : X
+  bcopy_1215 : (x_2:int ->
+                (x_4:int[x_4 <= 0] -> (int[x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int -> X) -> X) ->
+                x_15:int[1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  fail_3296 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  print_array_1221 : (int -> (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> (unit -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_3287 ... --> 
+  main_2187 ... --> 
+  arg1_2185 ... --> 
+  f_main_3294 ... --> 
+  main_1226 [1/2] ... --> 
+  f_1211 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_bcopy_3289 ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_f_bcopy_3290 ... --> 
+  f_f_f_bcopy_3291 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_bcopy_3289 ... --> 
+  a_1207 [1/2] ... --> 
+  f_f_bcopy_3290 ... --> 
+  f_f_f_bcopy_3291 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_3296 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1; 0
+
+(2-3) Checking counterexample ... DONE!
+
+(2-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 3)::
+Main: main_3287
+  main_3287 -> (main_2187 f_3295).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (i_1219 = j_1208) -> (k_update_a_2561 x_2664).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (not (i_1219 = j_1208)) -> (des_1218 i_1219 k_update_a_2561).
+  arg1_2185 k_main_arg1_2930 -> (rand_int k_main_arg1_2930).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (i_1219 >= x_2059) -> (k_f_bcopy_2618 des_1218).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (not (i_1219 >= x_2059)) ->
+      (src_1213 i_1219 (f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213)).
+  f_1211 x_2059 src_1213 des_1214 k_f_2608 ->
+      (bcopy_1215 x_2059 src_1213 des_1214 0 (f_f_3293 x_2059 des_1214 k_f_2608)).
+  f_3295 main_2947 -> end.
+  f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213 x_2664 ->
+      (des_1218 i_1219 (f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213)).
+  f_f_3293 x_2059 des_1214 k_f_2608 array_2824 -> (print_array_1221 x_2059 des_1214 array_2824 0 k_f_2608).
+  f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213 u_2579 ->
+      (f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213
+       (a_1207 i_1219 u_2579 x_2059 x_2664 des_1218)).
+  f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213 des_2697 ->
+      (bcopy_1215 x_2059 src_1213 des_2697 (i_1219 + 1) k_f_bcopy_2618).
+  f_main_3294 k_main_2925 arg1_2946 -> (main_1226 arg1_2946 k_main_2925).
+  f_make_array_3288 i_1201 n_1200 k_make_array_2513 u_2527 -> (k_make_array_2513 0).
+  f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132 x_2743 ->
+      (print_array_1221 x_2059 des_1214 x_2132 (i_1224 + 1) k_f_print_array_2721).
+  fail_3296 b k -> {fail} => (k ()).
+  main_1226 n_1227 k_main_2858 when (n_1227 > 0) ->
+      (f_1211 n_1227 (make_array_1199 n_1227) (make_array_1199 n_1227) k_main_2858).
+  main_1226 n_1227 k_main_2858 when (not (n_1227 > 0)) -> (k_main_2858 ()).
+  main_2187 k_main_2925 -> (arg1_2185 (f_main_3294 k_main_2925)).
+  make_array_1199 n_1200 i_1201 k_make_array_2513 ->
+      (u_2013 i_1201 n_1200 (f_make_array_3288 i_1201 n_1200 k_make_array_2513)).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (i_1224 >= x_2059) -> (k_f_print_array_2721 ()).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (not (i_1224 >= x_2059)) ->
+      (des_1214 i_1224 (f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132)).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2524 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_3296 true k_make_array_u_2524).
+Types:
+  main_3287 : X
+  bcopy_1215 : (x_2:int ->
+                (x_4:int[x_4 = 0; x_4 <= 0] -> (int[x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int -> X) -> X) ->
+                x_15:int[x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  fail_3296 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  print_array_1221 : (int -> (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> (unit -> X) -> X)
+
+(3-1) Abstracting ... DONE!
+
+(3-2) Checking HORS ... DONE!
+
+Error trace::
+  main_3287 ... --> 
+  main_2187 ... --> 
+  arg1_2185 ... --> 
+  f_main_3294 ... --> 
+  main_1226 [1/2] ... --> 
+  f_1211 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_bcopy_3289 ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_f_bcopy_3290 ... --> 
+  f_f_f_bcopy_3291 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_bcopy_3289 ... --> 
+  a_1207 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_f_bcopy_3290 ... --> 
+  f_f_f_bcopy_3291 ... --> 
+  bcopy_1215 [1/2] ... --> 
+  f_f_3293 ... --> 
+  print_array_1221 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_3296 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1; 0
+
+(3-3) Checking counterexample ... DONE!
+
+(3-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 4)::
+Main: main_3287
+  main_3287 -> (main_2187 f_3295).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (i_1219 = j_1208) -> (k_update_a_2561 x_2664).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (not (i_1219 = j_1208)) -> (des_1218 i_1219 k_update_a_2561).
+  arg1_2185 k_main_arg1_2930 -> (rand_int k_main_arg1_2930).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (i_1219 >= x_2059) -> (k_f_bcopy_2618 des_1218).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (not (i_1219 >= x_2059)) ->
+      (src_1213 i_1219 (f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213)).
+  f_1211 x_2059 src_1213 des_1214 k_f_2608 ->
+      (bcopy_1215 x_2059 src_1213 des_1214 0 (f_f_3293 x_2059 des_1214 k_f_2608)).
+  f_3295 main_2947 -> end.
+  f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213 x_2664 ->
+      (des_1218 i_1219 (f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213)).
+  f_f_3293 x_2059 des_1214 k_f_2608 array_2824 -> (print_array_1221 x_2059 des_1214 array_2824 0 k_f_2608).
+  f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213 u_2579 ->
+      (f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213
+       (a_1207 i_1219 u_2579 x_2059 x_2664 des_1218)).
+  f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213 des_2697 ->
+      (bcopy_1215 x_2059 src_1213 des_2697 (i_1219 + 1) k_f_bcopy_2618).
+  f_main_3294 k_main_2925 arg1_2946 -> (main_1226 arg1_2946 k_main_2925).
+  f_make_array_3288 i_1201 n_1200 k_make_array_2513 u_2527 -> (k_make_array_2513 0).
+  f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132 x_2743 ->
+      (print_array_1221 x_2059 des_1214 x_2132 (i_1224 + 1) k_f_print_array_2721).
+  fail_3296 b k -> {fail} => (k ()).
+  main_1226 n_1227 k_main_2858 when (n_1227 > 0) ->
+      (f_1211 n_1227 (make_array_1199 n_1227) (make_array_1199 n_1227) k_main_2858).
+  main_1226 n_1227 k_main_2858 when (not (n_1227 > 0)) -> (k_main_2858 ()).
+  main_2187 k_main_2925 -> (arg1_2185 (f_main_3294 k_main_2925)).
+  make_array_1199 n_1200 i_1201 k_make_array_2513 ->
+      (u_2013 i_1201 n_1200 (f_make_array_3288 i_1201 n_1200 k_make_array_2513)).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (i_1224 >= x_2059) -> (k_f_print_array_2721 ()).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (not (i_1224 >= x_2059)) ->
+      (des_1214 i_1224 (f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132)).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2524 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_3296 true k_make_array_u_2524).
+Types:
+  main_3287 : X
+  bcopy_1215 : (x_2:int ->
+                (x_4:int[x_4 = 0; x_4 <= 0] -> (int[x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int -> X) -> X) ->
+                x_15:int[x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  fail_3296 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  print_array_1221 : (x_2:int ->
+                      (x_4:int[x_4 >= 0 && 1 <= x_2 - x_4] -> (int -> X) -> X) ->
+                      (int -> (int -> X) -> X) -> x_15:int[x_15 >= 0] -> (unit -> X) -> X)
+
+(4-1) Abstracting ... DONE!
+
+(4-2) Checking HORS ... DONE!
+
+Error trace::
+  main_3287 ... --> 
+  main_2187 ... --> 
+  arg1_2185 ... --> 
+  f_main_3294 ... --> 
+  main_1226 [1/2] ... --> 
+  f_1211 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_bcopy_3289 ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_f_bcopy_3290 ... --> 
+  f_f_f_bcopy_3291 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_3296 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1; 0
+
+(4-3) Checking counterexample ... DONE!
+
+(4-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 5)::
+Main: main_3287
+  main_3287 -> (main_2187 f_3295).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (i_1219 = j_1208) -> (k_update_a_2561 x_2664).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (not (i_1219 = j_1208)) -> (des_1218 i_1219 k_update_a_2561).
+  arg1_2185 k_main_arg1_2930 -> (rand_int k_main_arg1_2930).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (i_1219 >= x_2059) -> (k_f_bcopy_2618 des_1218).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (not (i_1219 >= x_2059)) ->
+      (src_1213 i_1219 (f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213)).
+  f_1211 x_2059 src_1213 des_1214 k_f_2608 ->
+      (bcopy_1215 x_2059 src_1213 des_1214 0 (f_f_3293 x_2059 des_1214 k_f_2608)).
+  f_3295 main_2947 -> end.
+  f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213 x_2664 ->
+      (des_1218 i_1219 (f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213)).
+  f_f_3293 x_2059 des_1214 k_f_2608 array_2824 -> (print_array_1221 x_2059 des_1214 array_2824 0 k_f_2608).
+  f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213 u_2579 ->
+      (f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213
+       (a_1207 i_1219 u_2579 x_2059 x_2664 des_1218)).
+  f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213 des_2697 ->
+      (bcopy_1215 x_2059 src_1213 des_2697 (i_1219 + 1) k_f_bcopy_2618).
+  f_main_3294 k_main_2925 arg1_2946 -> (main_1226 arg1_2946 k_main_2925).
+  f_make_array_3288 i_1201 n_1200 k_make_array_2513 u_2527 -> (k_make_array_2513 0).
+  f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132 x_2743 ->
+      (print_array_1221 x_2059 des_1214 x_2132 (i_1224 + 1) k_f_print_array_2721).
+  fail_3296 b k -> {fail} => (k ()).
+  main_1226 n_1227 k_main_2858 when (n_1227 > 0) ->
+      (f_1211 n_1227 (make_array_1199 n_1227) (make_array_1199 n_1227) k_main_2858).
+  main_1226 n_1227 k_main_2858 when (not (n_1227 > 0)) -> (k_main_2858 ()).
+  main_2187 k_main_2925 -> (arg1_2185 (f_main_3294 k_main_2925)).
+  make_array_1199 n_1200 i_1201 k_make_array_2513 ->
+      (u_2013 i_1201 n_1200 (f_make_array_3288 i_1201 n_1200 k_make_array_2513)).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (i_1224 >= x_2059) -> (k_f_print_array_2721 ()).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (not (i_1224 >= x_2059)) ->
+      (des_1214 i_1224 (f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132)).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2524 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_3296 true k_make_array_u_2524).
+Types:
+  main_3287 : X
+  bcopy_1215 : (x_2:int ->
+                (x_4:int[1 <= x_4 && 1 <= x_2 - x_4; x_4 = 0; x_4 <= 0] -> (int[
+                 x_4 >= 0; x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int -> X) -> X) ->
+                x_15:int[x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  fail_3296 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  print_array_1221 : (x_2:int ->
+                      (x_4:int[x_4 >= 0 && 1 <= x_2 - x_4] -> (int -> X) -> X) ->
+                      (int -> (int -> X) -> X) -> x_15:int[x_15 >= 0] -> (unit -> X) -> X)
+
+(5-1) Abstracting ... DONE!
+
+(5-2) Checking HORS ... DONE!
+
+Error trace::
+  main_3287 ... --> 
+  main_2187 ... --> 
+  arg1_2185 ... --> 
+  f_main_3294 ... --> 
+  main_1226 [1/2] ... --> 
+  f_1211 ... --> 
+  bcopy_1215 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_3288 ... --> 
+  f_bcopy_3289 ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_3296 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 1; 0
+
+(5-3) Checking counterexample ... DONE!
+
+(5-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 6)::
+Main: main_3287
+  main_3287 -> (main_2187 f_3295).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (i_1219 = j_1208) -> (k_update_a_2561 x_2664).
+  a_1207 i_1219 u_2579 x_2059 x_2664 des_1218 j_1208 k_update_a_2561 when 
+      (not (i_1219 = j_1208)) -> (des_1218 i_1219 k_update_a_2561).
+  arg1_2185 k_main_arg1_2930 -> (rand_int k_main_arg1_2930).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (i_1219 >= x_2059) -> (k_f_bcopy_2618 des_1218).
+  bcopy_1215 x_2059 src_1213 des_1218 i_1219 k_f_bcopy_2618 when (not (i_1219 >= x_2059)) ->
+      (src_1213 i_1219 (f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213)).
+  f_1211 x_2059 src_1213 des_1214 k_f_2608 ->
+      (bcopy_1215 x_2059 src_1213 des_1214 0 (f_f_3293 x_2059 des_1214 k_f_2608)).
+  f_3295 main_2947 -> end.
+  f_bcopy_3289 i_1219 x_2059 des_1218 k_f_bcopy_2618 src_1213 x_2664 ->
+      (des_1218 i_1219 (f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213)).
+  f_f_3293 x_2059 des_1214 k_f_2608 array_2824 -> (print_array_1221 x_2059 des_1214 array_2824 0 k_f_2608).
+  f_f_bcopy_3290 i_1219 x_2059 x_2664 des_1218 k_f_bcopy_2618 src_1213 u_2579 ->
+      (f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213
+       (a_1207 i_1219 u_2579 x_2059 x_2664 des_1218)).
+  f_f_f_bcopy_3291 i_1219 u_2579 x_2059 x_2664 k_f_bcopy_2618 src_1213 des_2697 ->
+      (bcopy_1215 x_2059 src_1213 des_2697 (i_1219 + 1) k_f_bcopy_2618).
+  f_main_3294 k_main_2925 arg1_2946 -> (main_1226 arg1_2946 k_main_2925).
+  f_make_array_3288 i_1201 n_1200 k_make_array_2513 u_2527 -> (k_make_array_2513 0).
+  f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132 x_2743 ->
+      (print_array_1221 x_2059 des_1214 x_2132 (i_1224 + 1) k_f_print_array_2721).
+  fail_3296 b k -> {fail} => (k ()).
+  main_1226 n_1227 k_main_2858 when (n_1227 > 0) ->
+      (f_1211 n_1227 (make_array_1199 n_1227) (make_array_1199 n_1227) k_main_2858).
+  main_1226 n_1227 k_main_2858 when (not (n_1227 > 0)) -> (k_main_2858 ()).
+  main_2187 k_main_2925 -> (arg1_2185 (f_main_3294 k_main_2925)).
+  make_array_1199 n_1200 i_1201 k_make_array_2513 ->
+      (u_2013 i_1201 n_1200 (f_make_array_3288 i_1201 n_1200 k_make_array_2513)).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (i_1224 >= x_2059) -> (k_f_print_array_2721 ()).
+  print_array_1221 x_2059 des_1214 x_2132 i_1224 k_f_print_array_2721 when 
+      (not (i_1224 >= x_2059)) ->
+      (des_1214 i_1224 (f_print_array_3292 i_1224 x_2059 des_1214 k_f_print_array_2721 x_2132)).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2524 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2524 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_3296 true k_make_array_u_2524).
+Types:
+  main_3287 : X
+  bcopy_1215 : (x_2:int ->
+                (x_4:int[1 <= x_4 && 1 <= x_2 - x_4; x_4 = 0; x_4 <= 0] -> (int[
+                 x_4 >= 0; x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[x_10 >= 0 && 1 <= x_2 - x_10; 1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int ->
+                 X) -> X) ->
+                x_15:int[x_15 >= 0; x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  fail_3296 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  print_array_1221 : (x_2:int ->
+                      (x_4:int[x_4 >= 0 && 1 <= x_2 - x_4] -> (int -> X) -> X) ->
+                      (int -> (int -> X) -> X) -> x_15:int[x_15 >= 0] -> (unit -> X) -> X)
+
+(6-1) Abstracting ... DONE!
+
+(6-2) Checking HORS ... DONE!
+
+
+========================================================================================================================
+
+Safe!
+
+CEGAR-cycles: 6
+total: 28.581 sec
+  abst: 23.897 sec
+  mc: 0.572 sec
+  refine: 2.897 sec
+28.584

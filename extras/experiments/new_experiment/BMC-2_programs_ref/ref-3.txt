@@ -1,0 +1,25 @@
+Store:
+r2:(Unit->Int) := f;
+r1:Int := 0;
+
+Methods:
+f (u:Unit) :(Int) = 0;
+
+get (u:Unit) :(Int) =
+    let (g:Unit->Int) = (!r2) in (g u);
+
+set (n:Int) :(Unit)=
+    r2 := (fun (u:Unit) :(Int) -> n);
+
+sumF (u:Unit) :(Int) =
+  if (get skip)<=0 then 0
+  else (get skip)+(sumF skip);
+
+sumA (u:Unit) :(Int) =
+  if (!r1)<=0 then 0
+  else (!r1)+(sumA skip);
+
+Main (n:Int) :Unit:
+let (x:Unit) = r1 := n in
+let (x:Unit) = set n in
+assert( (sumA skip) == (sumF skip) )

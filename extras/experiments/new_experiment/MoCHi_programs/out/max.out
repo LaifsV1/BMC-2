@@ -1,0 +1,131 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 max.ml
+
+parsed:
+ let max_1199 max2_1200 x_2016 x_2018 x_2019 = max2_1200 (max2_1200 x_2016 x_2018) x_2019 in
+ let f_1204 x_1205 y_1206 = if x_1205 >= y_1206 then x_1205 else y_1206 in
+ let main_1207 x_2038 y_1209 z_1210 =
+   let m_1211 = max_1199 f_1204 x_2038 y_1209 z_1210 in
+   assert (f_1204 x_2038 m_1211 = m_1211)
+ in
+ ()
+
+
+###set_main:
+ let max_1199 (max2_1200:(int -> int -> int)) (x_2016:int) (x_2018:int) (x_2019:int) =
+   max2_1200 (max2_1200 x_2016 x_2018) x_2019
+ in
+ let f_1204 (x_1205:int) (y_1206:int) = if x_1205 >= y_1206 then x_1205 else y_1206 in
+ let main_1207 (x_2038:int) (y_1209:int) (z_1210:int) =
+   let m_1211 = max_1199 f_1204 x_2038 y_1209 z_1210 in
+   assert (f_1204 x_2038 m_1211 = m_1211)
+ in
+ (let arg1_2054 = rand_int () in
+  let arg2_2056 = rand_int () in
+  let arg3_2058 = rand_int () in
+  main_1207 arg1_2054 arg2_2056 arg3_2058);
+ ()
+
+###CPS:
+ (let f_1204 (x_1205:int) (y_1206:int) (k_f_2339:(int -> X)) =
+    if x_1205 >= y_1206 then k_f_2339 x_1205 else k_f_2339 y_1206
+  in
+  let main_2060 (k_main_2410:(unit -> X)) =
+    let arg1_2054 (k_main_arg1_2415:(int -> X)) = rand_int_cps () k_main_arg1_2415 in
+    arg1_2054
+      (fun (arg1_2459:int) ->
+         let arg2_2056 (k_main_arg2_2427:(int -> X)) = rand_int_cps () k_main_arg2_2427 in
+         arg2_2056
+           (fun (arg2_2458:int) ->
+              let arg3_2058 (k_main_arg3_2439:(int -> X)) = rand_int_cps () k_main_arg3_2439 in
+              arg3_2058
+                (fun (arg3_2457:int) ->
+                   f_1204
+                     arg1_2459 arg2_2458 
+                     (fun (x_2318:int) ->
+                        f_1204
+                          x_2318 arg3_2457 
+                          (fun (m_2401:int) ->
+                             f_1204
+                               arg1_2459 m_2401 
+                               (fun (x_2377:int) ->
+                                  if x_2377 = m_2401 then k_main_2410 () else <|fail|> () k_main_2410))))))
+  in
+  main_2060 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let f_1204 (x_1205:int) (y_1206:int) (k_f_2339:(int -> X)) =
+    if x_1205 >= y_1206 then k_f_2339 x_1205 else k_f_2339 y_1206
+  in
+  let main_2060 (k_main_2410:(unit -> X)) =
+    let arg1_2054 (k_main_arg1_2415:(int -> X)) = rand_int_cps () k_main_arg1_2415 in
+    arg1_2054
+      (fun (arg1_2459:int) ->
+         let arg2_2056 (k_main_arg2_2427:(int -> X)) = rand_int_cps () k_main_arg2_2427 in
+         arg2_2056
+           (fun (arg2_2458:int) ->
+              let arg3_2058 (k_main_arg3_2439:(int -> X)) = rand_int_cps () k_main_arg3_2439 in
+              arg3_2058
+                (fun (arg3_2457:int) ->
+                   f_1204
+                     arg1_2459 arg2_2458 
+                     (fun (x_2318:int) ->
+                        f_1204
+                          x_2318 arg3_2457 
+                          (fun (m_2401:int) ->
+                             f_1204
+                               arg1_2459 m_2401 
+                               (fun (x_2377:int) ->
+                                  if x_2377 = m_2401 then k_main_2410 () else <|fail|> () k_main_2410))))))
+  in
+  main_2060 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2683
+  main_2683 -> (main_2060 f_2690).
+  arg1_2054 k_main_arg1_2415 -> (rand_int k_main_arg1_2415).
+  arg2_2056 arg1_2459 k_main_arg2_2427 -> (rand_int k_main_arg2_2427).
+  arg3_2058 arg1_2459 arg2_2458 k_main_arg3_2439 -> (rand_int k_main_arg3_2439).
+  f_1204 x_1205 y_1206 k_f_2339 when (x_1205 >= y_1206) -> (k_f_2339 x_1205).
+  f_1204 x_1205 y_1206 k_f_2339 when (not (x_1205 >= y_1206)) -> (k_f_2339 y_1206).
+  f_2690 main_2460 -> end.
+  f_f_f_f_f_f_main_2689 arg1_2459 arg2_2458 arg3_2457 m_2401 x_2318 k_main_2410 x_2377 when 
+      (x_2377 = m_2401) -> (k_main_2410 ()).
+  f_f_f_f_f_f_main_2689 arg1_2459 arg2_2458 arg3_2457 m_2401 x_2318 k_main_2410 x_2377 when 
+      (not (x_2377 = m_2401)) -> (fail_2691 true k_main_2410).
+  f_f_f_f_f_main_2688 arg1_2459 arg2_2458 arg3_2457 x_2318 k_main_2410 m_2401 ->
+      (f_1204 arg1_2459 m_2401 (f_f_f_f_f_f_main_2689 arg1_2459 arg2_2458 arg3_2457 m_2401 x_2318 k_main_2410)).
+  f_f_f_f_main_2687 arg1_2459 arg2_2458 arg3_2457 k_main_2410 x_2318 ->
+      (f_1204 x_2318 arg3_2457 (f_f_f_f_f_main_2688 arg1_2459 arg2_2458 arg3_2457 x_2318 k_main_2410)).
+  f_f_f_main_2686 arg1_2459 arg2_2458 k_main_2410 arg3_2457 ->
+      (f_1204 arg1_2459 arg2_2458 (f_f_f_f_main_2687 arg1_2459 arg2_2458 arg3_2457 k_main_2410)).
+  f_f_main_2685 arg1_2459 k_main_2410 arg2_2458 ->
+      (arg3_2058 arg1_2459 arg2_2458 (f_f_f_main_2686 arg1_2459 arg2_2458 k_main_2410)).
+  f_main_2684 k_main_2410 arg1_2459 -> (arg2_2056 arg1_2459 (f_f_main_2685 arg1_2459 k_main_2410)).
+  fail_2691 b k -> {fail} => (k ()).
+  main_2060 k_main_2410 -> (arg1_2054 (f_main_2684 k_main_2410)).
+Types:
+  main_2683 : X
+  fail_2691 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+
+========================================================================================================================
+
+Safe!
+
+CEGAR-cycles: 1
+total: 0.171 sec
+  abst: 0.104 sec
+  mc: 0.004 sec
+  refine: 0.000 sec
+0.172

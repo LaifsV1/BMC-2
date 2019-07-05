@@ -1,0 +1,238 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 e-fact.ml
+
+File "e-fact.ml", line 8, characters 28-38:
+Warning 10: this expression should have type unit.
+parsed:
+ let rec fact_1199 n_1200 exn_1201 =
+   if n_1200 <= 0
+   then
+     exn_1201 0
+   else
+     let exn_1202 n_1203 = if n_1203 = 0 then 1 else exn_1201 n_1203 in
+     n_1200 * fact_1199 (n_1200 - 1) exn_1202
+ in
+ let exn_1204 _ = assert false; 1 in
+ let main_1206 n_1207 = if n_1207 > 0 then let u_2039 = fact_1199 n_1207 exn_1204 in
+                                         () in
+ ()
+
+
+###set_main:
+ let rec fact_1199 (n_1200:int) (exn_1201:(int -> int)) =
+   if n_1200 <= 0
+   then
+     exn_1201 0
+   else
+     let exn_1202 (n_1203:int) = if n_1203 = 0 then 1 else exn_1201 n_1203 in
+     n_1200 * fact_1199 (n_1200 - 1) exn_1202
+ in
+ let exn_1204 (_:!!!) = assert false; 1 in
+ let main_1206 (n_1207:int) = if n_1207 > 0 then let u_2039 = fact_1199 n_1207 exn_1204 in
+                                               () in
+ (let arg1_2040 = rand_int () in
+  main_1206 arg1_2040); ()
+
+###Copy_poly:
+ let rec fact_1199 (n_1200:int) (exn_1201:(int -> int)) =
+   if n_1200 <= 0
+   then
+     exn_1201 0
+   else
+     let exn_1202 (n_1203:int) = if n_1203 = 0 then 1 else exn_1201 n_1203 in
+     n_1200 * fact_1199 (n_1200 - 1) exn_1202
+ in
+ let exn_2043 (_:int) = assert false; 1 in
+ let main_1206 (n_1207:int) = if n_1207 > 0 then let u_2039 = fact_1199 n_1207 exn_2043 in
+                                               () in
+ (let arg1_2040 = rand_int () in
+  main_1206 arg1_2040); ()
+
+###CPS:
+ (let rec fact_1199 (n_1200:int) (exn_1201:(int -> (int -> X) -> X)) (k_fact_2186:(int -> X)) =
+    if n_1200 <= 0
+    then
+      exn_1201 0 k_fact_2186
+    else
+      let exn_1202 (n_1203:int) (k_fact_exn_2200:(int -> X)) =
+        if n_1203 = 0 then k_fact_exn_2200 1 else exn_1201 n_1203 k_fact_exn_2200
+      in
+      fact_1199 (n_1200 - 1) exn_1202 (fun (x_2221:int) -> k_fact_2186 (n_1200 * x_2221))
+  in
+  let exn_2043 (_:int) (_:(int -> X)) = <|fail|> () (fun (():unit) -> _|_) in
+  let main_1206 (n_1207:int) (k_main_2285:(unit -> X)) =
+    if n_1207 > 0 then fact_1199 n_1207 exn_2043 (fun (_:int) -> k_main_2285 ()) else k_main_2285 ()
+  in
+  let main_2042 (k_main_2322:(unit -> X)) =
+    let arg1_2040 (k_main_arg1_2327:(int -> X)) = rand_int_cps () k_main_arg1_2327 in
+    arg1_2040 (fun (arg1_2343:int) -> main_1206 arg1_2343 k_main_2322)
+  in
+  main_2042 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let rec fact_1199 (n_1200:int) (exn_1201:(int -> (int -> X) -> X)) (k_fact_2186:(int -> X)) =
+    if n_1200 <= 0
+    then
+      exn_1201 0 k_fact_2186
+    else
+      let exn_1202 (n_1203:int) (k_fact_exn_2200:(int -> X)) =
+        if n_1203 = 0 then k_fact_exn_2200 1 else exn_1201 n_1203 k_fact_exn_2200
+      in
+      fact_1199 (n_1200 - 1) exn_1202 (fun (x_2221:int) -> k_fact_2186 (n_1200 * x_2221))
+  in
+  let exn_2043 (_:int) (_:(int -> X)) = <|fail|> () (fun (():unit) -> _|_) in
+  let main_1206 (n_1207:int) (k_main_2285:(unit -> X)) =
+    if n_1207 > 0 then fact_1199 n_1207 exn_2043 (fun (_:int) -> k_main_2285 ()) else k_main_2285 ()
+  in
+  let main_2042 (k_main_2322:(unit -> X)) =
+    let arg1_2040 (k_main_arg1_2327:(int -> X)) = rand_int_cps () k_main_arg1_2327 in
+    arg1_2040 (fun (arg1_2343:int) -> main_1206 arg1_2343 k_main_2322)
+  in
+  main_2042 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2515
+  main_2515 -> (main_2042 f_2520).
+  arg1_2040 k_main_arg1_2327 -> (rand_int k_main_arg1_2327).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2200 when (n_1203 = 0) -> (k_fact_exn_2200 1).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2200 when (not (n_1203 = 0)) -> (exn_1201 n_1203 k_fact_exn_2200).
+  exn_2043 n_1205 k_exn_2263 -> {fail} => (f_exn_2517 n_1205 ()).
+  f_2520 main_2344 -> end.
+  f_exn_2517 n_1205 u_2277 -> _|_.
+  f_fact_2516 n_1200 k_fact_2186 x_2221 -> (k_fact_2186 (n_1200 * x_2221)).
+  f_main_2518 n_1207 k_main_2285 u_2311 -> (k_main_2285 ()).
+  f_main_2519 k_main_2322 arg1_2343 -> (main_1206 arg1_2343 k_main_2322).
+  fact_1199 n_1200 exn_1201 k_fact_2186 when (n_1200 <= 0) -> (exn_1201 0 k_fact_2186).
+  fact_1199 n_1200 exn_1201 k_fact_2186 when (not (n_1200 <= 0)) ->
+      (fact_1199 (n_1200 - 1) (exn_1202 n_1200 exn_1201) (f_fact_2516 n_1200 k_fact_2186)).
+  main_1206 n_1207 k_main_2285 when (n_1207 > 0) -> (fact_1199 n_1207 exn_2043 (f_main_2518 n_1207 k_main_2285)).
+  main_1206 n_1207 k_main_2285 when (not (n_1207 > 0)) -> (k_main_2285 ()).
+  main_2042 k_main_2322 -> (arg1_2040 (f_main_2519 k_main_2322)).
+Types:
+  main_2515 : X
+  exn_2043 : (int -> (int -> X) -> X)
+  fact_1199 : (int -> (int -> (int -> X) -> X) -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2515 ... --> 
+  main_2042 ... --> 
+  arg1_2040 ... --> 
+  f_main_2519 ... --> 
+  main_1206 [1/2] ... --> 
+  fact_1199 [2/2] ... --> 
+  fact_1199 [1/2] ... --> 
+  exn_1202 [2/2] ... --> 
+  exn_2043 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 1; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_2515
+  main_2515 -> (main_2042 f_2520).
+  arg1_2040 k_main_arg1_2327 -> (rand_int k_main_arg1_2327).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2200 when (n_1203 = 0) -> (k_fact_exn_2200 1).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2200 when (not (n_1203 = 0)) -> (exn_1201 n_1203 k_fact_exn_2200).
+  exn_2043 n_1205 k_exn_2263 -> {fail} => (f_exn_2517 n_1205 ()).
+  f_2520 main_2344 -> end.
+  f_exn_2517 n_1205 u_2277 -> _|_.
+  f_fact_2516 n_1200 k_fact_2186 x_2221 -> (k_fact_2186 (n_1200 * x_2221)).
+  f_main_2518 n_1207 k_main_2285 u_2311 -> (k_main_2285 ()).
+  f_main_2519 k_main_2322 arg1_2343 -> (main_1206 arg1_2343 k_main_2322).
+  fact_1199 n_1200 exn_1201 k_fact_2186 when (n_1200 <= 0) -> (exn_1201 0 k_fact_2186).
+  fact_1199 n_1200 exn_1201 k_fact_2186 when (not (n_1200 <= 0)) ->
+      (fact_1199 (n_1200 - 1) (exn_1202 n_1200 exn_1201) (f_fact_2516 n_1200 k_fact_2186)).
+  main_1206 n_1207 k_main_2285 when (n_1207 > 0) -> (fact_1199 n_1207 exn_2043 (f_main_2518 n_1207 k_main_2285)).
+  main_1206 n_1207 k_main_2285 when (not (n_1207 > 0)) -> (k_main_2285 ()).
+  main_2042 k_main_2322 -> (arg1_2040 (f_main_2519 k_main_2322)).
+Types:
+  main_2515 : X
+  exn_2043 : (int -> (int -> X) -> X)
+  fact_1199 : (int -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2515 ... --> 
+  main_2042 ... --> 
+  arg1_2040 ... --> 
+  f_main_2519 ... --> 
+  main_1206 [1/2] ... --> 
+  fact_1199 [1/2] ... --> 
+  exn_2043 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0
+
+(2-3) Checking counterexample ... DONE!
+
+(2-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 3)::
+Main: main_2515
+  main_2515 -> (main_2042 f_2520).
+  arg1_2040 k_main_arg1_2327 -> (rand_int k_main_arg1_2327).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2200 when (n_1203 = 0) -> (k_fact_exn_2200 1).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2200 when (not (n_1203 = 0)) -> (exn_1201 n_1203 k_fact_exn_2200).
+  exn_2043 n_1205 k_exn_2263 -> {fail} => (f_exn_2517 n_1205 ()).
+  f_2520 main_2344 -> end.
+  f_exn_2517 n_1205 u_2277 -> _|_.
+  f_fact_2516 n_1200 k_fact_2186 x_2221 -> (k_fact_2186 (n_1200 * x_2221)).
+  f_main_2518 n_1207 k_main_2285 u_2311 -> (k_main_2285 ()).
+  f_main_2519 k_main_2322 arg1_2343 -> (main_1206 arg1_2343 k_main_2322).
+  fact_1199 n_1200 exn_1201 k_fact_2186 when (n_1200 <= 0) -> (exn_1201 0 k_fact_2186).
+  fact_1199 n_1200 exn_1201 k_fact_2186 when (not (n_1200 <= 0)) ->
+      (fact_1199 (n_1200 - 1) (exn_1202 n_1200 exn_1201) (f_fact_2516 n_1200 k_fact_2186)).
+  main_1206 n_1207 k_main_2285 when (n_1207 > 0) -> (fact_1199 n_1207 exn_2043 (f_main_2518 n_1207 k_main_2285)).
+  main_1206 n_1207 k_main_2285 when (not (n_1207 > 0)) -> (k_main_2285 ()).
+  main_2042 k_main_2322 -> (arg1_2040 (f_main_2519 k_main_2322)).
+Types:
+  main_2515 : X
+  exn_2043 : (int -> (int -> X) -> X)
+  fact_1199 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+
+(3-1) Abstracting ... DONE!
+
+(3-2) Checking HORS ... DONE!
+
+
+========================================================================================================================
+
+Safe!
+
+Refinement Types:
+  exn: Top
+  fact: (({x_5:int | 1 > x_5} -> ({0} -> int) -> int) /\ ({x_1:int | 1 <= x_1} -> Top -> int))
+
+CEGAR-cycles: 3
+total: 0.626 sec
+  abst: 0.250 sec
+  mc: 0.011 sec
+  refine: 0.213 sec
+0.629

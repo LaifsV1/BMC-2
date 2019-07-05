@@ -1,0 +1,136 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 r-lock.ml
+
+parsed:
+ let lock_1199 st_1200 = assert (st_1200 = 0); 1 in
+ let unlock_1201 st_1202 = assert (st_1202 = 1); 0 in
+ let f_1203 n_1204 st_1205 = if n_1204 > 0 then lock_1199 st_1205 else st_1205 in
+ let g_1206 n_1207 st_1208 = if n_1207 > 0 then unlock_1201 st_1208 else st_1208 in
+ let main_1209 n_1210 = assert (g_1206 n_1210 (f_1203 n_1210 0) = 0) in
+ ()
+
+
+###set_main:
+ let lock_1199 (st_1200:int) = assert (st_1200 = 0); 1 in
+ let unlock_1201 (st_1202:int) = assert (st_1202 = 1); 0 in
+ let f_1203 (n_1204:int) (st_1205:int) = if n_1204 > 0 then lock_1199 st_1205 else st_1205 in
+ let g_1206 (n_1207:int) (st_1208:int) = if n_1207 > 0 then unlock_1201 st_1208 else st_1208 in
+ let main_1209 (n_1210:int) = assert (g_1206 n_1210 (f_1203 n_1210 0) = 0) in
+ (let arg1_2036 = rand_int () in
+  main_1209 arg1_2036); ()
+
+###CPS:
+ (let lock_1199 (st_1200:int) (k_lock_2198:(int -> X)) =
+    let u_2006 (k_lock_u_2209:(unit -> X)) = if st_1200 = 0 then k_lock_u_2209 () else <|fail|> () k_lock_u_2209 in
+    u_2006 (fun (():unit) -> k_lock_2198 1)
+  in
+  let unlock_1201 (st_1202:int) (k_unlock_2219:(int -> X)) =
+    let u_2011 (k_unlock_u_2230:(unit -> X)) =
+      if st_1202 = 1 then k_unlock_u_2230 () else <|fail|> () k_unlock_u_2230
+    in
+    u_2011 (fun (():unit) -> k_unlock_2219 0)
+  in
+  let f_1203 (n_1204:int) (st_1205:int) (k_f_2240:(int -> X)) =
+    if n_1204 > 0 then lock_1199 st_1205 k_f_2240 else k_f_2240 st_1205
+  in
+  let g_1206 (n_1207:int) (st_1208:int) (k_g_2262:(int -> X)) =
+    if n_1207 > 0 then unlock_1201 st_1208 k_g_2262 else k_g_2262 st_1208
+  in
+  let main_2038 (k_main_2328:(unit -> X)) =
+    let arg1_2036 (k_main_arg1_2333:(int -> X)) = rand_int_cps () k_main_arg1_2333 in
+    arg1_2036
+      (fun (arg1_2349:int) ->
+         f_1203
+           arg1_2349 0 
+           (fun (x_2310:int) ->
+              g_1206
+                arg1_2349 x_2310 
+                (fun (x_2287:int) ->
+                   if x_2287 = 0 then k_main_2328 () else <|fail|> () k_main_2328)))
+  in
+  main_2038 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let lock_1199 (st_1200:int) (k_lock_2198:(int -> X)) =
+    let u_2006 (k_lock_u_2209:(unit -> X)) = if st_1200 = 0 then k_lock_u_2209 () else <|fail|> () k_lock_u_2209 in
+    u_2006 (fun (():unit) -> k_lock_2198 1)
+  in
+  let unlock_1201 (st_1202:int) (k_unlock_2219:(int -> X)) =
+    let u_2011 (k_unlock_u_2230:(unit -> X)) =
+      if st_1202 = 1 then k_unlock_u_2230 () else <|fail|> () k_unlock_u_2230
+    in
+    u_2011 (fun (():unit) -> k_unlock_2219 0)
+  in
+  let f_1203 (n_1204:int) (st_1205:int) (k_f_2240:(int -> X)) =
+    if n_1204 > 0 then lock_1199 st_1205 k_f_2240 else k_f_2240 st_1205
+  in
+  let g_1206 (n_1207:int) (st_1208:int) (k_g_2262:(int -> X)) =
+    if n_1207 > 0 then unlock_1201 st_1208 k_g_2262 else k_g_2262 st_1208
+  in
+  let main_2038 (k_main_2328:(unit -> X)) =
+    let arg1_2036 (k_main_arg1_2333:(int -> X)) = rand_int_cps () k_main_arg1_2333 in
+    arg1_2036
+      (fun (arg1_2349:int) ->
+         f_1203
+           arg1_2349 0 
+           (fun (x_2310:int) ->
+              g_1206
+                arg1_2349 x_2310 
+                (fun (x_2287:int) ->
+                   if x_2287 = 0 then k_main_2328 () else <|fail|> () k_main_2328)))
+  in
+  main_2038 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2565
+  main_2565 -> (main_2038 f_2571).
+  arg1_2036 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  f_1203 n_1204 st_1205 k_f_2240 when (n_1204 > 0) -> (lock_1199 st_1205 k_f_2240).
+  f_1203 n_1204 st_1205 k_f_2240 when (not (n_1204 > 0)) -> (k_f_2240 st_1205).
+  f_2571 main_2350 -> end.
+  f_f_f_main_2570 arg1_2349 x_2310 k_main_2328 x_2287 when (x_2287 = 0) -> (k_main_2328 ()).
+  f_f_f_main_2570 arg1_2349 x_2310 k_main_2328 x_2287 when (not (x_2287 = 0)) -> (fail_2574 true k_main_2328).
+  f_f_main_2569 arg1_2349 k_main_2328 x_2310 ->
+      (g_1206 arg1_2349 x_2310 (f_f_f_main_2570 arg1_2349 x_2310 k_main_2328)).
+  f_lock_2566 st_1200 k_lock_2198 u_2212 -> (k_lock_2198 1).
+  f_main_2568 k_main_2328 arg1_2349 -> (f_1203 arg1_2349 0 (f_f_main_2569 arg1_2349 k_main_2328)).
+  f_unlock_2567 st_1202 k_unlock_2219 u_2233 -> (k_unlock_2219 0).
+  fail_2572 b k -> {fail} => (k ()).
+  fail_2573 b k -> {fail} => (k ()).
+  fail_2574 b k -> {fail} => (k ()).
+  g_1206 n_1207 st_1208 k_g_2262 when (n_1207 > 0) -> (unlock_1201 st_1208 k_g_2262).
+  g_1206 n_1207 st_1208 k_g_2262 when (not (n_1207 > 0)) -> (k_g_2262 st_1208).
+  lock_1199 st_1200 k_lock_2198 -> (u_2006 st_1200 (f_lock_2566 st_1200 k_lock_2198)).
+  main_2038 k_main_2328 -> (arg1_2036 (f_main_2568 k_main_2328)).
+  u_2006 st_1200 k_lock_u_2209 when (st_1200 = 0) -> (k_lock_u_2209 ()).
+  u_2006 st_1200 k_lock_u_2209 when (not (st_1200 = 0)) -> (fail_2572 true k_lock_u_2209).
+  u_2011 st_1202 k_unlock_u_2230 when (st_1202 = 1) -> (k_unlock_u_2230 ()).
+  u_2011 st_1202 k_unlock_u_2230 when (not (st_1202 = 1)) -> (fail_2573 true k_unlock_u_2230).
+  unlock_1201 st_1202 k_unlock_2219 -> (u_2011 st_1202 (f_unlock_2567 st_1202 k_unlock_2219)).
+Types:
+  main_2565 : X
+  fail_2572 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2573 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2574 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+
+========================================================================================================================
+
+Safe!
+
+CEGAR-cycles: 1
+total: 0.132 sec
+  abst: 0.070 sec
+  mc: 0.004 sec
+  refine: 0.000 sec
+0.135

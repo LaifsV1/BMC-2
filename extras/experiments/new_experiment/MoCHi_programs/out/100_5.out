@@ -1,0 +1,1229 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 100_5.ml
+
+parsed:
+ let rec fact_1199 n_1200 exn_1201 =
+   if n_1200 <= 0
+   then
+     exn_1201 0
+   else
+     let exn_1202 n_1203 = if n_1203 = 0 then 1 else exn_1201 n_1203 in
+     n_1200 * fact_1199 (n_1200 - 1) exn_1202
+ in
+ let exn_1204 _ = assert false; 1 in
+ let m2_1206 n_1207 = if n_1207 > 0 then let x_1208 = fact_1199 n_1207 exn_1204 in
+                                       () in
+ let f6_1209 x_1210 g_1211 = g_1211 (x_1210 + 1) in
+ let h6_1212 z_1213 y_1214 = assert (y_1214 > z_1213) in
+ let m6_1215 n_1216 = if n_1216 >= 0 then f6_1209 n_1216 (h6_1212 n_1216) in
+ let rec zip_1217 x_1218 y_1219 =
+   if x_1218 = 0
+   then
+     if y_1219 = 0 then x_1218 else assert false
+   else
+     if y_1219 = 0 then assert false else 1 + zip_1217 (x_1218 - 1) (y_1219 - 1)
+ in
+ let rec map_1220 x_1221 = if x_1221 = 0 then x_1221 else 1 + map_1220 (x_1221 - 1) in
+ let m7_1222 n_1223 = assert (map_1220 (zip_1217 n_1223 n_1223) = n_1223) in
+ let rec mc91_1224 x_1225 =
+   if x_1225 > 100
+   then
+     x_1225 - 10
+   else
+     mc91_1224 (mc91_1224 (x_1225 + 11))
+ in
+ let m133_1226 n_1227 = if n_1227 <= 102 then assert (mc91_1224 n_1227 = 91) in
+ let f18_1228 g_1229 x_1230 y_1231 = g_1229 (x_1230 + 1) (y_1231 + 1) in
+ let rec unzip_1232 x_1233 k_1234 =
+   if x_1233 = 0
+   then
+     k_1234 0 0
+   else
+     unzip_1232 (x_1233 - 1) (f18_1228 k_1234)
+ in
+ let rec zip_1235 x_1236 y_1237 =
+   if x_1236 = 0
+   then
+     if y_1237 = 0 then 0 else assert false
+   else
+     if y_1237 = 0
+     then
+       assert false
+     else
+       1 + zip_1235 (x_1236 - 1) (y_1237 - 1)
+ in
+ let m18_1238 n_1239 = unzip_1232 n_1239 zip_1235 in
+ let rec mult_1240 n_1241 m_1242 =
+   if n_1241 <= 0 || m_1242 <= 0
+   then
+     0
+   else
+     n_1241 + mult_1240 n_1241 (m_1242 - 1)
+ in
+ let m16_1243 n_1244 = assert (n_1244 <= mult_1240 n_1244 n_1244) in
+ let f3_1245 n_1246 k_1247 =
+   if n_1246 >= 0 then () else k_1247 0
+ in
+ let g3_1248 n_1249 = assert (n_1249 = 0) in
+ let m3_1250 n_1251 = f3_1245 n_1251 g3_1248 in
+ let main_1252 n_1253 m_1254 =
+   if n_1253 = 2
+   then
+     m2_1206 m_1254
+   else
+     if n_1253 = 3
+     then
+       m133_1226 m_1254
+     else
+       if n_1253 = 5
+       then
+         let x_1255 = m18_1238 m_1254 in
+         ()
+       else
+         if n_1253 = 6
+         then
+           m6_1215 m_1254
+         else
+           if n_1253 = 7
+           then
+             m7_1222 m_1254
+           else
+             if n_1253 = 9
+             then
+               m16_1243 m_1254
+             else
+               m3_1250 m_1254
+ in
+ ()
+
+
+###set_main:
+ let rec fact_1199 (n_1200:int) (exn_1201:(int -> int)) =
+   if n_1200 <= 0
+   then
+     exn_1201 0
+   else
+     let exn_1202 (n_1203:int) = if n_1203 = 0 then 1 else exn_1201 n_1203 in
+     n_1200 * fact_1199 (n_1200 - 1) exn_1202
+ in
+ let exn_1204 (_:!!!) = assert false; 1 in
+ let m2_1206 (n_1207:int) = if n_1207 > 0 then let x_1208 = fact_1199 n_1207 exn_1204 in
+                                             () in
+ let f6_1209 (x_1210:int) (g_1211:(int -> unit)) = g_1211 (x_1210 + 1) in
+ let h6_1212 (z_1213:!!!) (y_1214:!!!) = assert (y_1214 > z_1213) in
+ let m6_1215 (n_1216:int) = if n_1216 >= 0 then f6_1209 n_1216 (h6_1212 n_1216) in
+ let rec zip_1217 (x_1218:int) (y_1219:int) =
+   if x_1218 = 0
+   then
+     if y_1219 = 0 then x_1218 else assert false
+   else
+     if y_1219 = 0 then assert false else 1 + zip_1217 (x_1218 - 1) (y_1219 - 1)
+ in
+ let rec map_1220 (x_1221:int) =
+   if x_1221 = 0 then x_1221 else 1 + map_1220 (x_1221 - 1)
+ in
+ let m7_1222 (n_1223:int) = assert (map_1220 (zip_1217 n_1223 n_1223) = n_1223) in
+ let rec mc91_1224 (x_1225:int) =
+   if x_1225 > 100
+   then
+     x_1225 - 10
+   else
+     mc91_1224 (mc91_1224 (x_1225 + 11))
+ in
+ let m133_1226 (n_1227:int) =
+   if n_1227 <= 102 then assert (mc91_1224 n_1227 = 91)
+ in
+ let f18_1228 (g_1229:(int -> int -> int)) (x_1230:int) (y_1231:int) =
+   g_1229 (x_1230 + 1) (y_1231 + 1)
+ in
+ let rec unzip_1232 (x_1233:int) (k_1234:(int -> int -> int)) =
+   if x_1233 = 0
+   then
+     k_1234 0 0
+   else
+     unzip_1232 (x_1233 - 1) (f18_1228 k_1234)
+ in
+ let rec zip_1235 (x_1236:int) (y_1237:int) =
+   if x_1236 = 0
+   then
+     if y_1237 = 0 then 0 else assert false
+   else
+     if y_1237 = 0
+     then
+       assert false
+     else
+       1 + zip_1235 (x_1236 - 1) (y_1237 - 1)
+ in
+ let m18_1238 (n_1239:int) = unzip_1232 n_1239 zip_1235 in
+ let rec mult_1240 (n_1241:int) (m_1242:int) =
+   if n_1241 <= 0 || m_1242 <= 0
+   then
+     0
+   else
+     n_1241 + mult_1240 n_1241 (m_1242 - 1)
+ in
+ let m16_1243 (n_1244:int) =
+   assert (n_1244 <= mult_1240 n_1244 n_1244)
+ in
+ let f3_1245 (n_1246:int) (k_1247:(int -> unit)) =
+   if n_1246 >= 0 then () else k_1247 0
+ in
+ let g3_1248 (n_1249:int) = assert (n_1249 = 0) in
+ let m3_1250 (n_1251:int) = f3_1245 n_1251 g3_1248 in
+ let main_1252 (n_1253:int) (m_1254:int) =
+   if n_1253 = 2
+   then
+     m2_1206 m_1254
+   else
+     if n_1253 = 3
+     then
+       m133_1226 m_1254
+     else
+       if n_1253 = 5
+       then
+         let x_1255 = m18_1238 m_1254 in
+         ()
+       else
+         if n_1253 = 6
+         then
+           m6_1215 m_1254
+         else
+           if n_1253 = 7
+           then
+             m7_1222 m_1254
+           else
+             if n_1253 = 9
+             then
+               m16_1243 m_1254
+             else
+               m3_1250 m_1254
+ in
+ (let arg1_2273 = rand_int () in
+  let arg2_2275 = rand_int () in
+  main_1252 arg1_2273 arg2_2275);
+ ()
+
+###Copy_poly:
+ let rec fact_1199 (n_1200:int) (exn_1201:(int -> int)) =
+   if n_1200 <= 0
+   then
+     exn_1201 0
+   else
+     let exn_1202 (n_1203:int) = if n_1203 = 0 then 1 else exn_1201 n_1203 in
+     n_1200 * fact_1199 (n_1200 - 1) exn_1202
+ in
+ let exn_2279 (_:int) = assert false; 1 in
+ let m2_1206 (n_1207:int) = if n_1207 > 0 then let x_1208 = fact_1199 n_1207 exn_2279 in
+                                             () in
+ let f6_1209 (x_1210:int) (g_1211:(int -> unit)) = g_1211 (x_1210 + 1) in
+ let h6_2278 (z_1213:int) (y_1214:int) = assert (y_1214 > z_1213) in
+ let m6_1215 (n_1216:int) = if n_1216 >= 0 then f6_1209 n_1216 (h6_2278 n_1216) in
+ let rec zip_1217 (x_1218:int) (y_1219:int) =
+   if x_1218 = 0
+   then
+     if y_1219 = 0 then x_1218 else assert false
+   else
+     if y_1219 = 0 then assert false else 1 + zip_1217 (x_1218 - 1) (y_1219 - 1)
+ in
+ let rec map_1220 (x_1221:int) =
+   if x_1221 = 0 then x_1221 else 1 + map_1220 (x_1221 - 1)
+ in
+ let m7_1222 (n_1223:int) = assert (map_1220 (zip_1217 n_1223 n_1223) = n_1223) in
+ let rec mc91_1224 (x_1225:int) =
+   if x_1225 > 100
+   then
+     x_1225 - 10
+   else
+     mc91_1224 (mc91_1224 (x_1225 + 11))
+ in
+ let m133_1226 (n_1227:int) =
+   if n_1227 <= 102 then assert (mc91_1224 n_1227 = 91)
+ in
+ let f18_1228 (g_1229:(int -> int -> int)) (x_1230:int) (y_1231:int) =
+   g_1229 (x_1230 + 1) (y_1231 + 1)
+ in
+ let rec unzip_1232 (x_1233:int) (k_1234:(int -> int -> int)) =
+   if x_1233 = 0
+   then
+     k_1234 0 0
+   else
+     unzip_1232 (x_1233 - 1) (f18_1228 k_1234)
+ in
+ let rec zip_1235 (x_1236:int) (y_1237:int) =
+   if x_1236 = 0
+   then
+     if y_1237 = 0 then 0 else assert false
+   else
+     if y_1237 = 0
+     then
+       assert false
+     else
+       1 + zip_1235 (x_1236 - 1) (y_1237 - 1)
+ in
+ let m18_1238 (n_1239:int) = unzip_1232 n_1239 zip_1235 in
+ let rec mult_1240 (n_1241:int) (m_1242:int) =
+   if n_1241 <= 0 || m_1242 <= 0
+   then
+     0
+   else
+     n_1241 + mult_1240 n_1241 (m_1242 - 1)
+ in
+ let m16_1243 (n_1244:int) =
+   assert (n_1244 <= mult_1240 n_1244 n_1244)
+ in
+ let f3_1245 (n_1246:int) (k_1247:(int -> unit)) =
+   if n_1246 >= 0 then () else k_1247 0
+ in
+ let g3_1248 (n_1249:int) = assert (n_1249 = 0) in
+ let m3_1250 (n_1251:int) = f3_1245 n_1251 g3_1248 in
+ let main_1252 (n_1253:int) (m_1254:int) =
+   if n_1253 = 2
+   then
+     m2_1206 m_1254
+   else
+     if n_1253 = 3
+     then
+       m133_1226 m_1254
+     else
+       if n_1253 = 5
+       then
+         let x_1255 = m18_1238 m_1254 in
+         ()
+       else
+         if n_1253 = 6
+         then
+           m6_1215 m_1254
+         else
+           if n_1253 = 7
+           then
+             m7_1222 m_1254
+           else
+             if n_1253 = 9
+             then
+               m16_1243 m_1254
+             else
+               m3_1250 m_1254
+ in
+ (let arg1_2273 = rand_int () in
+  let arg2_2275 = rand_int () in
+  main_1252 arg1_2273 arg2_2275);
+ ()
+
+###Eliminate_redundant_arguments:
+ let rec fact_1199 (n_1200:int) (exn_1201:(int -> int)) =
+   if n_1200 <= 0
+   then
+     exn_1201 0
+   else
+     let exn_1202 (n_1203:int) = if n_1203 = 0 then 1 else exn_1201 n_1203 in
+     n_1200 * fact_1199 (n_1200 - 1) exn_1202
+ in
+ let exn_2279 (_:int) = assert false; 1 in
+ let m2_1206 (n_1207:int) = if n_1207 > 0 then let x_1208 = fact_1199 n_1207 exn_2279 in
+                                             () in
+ let f6_1209 (x_1210:int) (g_1211:(int -> unit)) = g_1211 (x_1210 + 1) in
+ let h6_2278 (z_1213:int) (y_1214:int) = assert (y_1214 > z_1213) in
+ let m6_1215 (n_1216:int) = if n_1216 >= 0 then f6_1209 n_1216 (h6_2278 n_1216) in
+ let rec zip_1217 (x_1218:int) (y_1219:int) =
+   if x_1218 = 0
+   then
+     if y_1219 = 0 then x_1218 else assert false
+   else
+     if y_1219 = 0 then assert false else 1 + zip_1217 (x_1218 - 1) (y_1219 - 1)
+ in
+ let rec map_1220 (x_1221:int) =
+   if x_1221 = 0 then x_1221 else 1 + map_1220 (x_1221 - 1)
+ in
+ let m7_1222 (n_1223:int) = assert (map_1220 (zip_1217 n_1223 n_1223) = n_1223) in
+ let rec mc91_1224 (x_1225:int) =
+   if x_1225 > 100
+   then
+     x_1225 - 10
+   else
+     mc91_1224 (mc91_1224 (x_1225 + 11))
+ in
+ let m133_1226 (n_1227:int) =
+   if n_1227 <= 102 then assert (mc91_1224 n_1227 = 91)
+ in
+ let f18_1228 (g_1229:(int -> int -> int)) (x_1230:int) (y_1231:int) =
+   g_1229 (x_1230 + 1) (y_1231 + 1)
+ in
+ let rec unzip_1232 (x_1233:int) (k_1234:(int -> int -> int)) =
+   if x_1233 = 0
+   then
+     k_1234 0 0
+   else
+     unzip_1232 (x_1233 - 1) (f18_1228 k_1234)
+ in
+ let rec zip_1235 (x_1236:int) (y_1237:int) =
+   if x_1236 = 0
+   then
+     if y_1237 = 0 then 0 else assert false
+   else
+     if y_1237 = 0
+     then
+       assert false
+     else
+       1 + zip_1235 (x_1236 - 1) (y_1237 - 1)
+ in
+ let m18_1238 (n_1239:int) = unzip_1232 n_1239 zip_1235 in
+ let rec mult_1240 (n_1241:int) (m_1242:int) =
+   if n_1241 <= 0 || m_1242 <= 0
+   then
+     0
+   else
+     n_1241 + mult_1240 n_1241 (m_1242 - 1)
+ in
+ let m16_1243 (n_1244:int) =
+   assert (n_1244 <= mult_1240 n_1244 n_1244)
+ in
+ let f3_1245 (n_1246:int) (k_1247:(int -> unit)) =
+   if n_1246 >= 0 then () else k_1247 0
+ in
+ let g3_1248 (n_1249:int) = assert (n_1249 = 0) in
+ let m3_1250 (n_1251:int) = f3_1245 n_1251 g3_1248 in
+ let main_1252 (n_1253:int) (m_1254:int) =
+   if n_1253 = 2
+   then
+     m2_1206 m_1254
+   else
+     if n_1253 = 3
+     then
+       m133_1226 m_1254
+     else
+       if n_1253 = 5
+       then
+         let x_1255 = m18_1238 m_1254 in
+         ()
+       else
+         if n_1253 = 6
+         then
+           m6_1215 m_1254
+         else
+           if n_1253 = 7
+           then
+             m7_1222 m_1254
+           else
+             if n_1253 = 9
+             then
+               m16_1243 m_1254
+             else
+               m3_1250 m_1254
+ in
+ (let arg1_2273 = rand_int () in
+  let arg2_2275 = rand_int () in
+  main_1252 arg1_2273 arg2_2275);
+ ()
+
+###CPS:
+ (let rec fact_1199 (n_1200:int) (exn_1201:(int -> (int -> X) -> X)) (k_fact_2962:(int -> X)) =
+    if n_1200 <= 0
+    then
+      exn_1201 0 k_fact_2962
+    else
+      let exn_1202 (n_1203:int) (k_fact_exn_2976:(int -> X)) =
+        if n_1203 = 0 then k_fact_exn_2976 1 else exn_1201 n_1203 k_fact_exn_2976
+      in
+      fact_1199 (n_1200 - 1) exn_1202 (fun (x_2997:int) -> k_fact_2962 (n_1200 * x_2997))
+  in
+  let exn_2279 (_:int) (_:(int -> X)) = <|fail|> () (fun (():unit) -> _|_) in
+  let m2_1206 (n_1207:int) (k_m2_3061:(unit -> X)) =
+    if n_1207 > 0 then fact_1199 n_1207 exn_2279 (fun (_:int) -> k_m2_3061 ()) else k_m2_3061 ()
+  in
+  let h6_2278 (z_1213:int) (y_1214:int) (k_h6_3122:(unit -> X)) =
+    if y_1214 > z_1213 then k_h6_3122 () else <|fail|> () k_h6_3122
+  in
+  let m6_1215 (n_1216:int) (k_m6_3141:(unit -> X)) =
+    if n_1216 >= 0 then (h6_2278 n_1216) (n_1216 + 1) k_m6_3141 else k_m6_3141 ()
+  in
+  let rec zip_1217 (x_1218:int) (y_1219:int) (k_zip_3176:(int -> X)) =
+    if x_1218 = 0
+    then
+      if y_1219 = 0 then k_zip_3176 x_1218 else <|fail|> () (fun (():unit) -> _|_)
+    else
+      if y_1219 = 0
+      then
+        <|fail|> () (fun (():unit) -> _|_)
+      else
+        zip_1217
+          (x_1218 - 1) (y_1219 - 1) 
+          (fun (x_3208:int) -> k_zip_3176 (1 + x_3208))
+  in
+  let rec map_1220 (x_1221:int) (k_map_3235:(int -> X)) =
+    if x_1221 = 0
+    then
+      k_map_3235 x_1221
+    else
+      map_1220 (x_1221 - 1) (fun (x_3239:int) -> k_map_3235 (1 + x_3239))
+  in
+  let rec mc91_1224 (x_1225:int) (k_mc91_3303:(int -> X)) =
+    if x_1225 > 100
+    then
+      k_mc91_3303 (x_1225 - 10)
+    else
+      mc91_1224
+        (x_1225 + 11) (fun (x_3323:int) -> mc91_1224 x_3323 k_mc91_3303)
+  in
+  let m133_1226 (n_1227:int) (k_m133_3334:(unit -> X)) =
+    if n_1227 <= 102
+    then
+      mc91_1224
+        n_1227 
+        (fun (x_3337:int) ->
+           if x_3337 = 91 then k_m133_3334 () else <|fail|> () k_m133_3334)
+    else
+      k_m133_3334 ()
+  in
+  let f18_1228 (g_1229:(int -> int -> (int -> X) -> X)) (x_1230:int) 
+              (y_1231:int) (k_f18_3374:(int -> X)) =
+    g_1229 (x_1230 + 1) (y_1231 + 1) k_f18_3374
+  in
+  let rec unzip_1232 (x_1233:int) 
+                    (k_1234:(int -> int -> (int -> X) -> X)) 
+                    (k_unzip_3402:(int -> X)) =
+    if x_1233 = 0
+    then
+      k_1234 0 0 k_unzip_3402
+    else
+      unzip_1232 (x_1233 - 1) (f18_1228 k_1234) k_unzip_3402
+  in
+  let rec zip_1235 (x_1236:int) (y_1237:int) (k_zip_3465:(int -> X)) =
+    if x_1236 = 0
+    then
+      if y_1237 = 0
+      then
+        k_zip_3465 0
+      else
+        <|fail|> () (fun (():unit) -> _|_)
+    else
+      if y_1237 = 0
+      then
+        <|fail|> () (fun (():unit) -> _|_)
+      else
+        zip_1235
+          (x_1236 - 1) (y_1237 - 1) 
+          (fun (x_3497:int) -> k_zip_3465 (1 + x_3497))
+  in
+  let rec mult_1240 (n_1241:int) (m_1242:int) (k_mult_3558:(int -> X)) =
+    if n_1241 <= 0 || m_1242 <= 0
+    then
+      k_mult_3558 0
+    else
+      mult_1240
+        n_1241 (m_1242 - 1) 
+        (fun (x_3562:int) -> k_mult_3558 (n_1241 + x_3562))
+  in
+  let f3_1245 (n_1246:int) (k_1247:(int -> (unit -> X) -> X)) 
+             (k_f3_3621:(unit -> X)) =
+    if n_1246 >= 0 then k_f3_3621 () else k_1247 0 k_f3_3621
+  in
+  let g3_1248 (n_1249:int) (k_g3_3646:(unit -> X)) =
+    if n_1249 = 0
+    then
+      k_g3_3646 ()
+    else
+      <|fail|> () k_g3_3646
+  in
+  let main_1252 (n_1253:int) (m_1254:int) 
+               (k_main_3694:(unit -> X)) =
+    if n_1253 = 2
+    then
+      m2_1206 m_1254 k_main_3694
+    else
+      if n_1253 = 3
+      then
+        m133_1226 m_1254 k_main_3694
+      else
+        if n_1253 = 5
+        then
+          unzip_1232
+            m_1254 zip_1235 (fun (_:int) -> k_main_3694 ())
+        else
+          if n_1253 = 6
+          then
+            m6_1215 m_1254 k_main_3694
+          else
+            if n_1253 = 7
+            then
+              zip_1217
+                m_1254 m_1254 
+                (fun (x_3285:int) ->
+                   map_1220
+                     x_3285 
+                     (fun (x_3263:int) ->
+                        if x_3263 = m_1254
+                        then
+                          k_main_3694 ()
+                        else
+                          <|fail|> () k_main_3694))
+            else
+              if n_1253 = 9
+              then
+                mult_1240
+                  m_1254 m_1254 
+                  (fun (x_3589:int) ->
+                     if m_1254 <= x_3589
+                     then
+                       k_main_3694 ()
+                     else
+                       <|fail|> () k_main_3694)
+              else
+                f3_1245 m_1254 g3_1248 k_main_3694
+  in
+  let main_2277 (k_main_3799:(unit -> X)) =
+    let arg1_2273 (k_main_arg1_3804:(int -> X)) =
+      rand_int_cps () k_main_arg1_3804
+    in
+    arg1_2273
+      (fun (arg1_3834:int) ->
+         let arg2_2275 (k_main_arg2_3816:(int -> X)) =
+           rand_int_cps () k_main_arg2_3816
+         in
+         arg2_2275
+           (fun (arg2_3833:int) ->
+              main_1252 arg1_3834 arg2_3833 k_main_3799))
+  in
+  main_2277 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let rec fact_1199 (n_1200:int) (exn_1201:(int -> (int -> X) -> X)) (k_fact_2962:(int -> X)) =
+    if n_1200 <= 0
+    then
+      exn_1201 0 k_fact_2962
+    else
+      let exn_1202 (n_1203:int) (k_fact_exn_2976:(int -> X)) =
+        if n_1203 = 0 then k_fact_exn_2976 1 else exn_1201 n_1203 k_fact_exn_2976
+      in
+      fact_1199 (n_1200 - 1) exn_1202 (fun (x_2997:int) -> k_fact_2962 (n_1200 * x_2997))
+  in
+  let exn_2279 (_:int) (_:(int -> X)) = <|fail|> () (fun (():unit) -> _|_) in
+  let m2_1206 (n_1207:int) (k_m2_3061:(unit -> X)) =
+    if n_1207 > 0 then fact_1199 n_1207 exn_2279 (fun (_:int) -> k_m2_3061 ()) else k_m2_3061 ()
+  in
+  let h6_2278 (z_1213:int) (y_1214:int) (k_h6_3122:(unit -> X)) =
+    if y_1214 > z_1213 then k_h6_3122 () else <|fail|> () k_h6_3122
+  in
+  let m6_1215 (n_1216:int) (k_m6_3141:(unit -> X)) =
+    if n_1216 >= 0 then h6_2278 n_1216 (n_1216 + 1) k_m6_3141 else k_m6_3141 ()
+  in
+  let rec zip_1217 (x_1218:int) (y_1219:int) (k_zip_3176:(int -> X)) =
+    if x_1218 = 0
+    then
+      if y_1219 = 0 then k_zip_3176 x_1218 else <|fail|> () (fun (():unit) -> _|_)
+    else
+      if y_1219 = 0
+      then
+        <|fail|> () (fun (():unit) -> _|_)
+      else
+        zip_1217
+          (x_1218 - 1) (y_1219 - 1) 
+          (fun (x_3208:int) -> k_zip_3176 (1 + x_3208))
+  in
+  let rec map_1220 (x_1221:int) (k_map_3235:(int -> X)) =
+    if x_1221 = 0
+    then
+      k_map_3235 x_1221
+    else
+      map_1220 (x_1221 - 1) (fun (x_3239:int) -> k_map_3235 (1 + x_3239))
+  in
+  let rec mc91_1224 (x_1225:int) (k_mc91_3303:(int -> X)) =
+    if x_1225 > 100
+    then
+      k_mc91_3303 (x_1225 - 10)
+    else
+      mc91_1224
+        (x_1225 + 11) (fun (x_3323:int) -> mc91_1224 x_3323 k_mc91_3303)
+  in
+  let m133_1226 (n_1227:int) (k_m133_3334:(unit -> X)) =
+    if n_1227 <= 102
+    then
+      mc91_1224
+        n_1227 
+        (fun (x_3337:int) ->
+           if x_3337 = 91 then k_m133_3334 () else <|fail|> () k_m133_3334)
+    else
+      k_m133_3334 ()
+  in
+  let f18_1228 (g_1229:(int -> int -> (int -> X) -> X)) (x_1230:int) 
+              (y_1231:int) (k_f18_3374:(int -> X)) =
+    g_1229 (x_1230 + 1) (y_1231 + 1) k_f18_3374
+  in
+  let rec unzip_1232 (x_1233:int) 
+                    (k_1234:(int -> int -> (int -> X) -> X)) 
+                    (k_unzip_3402:(int -> X)) =
+    if x_1233 = 0
+    then
+      k_1234 0 0 k_unzip_3402
+    else
+      unzip_1232 (x_1233 - 1) (f18_1228 k_1234) k_unzip_3402
+  in
+  let rec zip_1235 (x_1236:int) (y_1237:int) (k_zip_3465:(int -> X)) =
+    if x_1236 = 0
+    then
+      if y_1237 = 0
+      then
+        k_zip_3465 0
+      else
+        <|fail|> () (fun (():unit) -> _|_)
+    else
+      if y_1237 = 0
+      then
+        <|fail|> () (fun (():unit) -> _|_)
+      else
+        zip_1235
+          (x_1236 - 1) (y_1237 - 1) 
+          (fun (x_3497:int) -> k_zip_3465 (1 + x_3497))
+  in
+  let rec mult_1240 (n_1241:int) (m_1242:int) (k_mult_3558:(int -> X)) =
+    if n_1241 <= 0 || m_1242 <= 0
+    then
+      k_mult_3558 0
+    else
+      mult_1240
+        n_1241 (m_1242 - 1) 
+        (fun (x_3562:int) -> k_mult_3558 (n_1241 + x_3562))
+  in
+  let f3_1245 (n_1246:int) (k_1247:(int -> (unit -> X) -> X)) 
+             (k_f3_3621:(unit -> X)) =
+    if n_1246 >= 0 then k_f3_3621 () else k_1247 0 k_f3_3621
+  in
+  let g3_1248 (n_1249:int) (k_g3_3646:(unit -> X)) =
+    if n_1249 = 0
+    then
+      k_g3_3646 ()
+    else
+      <|fail|> () k_g3_3646
+  in
+  let main_1252 (n_1253:int) (m_1254:int) 
+               (k_main_3694:(unit -> X)) =
+    if n_1253 = 2
+    then
+      m2_1206 m_1254 k_main_3694
+    else
+      if n_1253 = 3
+      then
+        m133_1226 m_1254 k_main_3694
+      else
+        if n_1253 = 5
+        then
+          unzip_1232
+            m_1254 zip_1235 (fun (_:int) -> k_main_3694 ())
+        else
+          if n_1253 = 6
+          then
+            m6_1215 m_1254 k_main_3694
+          else
+            if n_1253 = 7
+            then
+              zip_1217
+                m_1254 m_1254 
+                (fun (x_3285:int) ->
+                   map_1220
+                     x_3285 
+                     (fun (x_3263:int) ->
+                        if x_3263 = m_1254
+                        then
+                          k_main_3694 ()
+                        else
+                          <|fail|> () k_main_3694))
+            else
+              if n_1253 = 9
+              then
+                mult_1240
+                  m_1254 m_1254 
+                  (fun (x_3589:int) ->
+                     if m_1254 <= x_3589
+                     then
+                       k_main_3694 ()
+                     else
+                       <|fail|> () k_main_3694)
+              else
+                f3_1245 m_1254 g3_1248 k_main_3694
+  in
+  let main_2277 (k_main_3799:(unit -> X)) =
+    let arg1_2273 (k_main_arg1_3804:(int -> X)) =
+      rand_int_cps () k_main_arg1_3804
+    in
+    arg1_2273
+      (fun (arg1_3834:int) ->
+         let arg2_2275 (k_main_arg2_3816:(int -> X)) =
+           rand_int_cps () k_main_arg2_3816
+         in
+         arg2_2275
+           (fun (arg2_3833:int) ->
+              main_1252 arg1_3834 arg2_3833 k_main_3799))
+  in
+  main_2277 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_4714
+  main_4714 -> (main_2277 f_4734).
+  arg1_2273 k_main_arg1_3804 -> (rand_int k_main_arg1_3804).
+  arg2_2275 arg1_3834 k_main_arg2_3816 -> (rand_int k_main_arg2_3816).
+  br_main_4743 b_4744 n_1253 m_1254 k_main_3694 when b_4744 ->
+      (mult_1240 m_1254 m_1254 (f_main_4731 m_1254 n_1253 k_main_3694)).
+  br_main_4743 b_4744 n_1253 m_1254 k_main_3694 when (not b_4744) -> (f3_1245 m_1254 g3_1248 k_main_3694).
+  br_main_4745 b_4746 n_1253 m_1254 k_main_3694 when b_4746 ->
+      (zip_1217 m_1254 m_1254 (f_main_4729 m_1254 n_1253 k_main_3694)).
+  br_main_4745 b_4746 n_1253 m_1254 k_main_3694 when (not b_4746) ->
+      (br_main_4743 (n_1253 = 9) n_1253 m_1254 k_main_3694).
+  br_main_4747 b_4748 n_1253 m_1254 k_main_3694 when b_4748 -> (m6_1215 m_1254 k_main_3694).
+  br_main_4747 b_4748 n_1253 m_1254 k_main_3694 when (not b_4748) ->
+      (br_main_4745 (n_1253 = 7) n_1253 m_1254 k_main_3694).
+  br_main_4749 b_4750 n_1253 m_1254 k_main_3694 when b_4750 ->
+      (unzip_1232 m_1254 zip_1235 (f_main_4728 m_1254 n_1253 k_main_3694)).
+  br_main_4749 b_4750 n_1253 m_1254 k_main_3694 when (not b_4750) ->
+      (br_main_4747 (n_1253 = 6) n_1253 m_1254 k_main_3694).
+  br_main_4751 b_4752 n_1253 m_1254 k_main_3694 when b_4752 -> (m133_1226 m_1254 k_main_3694).
+  br_main_4751 b_4752 n_1253 m_1254 k_main_3694 when (not b_4752) ->
+      (br_main_4749 (n_1253 = 5) n_1253 m_1254 k_main_3694).
+  br_zip_4735 b_4736 x_1218 y_1219 k_zip_3176 when b_4736 -> (k_zip_3176 x_1218).
+  br_zip_4735 b_4736 x_1218 y_1219 k_zip_3176 when (not b_4736) -> (fail_4754 true (f_zip_4718 x_1218 y_1219)).
+  br_zip_4737 b_4738 x_1218 y_1219 k_zip_3176 when b_4738 -> (fail_4755 true (f_zip_4719 x_1218 y_1219)).
+  br_zip_4737 b_4738 x_1218 y_1219 k_zip_3176 when (not b_4738) ->
+      (zip_1217 (x_1218 - 1) (y_1219 - 1) (f_zip_4720 x_1218 y_1219 k_zip_3176)).
+  br_zip_4739 b_4740 x_1236 y_1237 k_zip_3465 when b_4740 -> (k_zip_3465 0).
+  br_zip_4739 b_4740 x_1236 y_1237 k_zip_3465 when (not b_4740) -> (fail_4757 true (f_zip_4724 x_1236 y_1237)).
+  br_zip_4741 b_4742 x_1236 y_1237 k_zip_3465 when b_4742 -> (fail_4758 true (f_zip_4725 x_1236 y_1237)).
+  br_zip_4741 b_4742 x_1236 y_1237 k_zip_3465 when (not b_4742) ->
+      (zip_1235 (x_1236 - 1) (y_1237 - 1) (f_zip_4726 x_1236 y_1237 k_zip_3465)).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2976 when (n_1203 = 0) -> (k_fact_exn_2976 1).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2976 when (not (n_1203 = 0)) -> (exn_1201 n_1203 k_fact_exn_2976).
+  exn_2279 n_1205 k_exn_3039 -> {fail} => (f_exn_4716 n_1205 ()).
+  f18_1228 g_1229 x_1230 y_1231 k_f18_3374 -> (g_1229 (x_1230 + 1) (y_1231 + 1) k_f18_3374).
+  f3_1245 n_1246 k_1247 k_f3_3621 when (n_1246 >= 0) -> (k_f3_3621 ()).
+  f3_1245 n_1246 k_1247 k_f3_3621 when (not (n_1246 >= 0)) -> (k_1247 0 k_f3_3621).
+  f_4734 main_3835 -> end.
+  f_exn_4716 n_1205 u_3053 -> _|_.
+  f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694 x_3263 when (x_3263 = m_1254) -> (k_main_3694 ()).
+  f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694 x_3263 when (not (x_3263 = m_1254)) -> (fail_4760 true k_main_3694).
+  f_f_main_4733 arg1_3834 k_main_3799 arg2_3833 -> (main_1252 arg1_3834 arg2_3833 k_main_3799).
+  f_fact_4715 n_1200 k_fact_2962 x_2997 -> (k_fact_2962 (n_1200 * x_2997)).
+  f_m133_4723 n_1227 k_m133_3334 x_3337 when (x_3337 = 91) -> (k_m133_3334 ()).
+  f_m133_4723 n_1227 k_m133_3334 x_3337 when (not (x_3337 = 91)) -> (fail_4756 true k_m133_3334).
+  f_m2_4717 n_1207 k_m2_3061 x_3087 -> (k_m2_3061 ()).
+  f_main_4728 m_1254 n_1253 k_main_3694 x_3727 -> (k_main_3694 ()).
+  f_main_4729 m_1254 n_1253 k_main_3694 x_3285 -> (map_1220 x_3285 (f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694)).
+  f_main_4731 m_1254 n_1253 k_main_3694 x_3589 when (m_1254 <= x_3589) -> (k_main_3694 ()).
+  f_main_4731 m_1254 n_1253 k_main_3694 x_3589 when (not (m_1254 <= x_3589)) -> (fail_4761 true k_main_3694).
+  f_main_4732 k_main_3799 arg1_3834 -> (arg2_2275 arg1_3834 (f_f_main_4733 arg1_3834 k_main_3799)).
+  f_map_4721 x_1221 k_map_3235 x_3239 -> (k_map_3235 (1 + x_3239)).
+  f_mc91_4722 x_1225 k_mc91_3303 x_3323 -> (mc91_1224 x_3323 k_mc91_3303).
+  f_mult_4727 m_1242 n_1241 k_mult_3558 x_3562 -> (k_mult_3558 (n_1241 + x_3562)).
+  f_zip_4718 x_1218 y_1219 u_3188 -> _|_.
+  f_zip_4719 x_1218 y_1219 u_3204 -> _|_.
+  f_zip_4720 x_1218 y_1219 k_zip_3176 x_3208 -> (k_zip_3176 (1 + x_3208)).
+  f_zip_4724 x_1236 y_1237 u_3477 -> _|_.
+  f_zip_4725 x_1236 y_1237 u_3493 -> _|_.
+  f_zip_4726 x_1236 y_1237 k_zip_3465 x_3497 -> (k_zip_3465 (1 + x_3497)).
+  fact_1199 n_1200 exn_1201 k_fact_2962 when (n_1200 <= 0) -> (exn_1201 0 k_fact_2962).
+  fact_1199 n_1200 exn_1201 k_fact_2962 when (not (n_1200 <= 0)) ->
+      (fact_1199 (n_1200 - 1) (exn_1202 n_1200 exn_1201) (f_fact_4715 n_1200 k_fact_2962)).
+  fail_4753 b k -> {fail} => (k ()).
+  fail_4754 b k -> {fail} => (k ()).
+  fail_4755 b k -> {fail} => (k ()).
+  fail_4756 b k -> {fail} => (k ()).
+  fail_4757 b k -> {fail} => (k ()).
+  fail_4758 b k -> {fail} => (k ()).
+  fail_4759 b k -> {fail} => (k ()).
+  fail_4760 b k -> {fail} => (k ()).
+  fail_4761 b k -> {fail} => (k ()).
+  g3_1248 n_1249 k_g3_3646 when (n_1249 = 0) -> (k_g3_3646 ()).
+  g3_1248 n_1249 k_g3_3646 when (not (n_1249 = 0)) -> (fail_4759 true k_g3_3646).
+  h6_2278 z_1213 y_1214 k_h6_3122 when (y_1214 > z_1213) -> (k_h6_3122 ()).
+  h6_2278 z_1213 y_1214 k_h6_3122 when (not (y_1214 > z_1213)) -> (fail_4753 true k_h6_3122).
+  m133_1226 n_1227 k_m133_3334 when (n_1227 <= 102) -> (mc91_1224 n_1227 (f_m133_4723 n_1227 k_m133_3334)).
+  m133_1226 n_1227 k_m133_3334 when (not (n_1227 <= 102)) -> (k_m133_3334 ()).
+  m2_1206 n_1207 k_m2_3061 when (n_1207 > 0) -> (fact_1199 n_1207 exn_2279 (f_m2_4717 n_1207 k_m2_3061)).
+  m2_1206 n_1207 k_m2_3061 when (not (n_1207 > 0)) -> (k_m2_3061 ()).
+  m6_1215 n_1216 k_m6_3141 when (n_1216 >= 0) -> (h6_2278 n_1216 (n_1216 + 1) k_m6_3141).
+  m6_1215 n_1216 k_m6_3141 when (not (n_1216 >= 0)) -> (k_m6_3141 ()).
+  main_1252 n_1253 m_1254 k_main_3694 when (n_1253 = 2) -> (m2_1206 m_1254 k_main_3694).
+  main_1252 n_1253 m_1254 k_main_3694 when (not (n_1253 = 2)) -> (br_main_4751 (n_1253 = 3) n_1253 m_1254 k_main_3694).
+  main_2277 k_main_3799 -> (arg1_2273 (f_main_4732 k_main_3799)).
+  map_1220 x_1221 k_map_3235 when (x_1221 = 0) -> (k_map_3235 x_1221).
+  map_1220 x_1221 k_map_3235 when (not (x_1221 = 0)) -> (map_1220 (x_1221 - 1) (f_map_4721 x_1221 k_map_3235)).
+  mc91_1224 x_1225 k_mc91_3303 when (x_1225 > 100) -> (k_mc91_3303 (x_1225 - 10)).
+  mc91_1224 x_1225 k_mc91_3303 when (not (x_1225 > 100)) -> (mc91_1224 (x_1225 + 11) (f_mc91_4722 x_1225 k_mc91_3303)).
+  mult_1240 n_1241 m_1242 k_mult_3558 when ((n_1241 <= 0) || (m_1242 <= 0)) -> (k_mult_3558 0).
+  mult_1240 n_1241 m_1242 k_mult_3558 when (not ((n_1241 <= 0) || (m_1242 <= 0))) ->
+      (mult_1240 n_1241 (m_1242 - 1) (f_mult_4727 m_1242 n_1241 k_mult_3558)).
+  unzip_1232 x_1233 k_1234 k_unzip_3402 when (x_1233 = 0) -> (k_1234 0 0 k_unzip_3402).
+  unzip_1232 x_1233 k_1234 k_unzip_3402 when (not (x_1233 = 0)) ->
+      (unzip_1232 (x_1233 - 1) (f18_1228 k_1234) k_unzip_3402).
+  zip_1217 x_1218 y_1219 k_zip_3176 when (x_1218 = 0) -> (br_zip_4735 (y_1219 = 0) x_1218 y_1219 k_zip_3176).
+  zip_1217 x_1218 y_1219 k_zip_3176 when (not (x_1218 = 0)) -> (br_zip_4737 (y_1219 = 0) x_1218 y_1219 k_zip_3176).
+  zip_1235 x_1236 y_1237 k_zip_3465 when (x_1236 = 0) -> (br_zip_4739 (y_1237 = 0) x_1236 y_1237 k_zip_3465).
+  zip_1235 x_1236 y_1237 k_zip_3465 when (not (x_1236 = 0)) -> (br_zip_4741 (y_1237 = 0) x_1236 y_1237 k_zip_3465).
+Types:
+  main_4714 : X
+  exn_2279 : (int -> (int -> X) -> X)
+  fact_1199 : (int -> (int -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4753 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4754 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4755 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4756 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4757 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4758 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4759 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4760 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4761 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1220 : (int -> (int -> X) -> X)
+  mc91_1224 : (int -> (int -> X) -> X)
+  mult_1240 : (int -> int -> (int -> X) -> X)
+  unzip_1232 : (int -> (int -> int -> (int -> X) -> X) -> (int -> X) -> X)
+  zip_1217 : (int -> int -> (int -> X) -> X)
+  zip_1235 : (int -> int -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4714 ... --> 
+  main_2277 ... --> 
+  arg1_2273 ... --> 
+  f_main_4732 ... --> 
+  arg2_2275 ... --> 
+  f_f_main_4733 ... --> 
+  main_1252 [1/2] ... --> 
+  m2_1206 [1/2] ... --> 
+  fact_1199 [2/2] ... --> 
+  fact_1199 [1/2] ... --> 
+  exn_1202 [2/2] ... --> 
+  exn_2279 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_4714
+  main_4714 -> (main_2277 f_4734).
+  arg1_2273 k_main_arg1_3804 -> (rand_int k_main_arg1_3804).
+  arg2_2275 arg1_3834 k_main_arg2_3816 -> (rand_int k_main_arg2_3816).
+  br_main_4743 b_4744 n_1253 m_1254 k_main_3694 when b_4744 ->
+      (mult_1240 m_1254 m_1254 (f_main_4731 m_1254 n_1253 k_main_3694)).
+  br_main_4743 b_4744 n_1253 m_1254 k_main_3694 when (not b_4744) -> (f3_1245 m_1254 g3_1248 k_main_3694).
+  br_main_4745 b_4746 n_1253 m_1254 k_main_3694 when b_4746 ->
+      (zip_1217 m_1254 m_1254 (f_main_4729 m_1254 n_1253 k_main_3694)).
+  br_main_4745 b_4746 n_1253 m_1254 k_main_3694 when (not b_4746) ->
+      (br_main_4743 (n_1253 = 9) n_1253 m_1254 k_main_3694).
+  br_main_4747 b_4748 n_1253 m_1254 k_main_3694 when b_4748 -> (m6_1215 m_1254 k_main_3694).
+  br_main_4747 b_4748 n_1253 m_1254 k_main_3694 when (not b_4748) ->
+      (br_main_4745 (n_1253 = 7) n_1253 m_1254 k_main_3694).
+  br_main_4749 b_4750 n_1253 m_1254 k_main_3694 when b_4750 ->
+      (unzip_1232 m_1254 zip_1235 (f_main_4728 m_1254 n_1253 k_main_3694)).
+  br_main_4749 b_4750 n_1253 m_1254 k_main_3694 when (not b_4750) ->
+      (br_main_4747 (n_1253 = 6) n_1253 m_1254 k_main_3694).
+  br_main_4751 b_4752 n_1253 m_1254 k_main_3694 when b_4752 -> (m133_1226 m_1254 k_main_3694).
+  br_main_4751 b_4752 n_1253 m_1254 k_main_3694 when (not b_4752) ->
+      (br_main_4749 (n_1253 = 5) n_1253 m_1254 k_main_3694).
+  br_zip_4735 b_4736 x_1218 y_1219 k_zip_3176 when b_4736 -> (k_zip_3176 x_1218).
+  br_zip_4735 b_4736 x_1218 y_1219 k_zip_3176 when (not b_4736) -> (fail_4754 true (f_zip_4718 x_1218 y_1219)).
+  br_zip_4737 b_4738 x_1218 y_1219 k_zip_3176 when b_4738 -> (fail_4755 true (f_zip_4719 x_1218 y_1219)).
+  br_zip_4737 b_4738 x_1218 y_1219 k_zip_3176 when (not b_4738) ->
+      (zip_1217 (x_1218 - 1) (y_1219 - 1) (f_zip_4720 x_1218 y_1219 k_zip_3176)).
+  br_zip_4739 b_4740 x_1236 y_1237 k_zip_3465 when b_4740 -> (k_zip_3465 0).
+  br_zip_4739 b_4740 x_1236 y_1237 k_zip_3465 when (not b_4740) -> (fail_4757 true (f_zip_4724 x_1236 y_1237)).
+  br_zip_4741 b_4742 x_1236 y_1237 k_zip_3465 when b_4742 -> (fail_4758 true (f_zip_4725 x_1236 y_1237)).
+  br_zip_4741 b_4742 x_1236 y_1237 k_zip_3465 when (not b_4742) ->
+      (zip_1235 (x_1236 - 1) (y_1237 - 1) (f_zip_4726 x_1236 y_1237 k_zip_3465)).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2976 when (n_1203 = 0) -> (k_fact_exn_2976 1).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2976 when (not (n_1203 = 0)) -> (exn_1201 n_1203 k_fact_exn_2976).
+  exn_2279 n_1205 k_exn_3039 -> {fail} => (f_exn_4716 n_1205 ()).
+  f18_1228 g_1229 x_1230 y_1231 k_f18_3374 -> (g_1229 (x_1230 + 1) (y_1231 + 1) k_f18_3374).
+  f3_1245 n_1246 k_1247 k_f3_3621 when (n_1246 >= 0) -> (k_f3_3621 ()).
+  f3_1245 n_1246 k_1247 k_f3_3621 when (not (n_1246 >= 0)) -> (k_1247 0 k_f3_3621).
+  f_4734 main_3835 -> end.
+  f_exn_4716 n_1205 u_3053 -> _|_.
+  f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694 x_3263 when (x_3263 = m_1254) -> (k_main_3694 ()).
+  f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694 x_3263 when (not (x_3263 = m_1254)) -> (fail_4760 true k_main_3694).
+  f_f_main_4733 arg1_3834 k_main_3799 arg2_3833 -> (main_1252 arg1_3834 arg2_3833 k_main_3799).
+  f_fact_4715 n_1200 k_fact_2962 x_2997 -> (k_fact_2962 (n_1200 * x_2997)).
+  f_m133_4723 n_1227 k_m133_3334 x_3337 when (x_3337 = 91) -> (k_m133_3334 ()).
+  f_m133_4723 n_1227 k_m133_3334 x_3337 when (not (x_3337 = 91)) -> (fail_4756 true k_m133_3334).
+  f_m2_4717 n_1207 k_m2_3061 x_3087 -> (k_m2_3061 ()).
+  f_main_4728 m_1254 n_1253 k_main_3694 x_3727 -> (k_main_3694 ()).
+  f_main_4729 m_1254 n_1253 k_main_3694 x_3285 -> (map_1220 x_3285 (f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694)).
+  f_main_4731 m_1254 n_1253 k_main_3694 x_3589 when (m_1254 <= x_3589) -> (k_main_3694 ()).
+  f_main_4731 m_1254 n_1253 k_main_3694 x_3589 when (not (m_1254 <= x_3589)) -> (fail_4761 true k_main_3694).
+  f_main_4732 k_main_3799 arg1_3834 -> (arg2_2275 arg1_3834 (f_f_main_4733 arg1_3834 k_main_3799)).
+  f_map_4721 x_1221 k_map_3235 x_3239 -> (k_map_3235 (1 + x_3239)).
+  f_mc91_4722 x_1225 k_mc91_3303 x_3323 -> (mc91_1224 x_3323 k_mc91_3303).
+  f_mult_4727 m_1242 n_1241 k_mult_3558 x_3562 -> (k_mult_3558 (n_1241 + x_3562)).
+  f_zip_4718 x_1218 y_1219 u_3188 -> _|_.
+  f_zip_4719 x_1218 y_1219 u_3204 -> _|_.
+  f_zip_4720 x_1218 y_1219 k_zip_3176 x_3208 -> (k_zip_3176 (1 + x_3208)).
+  f_zip_4724 x_1236 y_1237 u_3477 -> _|_.
+  f_zip_4725 x_1236 y_1237 u_3493 -> _|_.
+  f_zip_4726 x_1236 y_1237 k_zip_3465 x_3497 -> (k_zip_3465 (1 + x_3497)).
+  fact_1199 n_1200 exn_1201 k_fact_2962 when (n_1200 <= 0) -> (exn_1201 0 k_fact_2962).
+  fact_1199 n_1200 exn_1201 k_fact_2962 when (not (n_1200 <= 0)) ->
+      (fact_1199 (n_1200 - 1) (exn_1202 n_1200 exn_1201) (f_fact_4715 n_1200 k_fact_2962)).
+  fail_4753 b k -> {fail} => (k ()).
+  fail_4754 b k -> {fail} => (k ()).
+  fail_4755 b k -> {fail} => (k ()).
+  fail_4756 b k -> {fail} => (k ()).
+  fail_4757 b k -> {fail} => (k ()).
+  fail_4758 b k -> {fail} => (k ()).
+  fail_4759 b k -> {fail} => (k ()).
+  fail_4760 b k -> {fail} => (k ()).
+  fail_4761 b k -> {fail} => (k ()).
+  g3_1248 n_1249 k_g3_3646 when (n_1249 = 0) -> (k_g3_3646 ()).
+  g3_1248 n_1249 k_g3_3646 when (not (n_1249 = 0)) -> (fail_4759 true k_g3_3646).
+  h6_2278 z_1213 y_1214 k_h6_3122 when (y_1214 > z_1213) -> (k_h6_3122 ()).
+  h6_2278 z_1213 y_1214 k_h6_3122 when (not (y_1214 > z_1213)) -> (fail_4753 true k_h6_3122).
+  m133_1226 n_1227 k_m133_3334 when (n_1227 <= 102) -> (mc91_1224 n_1227 (f_m133_4723 n_1227 k_m133_3334)).
+  m133_1226 n_1227 k_m133_3334 when (not (n_1227 <= 102)) -> (k_m133_3334 ()).
+  m2_1206 n_1207 k_m2_3061 when (n_1207 > 0) -> (fact_1199 n_1207 exn_2279 (f_m2_4717 n_1207 k_m2_3061)).
+  m2_1206 n_1207 k_m2_3061 when (not (n_1207 > 0)) -> (k_m2_3061 ()).
+  m6_1215 n_1216 k_m6_3141 when (n_1216 >= 0) -> (h6_2278 n_1216 (n_1216 + 1) k_m6_3141).
+  m6_1215 n_1216 k_m6_3141 when (not (n_1216 >= 0)) -> (k_m6_3141 ()).
+  main_1252 n_1253 m_1254 k_main_3694 when (n_1253 = 2) -> (m2_1206 m_1254 k_main_3694).
+  main_1252 n_1253 m_1254 k_main_3694 when (not (n_1253 = 2)) -> (br_main_4751 (n_1253 = 3) n_1253 m_1254 k_main_3694).
+  main_2277 k_main_3799 -> (arg1_2273 (f_main_4732 k_main_3799)).
+  map_1220 x_1221 k_map_3235 when (x_1221 = 0) -> (k_map_3235 x_1221).
+  map_1220 x_1221 k_map_3235 when (not (x_1221 = 0)) -> (map_1220 (x_1221 - 1) (f_map_4721 x_1221 k_map_3235)).
+  mc91_1224 x_1225 k_mc91_3303 when (x_1225 > 100) -> (k_mc91_3303 (x_1225 - 10)).
+  mc91_1224 x_1225 k_mc91_3303 when (not (x_1225 > 100)) -> (mc91_1224 (x_1225 + 11) (f_mc91_4722 x_1225 k_mc91_3303)).
+  mult_1240 n_1241 m_1242 k_mult_3558 when ((n_1241 <= 0) || (m_1242 <= 0)) -> (k_mult_3558 0).
+  mult_1240 n_1241 m_1242 k_mult_3558 when (not ((n_1241 <= 0) || (m_1242 <= 0))) ->
+      (mult_1240 n_1241 (m_1242 - 1) (f_mult_4727 m_1242 n_1241 k_mult_3558)).
+  unzip_1232 x_1233 k_1234 k_unzip_3402 when (x_1233 = 0) -> (k_1234 0 0 k_unzip_3402).
+  unzip_1232 x_1233 k_1234 k_unzip_3402 when (not (x_1233 = 0)) ->
+      (unzip_1232 (x_1233 - 1) (f18_1228 k_1234) k_unzip_3402).
+  zip_1217 x_1218 y_1219 k_zip_3176 when (x_1218 = 0) -> (br_zip_4735 (y_1219 = 0) x_1218 y_1219 k_zip_3176).
+  zip_1217 x_1218 y_1219 k_zip_3176 when (not (x_1218 = 0)) -> (br_zip_4737 (y_1219 = 0) x_1218 y_1219 k_zip_3176).
+  zip_1235 x_1236 y_1237 k_zip_3465 when (x_1236 = 0) -> (br_zip_4739 (y_1237 = 0) x_1236 y_1237 k_zip_3465).
+  zip_1235 x_1236 y_1237 k_zip_3465 when (not (x_1236 = 0)) -> (br_zip_4741 (y_1237 = 0) x_1236 y_1237 k_zip_3465).
+Types:
+  main_4714 : X
+  exn_2279 : (int -> (int -> X) -> X)
+  fact_1199 : (int -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4753 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4754 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4755 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4756 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4757 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4758 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4759 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4760 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4761 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1220 : (int -> (int -> X) -> X)
+  mc91_1224 : (int -> (int -> X) -> X)
+  mult_1240 : (int -> int -> (int -> X) -> X)
+  unzip_1232 : (int -> (int -> int -> (int -> X) -> X) -> (int -> X) -> X)
+  zip_1217 : (int -> int -> (int -> X) -> X)
+  zip_1235 : (int -> int -> (int -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4714 ... --> 
+  main_2277 ... --> 
+  arg1_2273 ... --> 
+  f_main_4732 ... --> 
+  arg2_2275 ... --> 
+  f_f_main_4733 ... --> 
+  main_1252 [1/2] ... --> 
+  m2_1206 [1/2] ... --> 
+  fact_1199 [1/2] ... --> 
+  exn_2279 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 0
+
+(2-3) Checking counterexample ... DONE!
+
+(2-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 3)::
+Main: main_4714
+  main_4714 -> (main_2277 f_4734).
+  arg1_2273 k_main_arg1_3804 -> (rand_int k_main_arg1_3804).
+  arg2_2275 arg1_3834 k_main_arg2_3816 -> (rand_int k_main_arg2_3816).
+  br_main_4743 b_4744 n_1253 m_1254 k_main_3694 when b_4744 ->
+      (mult_1240 m_1254 m_1254 (f_main_4731 m_1254 n_1253 k_main_3694)).
+  br_main_4743 b_4744 n_1253 m_1254 k_main_3694 when (not b_4744) -> (f3_1245 m_1254 g3_1248 k_main_3694).
+  br_main_4745 b_4746 n_1253 m_1254 k_main_3694 when b_4746 ->
+      (zip_1217 m_1254 m_1254 (f_main_4729 m_1254 n_1253 k_main_3694)).
+  br_main_4745 b_4746 n_1253 m_1254 k_main_3694 when (not b_4746) ->
+      (br_main_4743 (n_1253 = 9) n_1253 m_1254 k_main_3694).
+  br_main_4747 b_4748 n_1253 m_1254 k_main_3694 when b_4748 -> (m6_1215 m_1254 k_main_3694).
+  br_main_4747 b_4748 n_1253 m_1254 k_main_3694 when (not b_4748) ->
+      (br_main_4745 (n_1253 = 7) n_1253 m_1254 k_main_3694).
+  br_main_4749 b_4750 n_1253 m_1254 k_main_3694 when b_4750 ->
+      (unzip_1232 m_1254 zip_1235 (f_main_4728 m_1254 n_1253 k_main_3694)).
+  br_main_4749 b_4750 n_1253 m_1254 k_main_3694 when (not b_4750) ->
+      (br_main_4747 (n_1253 = 6) n_1253 m_1254 k_main_3694).
+  br_main_4751 b_4752 n_1253 m_1254 k_main_3694 when b_4752 -> (m133_1226 m_1254 k_main_3694).
+  br_main_4751 b_4752 n_1253 m_1254 k_main_3694 when (not b_4752) ->
+      (br_main_4749 (n_1253 = 5) n_1253 m_1254 k_main_3694).
+  br_zip_4735 b_4736 x_1218 y_1219 k_zip_3176 when b_4736 -> (k_zip_3176 x_1218).
+  br_zip_4735 b_4736 x_1218 y_1219 k_zip_3176 when (not b_4736) -> (fail_4754 true (f_zip_4718 x_1218 y_1219)).
+  br_zip_4737 b_4738 x_1218 y_1219 k_zip_3176 when b_4738 -> (fail_4755 true (f_zip_4719 x_1218 y_1219)).
+  br_zip_4737 b_4738 x_1218 y_1219 k_zip_3176 when (not b_4738) ->
+      (zip_1217 (x_1218 - 1) (y_1219 - 1) (f_zip_4720 x_1218 y_1219 k_zip_3176)).
+  br_zip_4739 b_4740 x_1236 y_1237 k_zip_3465 when b_4740 -> (k_zip_3465 0).
+  br_zip_4739 b_4740 x_1236 y_1237 k_zip_3465 when (not b_4740) -> (fail_4757 true (f_zip_4724 x_1236 y_1237)).
+  br_zip_4741 b_4742 x_1236 y_1237 k_zip_3465 when b_4742 -> (fail_4758 true (f_zip_4725 x_1236 y_1237)).
+  br_zip_4741 b_4742 x_1236 y_1237 k_zip_3465 when (not b_4742) ->
+      (zip_1235 (x_1236 - 1) (y_1237 - 1) (f_zip_4726 x_1236 y_1237 k_zip_3465)).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2976 when (n_1203 = 0) -> (k_fact_exn_2976 1).
+  exn_1202 n_1200 exn_1201 n_1203 k_fact_exn_2976 when (not (n_1203 = 0)) -> (exn_1201 n_1203 k_fact_exn_2976).
+  exn_2279 n_1205 k_exn_3039 -> {fail} => (f_exn_4716 n_1205 ()).
+  f18_1228 g_1229 x_1230 y_1231 k_f18_3374 -> (g_1229 (x_1230 + 1) (y_1231 + 1) k_f18_3374).
+  f3_1245 n_1246 k_1247 k_f3_3621 when (n_1246 >= 0) -> (k_f3_3621 ()).
+  f3_1245 n_1246 k_1247 k_f3_3621 when (not (n_1246 >= 0)) -> (k_1247 0 k_f3_3621).
+  f_4734 main_3835 -> end.
+  f_exn_4716 n_1205 u_3053 -> _|_.
+  f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694 x_3263 when (x_3263 = m_1254) -> (k_main_3694 ()).
+  f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694 x_3263 when (not (x_3263 = m_1254)) -> (fail_4760 true k_main_3694).
+  f_f_main_4733 arg1_3834 k_main_3799 arg2_3833 -> (main_1252 arg1_3834 arg2_3833 k_main_3799).
+  f_fact_4715 n_1200 k_fact_2962 x_2997 -> (k_fact_2962 (n_1200 * x_2997)).
+  f_m133_4723 n_1227 k_m133_3334 x_3337 when (x_3337 = 91) -> (k_m133_3334 ()).
+  f_m133_4723 n_1227 k_m133_3334 x_3337 when (not (x_3337 = 91)) -> (fail_4756 true k_m133_3334).
+  f_m2_4717 n_1207 k_m2_3061 x_3087 -> (k_m2_3061 ()).
+  f_main_4728 m_1254 n_1253 k_main_3694 x_3727 -> (k_main_3694 ()).
+  f_main_4729 m_1254 n_1253 k_main_3694 x_3285 -> (map_1220 x_3285 (f_f_main_4730 m_1254 n_1253 x_3285 k_main_3694)).
+  f_main_4731 m_1254 n_1253 k_main_3694 x_3589 when (m_1254 <= x_3589) -> (k_main_3694 ()).
+  f_main_4731 m_1254 n_1253 k_main_3694 x_3589 when (not (m_1254 <= x_3589)) -> (fail_4761 true k_main_3694).
+  f_main_4732 k_main_3799 arg1_3834 -> (arg2_2275 arg1_3834 (f_f_main_4733 arg1_3834 k_main_3799)).
+  f_map_4721 x_1221 k_map_3235 x_3239 -> (k_map_3235 (1 + x_3239)).
+  f_mc91_4722 x_1225 k_mc91_3303 x_3323 -> (mc91_1224 x_3323 k_mc91_3303).
+  f_mult_4727 m_1242 n_1241 k_mult_3558 x_3562 -> (k_mult_3558 (n_1241 + x_3562)).
+  f_zip_4718 x_1218 y_1219 u_3188 -> _|_.
+  f_zip_4719 x_1218 y_1219 u_3204 -> _|_.
+  f_zip_4720 x_1218 y_1219 k_zip_3176 x_3208 -> (k_zip_3176 (1 + x_3208)).
+  f_zip_4724 x_1236 y_1237 u_3477 -> _|_.
+  f_zip_4725 x_1236 y_1237 u_3493 -> _|_.
+  f_zip_4726 x_1236 y_1237 k_zip_3465 x_3497 -> (k_zip_3465 (1 + x_3497)).
+  fact_1199 n_1200 exn_1201 k_fact_2962 when (n_1200 <= 0) -> (exn_1201 0 k_fact_2962).
+  fact_1199 n_1200 exn_1201 k_fact_2962 when (not (n_1200 <= 0)) ->
+      (fact_1199 (n_1200 - 1) (exn_1202 n_1200 exn_1201) (f_fact_4715 n_1200 k_fact_2962)).
+  fail_4753 b k -> {fail} => (k ()).
+  fail_4754 b k -> {fail} => (k ()).
+  fail_4755 b k -> {fail} => (k ()).
+  fail_4756 b k -> {fail} => (k ()).
+  fail_4757 b k -> {fail} => (k ()).
+  fail_4758 b k -> {fail} => (k ()).
+  fail_4759 b k -> {fail} => (k ()).
+  fail_4760 b k -> {fail} => (k ()).
+  fail_4761 b k -> {fail} => (k ()).
+  g3_1248 n_1249 k_g3_3646 when (n_1249 = 0) -> (k_g3_3646 ()).
+  g3_1248 n_1249 k_g3_3646 when (not (n_1249 = 0)) -> (fail_4759 true k_g3_3646).
+  h6_2278 z_1213 y_1214 k_h6_3122 when (y_1214 > z_1213) -> (k_h6_3122 ()).
+  h6_2278 z_1213 y_1214 k_h6_3122 when (not (y_1214 > z_1213)) -> (fail_4753 true k_h6_3122).
+  m133_1226 n_1227 k_m133_3334 when (n_1227 <= 102) -> (mc91_1224 n_1227 (f_m133_4723 n_1227 k_m133_3334)).
+  m133_1226 n_1227 k_m133_3334 when (not (n_1227 <= 102)) -> (k_m133_3334 ()).
+  m2_1206 n_1207 k_m2_3061 when (n_1207 > 0) -> (fact_1199 n_1207 exn_2279 (f_m2_4717 n_1207 k_m2_3061)).
+  m2_1206 n_1207 k_m2_3061 when (not (n_1207 > 0)) -> (k_m2_3061 ()).
+  m6_1215 n_1216 k_m6_3141 when (n_1216 >= 0) -> (h6_2278 n_1216 (n_1216 + 1) k_m6_3141).
+  m6_1215 n_1216 k_m6_3141 when (not (n_1216 >= 0)) -> (k_m6_3141 ()).
+  main_1252 n_1253 m_1254 k_main_3694 when (n_1253 = 2) -> (m2_1206 m_1254 k_main_3694).
+  main_1252 n_1253 m_1254 k_main_3694 when (not (n_1253 = 2)) -> (br_main_4751 (n_1253 = 3) n_1253 m_1254 k_main_3694).
+  main_2277 k_main_3799 -> (arg1_2273 (f_main_4732 k_main_3799)).
+  map_1220 x_1221 k_map_3235 when (x_1221 = 0) -> (k_map_3235 x_1221).
+  map_1220 x_1221 k_map_3235 when (not (x_1221 = 0)) -> (map_1220 (x_1221 - 1) (f_map_4721 x_1221 k_map_3235)).
+  mc91_1224 x_1225 k_mc91_3303 when (x_1225 > 100) -> (k_mc91_3303 (x_1225 - 10)).
+  mc91_1224 x_1225 k_mc91_3303 when (not (x_1225 > 100)) -> (mc91_1224 (x_1225 + 11) (f_mc91_4722 x_1225 k_mc91_3303)).
+  mult_1240 n_1241 m_1242 k_mult_3558 when ((n_1241 <= 0) || (m_1242 <= 0)) -> (k_mult_3558 0).
+  mult_1240 n_1241 m_1242 k_mult_3558 when (not ((n_1241 <= 0) || (m_1242 <= 0))) ->
+      (mult_1240 n_1241 (m_1242 - 1) (f_mult_4727 m_1242 n_1241 k_mult_3558)).
+  unzip_1232 x_1233 k_1234 k_unzip_3402 when (x_1233 = 0) -> (k_1234 0 0 k_unzip_3402).
+  unzip_1232 x_1233 k_1234 k_unzip_3402 when (not (x_1233 = 0)) ->
+      (unzip_1232 (x_1233 - 1) (f18_1228 k_1234) k_unzip_3402).
+  zip_1217 x_1218 y_1219 k_zip_3176 when (x_1218 = 0) -> (br_zip_4735 (y_1219 = 0) x_1218 y_1219 k_zip_3176).
+  zip_1217 x_1218 y_1219 k_zip_3176 when (not (x_1218 = 0)) -> (br_zip_4737 (y_1219 = 0) x_1218 y_1219 k_zip_3176).
+  zip_1235 x_1236 y_1237 k_zip_3465 when (x_1236 = 0) -> (br_zip_4739 (y_1237 = 0) x_1236 y_1237 k_zip_3465).
+  zip_1235 x_1236 y_1237 k_zip_3465 when (not (x_1236 = 0)) -> (br_zip_4741 (y_1237 = 0) x_1236 y_1237 k_zip_3465).
+Types:
+  main_4714 : X
+  exn_2279 : (int -> (int -> X) -> X)
+  fact_1199 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 = 0] -> (int -> X) -> X) -> (int -> X) -> X)
+  fail_4753 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4754 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4755 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4756 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4757 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4758 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4759 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4760 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_4761 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1220 : (int -> (int -> X) -> X)
+  mc91_1224 : (int -> (int -> X) -> X)
+  mult_1240 : (int -> int -> (int -> X) -> X)
+  unzip_1232 : (int -> (int -> int -> (int -> X) -> X) -> (int -> X) -> X)
+  zip_1217 : (int -> int -> (int -> X) -> X)
+  zip_1235 : (int -> int -> (int -> X) -> X)
+
+(3-1) Abstracting ... DONE!
+
+(3-2) Checking HORS ... DONE!
+
+Error trace::
+  main_4714 ... --> 
+  main_2277 ... --> 
+  arg1_2273 ... --> 
+  f_main_4732 ... --> 
+  arg2_2275 ... --> 
+  f_f_main_4733 ... --> 
+  main_1252 [2/2] ... --> 
+  br_main_4751 [1/2] ... --> 
+  m133_1226 [1/2] ... --> 
+  mc91_1224 [1/2] ... --> 
+  f_m133_4723 [2/2] ... --> 
+  fail_4756 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0
+
+(3-3) Checking counterexample ... DONE!
+
+
+========================================================================================================================
+
+Unsafe!
+
+Input for main:
+  3; 102
+Error trace:
+  main 3 102 ->
+    if false then ... ->
+    if true then ... ->
+    m133 102 ->
+      if true then ... ->
+      mc91 102 ->
+        if true then ... ->
+      if false then ... ->
+  FAIL!
+
+CEGAR-cycles: 3
+total: 2.343 sec
+  abst: 1.499 sec
+  mc: 0.168 sec
+  refine: 0.403 sec
+2.345

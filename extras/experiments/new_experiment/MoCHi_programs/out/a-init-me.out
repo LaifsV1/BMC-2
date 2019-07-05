@@ -1,0 +1,955 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 a-init-me.ml
+
+parsed:
+ let make_array_1199 n_1200 i_1201 = assert (0 <= i_1201 && i_1201 < n_1200); 0 in
+ let update_1202 i_1203 a_1204 x_1205 j_1206 =
+   if j_1206 > i_1203 - 1 && j_1206 <= i_1203 then x_1205 else a_1204 j_1206
+ in
+ let rec init_1207 i_1208 n_1209 a_1210 =
+   if i_1208 >= n_1209 then a_1210 else init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1)
+ in
+ let main_1211 k_1212 n_1213 i_1214 =
+   if k_1212 >= 0 && k_1212 <= 0
+   then
+     let x_1215 = init_1207 k_1212 n_1213 (make_array_1199 n_1213) in
+     if 0 <= i_1214 && i_1214 < n_1213 then assert (x_1215 i_1214 = 1)
+ in
+ ()
+
+
+###set_main:
+ let make_array_1199 (n_1200:int) (i_1201:int) = assert (0 <= i_1201 && i_1201 < n_1200); 0 in
+ let update_1202 (i_1203:int) (a_1204:(int -> int)) (x_1205:int) (j_1206:int) =
+   if j_1206 > i_1203 - 1 && j_1206 <= i_1203 then x_1205 else a_1204 j_1206
+ in
+ let rec init_1207 (i_1208:int) (n_1209:int) (a_1210:(int -> int)) =
+   if i_1208 >= n_1209 then a_1210 else init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1)
+ in
+ let main_1211 (k_1212:int) (n_1213:int) (i_1214:int) =
+   if k_1212 >= 0 && k_1212 <= 0
+   then
+     let x_1215 = init_1207 k_1212 n_1213 (make_array_1199 n_1213) in
+     if 0 <= i_1214 && i_1214 < n_1213 then assert (x_1215 i_1214 = 1)
+ in
+ (let arg1_2113 = rand_int () in
+  let arg2_2115 = rand_int () in
+  let arg3_2117 = rand_int () in
+  main_1211 arg1_2113 arg2_2115 arg3_2117);
+ ()
+
+###Eliminate_redundant_arguments:
+ let make_array_1199 (n_1200:int) (i_1201:int) = assert (0 <= i_1201 && i_1201 < n_1200); 0 in
+ let update_1202 (i_1203:int) (a_1204:(int -> int)) (x_1205:int) (j_1206:int) =
+   if j_1206 > i_1203 - 1 && j_1206 <= i_1203 then x_1205 else a_1204 j_1206
+ in
+ let rec init_1207 (i_1208:int) (n_1209:int) (a_1210:(int -> int)) =
+   if i_1208 >= n_1209 then a_1210 else init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1)
+ in
+ let main_1211 (k_1212:int) (n_1213:int) (i_1214:int) =
+   if k_1212 >= 0 && k_1212 <= 0
+   then
+     let x_1215 = init_1207 k_1212 n_1213 (make_array_1199 n_1213) in
+     if 0 <= i_1214 && i_1214 < n_1213 then assert (x_1215 i_1214 = 1)
+ in
+ (let arg1_2113 = rand_int () in
+  let arg2_2115 = rand_int () in
+  let arg3_2117 = rand_int () in
+  main_1211 arg1_2113 arg2_2115 arg3_2117);
+ ()
+
+###CPS:
+ (let make_array_1199 (n_1200:int) (i_1201:int) (k_make_array_2380:(int -> X)) =
+    let u_2013 (k_make_array_u_2391:(unit -> X)) =
+      if 0 <= i_1201 && i_1201 < n_1200 then k_make_array_u_2391 () else <|fail|> () k_make_array_u_2391
+    in
+    u_2013 (fun (():unit) -> k_make_array_2380 0)
+  in
+  let update_1202 (i_1203:int) (a_1204:(int -> (int -> X) -> X)) (x_1205:int) 
+                 (j_1206:int) (k_update_2405:(int -> X)) =
+    if j_1206 > i_1203 - 1 && j_1206 <= i_1203 then k_update_2405 x_1205 else a_1204 j_1206 k_update_2405
+  in
+  let rec init_1207 (i_1208:int) (n_1209:int) (a_1210:(int -> (int -> X) -> X)) 
+                   (k_init_2438:((int -> (int -> X) -> X) -> X)) =
+    if i_1208 >= n_1209
+    then
+      k_init_2438 a_1210
+    else
+      init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438
+  in
+  let main_1211 (k_1212:int) (n_1213:int) (i_1214:int) (k_main_2505:(unit -> X)) =
+    if k_1212 >= 0 && k_1212 <= 0
+    then
+      init_1207
+        k_1212 n_1213 (make_array_1199 n_1213) 
+        (fun (x_2577:(int -> (int -> X) -> X)) ->
+           if 0 <= i_1214 && i_1214 < n_1213
+           then
+             x_2577
+               i_1214 
+               (fun (x_2547:int) -> if x_2547 = 1 then k_main_2505 () else <|fail|> () k_main_2505)
+           else
+             k_main_2505 ())
+    else
+      k_main_2505 ()
+  in
+  let main_2119 (k_main_2590:(unit -> X)) =
+    let arg1_2113 (k_main_arg1_2595:(int -> X)) = rand_int_cps () k_main_arg1_2595 in
+    arg1_2113
+      (fun (arg1_2639:int) ->
+         let arg2_2115 (k_main_arg2_2607:(int -> X)) = rand_int_cps () k_main_arg2_2607 in
+         arg2_2115
+           (fun (arg2_2638:int) ->
+              let arg3_2117 (k_main_arg3_2619:(int -> X)) = rand_int_cps () k_main_arg3_2619 in
+              arg3_2117
+                (fun (arg3_2637:int) -> main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590)))
+  in
+  main_2119 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let make_array_1199 (n_1200:int) (i_1201:int) (k_make_array_2380:(int -> X)) =
+    let u_2013 (k_make_array_u_2391:(unit -> X)) =
+      if 0 <= i_1201 && i_1201 < n_1200 then k_make_array_u_2391 () else <|fail|> () k_make_array_u_2391
+    in
+    u_2013 (fun (():unit) -> k_make_array_2380 0)
+  in
+  let update_1202 (i_1203:int) (a_1204:(int -> (int -> X) -> X)) (x_1205:int) 
+                 (j_1206:int) (k_update_2405:(int -> X)) =
+    if j_1206 > i_1203 - 1 && j_1206 <= i_1203 then k_update_2405 x_1205 else a_1204 j_1206 k_update_2405
+  in
+  let rec init_1207 (i_1208:int) (n_1209:int) (a_1210:(int -> (int -> X) -> X)) 
+                   (k_init_2438:((int -> (int -> X) -> X) -> X)) =
+    if i_1208 >= n_1209
+    then
+      k_init_2438 a_1210
+    else
+      init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438
+  in
+  let main_1211 (k_1212:int) (n_1213:int) (i_1214:int) (k_main_2505:(unit -> X)) =
+    if k_1212 >= 0 && k_1212 <= 0
+    then
+      init_1207
+        k_1212 n_1213 (make_array_1199 n_1213) 
+        (fun (x_2577:(int -> (int -> X) -> X)) ->
+           if 0 <= i_1214 && i_1214 < n_1213
+           then
+             x_2577
+               i_1214 
+               (fun (x_2547:int) -> if x_2547 = 1 then k_main_2505 () else <|fail|> () k_main_2505)
+           else
+             k_main_2505 ())
+    else
+      k_main_2505 ()
+  in
+  let main_2119 (k_main_2590:(unit -> X)) =
+    let arg1_2113 (k_main_arg1_2595:(int -> X)) = rand_int_cps () k_main_arg1_2595 in
+    arg1_2113
+      (fun (arg1_2639:int) ->
+         let arg2_2115 (k_main_arg2_2607:(int -> X)) = rand_int_cps () k_main_arg2_2607 in
+         arg2_2115
+           (fun (arg2_2638:int) ->
+              let arg3_2117 (k_main_arg3_2619:(int -> X)) = rand_int_cps () k_main_arg3_2619 in
+              arg3_2117
+                (fun (arg3_2637:int) -> main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590)))
+  in
+  main_2119 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2953 ... --> 
+  main_2119 ... --> 
+  arg1_2113 ... --> 
+  f_main_2957 ... --> 
+  arg2_2115 ... --> 
+  f_f_main_2958 ... --> 
+  arg3_2117 ... --> 
+  f_f_f_main_2959 ... --> 
+  main_1211 [1/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [1/2] ... --> 
+  f_main_2955 [1/2] ... --> 
+  update_1202 [1/2] ... --> 
+  f_f_main_2956 [2/2] ... --> 
+  fail_2962 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (int ->
+               int -> (int -> (x_7:int[1 = x_7] -> X) -> X) -> ((int -> (x_14:int[1 = x_14] -> X) -> X) -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2953 ... --> 
+  main_2119 ... --> 
+  arg1_2113 ... --> 
+  f_main_2957 ... --> 
+  arg2_2115 ... --> 
+  f_f_main_2958 ... --> 
+  arg3_2117 ... --> 
+  f_f_f_main_2959 ... --> 
+  main_1211 [1/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [1/2] ... --> 
+  f_main_2955 [1/2] ... --> 
+  update_1202 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [1/2] ... --> 
+  f_make_array_2954 ... --> 
+  f_f_main_2956 [2/2] ... --> 
+  fail_2962 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 1; 0; 0; 0; 1; 0
+
+(2-3) Checking counterexample ... DONE!
+
+(2-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 3)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (x_2:int ->
+               x_3:int ->
+               (x_5:int[1 = x_2 - x_5] -> (x_7:int[1 = x_7] -> X) -> X) ->
+               ((x_12:int[1 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= x_3 - x_12 && x_12 >= x_2] -> (x_14:int[
+                 1 = x_14] -> X) -> X) ->
+               X) -> X)
+
+(3-1) Abstracting ... DONE!
+
+(3-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2953 ... --> 
+  main_2119 ... --> 
+  arg1_2113 ... --> 
+  f_main_2957 ... --> 
+  arg2_2115 ... --> 
+  f_f_main_2958 ... --> 
+  arg3_2117 ... --> 
+  f_f_f_main_2959 ... --> 
+  main_1211 [1/2] ... --> 
+  init_1207 [1/2] ... --> 
+  f_main_2955 [1/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_2961 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0
+
+(3-3) Checking counterexample ... DONE!
+
+(3-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 4)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (x_2:int ->
+               x_3:int ->
+               (x_5:int[1 = x_2 - x_5] -> (x_7:int[1 = x_7] -> X) -> X) ->
+               ((x_12:int[1 <= -x_2 + x_3; 1 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= x_3 - x_12 && x_12 >= x_2] ->
+                 (x_14:int[1 = x_14] -> X) -> X) ->
+               X) -> X)
+
+(4-1) Abstracting ... DONE!
+
+(4-2) Checking HORS ... DONE!
+
+Filter option enabled.
+Restart CEGAR-loop.
+Program with abstraction types (CEGAR-cycle 4)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (x_2:int ->
+               x_3:int ->
+               (x_5:int[1 = x_2 - x_5] -> (x_7:int[1 = x_7] -> X) -> X) ->
+               ((x_12:int[1 <= -x_2 + x_3; 1 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= x_3 - x_12 && x_12 >= x_2] ->
+                 (x_14:int[1 = x_14] -> X) -> X) ->
+               X) -> X)
+
+(4-1) Abstracting ... DONE!
+
+(4-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2953 ... --> 
+  main_2119 ... --> 
+  arg1_2113 ... --> 
+  f_main_2957 ... --> 
+  arg2_2115 ... --> 
+  f_f_main_2958 ... --> 
+  arg3_2117 ... --> 
+  f_f_f_main_2959 ... --> 
+  main_1211 [1/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [1/2] ... --> 
+  f_main_2955 [1/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_2961 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 0; 0; 1; 1; 0; 1; 0
+
+(4-3) Checking counterexample ... DONE!
+
+(4-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 0; 0; 1; 1
+
+Program with abstraction types (CEGAR-cycle 5)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (x_2:int ->
+               x_3:int ->
+               (x_5:int[2 >= x_2 - x_5 && 1 <= x_2 - x_5; 1 = x_2 - x_5] -> (x_7:int[1 = x_7] -> X) -> X) ->
+               ((x_12:int[2 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= -x_2 + x_3; 
+                          1 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= x_3 - x_12 && x_12 >= x_2] ->
+                 (x_14:int[1 = x_14] -> X) -> X) ->
+               X) -> X)
+
+(5-1) Abstracting ... DONE!
+
+(5-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2953 ... --> 
+  main_2119 ... --> 
+  arg1_2113 ... --> 
+  f_main_2957 ... --> 
+  arg2_2115 ... --> 
+  f_f_main_2958 ... --> 
+  arg3_2117 ... --> 
+  f_f_f_main_2959 ... --> 
+  main_1211 [1/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [1/2] ... --> 
+  f_main_2955 [1/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_2961 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 1; 1; 1; 0; 1; 0
+
+(5-3) Checking counterexample ... DONE!
+
+(5-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 1; 1; 1
+
+Program with abstraction types (CEGAR-cycle 6)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (x_2:int ->
+               x_3:int ->
+               (x_5:int[3 >= x_2 - x_5 && 1 <= x_2 - x_5; 2 >= x_2 - x_5 && 1 <= x_2 - x_5; 1 = x_2 - x_5] ->
+                (x_7:int[1 = x_7] -> X) -> X) ->
+               ((x_12:int[3 >= x_2 - x_12 && 1 <= x_3 - x_12; 2 >= x_2 - x_12 && 1 <= x_3 - x_12; 
+                          1 <= -x_2 + x_3; 1 >= x_2 - x_12 && 1 <= x_3 - x_12; 
+                          1 <= x_3 - x_12 && x_12 >= x_2] ->
+                 (x_14:int[1 = x_14] -> X) -> X) ->
+               X) -> X)
+
+(6-1) Abstracting ... DONE!
+
+(6-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2953 ... --> 
+  main_2119 ... --> 
+  arg1_2113 ... --> 
+  f_main_2957 ... --> 
+  arg2_2115 ... --> 
+  f_f_main_2958 ... --> 
+  arg3_2117 ... --> 
+  f_f_f_main_2959 ... --> 
+  main_1211 [1/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [1/2] ... --> 
+  f_main_2955 [1/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_2961 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 1; 1; 1; 1; 0; 1; 0
+
+(6-3) Checking counterexample ... DONE!
+
+(6-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 1; 1; 1; 1
+
+Program with abstraction types (CEGAR-cycle 7)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (x_2:int ->
+               x_3:int ->
+               (x_5:int[4 >= x_2 - x_5 && 1 <= x_2 - x_5; 3 >= x_2 - x_5 && 1 <= x_2 - x_5; 
+                        2 >= x_2 - x_5 && 1 <= x_2 - x_5; 1 = x_2 - x_5] ->
+                (x_7:int[1 = x_7] -> X) -> X) ->
+               ((x_12:int[4 >= x_2 - x_12 && 1 <= x_3 - x_12; 3 >= x_2 - x_12 && 1 <= x_3 - x_12; 
+                          2 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= -x_2 + x_3; 
+                          1 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= x_3 - x_12 && x_12 >= x_2] ->
+                 (x_14:int[1 = x_14] -> X) -> X) ->
+               X) -> X)
+
+(7-1) Abstracting ... DONE!
+
+(7-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2953 ... --> 
+  main_2119 ... --> 
+  arg1_2113 ... --> 
+  f_main_2957 ... --> 
+  arg2_2115 ... --> 
+  f_f_main_2958 ... --> 
+  arg3_2117 ... --> 
+  f_f_f_main_2959 ... --> 
+  main_1211 [1/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [1/2] ... --> 
+  f_main_2955 [1/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_2961 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 1; 1; 1; 1; 1; 0; 1; 0
+
+(7-3) Checking counterexample ... DONE!
+
+(7-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 1; 1; 1; 1; 1
+
+Program with abstraction types (CEGAR-cycle 8)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (x_2:int ->
+               x_3:int ->
+               (x_5:int[5 >= x_2 - x_5 && 1 <= x_2 - x_5; 4 >= x_2 - x_5 && 1 <= x_2 - x_5; 
+                        3 >= x_2 - x_5 && 1 <= x_2 - x_5; 2 >= x_2 - x_5 && 1 <= x_2 - x_5; 
+                        1 = x_2 - x_5] ->
+                (x_7:int[1 = x_7] -> X) -> X) ->
+               ((x_12:int[5 >= x_2 - x_12 && 1 <= x_3 - x_12; 4 >= x_2 - x_12 && 1 <= x_3 - x_12; 
+                          3 >= x_2 - x_12 && 1 <= x_3 - x_12; 2 >= x_2 - x_12 && 1 <= x_3 - x_12; 
+                          1 <= -x_2 + x_3; 1 >= x_2 - x_12 && 1 <= x_3 - x_12; 
+                          1 <= x_3 - x_12 && x_12 >= x_2] ->
+                 (x_14:int[1 = x_14] -> X) -> X) ->
+               X) -> X)
+
+(8-1) Abstracting ... DONE!
+
+(8-2) Checking HORS ... Restart TRecS (param: 1000 -> 2000)
+DONE!
+
+Error trace::
+  main_2953 ... --> 
+  main_2119 ... --> 
+  arg1_2113 ... --> 
+  f_main_2957 ... --> 
+  arg2_2115 ... --> 
+  f_f_main_2958 ... --> 
+  arg3_2117 ... --> 
+  f_f_f_main_2959 ... --> 
+  main_1211 [1/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [2/2] ... --> 
+  init_1207 [1/2] ... --> 
+  f_main_2955 [1/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  update_1202 [2/2] ... --> 
+  make_array_1199 ... --> 
+  u_2013 [2/2] ... --> 
+  fail_2961 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 1; 1; 1; 1; 1; 1; 0; 1; 0
+
+(8-3) Checking counterexample ... DONE!
+
+(8-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 1; 1; 1; 1; 1; 1
+
+Program with abstraction types (CEGAR-cycle 9)::
+Main: main_2953
+  main_2953 -> (main_2119 f_2960).
+  arg1_2113 k_main_arg1_2595 -> (rand_int k_main_arg1_2595).
+  arg2_2115 arg1_2639 k_main_arg2_2607 -> (rand_int k_main_arg2_2607).
+  arg3_2117 arg1_2639 arg2_2638 k_main_arg3_2619 -> (rand_int k_main_arg3_2619).
+  f_2960 main_2640 -> end.
+  f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590 arg3_2637 -> (main_1211 arg1_2639 arg2_2638 arg3_2637 k_main_2590).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (x_2547 = 1) -> (k_main_2505 ()).
+  f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505 x_2547 when (not (x_2547 = 1)) -> (fail_2962 true k_main_2505).
+  f_f_main_2958 arg1_2639 k_main_2590 arg2_2638 ->
+      (arg3_2117 arg1_2639 arg2_2638 (f_f_f_main_2959 arg1_2639 arg2_2638 k_main_2590)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when ((0 <= i_1214) && (i_1214 < n_1213)) ->
+      (x_2577 i_1214 (f_f_main_2956 i_1214 k_1212 n_1213 k_main_2505)).
+  f_main_2955 i_1214 k_1212 n_1213 k_main_2505 x_2577 when (not ((0 <= i_1214) && (i_1214 < n_1213))) ->
+      (k_main_2505 ()).
+  f_main_2957 k_main_2590 arg1_2639 -> (arg2_2115 arg1_2639 (f_f_main_2958 arg1_2639 k_main_2590)).
+  f_make_array_2954 i_1201 n_1200 k_make_array_2380 u_2394 -> (k_make_array_2380 0).
+  fail_2961 b k -> {fail} => (k ()).
+  fail_2962 b k -> {fail} => (k ()).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (i_1208 >= n_1209) -> (k_init_2438 a_1210).
+  init_1207 i_1208 n_1209 a_1210 k_init_2438 when (not (i_1208 >= n_1209)) ->
+      (init_1207 (i_1208 + 1) n_1209 (update_1202 i_1208 a_1210 1) k_init_2438).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when ((k_1212 >= 0) && (k_1212 <= 0)) ->
+      (init_1207 k_1212 n_1213 (make_array_1199 n_1213) (f_main_2955 i_1214 k_1212 n_1213 k_main_2505)).
+  main_1211 k_1212 n_1213 i_1214 k_main_2505 when (not ((k_1212 >= 0) && (k_1212 <= 0))) -> (k_main_2505 ()).
+  main_2119 k_main_2590 -> (arg1_2113 (f_main_2957 k_main_2590)).
+  make_array_1199 n_1200 i_1201 k_make_array_2380 ->
+      (u_2013 i_1201 n_1200 (f_make_array_2954 i_1201 n_1200 k_make_array_2380)).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when ((0 <= i_1201) && (i_1201 < n_1200)) -> (k_make_array_u_2391 ()).
+  u_2013 i_1201 n_1200 k_make_array_u_2391 when (not ((0 <= i_1201) && (i_1201 < n_1200))) ->
+      (fail_2961 true k_make_array_u_2391).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203)) ->
+      (k_update_2405 x_1205).
+  update_1202 i_1203 a_1204 x_1205 j_1206 k_update_2405 when (not ((j_1206 > (i_1203 - 1)) && (j_1206 <= i_1203))) ->
+      (a_1204 j_1206 k_update_2405).
+Types:
+  main_2953 : X
+  fail_2961 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2962 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1207 : (x_2:int ->
+               x_3:int ->
+               (x_5:int[6 >= x_2 - x_5 && 1 <= x_2 - x_5; 5 >= x_2 - x_5 && 1 <= x_2 - x_5; 
+                        4 >= x_2 - x_5 && 1 <= x_2 - x_5; 3 >= x_2 - x_5 && 1 <= x_2 - x_5; 
+                        2 >= x_2 - x_5 && 1 <= x_2 - x_5; 1 = x_2 - x_5] ->
+                (x_7:int[1 = x_7] -> X) -> X) ->
+               ((x_12:int[6 >= x_2 - x_12 && 1 <= x_3 - x_12; 5 >= x_2 - x_12 && 1 <= x_3 - x_12; 
+                          4 >= x_2 - x_12 && 1 <= x_3 - x_12; 3 >= x_2 - x_12 && 1 <= x_3 - x_12; 
+                          2 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= -x_2 + x_3; 
+                          1 >= x_2 - x_12 && 1 <= x_3 - x_12; 1 <= x_3 - x_12 && x_12 >= x_2] ->
+                 (x_14:int[1 = x_14] -> X) -> X) ->
+               X) -> X)
+
+(9-1) Abstracting ... DONE!
+
+(9-2) Checking HORS ... Restart TRecS (param: 2000 -> 4000)
+119.024

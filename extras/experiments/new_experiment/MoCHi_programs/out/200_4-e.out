@@ -1,0 +1,3746 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 200_4-e.ml
+
+parsed:
+ let rec mult_1199 n_1200 m_1201 = if n_1200 <= 0 || m_1201 <= 0 then 0 else n_1200 + mult_1199 n_1200 (m_1201 - 1) in
+ let m11_1202 n_1203 = assert (n_1203 <= mult_1199 n_1203 n_1203) in
+ let make_array_1204 n_1205 i_1206 = assert (0 <= i_1206 && i_1206 < n_1205); 0 in
+ let update_1207 x_2048 _ des_1210 x_1211 =
+   let u_2069 = des_1210 x_2048 in
+   let a_1212 j_1213 = if x_2048 = j_1213 then x_1211 else des_1210 x_2048 in
+   a_1212
+ in
+ let print_int_1214 _ = () in
+ let f20_1216 x_2082 src_1218 des_1219 =
+   let rec bcopy_1220 x_2102 src_1222 des_1223 i_1224 =
+     if i_1224 >= x_2102
+     then
+       des_1223
+     else
+       let des_1225 = update_1207 i_1224 x_2102 des_1223 (src_1222 i_1224) in
+       bcopy_1220 x_2102 src_1222 des_1225 (i_1224 + 1)
+   in
+   let rec print_array_1226 m_1227 x_2155 i_1229 =
+     if i_1229 >= m_1227
+     then
+       ()
+     else
+       print_int_1214 (des_1219 i_1229); print_array_1226 m_1227 x_2155 (i_1229 + 1)
+   in
+   let array_1230 = bcopy_1220 x_2082 src_1218 des_1219 0 in
+   print_array_1226 x_2082 array_1230 0
+ in
+ let m12_1231 n_1232 =
+   let array1_1233 = make_array_1204 n_1232 in
+   let array2_1234 = make_array_1204 n_1232 in
+   if n_1232 > 0 then f20_1216 n_1232 array1_1233 array2_1234
+ in
+ let lock_1235 st_1236 = assert (st_1236 = 0); 1 in
+ let unlock_1237 st_1238 = assert (st_1238 = 1); 0 in
+ let f13_1239 n_1240 st_1241 = if n_1240 > 0 then lock_1235 st_1241 else st_1241 in
+ let g13_1242 n_1243 st_1244 = if n_1243 > 0 then unlock_1237 st_1244 else st_1244 in
+ let m13_1245 n_1246 = assert (g13_1242 n_1246 (f13_1239 n_1246 0) = 0) in
+ let rec sum_1247 n_1248 =
+   if n_1248 <= 0 then 0 else n_1248 + sum_1247 (n_1248 - 1)
+ in
+ let m14_1249 n_1250 = assert (n_1250 <= sum_1247 n_1250) in
+ let rec mult_1251 n_1252 m_1253 =
+   if n_1252 <= 0 || m_1253 <= 0
+   then
+     0
+   else
+     n_1252 + mult_1251 n_1252 (m_1253 - 1)
+ in
+ let m15_1254 n_1255 = assert (n_1255 + 1 <= mult_1251 n_1255 n_1255) in
+ let succ_1256 x_1257 = x_1257 + 1 in
+ let rec repeat_1258 x_2292 n_1260 s_1261 =
+   if n_1260 = 0
+   then
+     s_1261
+   else
+     x_2292 (repeat_1258 x_2292 (n_1260 - 1) s_1261)
+ in
+ let m16_1262 n_1263 = assert (repeat_1258 succ_1256 n_1263 0 > n_1263) in
+ let lock_1264 st_1265 = assert (st_1265 = 0); 1 in
+ let unlock_1266 st_1267 = assert (st_1267 = 1); 0 in
+ let f17_1268 n_1269 st_1270 =
+   if n_1269 > 0 then lock_1264 st_1270 else st_1270
+ in
+ let g17_1271 n_1272 st_1273 =
+   if n_1272 >= 0 then unlock_1266 st_1273 else st_1273
+ in
+ let m17_1274 n_1275 =
+   assert (g17_1271 n_1275 (f17_1268 n_1275 0) = 0)
+ in
+ let rec sum_1276 n_1277 =
+   if n_1277 <= 0
+   then
+     0
+   else
+     n_1277 + sum_1276 (n_1277 - 1)
+ in
+ let m18_1278 n_1279 =
+   assert (n_1279 + 1 <= sum_1276 n_1279)
+ in
+ let rec f19_1280 g_1281 x_1282 =
+   if x_1282 >= 0
+   then
+     g_1281 x_1282
+   else
+     f19_1280 (f19_1280 g_1281) (g_1281 x_1282)
+ in
+ let succ_1283 x_1284 = x_1284 + 1 in
+ let m19_1285 n_1286 =
+   assert (f19_1280 succ_1283 n_1286 >= 0)
+ in
+ let rec ackermann_1287 m_1288 n_1289 =
+   if m_1288 = 0
+   then
+     n_1289 + 1
+   else
+     if n_1289 = 0
+     then
+       ackermann_1287 (m_1288 - 1) 1
+     else
+       ackermann_1287
+         (m_1288 - 1) (ackermann_1287 m_1288 (n_1289 - 1))
+ in
+ let m20_1290 m_1291 n_1292 =
+   if m_1291 >= 0 && n_1292 >= 0
+   then
+     assert (ackermann_1287 m_1291 n_1292 >= n_1292)
+ in
+ let make_array21_1293 n_1294 i_1295 =
+   assert (0 <= i_1295 && i_1295 < n_1294); 0
+ in
+ let update21_1296 i_1297 a_1298 x_1299 j_1300 =
+   if j_1300 > i_1297 - 1 && j_1300 <= i_1297
+   then
+     x_1299
+   else
+     a_1298 j_1300
+ in
+ let rec init_1301 i_1302 n_1303 a_1304 =
+   if i_1302 >= n_1303
+   then
+     a_1304
+   else
+     init_1301
+       (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1)
+ in
+ let m21_1305 k_1306 n_1307 i_1308 =
+   if k_1306 >= 0 && k_1306 <= 0
+   then
+     let x_1309 =
+       init_1301 k_1306 n_1307 (make_array21_1293 n_1307)
+     in
+     if 0 <= i_1308 && i_1308 < n_1307
+     then
+       assert (x_1309 i_1308 >= 1)
+ in
+ let rec mc91_1310 x_1311 =
+   if x_1311 > 100
+   then
+     x_1311 - 10
+   else
+     mc91_1310 (mc91_1310 (x_1311 + 11))
+ in
+ let m22_1312 n_1313 =
+   if n_1313 <= 102 then assert (mc91_1310 n_1313 = 91)
+ in
+ let main_1314 n_1315 m_1316 =
+   if n_1315 = 11
+   then
+     m11_1202 m_1316
+   else
+     if n_1315 = 12
+     then
+       m12_1231 m_1316
+     else
+       if n_1315 = 13
+       then
+         m13_1245 m_1316
+       else
+         if n_1315 = 14
+         then
+           m14_1249 m_1316
+         else
+           if n_1315 = 15
+           then
+             m15_1254 m_1316
+           else
+             if n_1315 = 16
+             then
+               m16_1262 m_1316
+             else
+               if n_1315 = 17
+               then
+                 m17_1274 m_1316
+               else
+                 if n_1315 = 18
+                 then
+                   m18_1278 m_1316
+                 else
+                   if n_1315 = 19
+                   then
+                     m19_1285 m_1316
+                   else
+                     if n_1315 = 20
+                     then
+                       m20_1290 m_1316 m_1316
+                     else
+                       m21_1305 m_1316 m_1316 m_1316
+ in
+ ()
+
+
+###set_main:
+ let rec mult_1199 (n_1200:int) (m_1201:int) =
+   if n_1200 <= 0 || m_1201 <= 0 then 0 else n_1200 + mult_1199 n_1200 (m_1201 - 1)
+ in
+ let m11_1202 (n_1203:int) = assert (n_1203 <= mult_1199 n_1203 n_1203) in
+ let make_array_1204 (n_1205:int) (i_1206:int) = assert (0 <= i_1206 && i_1206 < n_1205); 0 in
+ let update_1207 (x_2048:int) (_:int) (des_1210:(int -> int)) (x_1211:int) =
+   let u_2069 = des_1210 x_2048 in
+   let a_1212 (j_1213:int) = if x_2048 = j_1213 then x_1211 else des_1210 x_2048 in
+   a_1212
+ in
+ let print_int_1214 (_:int) = () in
+ let f20_1216 (x_2082:int) (src_1218:(int -> int)) (des_1219:(int -> int)) =
+   let rec bcopy_1220 (x_2102:int) (src_1222:(int -> int)) (des_1223:(int -> int)) (i_1224:int) =
+     if i_1224 >= x_2102
+     then
+       des_1223
+     else
+       let des_1225 = update_1207 i_1224 x_2102 des_1223 (src_1222 i_1224) in
+       bcopy_1220 x_2102 src_1222 des_1225 (i_1224 + 1)
+   in
+   let rec print_array_1226 (m_1227:int) (x_2155:(int -> int)) (i_1229:int) =
+     if i_1229 >= m_1227
+     then
+       ()
+     else
+       print_int_1214 (des_1219 i_1229); print_array_1226 m_1227 x_2155 (i_1229 + 1)
+   in
+   let array_1230 = bcopy_1220 x_2082 src_1218 des_1219 0 in
+   print_array_1226 x_2082 array_1230 0
+ in
+ let m12_1231 (n_1232:int) =
+   let array1_1233 = make_array_1204 n_1232 in
+   let array2_1234 = make_array_1204 n_1232 in
+   if n_1232 > 0 then f20_1216 n_1232 array1_1233 array2_1234
+ in
+ let lock_1235 (st_1236:int) = assert (st_1236 = 0); 1 in
+ let unlock_1237 (st_1238:int) = assert (st_1238 = 1); 0 in
+ let f13_1239 (n_1240:int) (st_1241:int) = if n_1240 > 0 then lock_1235 st_1241 else st_1241 in
+ let g13_1242 (n_1243:int) (st_1244:int) =
+   if n_1243 > 0 then unlock_1237 st_1244 else st_1244
+ in
+ let m13_1245 (n_1246:int) = assert (g13_1242 n_1246 (f13_1239 n_1246 0) = 0) in
+ let rec sum_1247 (n_1248:int) =
+   if n_1248 <= 0 then 0 else n_1248 + sum_1247 (n_1248 - 1)
+ in
+ let m14_1249 (n_1250:int) = assert (n_1250 <= sum_1247 n_1250) in
+ let rec mult_1251 (n_1252:int) (m_1253:int) =
+   if n_1252 <= 0 || m_1253 <= 0
+   then
+     0
+   else
+     n_1252 + mult_1251 n_1252 (m_1253 - 1)
+ in
+ let m15_1254 (n_1255:int) = assert (n_1255 + 1 <= mult_1251 n_1255 n_1255) in
+ let succ_1256 (x_1257:int) = x_1257 + 1 in
+ let rec repeat_1258 (x_2292:(int -> int)) (n_1260:int) (s_1261:int) =
+   if n_1260 = 0
+   then
+     s_1261
+   else
+     x_2292 (repeat_1258 x_2292 (n_1260 - 1) s_1261)
+ in
+ let m16_1262 (n_1263:int) =
+   assert (repeat_1258 succ_1256 n_1263 0 > n_1263)
+ in
+ let lock_1264 (st_1265:int) = assert (st_1265 = 0); 1 in
+ let unlock_1266 (st_1267:int) = assert (st_1267 = 1); 0 in
+ let f17_1268 (n_1269:int) (st_1270:int) =
+   if n_1269 > 0 then lock_1264 st_1270 else st_1270
+ in
+ let g17_1271 (n_1272:int) (st_1273:int) =
+   if n_1272 >= 0 then unlock_1266 st_1273 else st_1273
+ in
+ let m17_1274 (n_1275:int) =
+   assert (g17_1271 n_1275 (f17_1268 n_1275 0) = 0)
+ in
+ let rec sum_1276 (n_1277:int) =
+   if n_1277 <= 0
+   then
+     0
+   else
+     n_1277 + sum_1276 (n_1277 - 1)
+ in
+ let m18_1278 (n_1279:int) =
+   assert (n_1279 + 1 <= sum_1276 n_1279)
+ in
+ let rec f19_1280 (g_1281:(int -> int)) (x_1282:int) =
+   if x_1282 >= 0
+   then
+     g_1281 x_1282
+   else
+     f19_1280 (f19_1280 g_1281) (g_1281 x_1282)
+ in
+ let succ_1283 (x_1284:int) = x_1284 + 1 in
+ let m19_1285 (n_1286:int) =
+   assert (f19_1280 succ_1283 n_1286 >= 0)
+ in
+ let rec ackermann_1287 (m_1288:int) (n_1289:int) =
+   if m_1288 = 0
+   then
+     n_1289 + 1
+   else
+     if n_1289 = 0
+     then
+       ackermann_1287 (m_1288 - 1) 1
+     else
+       ackermann_1287
+         (m_1288 - 1) (ackermann_1287 m_1288 (n_1289 - 1))
+ in
+ let m20_1290 (m_1291:int) (n_1292:int) =
+   if m_1291 >= 0 && n_1292 >= 0
+   then
+     assert (ackermann_1287 m_1291 n_1292 >= n_1292)
+ in
+ let make_array21_1293 (n_1294:int) (i_1295:int) =
+   assert (0 <= i_1295 && i_1295 < n_1294); 0
+ in
+ let update21_1296 (i_1297:int) (a_1298:(int -> int)) 
+                  (x_1299:int) (j_1300:int) =
+   if j_1300 > i_1297 - 1 && j_1300 <= i_1297
+   then
+     x_1299
+   else
+     a_1298 j_1300
+ in
+ let rec init_1301 (i_1302:int) (n_1303:int) 
+                  (a_1304:(int -> int)) =
+   if i_1302 >= n_1303
+   then
+     a_1304
+   else
+     init_1301
+       (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1)
+ in
+ let m21_1305 (k_1306:int) (n_1307:int) (i_1308:int) =
+   if k_1306 >= 0 && k_1306 <= 0
+   then
+     let x_1309 =
+       init_1301 k_1306 n_1307 (make_array21_1293 n_1307)
+     in
+     if 0 <= i_1308 && i_1308 < n_1307
+     then
+       assert (x_1309 i_1308 >= 1)
+ in
+ let rec mc91_1310 (x_1311:int) =
+   if x_1311 > 100
+   then
+     x_1311 - 10
+   else
+     mc91_1310 (mc91_1310 (x_1311 + 11))
+ in
+ let m22_1312 (n_1313:int) =
+   if n_1313 <= 102 then assert (mc91_1310 n_1313 = 91)
+ in
+ let main_1314 (n_1315:int) (m_1316:int) =
+   if n_1315 = 11
+   then
+     m11_1202 m_1316
+   else
+     if n_1315 = 12
+     then
+       m12_1231 m_1316
+     else
+       if n_1315 = 13
+       then
+         m13_1245 m_1316
+       else
+         if n_1315 = 14
+         then
+           m14_1249 m_1316
+         else
+           if n_1315 = 15
+           then
+             m15_1254 m_1316
+           else
+             if n_1315 = 16
+             then
+               m16_1262 m_1316
+             else
+               if n_1315 = 17
+               then
+                 m17_1274 m_1316
+               else
+                 if n_1315 = 18
+                 then
+                   m18_1278 m_1316
+                 else
+                   if n_1315 = 19
+                   then
+                     m19_1285 m_1316
+                   else
+                     if n_1315 = 20
+                     then
+                       m20_1290 m_1316 m_1316
+                     else
+                       m21_1305 m_1316 m_1316 m_1316
+ in
+ (let arg1_2604 = rand_int () in
+  let arg2_2606 = rand_int () in
+  main_1314 arg1_2604 arg2_2606);
+ ()
+
+###Beta_reduce_trivial:
+ let rec mult_1199 (n_1200:int) (m_1201:int) =
+   if n_1200 <= 0 || m_1201 <= 0 then 0 else n_1200 + mult_1199 n_1200 (m_1201 - 1)
+ in
+ let m11_1202 (n_1203:int) = assert (n_1203 <= mult_1199 n_1203 n_1203) in
+ let make_array_1204 (n_1205:int) (i_1206:int) = assert (0 <= i_1206 && i_1206 < n_1205); 0 in
+ let update_1207 (x_2048:int) (_:int) (des_1210:(int -> int)) (x_1211:int) =
+   let u_2069 = des_1210 x_2048 in
+   let a_1212 (j_1213:int) = if x_2048 = j_1213 then x_1211 else des_1210 x_2048 in
+   a_1212
+ in
+ let print_int_1214 (_:int) = () in
+ let f20_1216 (x_2082:int) (src_1218:(int -> int)) (des_1219:(int -> int)) =
+   let rec bcopy_1220 (x_2102:int) (src_1222:(int -> int)) (des_1223:(int -> int)) (i_1224:int) =
+     if i_1224 >= x_2102
+     then
+       des_1223
+     else
+       let des_1225 = update_1207 i_1224 x_2102 des_1223 (src_1222 i_1224) in
+       bcopy_1220 x_2102 src_1222 des_1225 (i_1224 + 1)
+   in
+   let rec print_array_1226 (m_1227:int) (x_2155:(int -> int)) (i_1229:int) =
+     if i_1229 >= m_1227
+     then
+       ()
+     else
+       print_int_1214 (des_1219 i_1229); print_array_1226 m_1227 x_2155 (i_1229 + 1)
+   in
+   let array_1230 = bcopy_1220 x_2082 src_1218 des_1219 0 in
+   print_array_1226 x_2082 array_1230 0
+ in
+ let m12_1231 (n_1232:int) =
+   let array1_1233 = make_array_1204 n_1232 in
+   let array2_1234 = make_array_1204 n_1232 in
+   if n_1232 > 0 then f20_1216 n_1232 array1_1233 array2_1234
+ in
+ let lock_1235 (st_1236:int) = assert (st_1236 = 0); 1 in
+ let unlock_1237 (st_1238:int) = assert (st_1238 = 1); 0 in
+ let f13_1239 (n_1240:int) (st_1241:int) = if n_1240 > 0 then lock_1235 st_1241 else st_1241 in
+ let g13_1242 (n_1243:int) (st_1244:int) =
+   if n_1243 > 0 then unlock_1237 st_1244 else st_1244
+ in
+ let m13_1245 (n_1246:int) = assert (g13_1242 n_1246 (f13_1239 n_1246 0) = 0) in
+ let rec sum_1247 (n_1248:int) =
+   if n_1248 <= 0 then 0 else n_1248 + sum_1247 (n_1248 - 1)
+ in
+ let m14_1249 (n_1250:int) = assert (n_1250 <= sum_1247 n_1250) in
+ let rec mult_1251 (n_1252:int) (m_1253:int) =
+   if n_1252 <= 0 || m_1253 <= 0
+   then
+     0
+   else
+     n_1252 + mult_1251 n_1252 (m_1253 - 1)
+ in
+ let m15_1254 (n_1255:int) = assert (n_1255 + 1 <= mult_1251 n_1255 n_1255) in
+ let succ_1256 (x_1257:int) = x_1257 + 1 in
+ let rec repeat_1258 (x_2292:(int -> int)) (n_1260:int) (s_1261:int) =
+   if n_1260 = 0
+   then
+     s_1261
+   else
+     x_2292 (repeat_1258 x_2292 (n_1260 - 1) s_1261)
+ in
+ let m16_1262 (n_1263:int) =
+   assert (repeat_1258 succ_1256 n_1263 0 > n_1263)
+ in
+ let lock_1264 (st_1265:int) = assert (st_1265 = 0); 1 in
+ let unlock_1266 (st_1267:int) = assert (st_1267 = 1); 0 in
+ let f17_1268 (n_1269:int) (st_1270:int) =
+   if n_1269 > 0 then lock_1264 st_1270 else st_1270
+ in
+ let g17_1271 (n_1272:int) (st_1273:int) =
+   if n_1272 >= 0 then unlock_1266 st_1273 else st_1273
+ in
+ let m17_1274 (n_1275:int) =
+   assert (g17_1271 n_1275 (f17_1268 n_1275 0) = 0)
+ in
+ let rec sum_1276 (n_1277:int) =
+   if n_1277 <= 0
+   then
+     0
+   else
+     n_1277 + sum_1276 (n_1277 - 1)
+ in
+ let m18_1278 (n_1279:int) =
+   assert (n_1279 + 1 <= sum_1276 n_1279)
+ in
+ let rec f19_1280 (g_1281:(int -> int)) (x_1282:int) =
+   if x_1282 >= 0
+   then
+     g_1281 x_1282
+   else
+     f19_1280 (f19_1280 g_1281) (g_1281 x_1282)
+ in
+ let succ_1283 (x_1284:int) = x_1284 + 1 in
+ let m19_1285 (n_1286:int) =
+   assert (f19_1280 succ_1283 n_1286 >= 0)
+ in
+ let rec ackermann_1287 (m_1288:int) (n_1289:int) =
+   if m_1288 = 0
+   then
+     n_1289 + 1
+   else
+     if n_1289 = 0
+     then
+       ackermann_1287 (m_1288 - 1) 1
+     else
+       ackermann_1287
+         (m_1288 - 1) (ackermann_1287 m_1288 (n_1289 - 1))
+ in
+ let m20_1290 (m_1291:int) (n_1292:int) =
+   if m_1291 >= 0 && n_1292 >= 0
+   then
+     assert (ackermann_1287 m_1291 n_1292 >= n_1292)
+ in
+ let make_array21_1293 (n_1294:int) (i_1295:int) =
+   assert (0 <= i_1295 && i_1295 < n_1294); 0
+ in
+ let update21_1296 (i_1297:int) (a_1298:(int -> int)) 
+                  (x_1299:int) (j_1300:int) =
+   if j_1300 > i_1297 - 1 && j_1300 <= i_1297
+   then
+     x_1299
+   else
+     a_1298 j_1300
+ in
+ let rec init_1301 (i_1302:int) (n_1303:int) 
+                  (a_1304:(int -> int)) =
+   if i_1302 >= n_1303
+   then
+     a_1304
+   else
+     init_1301
+       (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1)
+ in
+ let m21_1305 (k_1306:int) (n_1307:int) (i_1308:int) =
+   if k_1306 >= 0 && k_1306 <= 0
+   then
+     let x_1309 =
+       init_1301 k_1306 n_1307 (make_array21_1293 n_1307)
+     in
+     if 0 <= i_1308 && i_1308 < n_1307
+     then
+       assert (x_1309 i_1308 >= 1)
+ in
+ let rec mc91_1310 (x_1311:int) =
+   if x_1311 > 100
+   then
+     x_1311 - 10
+   else
+     mc91_1310 (mc91_1310 (x_1311 + 11))
+ in
+ let main_1314 (n_1315:int) (m_1316:int) =
+   if n_1315 = 11
+   then
+     m11_1202 m_1316
+   else
+     if n_1315 = 12
+     then
+       m12_1231 m_1316
+     else
+       if n_1315 = 13
+       then
+         m13_1245 m_1316
+       else
+         if n_1315 = 14
+         then
+           m14_1249 m_1316
+         else
+           if n_1315 = 15
+           then
+             m15_1254 m_1316
+           else
+             if n_1315 = 16
+             then
+               m16_1262 m_1316
+             else
+               if n_1315 = 17
+               then
+                 m17_1274 m_1316
+               else
+                 if n_1315 = 18
+                 then
+                   m18_1278 m_1316
+                 else
+                   if n_1315 = 19
+                   then
+                     m19_1285 m_1316
+                   else
+                     if n_1315 = 20
+                     then
+                       m20_1290 m_1316 m_1316
+                     else
+                       m21_1305 m_1316 m_1316 m_1316
+ in
+ (let arg1_2604 = rand_int () in
+  let arg2_2606 = rand_int () in
+  main_1314 arg1_2604 arg2_2606);
+ ()
+
+###Eliminate_redundant_arguments:
+ let rec mult_1199 (n_1200:int) (m_1201:int) =
+   if n_1200 <= 0 || m_1201 <= 0 then 0 else n_1200 + mult_1199 n_1200 (m_1201 - 1)
+ in
+ let m11_1202 (n_1203:int) = assert (n_1203 <= mult_1199 n_1203 n_1203) in
+ let make_array_1204 (n_1205:int) (i_1206:int) = assert (0 <= i_1206 && i_1206 < n_1205); 0 in
+ let update_1207 (x_2048:int) (_:int) (des_1210:(int -> int)) (x_1211:int) =
+   let u_2069 = des_1210 x_2048 in
+   let a_1212 (j_1213:int) = if x_2048 = j_1213 then x_1211 else des_1210 x_2048 in
+   a_1212
+ in
+ let print_int_1214 (_:int) = () in
+ let f20_1216 (x_2082:int) (src_1218:(int -> int)) (des_1219:(int -> int)) =
+   let rec bcopy_1220 (des_1223:(int -> int)) (i_1224:int) =
+     if i_1224 >= x_2082
+     then
+       des_1223
+     else
+       let des_1225 = update_1207 i_1224 x_2082 des_1223 (src_1218 i_1224) in
+       bcopy_1220 des_1225 (i_1224 + 1)
+   in
+   let rec print_array_1226 (x_2155:(int -> int)) (i_1229:int) =
+     if i_1229 >= x_2082
+     then
+       ()
+     else
+       print_int_1214 (des_1219 i_1229); print_array_1226 x_2155 (i_1229 + 1)
+   in
+   let array_1230 = bcopy_1220 des_1219 0 in
+   print_array_1226 array_1230 0
+ in
+ let m12_1231 (n_1232:int) =
+   let array1_1233 = make_array_1204 n_1232 in
+   let array2_1234 = make_array_1204 n_1232 in
+   if n_1232 > 0 then f20_1216 n_1232 array1_1233 array2_1234
+ in
+ let lock_1235 (st_1236:int) = assert (st_1236 = 0); 1 in
+ let unlock_1237 (st_1238:int) = assert (st_1238 = 1); 0 in
+ let f13_1239 (n_1240:int) (st_1241:int) = if n_1240 > 0 then lock_1235 st_1241 else st_1241 in
+ let g13_1242 (n_1243:int) (st_1244:int) =
+   if n_1243 > 0 then unlock_1237 st_1244 else st_1244
+ in
+ let m13_1245 (n_1246:int) = assert (g13_1242 n_1246 (f13_1239 n_1246 0) = 0) in
+ let rec sum_1247 (n_1248:int) =
+   if n_1248 <= 0 then 0 else n_1248 + sum_1247 (n_1248 - 1)
+ in
+ let m14_1249 (n_1250:int) = assert (n_1250 <= sum_1247 n_1250) in
+ let rec mult_1251 (n_1252:int) (m_1253:int) =
+   if n_1252 <= 0 || m_1253 <= 0
+   then
+     0
+   else
+     n_1252 + mult_1251 n_1252 (m_1253 - 1)
+ in
+ let m15_1254 (n_1255:int) = assert (n_1255 + 1 <= mult_1251 n_1255 n_1255) in
+ let succ_1256 (x_1257:int) = x_1257 + 1 in
+ let rec repeat_1258 (x_2292:(int -> int)) (n_1260:int) (s_1261:int) =
+   if n_1260 = 0
+   then
+     s_1261
+   else
+     x_2292 (repeat_1258 x_2292 (n_1260 - 1) s_1261)
+ in
+ let m16_1262 (n_1263:int) =
+   assert (repeat_1258 succ_1256 n_1263 0 > n_1263)
+ in
+ let lock_1264 (st_1265:int) = assert (st_1265 = 0); 1 in
+ let unlock_1266 (st_1267:int) = assert (st_1267 = 1); 0 in
+ let f17_1268 (n_1269:int) (st_1270:int) =
+   if n_1269 > 0 then lock_1264 st_1270 else st_1270
+ in
+ let g17_1271 (n_1272:int) (st_1273:int) =
+   if n_1272 >= 0 then unlock_1266 st_1273 else st_1273
+ in
+ let m17_1274 (n_1275:int) =
+   assert (g17_1271 n_1275 (f17_1268 n_1275 0) = 0)
+ in
+ let rec sum_1276 (n_1277:int) =
+   if n_1277 <= 0
+   then
+     0
+   else
+     n_1277 + sum_1276 (n_1277 - 1)
+ in
+ let m18_1278 (n_1279:int) =
+   assert (n_1279 + 1 <= sum_1276 n_1279)
+ in
+ let rec f19_1280 (g_1281:(int -> int)) (x_1282:int) =
+   if x_1282 >= 0
+   then
+     g_1281 x_1282
+   else
+     f19_1280 (f19_1280 g_1281) (g_1281 x_1282)
+ in
+ let succ_1283 (x_1284:int) = x_1284 + 1 in
+ let m19_1285 (n_1286:int) =
+   assert (f19_1280 succ_1283 n_1286 >= 0)
+ in
+ let rec ackermann_1287 (m_1288:int) (n_1289:int) =
+   if m_1288 = 0
+   then
+     n_1289 + 1
+   else
+     if n_1289 = 0
+     then
+       ackermann_1287 (m_1288 - 1) 1
+     else
+       ackermann_1287
+         (m_1288 - 1) (ackermann_1287 m_1288 (n_1289 - 1))
+ in
+ let m20_1290 (m_1291:int) (n_1292:int) =
+   if m_1291 >= 0 && n_1292 >= 0
+   then
+     assert (ackermann_1287 m_1291 n_1292 >= n_1292)
+ in
+ let make_array21_1293 (n_1294:int) (i_1295:int) =
+   assert (0 <= i_1295 && i_1295 < n_1294); 0
+ in
+ let update21_1296 (i_1297:int) (a_1298:(int -> int)) 
+                  (x_1299:int) (j_1300:int) =
+   if j_1300 > i_1297 - 1 && j_1300 <= i_1297
+   then
+     x_1299
+   else
+     a_1298 j_1300
+ in
+ let rec init_1301 (i_1302:int) (n_1303:int) 
+                  (a_1304:(int -> int)) =
+   if i_1302 >= n_1303
+   then
+     a_1304
+   else
+     init_1301
+       (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1)
+ in
+ let m21_1305 (k_1306:int) (n_1307:int) (i_1308:int) =
+   if k_1306 >= 0 && k_1306 <= 0
+   then
+     let x_1309 =
+       init_1301 k_1306 n_1307 (make_array21_1293 n_1307)
+     in
+     if 0 <= i_1308 && i_1308 < n_1307
+     then
+       assert (x_1309 i_1308 >= 1)
+ in
+ let rec mc91_1310 (x_1311:int) =
+   if x_1311 > 100
+   then
+     x_1311 - 10
+   else
+     mc91_1310 (mc91_1310 (x_1311 + 11))
+ in
+ let main_1314 (n_1315:int) (m_1316:int) =
+   if n_1315 = 11
+   then
+     m11_1202 m_1316
+   else
+     if n_1315 = 12
+     then
+       m12_1231 m_1316
+     else
+       if n_1315 = 13
+       then
+         m13_1245 m_1316
+       else
+         if n_1315 = 14
+         then
+           m14_1249 m_1316
+         else
+           if n_1315 = 15
+           then
+             m15_1254 m_1316
+           else
+             if n_1315 = 16
+             then
+               m16_1262 m_1316
+             else
+               if n_1315 = 17
+               then
+                 m17_1274 m_1316
+               else
+                 if n_1315 = 18
+                 then
+                   m18_1278 m_1316
+                 else
+                   if n_1315 = 19
+                   then
+                     m19_1285 m_1316
+                   else
+                     if n_1315 = 20
+                     then
+                       m20_1290 m_1316 m_1316
+                     else
+                       m21_1305 m_1316 m_1316 m_1316
+ in
+ (let arg1_2604 = rand_int () in
+  let arg2_2606 = rand_int () in
+  main_1314 arg1_2604 arg2_2606);
+ ()
+
+###CPS:
+ (let rec mult_1199 (n_1200:int) (m_1201:int) (k_mult_3940:(int -> X)) =
+    if n_1200 <= 0 || m_1201 <= 0
+    then
+      k_mult_3940 0
+    else
+      mult_1199 n_1200 (m_1201 - 1) (fun (x_3944:int) -> k_mult_3940 (n_1200 + x_3944))
+  in
+  let make_array_1204 (n_1205:int) (i_1206:int) (k_make_array_4000:(int -> X)) =
+    let u_2036 (k_make_array_u_4011:(unit -> X)) =
+      if 0 <= i_1206 && i_1206 < n_1205 then k_make_array_u_4011 () else <|fail|> () k_make_array_u_4011
+    in
+    u_2036 (fun (():unit) -> k_make_array_4000 0)
+  in
+  let f20_1216 (x_2082:int) (src_1218:(int -> (int -> X) -> X)) (des_1219:(int -> (int -> X) -> X)) 
+              (k_f20_4095:(unit -> X)) =
+    let rec bcopy_1220 (des_1223:(int -> (int -> X) -> X)) (i_1224:int) 
+                      (k_f20_bcopy_4105:((int -> (int -> X) -> X) -> X)) =
+      if i_1224 >= x_2082
+      then
+        k_f20_bcopy_4105 des_1223
+      else
+        src_1218
+          i_1224 
+          (fun (x_4151:int) ->
+             des_1223
+               i_1224 
+               (fun (_:int) ->
+                  (fun (des_4184:(int -> (int -> X) -> X)) ->
+                     bcopy_1220 des_4184 (i_1224 + 1) k_f20_bcopy_4105)
+                    (let a_1212 (j_1213:int) (k_update_a_4048:(int -> X)) =
+                       if i_1224 = j_1213 then k_update_a_4048 x_4151 else des_1223 i_1224 k_update_a_4048
+                     in
+                     a_1212)))
+    in
+    let rec print_array_1226 (x_2155:(int -> (int -> X) -> X)) (i_1229:int) 
+                            (k_f20_print_array_4208:(unit -> X)) =
+      if i_1229 >= x_2082
+      then
+        k_f20_print_array_4208 ()
+      else
+        des_1219
+          i_1229 
+          (fun (_:int) ->
+             (fun (():unit) -> print_array_1226 x_2155 (i_1229 + 1) k_f20_print_array_4208) ())
+    in
+    bcopy_1220
+      des_1219 0 
+      (fun (array_4311:(int -> (int -> X) -> X)) -> print_array_1226 array_4311 0 k_f20_4095)
+  in
+  let m12_1231 (n_1232:int) (k_m12_4345:(unit -> X)) =
+    if n_1232 > 0
+    then
+      f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345
+    else
+      k_m12_4345 ()
+  in
+  let lock_1235 (st_1236:int) (k_lock_4412:(int -> X)) =
+    let u_2212 (k_lock_u_4423:(unit -> X)) =
+      if st_1236 = 0 then k_lock_u_4423 () else <|fail|> () k_lock_u_4423
+    in
+    u_2212 (fun (():unit) -> k_lock_4412 1)
+  in
+  let unlock_1237 (st_1238:int) (k_unlock_4433:(int -> X)) =
+    let u_2217 (k_unlock_u_4444:(unit -> X)) =
+      if st_1238 = 1 then k_unlock_u_4444 () else <|fail|> () k_unlock_u_4444
+    in
+    u_2217 (fun (():unit) -> k_unlock_4433 0)
+  in
+  let f13_1239 (n_1240:int) (st_1241:int) (k_f13_4454:(int -> X)) =
+    if n_1240 > 0 then lock_1235 st_1241 k_f13_4454 else k_f13_4454 st_1241
+  in
+  let g13_1242 (n_1243:int) (st_1244:int) (k_g13_4476:(int -> X)) =
+    if n_1243 > 0
+    then
+      unlock_1237 st_1244 k_g13_4476
+    else
+      k_g13_4476 st_1244
+  in
+  let rec sum_1247 (n_1248:int) (k_sum_4542:(int -> X)) =
+    if n_1248 <= 0
+    then
+      k_sum_4542 0
+    else
+      sum_1247 (n_1248 - 1) (fun (x_4546:int) -> k_sum_4542 (n_1248 + x_4546))
+  in
+  let rec mult_1251 (n_1252:int) (m_1253:int) (k_mult_4599:(int -> X)) =
+    if n_1252 <= 0 || m_1253 <= 0
+    then
+      k_mult_4599 0
+    else
+      mult_1251
+        n_1252 (m_1253 - 1) (fun (x_4603:int) -> k_mult_4599 (n_1252 + x_4603))
+  in
+  let succ_1256 (x_1257:int) (k_succ_4659:(int -> X)) =
+    k_succ_4659 (x_1257 + 1)
+  in
+  let rec repeat_1258 (x_2292:(int -> (int -> X) -> X)) (n_1260:int) 
+                     (s_1261:int) (k_repeat_4669:(int -> X)) =
+    if n_1260 = 0
+    then
+      k_repeat_4669 s_1261
+    else
+      repeat_1258
+        x_2292 (n_1260 - 1) s_1261 
+        (fun (x_4697:int) -> x_2292 x_4697 k_repeat_4669)
+  in
+  let lock_1264 (st_1265:int) (k_lock_4753:(int -> X)) =
+    let u_2321 (k_lock_u_4764:(unit -> X)) =
+      if st_1265 = 0 then k_lock_u_4764 () else <|fail|> () k_lock_u_4764
+    in
+    u_2321 (fun (():unit) -> k_lock_4753 1)
+  in
+  let unlock_1266 (st_1267:int) (k_unlock_4774:(int -> X)) =
+    let u_2326 (k_unlock_u_4785:(unit -> X)) =
+      if st_1267 = 1
+      then
+        k_unlock_u_4785 ()
+      else
+        <|fail|> () k_unlock_u_4785
+    in
+    u_2326 (fun (():unit) -> k_unlock_4774 0)
+  in
+  let f17_1268 (n_1269:int) (st_1270:int) (k_f17_4795:(int -> X)) =
+    if n_1269 > 0
+    then
+      lock_1264 st_1270 k_f17_4795
+    else
+      k_f17_4795 st_1270
+  in
+  let g17_1271 (n_1272:int) (st_1273:int) (k_g17_4817:(int -> X)) =
+    if n_1272 >= 0
+    then
+      unlock_1266 st_1273 k_g17_4817
+    else
+      k_g17_4817 st_1273
+  in
+  let rec sum_1276 (n_1277:int) (k_sum_4883:(int -> X)) =
+    if n_1277 <= 0
+    then
+      k_sum_4883 0
+    else
+      sum_1276
+        (n_1277 - 1) (fun (x_4887:int) -> k_sum_4883 (n_1277 + x_4887))
+  in
+  let rec f19_1280 (g_1281:(int -> (int -> X) -> X)) (x_1282:int) 
+                  (k_f19_4943:(int -> X)) =
+    if x_1282 >= 0
+    then
+      g_1281 x_1282 k_f19_4943
+    else
+      g_1281
+        x_1282 
+        (fun (x_4987:int) ->
+           f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943)
+  in
+  let succ_1283 (x_1284:int) (k_succ_5002:(int -> X)) =
+    k_succ_5002 (x_1284 + 1)
+  in
+  let rec ackermann_1287 (m_1288:int) (n_1289:int) 
+                        (k_ackermann_5048:(int -> X)) =
+    if m_1288 = 0
+    then
+      k_ackermann_5048 (n_1289 + 1)
+    else
+      if n_1289 = 0
+      then
+        ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048
+      else
+        ackermann_1287
+          m_1288 (n_1289 - 1) 
+          (fun (x_5081:int) ->
+             ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048)
+  in
+  let m20_1290 (m_1291:int) (n_1292:int) (k_m20_5097:(unit -> X)) =
+    if m_1291 >= 0 && n_1292 >= 0
+    then
+      ackermann_1287
+        m_1291 n_1292 
+        (fun (x_5100:int) ->
+           if x_5100 >= n_1292
+           then
+             k_m20_5097 ()
+           else
+             <|fail|> () k_m20_5097)
+    else
+      k_m20_5097 ()
+  in
+  let make_array21_1293 (n_1294:int) (i_1295:int) 
+                       (k_make_array21_5135:(int -> X)) =
+    let u_2448 (k_make_array21_u_5146:(unit -> X)) =
+      if 0 <= i_1295 && i_1295 < n_1294
+      then
+        k_make_array21_u_5146 ()
+      else
+        <|fail|> () k_make_array21_u_5146
+    in
+    u_2448 (fun (():unit) -> k_make_array21_5135 0)
+  in
+  let update21_1296 (i_1297:int) (a_1298:(int -> (int -> X) -> X)) 
+                   (x_1299:int) (j_1300:int) 
+                   (k_update21_5160:(int -> X)) =
+    if j_1300 > i_1297 - 1 && j_1300 <= i_1297
+    then
+      k_update21_5160 x_1299
+    else
+      a_1298 j_1300 k_update21_5160
+  in
+  let rec init_1301 (i_1302:int) (n_1303:int) 
+                   (a_1304:(int -> (int -> X) -> X)) 
+                   (k_init_5193:((int -> (int -> X) -> X) -> X)) =
+    if i_1302 >= n_1303
+    then
+      k_init_5193 a_1304
+    else
+      init_1301
+        (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193
+  in
+  let m21_1305 (k_1306:int) (n_1307:int) (i_1308:int) 
+              (k_m21_5260:(unit -> X)) =
+    if k_1306 >= 0 && k_1306 <= 0
+    then
+      init_1301
+        k_1306 n_1307 (make_array21_1293 n_1307) 
+        (fun (x_5332:(int -> (int -> X) -> X)) ->
+           if 0 <= i_1308 && i_1308 < n_1307
+           then
+             x_5332
+               i_1308 
+               (fun (x_5302:int) ->
+                  if x_5302 >= 1
+                  then
+                    k_m21_5260 ()
+                  else
+                    <|fail|> () k_m21_5260)
+           else
+             k_m21_5260 ())
+    else
+      k_m21_5260 ()
+  in
+  let rec mc91_1310 (x_1311:int) (k_mc91_5345:(int -> X)) =
+    if x_1311 > 100
+    then
+      k_mc91_5345 (x_1311 - 10)
+    else
+      mc91_1310
+        (x_1311 + 11) 
+        (fun (x_5365:int) -> mc91_1310 x_5365 k_mc91_5345)
+  in
+  let main_1314 (n_1315:int) (m_1316:int) (k_main_5376:(unit -> X)) =
+    if n_1315 = 11
+    then
+      mult_1199
+        m_1316 m_1316 
+        (fun (x_3971:int) ->
+           if m_1316 <= x_3971
+           then
+             k_main_5376 ()
+           else
+             <|fail|> () k_main_5376)
+    else
+      if n_1315 = 12
+      then
+        m12_1231 m_1316 k_main_5376
+      else
+        if n_1315 = 13
+        then
+          f13_1239
+            m_1316 0 
+            (fun (x_4524:int) ->
+               g13_1242
+                 m_1316 x_4524 
+                 (fun (x_4501:int) ->
+                    if x_4501 = 0
+                    then
+                      k_main_5376 ()
+                    else
+                      <|fail|> () k_main_5376))
+        else
+          if n_1315 = 14
+          then
+            sum_1247
+              m_1316 
+              (fun (x_4571:int) ->
+                 if m_1316 <= x_4571
+                 then
+                   k_main_5376 ()
+                 else
+                   <|fail|> () k_main_5376)
+          else
+            if n_1315 = 15
+            then
+              mult_1251
+                m_1316 m_1316 
+                (fun (x_4630:int) ->
+                   if m_1316 + 1 <= x_4630
+                   then
+                     k_main_5376 ()
+                   else
+                     <|fail|> () k_main_5376)
+            else
+              if n_1315 = 16
+              then
+                repeat_1258
+                  succ_1256 m_1316 0 
+                  (fun (x_4716:int) ->
+                     if x_4716 > m_1316
+                     then
+                       k_main_5376 ()
+                     else
+                       <|fail|> () k_main_5376)
+              else
+                if n_1315 = 17
+                then
+                  f17_1268
+                    m_1316 0 
+                    (fun (x_4865:int) ->
+                       g17_1271
+                         m_1316 x_4865 
+                         (fun (x_4842:int) ->
+                            if x_4842 = 0
+                            then
+                              k_main_5376 ()
+                            else
+                              <|fail|> () k_main_5376))
+                else
+                  if n_1315 = 18
+                  then
+                    sum_1276
+                      m_1316 
+                      (fun (x_4912:int) ->
+                         if m_1316 + 1 <= x_4912
+                         then
+                           k_main_5376 ()
+                         else
+                           <|fail|> () k_main_5376)
+                  else
+                    if n_1315 = 19
+                    then
+                      f19_1280
+                        succ_1283 m_1316 
+                        (fun (x_5012:int) ->
+                           if x_5012 >= 0
+                           then
+                             k_main_5376 ()
+                           else
+                             <|fail|> () k_main_5376)
+                    else
+                      if n_1315 = 20
+                      then
+                        m20_1290 m_1316 m_1316 k_main_5376
+                      else
+                        m21_1305 m_1316 m_1316 m_1316 k_main_5376
+  in
+  let main_2608 (k_main_5537:(unit -> X)) =
+    let arg1_2604 (k_main_arg1_5542:(int -> X)) =
+      rand_int_cps () k_main_arg1_5542
+    in
+    arg1_2604
+      (fun (arg1_5572:int) ->
+         let arg2_2606 (k_main_arg2_5554:(int -> X)) =
+           rand_int_cps () k_main_arg2_5554
+         in
+         arg2_2606
+           (fun (arg2_5571:int) ->
+              main_1314 arg1_5572 arg2_5571 k_main_5537))
+  in
+  main_2608 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let rec mult_1199 (n_1200:int) (m_1201:int) (k_mult_3940:(int -> X)) =
+    if n_1200 <= 0 || m_1201 <= 0
+    then
+      k_mult_3940 0
+    else
+      mult_1199 n_1200 (m_1201 - 1) (fun (x_3944:int) -> k_mult_3940 (n_1200 + x_3944))
+  in
+  let make_array_1204 (n_1205:int) (i_1206:int) (k_make_array_4000:(int -> X)) =
+    let u_2036 (k_make_array_u_4011:(unit -> X)) =
+      if 0 <= i_1206 && i_1206 < n_1205 then k_make_array_u_4011 () else <|fail|> () k_make_array_u_4011
+    in
+    u_2036 (fun (():unit) -> k_make_array_4000 0)
+  in
+  let f20_1216 (x_2082:int) (src_1218:(int -> (int -> X) -> X)) (des_1219:(int -> (int -> X) -> X)) 
+              (k_f20_4095:(unit -> X)) =
+    let rec bcopy_1220 (des_1223:(int -> (int -> X) -> X)) (i_1224:int) 
+                      (k_f20_bcopy_4105:((int -> (int -> X) -> X) -> X)) =
+      if i_1224 >= x_2082
+      then
+        k_f20_bcopy_4105 des_1223
+      else
+        src_1218
+          i_1224 
+          (fun (x_4151:int) ->
+             des_1223
+               i_1224 
+               (fun (_:int) ->
+                  (fun (des_4184:(int -> (int -> X) -> X)) ->
+                     bcopy_1220 des_4184 (i_1224 + 1) k_f20_bcopy_4105)
+                    (let a_1212 (j_1213:int) (k_update_a_4048:(int -> X)) =
+                       if i_1224 = j_1213 then k_update_a_4048 x_4151 else des_1223 i_1224 k_update_a_4048
+                     in
+                     a_1212)))
+    in
+    let rec print_array_1226 (x_2155:(int -> (int -> X) -> X)) (i_1229:int) 
+                            (k_f20_print_array_4208:(unit -> X)) =
+      if i_1229 >= x_2082
+      then
+        k_f20_print_array_4208 ()
+      else
+        des_1219 i_1229 (fun (_:int) -> print_array_1226 x_2155 (i_1229 + 1) k_f20_print_array_4208)
+    in
+    bcopy_1220
+      des_1219 0 
+      (fun (array_4311:(int -> (int -> X) -> X)) -> print_array_1226 array_4311 0 k_f20_4095)
+  in
+  let m12_1231 (n_1232:int) (k_m12_4345:(unit -> X)) =
+    if n_1232 > 0
+    then
+      f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345
+    else
+      k_m12_4345 ()
+  in
+  let lock_1235 (st_1236:int) (k_lock_4412:(int -> X)) =
+    let u_2212 (k_lock_u_4423:(unit -> X)) =
+      if st_1236 = 0 then k_lock_u_4423 () else <|fail|> () k_lock_u_4423
+    in
+    u_2212 (fun (():unit) -> k_lock_4412 1)
+  in
+  let unlock_1237 (st_1238:int) (k_unlock_4433:(int -> X)) =
+    let u_2217 (k_unlock_u_4444:(unit -> X)) =
+      if st_1238 = 1 then k_unlock_u_4444 () else <|fail|> () k_unlock_u_4444
+    in
+    u_2217 (fun (():unit) -> k_unlock_4433 0)
+  in
+  let f13_1239 (n_1240:int) (st_1241:int) (k_f13_4454:(int -> X)) =
+    if n_1240 > 0 then lock_1235 st_1241 k_f13_4454 else k_f13_4454 st_1241
+  in
+  let g13_1242 (n_1243:int) (st_1244:int) (k_g13_4476:(int -> X)) =
+    if n_1243 > 0
+    then
+      unlock_1237 st_1244 k_g13_4476
+    else
+      k_g13_4476 st_1244
+  in
+  let rec sum_1247 (n_1248:int) (k_sum_4542:(int -> X)) =
+    if n_1248 <= 0
+    then
+      k_sum_4542 0
+    else
+      sum_1247 (n_1248 - 1) (fun (x_4546:int) -> k_sum_4542 (n_1248 + x_4546))
+  in
+  let rec mult_1251 (n_1252:int) (m_1253:int) (k_mult_4599:(int -> X)) =
+    if n_1252 <= 0 || m_1253 <= 0
+    then
+      k_mult_4599 0
+    else
+      mult_1251
+        n_1252 (m_1253 - 1) (fun (x_4603:int) -> k_mult_4599 (n_1252 + x_4603))
+  in
+  let succ_1256 (x_1257:int) (k_succ_4659:(int -> X)) =
+    k_succ_4659 (x_1257 + 1)
+  in
+  let rec repeat_1258 (x_2292:(int -> (int -> X) -> X)) (n_1260:int) 
+                     (s_1261:int) (k_repeat_4669:(int -> X)) =
+    if n_1260 = 0
+    then
+      k_repeat_4669 s_1261
+    else
+      repeat_1258
+        x_2292 (n_1260 - 1) s_1261 
+        (fun (x_4697:int) -> x_2292 x_4697 k_repeat_4669)
+  in
+  let lock_1264 (st_1265:int) (k_lock_4753:(int -> X)) =
+    let u_2321 (k_lock_u_4764:(unit -> X)) =
+      if st_1265 = 0 then k_lock_u_4764 () else <|fail|> () k_lock_u_4764
+    in
+    u_2321 (fun (():unit) -> k_lock_4753 1)
+  in
+  let unlock_1266 (st_1267:int) (k_unlock_4774:(int -> X)) =
+    let u_2326 (k_unlock_u_4785:(unit -> X)) =
+      if st_1267 = 1
+      then
+        k_unlock_u_4785 ()
+      else
+        <|fail|> () k_unlock_u_4785
+    in
+    u_2326 (fun (():unit) -> k_unlock_4774 0)
+  in
+  let f17_1268 (n_1269:int) (st_1270:int) (k_f17_4795:(int -> X)) =
+    if n_1269 > 0
+    then
+      lock_1264 st_1270 k_f17_4795
+    else
+      k_f17_4795 st_1270
+  in
+  let g17_1271 (n_1272:int) (st_1273:int) (k_g17_4817:(int -> X)) =
+    if n_1272 >= 0
+    then
+      unlock_1266 st_1273 k_g17_4817
+    else
+      k_g17_4817 st_1273
+  in
+  let rec sum_1276 (n_1277:int) (k_sum_4883:(int -> X)) =
+    if n_1277 <= 0
+    then
+      k_sum_4883 0
+    else
+      sum_1276
+        (n_1277 - 1) (fun (x_4887:int) -> k_sum_4883 (n_1277 + x_4887))
+  in
+  let rec f19_1280 (g_1281:(int -> (int -> X) -> X)) (x_1282:int) 
+                  (k_f19_4943:(int -> X)) =
+    if x_1282 >= 0
+    then
+      g_1281 x_1282 k_f19_4943
+    else
+      g_1281
+        x_1282 
+        (fun (x_4987:int) ->
+           f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943)
+  in
+  let succ_1283 (x_1284:int) (k_succ_5002:(int -> X)) =
+    k_succ_5002 (x_1284 + 1)
+  in
+  let rec ackermann_1287 (m_1288:int) (n_1289:int) 
+                        (k_ackermann_5048:(int -> X)) =
+    if m_1288 = 0
+    then
+      k_ackermann_5048 (n_1289 + 1)
+    else
+      if n_1289 = 0
+      then
+        ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048
+      else
+        ackermann_1287
+          m_1288 (n_1289 - 1) 
+          (fun (x_5081:int) ->
+             ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048)
+  in
+  let m20_1290 (m_1291:int) (n_1292:int) (k_m20_5097:(unit -> X)) =
+    if m_1291 >= 0 && n_1292 >= 0
+    then
+      ackermann_1287
+        m_1291 n_1292 
+        (fun (x_5100:int) ->
+           if x_5100 >= n_1292
+           then
+             k_m20_5097 ()
+           else
+             <|fail|> () k_m20_5097)
+    else
+      k_m20_5097 ()
+  in
+  let make_array21_1293 (n_1294:int) (i_1295:int) 
+                       (k_make_array21_5135:(int -> X)) =
+    let u_2448 (k_make_array21_u_5146:(unit -> X)) =
+      if 0 <= i_1295 && i_1295 < n_1294
+      then
+        k_make_array21_u_5146 ()
+      else
+        <|fail|> () k_make_array21_u_5146
+    in
+    u_2448 (fun (():unit) -> k_make_array21_5135 0)
+  in
+  let update21_1296 (i_1297:int) (a_1298:(int -> (int -> X) -> X)) 
+                   (x_1299:int) (j_1300:int) 
+                   (k_update21_5160:(int -> X)) =
+    if j_1300 > i_1297 - 1 && j_1300 <= i_1297
+    then
+      k_update21_5160 x_1299
+    else
+      a_1298 j_1300 k_update21_5160
+  in
+  let rec init_1301 (i_1302:int) (n_1303:int) 
+                   (a_1304:(int -> (int -> X) -> X)) 
+                   (k_init_5193:((int -> (int -> X) -> X) -> X)) =
+    if i_1302 >= n_1303
+    then
+      k_init_5193 a_1304
+    else
+      init_1301
+        (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193
+  in
+  let m21_1305 (k_1306:int) (n_1307:int) (i_1308:int) 
+              (k_m21_5260:(unit -> X)) =
+    if k_1306 >= 0 && k_1306 <= 0
+    then
+      init_1301
+        k_1306 n_1307 (make_array21_1293 n_1307) 
+        (fun (x_5332:(int -> (int -> X) -> X)) ->
+           if 0 <= i_1308 && i_1308 < n_1307
+           then
+             x_5332
+               i_1308 
+               (fun (x_5302:int) ->
+                  if x_5302 >= 1
+                  then
+                    k_m21_5260 ()
+                  else
+                    <|fail|> () k_m21_5260)
+           else
+             k_m21_5260 ())
+    else
+      k_m21_5260 ()
+  in
+  let rec mc91_1310 (x_1311:int) (k_mc91_5345:(int -> X)) =
+    if x_1311 > 100
+    then
+      k_mc91_5345 (x_1311 - 10)
+    else
+      mc91_1310
+        (x_1311 + 11) 
+        (fun (x_5365:int) -> mc91_1310 x_5365 k_mc91_5345)
+  in
+  let main_1314 (n_1315:int) (m_1316:int) (k_main_5376:(unit -> X)) =
+    if n_1315 = 11
+    then
+      mult_1199
+        m_1316 m_1316 
+        (fun (x_3971:int) ->
+           if m_1316 <= x_3971
+           then
+             k_main_5376 ()
+           else
+             <|fail|> () k_main_5376)
+    else
+      if n_1315 = 12
+      then
+        m12_1231 m_1316 k_main_5376
+      else
+        if n_1315 = 13
+        then
+          f13_1239
+            m_1316 0 
+            (fun (x_4524:int) ->
+               g13_1242
+                 m_1316 x_4524 
+                 (fun (x_4501:int) ->
+                    if x_4501 = 0
+                    then
+                      k_main_5376 ()
+                    else
+                      <|fail|> () k_main_5376))
+        else
+          if n_1315 = 14
+          then
+            sum_1247
+              m_1316 
+              (fun (x_4571:int) ->
+                 if m_1316 <= x_4571
+                 then
+                   k_main_5376 ()
+                 else
+                   <|fail|> () k_main_5376)
+          else
+            if n_1315 = 15
+            then
+              mult_1251
+                m_1316 m_1316 
+                (fun (x_4630:int) ->
+                   if m_1316 + 1 <= x_4630
+                   then
+                     k_main_5376 ()
+                   else
+                     <|fail|> () k_main_5376)
+            else
+              if n_1315 = 16
+              then
+                repeat_1258
+                  succ_1256 m_1316 0 
+                  (fun (x_4716:int) ->
+                     if x_4716 > m_1316
+                     then
+                       k_main_5376 ()
+                     else
+                       <|fail|> () k_main_5376)
+              else
+                if n_1315 = 17
+                then
+                  f17_1268
+                    m_1316 0 
+                    (fun (x_4865:int) ->
+                       g17_1271
+                         m_1316 x_4865 
+                         (fun (x_4842:int) ->
+                            if x_4842 = 0
+                            then
+                              k_main_5376 ()
+                            else
+                              <|fail|> () k_main_5376))
+                else
+                  if n_1315 = 18
+                  then
+                    sum_1276
+                      m_1316 
+                      (fun (x_4912:int) ->
+                         if m_1316 + 1 <= x_4912
+                         then
+                           k_main_5376 ()
+                         else
+                           <|fail|> () k_main_5376)
+                  else
+                    if n_1315 = 19
+                    then
+                      f19_1280
+                        succ_1283 m_1316 
+                        (fun (x_5012:int) ->
+                           if x_5012 >= 0
+                           then
+                             k_main_5376 ()
+                           else
+                             <|fail|> () k_main_5376)
+                    else
+                      if n_1315 = 20
+                      then
+                        m20_1290 m_1316 m_1316 k_main_5376
+                      else
+                        m21_1305 m_1316 m_1316 m_1316 k_main_5376
+  in
+  let main_2608 (k_main_5537:(unit -> X)) =
+    let arg1_2604 (k_main_arg1_5542:(int -> X)) =
+      rand_int_cps () k_main_arg1_5542
+    in
+    arg1_2604
+      (fun (arg1_5572:int) ->
+         let arg2_2606 (k_main_arg2_5554:(int -> X)) =
+           rand_int_cps () k_main_arg2_5554
+         in
+         arg2_2606
+           (fun (arg2_5571:int) ->
+              main_1314 arg1_5572 arg2_5571 k_main_5537))
+  in
+  main_2608 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_7251
+  main_7251 -> (main_2608 f_7286).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (i_1224 = j_1213) -> (k_update_a_4048 x_4151).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (not (i_1224 = j_1213)) -> (des_1223 i_1224 k_update_a_4048).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (m_1288 = 0) -> (k_ackermann_5048 (n_1289 + 1)).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (not (m_1288 = 0)) ->
+      (br_ackermann_7287 (n_1289 = 0) m_1288 n_1289 k_ackermann_5048).
+  arg1_2604 k_main_arg1_5542 -> (rand_int k_main_arg1_5542).
+  arg2_2606 arg1_5572 k_main_arg2_5554 -> (rand_int k_main_arg2_5554).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (i_1224 >= x_2082) -> (k_f20_bcopy_4105 des_1223).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (not (i_1224 >= x_2082)) ->
+      (src_1218 i_1224 (f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218)).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when b_7288 ->
+      (ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when (not b_7288) ->
+      (ackermann_1287 m_1288 (n_1289 - 1) (f_ackermann_7268 m_1288 n_1289 k_ackermann_5048)).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when b_7290 -> (m20_1290 m_1316 m_1316 k_main_5376).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when (not b_7290) -> (m21_1305 m_1316 m_1316 m_1316 k_main_5376).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when b_7292 ->
+      (f19_1280 succ_1283 m_1316 (f_main_7283 m_1316 n_1315 k_main_5376)).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when (not b_7292) ->
+      (br_main_7289 (n_1315 = 20) n_1315 m_1316 k_main_5376).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when b_7294 ->
+      (sum_1276 m_1316 (f_main_7282 m_1316 n_1315 k_main_5376)).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when (not b_7294) ->
+      (br_main_7291 (n_1315 = 19) n_1315 m_1316 k_main_5376).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when b_7296 ->
+      (f17_1268 m_1316 0 (f_main_7280 m_1316 n_1315 k_main_5376)).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when (not b_7296) ->
+      (br_main_7293 (n_1315 = 18) n_1315 m_1316 k_main_5376).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when b_7298 ->
+      (repeat_1258 succ_1256 m_1316 0 (f_main_7279 m_1316 n_1315 k_main_5376)).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when (not b_7298) ->
+      (br_main_7295 (n_1315 = 17) n_1315 m_1316 k_main_5376).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when b_7300 ->
+      (mult_1251 m_1316 m_1316 (f_main_7278 m_1316 n_1315 k_main_5376)).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when (not b_7300) ->
+      (br_main_7297 (n_1315 = 16) n_1315 m_1316 k_main_5376).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when b_7302 ->
+      (sum_1247 m_1316 (f_main_7277 m_1316 n_1315 k_main_5376)).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when (not b_7302) ->
+      (br_main_7299 (n_1315 = 15) n_1315 m_1316 k_main_5376).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when b_7304 ->
+      (f13_1239 m_1316 0 (f_main_7275 m_1316 n_1315 k_main_5376)).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when (not b_7304) ->
+      (br_main_7301 (n_1315 = 14) n_1315 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when b_7306 -> (m12_1231 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when (not b_7306) ->
+      (br_main_7303 (n_1315 = 13) n_1315 m_1316 k_main_5376).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (n_1240 > 0) -> (lock_1235 st_1241 k_f13_4454).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (not (n_1240 > 0)) -> (k_f13_4454 st_1241).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (n_1269 > 0) -> (lock_1264 st_1270 k_f17_4795).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (not (n_1269 > 0)) -> (k_f17_4795 st_1270).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (x_1282 >= 0) -> (g_1281 x_1282 k_f19_4943).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (not (x_1282 >= 0)) -> (g_1281 x_1282 (f_f19_7267 x_1282 g_1281 k_f19_4943)).
+  f20_1216 x_2082 src_1218 des_1219 k_f20_4095 ->
+      (bcopy_1220 x_2082 src_1218 des_1219 0 (f_f20_7258 x_2082 des_1219 k_f20_4095)).
+  f_7286 main_5573 -> end.
+  f_ackermann_7268 m_1288 n_1289 k_ackermann_5048 x_5081 -> (ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048).
+  f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218 x_4151 ->
+      (des_1223 i_1224 (f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218)).
+  f_f19_7267 x_1282 g_1281 k_f19_4943 x_4987 -> (f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943).
+  f_f20_7258 x_2082 des_1219 k_f20_4095 array_4311 -> (print_array_1226 x_2082 des_1219 array_4311 0 k_f20_4095).
+  f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218 u_4066 ->
+      (f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218
+       (a_1212 i_1224 u_4066 x_2082 x_4151 des_1223)).
+  f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218 des_4184 ->
+      (bcopy_1220 x_2082 src_1218 des_4184 (i_1224 + 1) k_f20_bcopy_4105).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (x_5302 >= 1) -> (k_m21_5260 ()).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (not (x_5302 >= 1)) -> (fail_7314 true k_m21_5260).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (x_4501 = 0) -> (k_main_5376 ()).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (not (x_4501 = 0)) -> (fail_7316 true k_main_5376).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (x_4842 = 0) -> (k_main_5376 ()).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (not (x_4842 = 0)) -> (fail_7320 true k_main_5376).
+  f_f_main_7285 arg1_5572 k_main_5537 arg2_5571 -> (main_1314 arg1_5572 arg2_5571 k_main_5537).
+  f_lock_7259 st_1236 k_lock_4412 u_4426 -> (k_lock_4412 1).
+  f_lock_7264 st_1265 k_lock_4753 u_4767 -> (k_lock_4753 1).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (x_5100 >= n_1292) -> (k_m20_5097 ()).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (not (x_5100 >= n_1292)) -> (fail_7312 true k_m20_5097).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when ((0 <= i_1308) && (i_1308 < n_1307)) ->
+      (x_5332 i_1308 (f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260)).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when (not ((0 <= i_1308) && (i_1308 < n_1307))) -> (k_m21_5260 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (m_1316 <= x_3971) -> (k_main_5376 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (not (m_1316 <= x_3971)) -> (fail_7315 true k_main_5376).
+  f_main_7275 m_1316 n_1315 k_main_5376 x_4524 ->
+      (g13_1242 m_1316 x_4524 (f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376)).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (m_1316 <= x_4571) -> (k_main_5376 ()).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (not (m_1316 <= x_4571)) -> (fail_7317 true k_main_5376).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when ((m_1316 + 1) <= x_4630) -> (k_main_5376 ()).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when (not ((m_1316 + 1) <= x_4630)) -> (fail_7318 true k_main_5376).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (x_4716 > m_1316) -> (k_main_5376 ()).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (not (x_4716 > m_1316)) -> (fail_7319 true k_main_5376).
+  f_main_7280 m_1316 n_1315 k_main_5376 x_4865 ->
+      (g17_1271 m_1316 x_4865 (f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376)).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when ((m_1316 + 1) <= x_4912) -> (k_main_5376 ()).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when (not ((m_1316 + 1) <= x_4912)) -> (fail_7321 true k_main_5376).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (x_5012 >= 0) -> (k_main_5376 ()).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (not (x_5012 >= 0)) -> (fail_7322 true k_main_5376).
+  f_main_7284 k_main_5537 arg1_5572 -> (arg2_2606 arg1_5572 (f_f_main_7285 arg1_5572 k_main_5537)).
+  f_make_array21_7270 i_1295 n_1294 k_make_array21_5135 u_5149 -> (k_make_array21_5135 0).
+  f_make_array_7253 i_1206 n_1205 k_make_array_4000 u_4014 -> (k_make_array_4000 0).
+  f_mc91_7273 x_1311 k_mc91_5345 x_5365 -> (mc91_1310 x_5365 k_mc91_5345).
+  f_mult_7252 m_1201 n_1200 k_mult_3940 x_3944 -> (k_mult_3940 (n_1200 + x_3944)).
+  f_mult_7262 m_1253 n_1252 k_mult_4599 x_4603 -> (k_mult_4599 (n_1252 + x_4603)).
+  f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155 x_4230 ->
+      (print_array_1226 x_2082 des_1219 x_2155 (i_1229 + 1) k_f20_print_array_4208).
+  f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292 x_4697 -> (x_2292 x_4697 k_repeat_4669).
+  f_sum_7261 n_1248 k_sum_4542 x_4546 -> (k_sum_4542 (n_1248 + x_4546)).
+  f_sum_7266 n_1277 k_sum_4883 x_4887 -> (k_sum_4883 (n_1277 + x_4887)).
+  f_unlock_7260 st_1238 k_unlock_4433 u_4447 -> (k_unlock_4433 0).
+  f_unlock_7265 st_1267 k_unlock_4774 u_4788 -> (k_unlock_4774 0).
+  fail_7307 b k -> {fail} => (k ()).
+  fail_7308 b k -> {fail} => (k ()).
+  fail_7309 b k -> {fail} => (k ()).
+  fail_7310 b k -> {fail} => (k ()).
+  fail_7311 b k -> {fail} => (k ()).
+  fail_7312 b k -> {fail} => (k ()).
+  fail_7313 b k -> {fail} => (k ()).
+  fail_7314 b k -> {fail} => (k ()).
+  fail_7315 b k -> {fail} => (k ()).
+  fail_7316 b k -> {fail} => (k ()).
+  fail_7317 b k -> {fail} => (k ()).
+  fail_7318 b k -> {fail} => (k ()).
+  fail_7319 b k -> {fail} => (k ()).
+  fail_7320 b k -> {fail} => (k ()).
+  fail_7321 b k -> {fail} => (k ()).
+  fail_7322 b k -> {fail} => (k ()).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (n_1243 > 0) -> (unlock_1237 st_1244 k_g13_4476).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (not (n_1243 > 0)) -> (k_g13_4476 st_1244).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (n_1272 >= 0) -> (unlock_1266 st_1273 k_g17_4817).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (not (n_1272 >= 0)) -> (k_g17_4817 st_1273).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (i_1302 >= n_1303) -> (k_init_5193 a_1304).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (not (i_1302 >= n_1303)) ->
+      (init_1301 (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193).
+  lock_1235 st_1236 k_lock_4412 -> (u_2212 st_1236 (f_lock_7259 st_1236 k_lock_4412)).
+  lock_1264 st_1265 k_lock_4753 -> (u_2321 st_1265 (f_lock_7264 st_1265 k_lock_4753)).
+  m12_1231 n_1232 k_m12_4345 when (n_1232 > 0) ->
+      (f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345).
+  m12_1231 n_1232 k_m12_4345 when (not (n_1232 > 0)) -> (k_m12_4345 ()).
+  m20_1290 m_1291 n_1292 k_m20_5097 when ((m_1291 >= 0) && (n_1292 >= 0)) ->
+      (ackermann_1287 m_1291 n_1292 (f_m20_7269 m_1291 n_1292 k_m20_5097)).
+  m20_1290 m_1291 n_1292 k_m20_5097 when (not ((m_1291 >= 0) && (n_1292 >= 0))) -> (k_m20_5097 ()).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when ((k_1306 >= 0) && (k_1306 <= 0)) ->
+      (init_1301 k_1306 n_1307 (make_array21_1293 n_1307) (f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260)).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when (not ((k_1306 >= 0) && (k_1306 <= 0))) -> (k_m21_5260 ()).
+  main_1314 n_1315 m_1316 k_main_5376 when (n_1315 = 11) ->
+      (mult_1199 m_1316 m_1316 (f_main_7274 m_1316 n_1315 k_main_5376)).
+  main_1314 n_1315 m_1316 k_main_5376 when (not (n_1315 = 11)) ->
+      (br_main_7305 (n_1315 = 12) n_1315 m_1316 k_main_5376).
+  main_2608 k_main_5537 -> (arg1_2604 (f_main_7284 k_main_5537)).
+  make_array21_1293 n_1294 i_1295 k_make_array21_5135 ->
+      (u_2448 i_1295 n_1294 (f_make_array21_7270 i_1295 n_1294 k_make_array21_5135)).
+  make_array_1204 n_1205 i_1206 k_make_array_4000 ->
+      (u_2036 i_1206 n_1205 (f_make_array_7253 i_1206 n_1205 k_make_array_4000)).
+  mc91_1310 x_1311 k_mc91_5345 when (x_1311 > 100) -> (k_mc91_5345 (x_1311 - 10)).
+  mc91_1310 x_1311 k_mc91_5345 when (not (x_1311 > 100)) -> (mc91_1310 (x_1311 + 11) (f_mc91_7273 x_1311 k_mc91_5345)).
+  mult_1199 n_1200 m_1201 k_mult_3940 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_3940 0).
+  mult_1199 n_1200 m_1201 k_mult_3940 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_7252 m_1201 n_1200 k_mult_3940)).
+  mult_1251 n_1252 m_1253 k_mult_4599 when ((n_1252 <= 0) || (m_1253 <= 0)) -> (k_mult_4599 0).
+  mult_1251 n_1252 m_1253 k_mult_4599 when (not ((n_1252 <= 0) || (m_1253 <= 0))) ->
+      (mult_1251 n_1252 (m_1253 - 1) (f_mult_7262 m_1253 n_1252 k_mult_4599)).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (i_1229 >= x_2082) -> (k_f20_print_array_4208 ()).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (not (i_1229 >= x_2082)) ->
+      (des_1219 i_1229 (f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155)).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (n_1260 = 0) -> (k_repeat_4669 s_1261).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (not (n_1260 = 0)) ->
+      (repeat_1258 x_2292 (n_1260 - 1) s_1261 (f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292)).
+  succ_1256 x_1257 k_succ_4659 -> (k_succ_4659 (x_1257 + 1)).
+  succ_1283 x_1284 k_succ_5002 -> (k_succ_5002 (x_1284 + 1)).
+  sum_1247 n_1248 k_sum_4542 when (n_1248 <= 0) -> (k_sum_4542 0).
+  sum_1247 n_1248 k_sum_4542 when (not (n_1248 <= 0)) -> (sum_1247 (n_1248 - 1) (f_sum_7261 n_1248 k_sum_4542)).
+  sum_1276 n_1277 k_sum_4883 when (n_1277 <= 0) -> (k_sum_4883 0).
+  sum_1276 n_1277 k_sum_4883 when (not (n_1277 <= 0)) -> (sum_1276 (n_1277 - 1) (f_sum_7266 n_1277 k_sum_4883)).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when ((0 <= i_1206) && (i_1206 < n_1205)) -> (k_make_array_u_4011 ()).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when (not ((0 <= i_1206) && (i_1206 < n_1205))) ->
+      (fail_7307 true k_make_array_u_4011).
+  u_2212 st_1236 k_lock_u_4423 when (st_1236 = 0) -> (k_lock_u_4423 ()).
+  u_2212 st_1236 k_lock_u_4423 when (not (st_1236 = 0)) -> (fail_7308 true k_lock_u_4423).
+  u_2217 st_1238 k_unlock_u_4444 when (st_1238 = 1) -> (k_unlock_u_4444 ()).
+  u_2217 st_1238 k_unlock_u_4444 when (not (st_1238 = 1)) -> (fail_7309 true k_unlock_u_4444).
+  u_2321 st_1265 k_lock_u_4764 when (st_1265 = 0) -> (k_lock_u_4764 ()).
+  u_2321 st_1265 k_lock_u_4764 when (not (st_1265 = 0)) -> (fail_7310 true k_lock_u_4764).
+  u_2326 st_1267 k_unlock_u_4785 when (st_1267 = 1) -> (k_unlock_u_4785 ()).
+  u_2326 st_1267 k_unlock_u_4785 when (not (st_1267 = 1)) -> (fail_7311 true k_unlock_u_4785).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when ((0 <= i_1295) && (i_1295 < n_1294)) -> (k_make_array21_u_5146 ()).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when (not ((0 <= i_1295) && (i_1295 < n_1294))) ->
+      (fail_7313 true k_make_array21_u_5146).
+  unlock_1237 st_1238 k_unlock_4433 -> (u_2217 st_1238 (f_unlock_7260 st_1238 k_unlock_4433)).
+  unlock_1266 st_1267 k_unlock_4774 -> (u_2326 st_1267 (f_unlock_7265 st_1267 k_unlock_4774)).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297)) ->
+      (k_update21_5160 x_1299).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when (not ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297))) ->
+      (a_1298 j_1300 k_update21_5160).
+Types:
+  main_7251 : X
+  ackermann_1287 : (int -> int -> (int -> X) -> X)
+  bcopy_1220 : (int ->
+                (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> ((int -> (int -> X) -> X) -> X) -> X)
+  f19_1280 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7307 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7308 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7309 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7310 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7311 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7312 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7313 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7314 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7315 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7316 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7317 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7318 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7319 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7320 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7321 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7322 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1301 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1310 : (int -> (int -> X) -> X)
+  mult_1199 : (int -> int -> (int -> X) -> X)
+  mult_1251 : (int -> int -> (int -> X) -> X)
+  print_array_1226 : (int -> (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> (unit -> X) -> X)
+  repeat_1258 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  sum_1247 : (int -> (int -> X) -> X)
+  sum_1276 : (int -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7251 ... --> 
+  main_2608 ... --> 
+  arg1_2604 ... --> 
+  f_main_7284 ... --> 
+  arg2_2606 ... --> 
+  f_f_main_7285 ... --> 
+  main_1314 [1/2] ... --> 
+  mult_1199 [1/2] ... --> 
+  f_main_7274 [2/2] ... --> 
+  fail_7315 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_7251
+  main_7251 -> (main_2608 f_7286).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (i_1224 = j_1213) -> (k_update_a_4048 x_4151).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (not (i_1224 = j_1213)) -> (des_1223 i_1224 k_update_a_4048).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (m_1288 = 0) -> (k_ackermann_5048 (n_1289 + 1)).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (not (m_1288 = 0)) ->
+      (br_ackermann_7287 (n_1289 = 0) m_1288 n_1289 k_ackermann_5048).
+  arg1_2604 k_main_arg1_5542 -> (rand_int k_main_arg1_5542).
+  arg2_2606 arg1_5572 k_main_arg2_5554 -> (rand_int k_main_arg2_5554).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (i_1224 >= x_2082) -> (k_f20_bcopy_4105 des_1223).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (not (i_1224 >= x_2082)) ->
+      (src_1218 i_1224 (f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218)).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when b_7288 ->
+      (ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when (not b_7288) ->
+      (ackermann_1287 m_1288 (n_1289 - 1) (f_ackermann_7268 m_1288 n_1289 k_ackermann_5048)).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when b_7290 -> (m20_1290 m_1316 m_1316 k_main_5376).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when (not b_7290) -> (m21_1305 m_1316 m_1316 m_1316 k_main_5376).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when b_7292 ->
+      (f19_1280 succ_1283 m_1316 (f_main_7283 m_1316 n_1315 k_main_5376)).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when (not b_7292) ->
+      (br_main_7289 (n_1315 = 20) n_1315 m_1316 k_main_5376).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when b_7294 ->
+      (sum_1276 m_1316 (f_main_7282 m_1316 n_1315 k_main_5376)).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when (not b_7294) ->
+      (br_main_7291 (n_1315 = 19) n_1315 m_1316 k_main_5376).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when b_7296 ->
+      (f17_1268 m_1316 0 (f_main_7280 m_1316 n_1315 k_main_5376)).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when (not b_7296) ->
+      (br_main_7293 (n_1315 = 18) n_1315 m_1316 k_main_5376).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when b_7298 ->
+      (repeat_1258 succ_1256 m_1316 0 (f_main_7279 m_1316 n_1315 k_main_5376)).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when (not b_7298) ->
+      (br_main_7295 (n_1315 = 17) n_1315 m_1316 k_main_5376).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when b_7300 ->
+      (mult_1251 m_1316 m_1316 (f_main_7278 m_1316 n_1315 k_main_5376)).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when (not b_7300) ->
+      (br_main_7297 (n_1315 = 16) n_1315 m_1316 k_main_5376).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when b_7302 ->
+      (sum_1247 m_1316 (f_main_7277 m_1316 n_1315 k_main_5376)).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when (not b_7302) ->
+      (br_main_7299 (n_1315 = 15) n_1315 m_1316 k_main_5376).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when b_7304 ->
+      (f13_1239 m_1316 0 (f_main_7275 m_1316 n_1315 k_main_5376)).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when (not b_7304) ->
+      (br_main_7301 (n_1315 = 14) n_1315 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when b_7306 -> (m12_1231 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when (not b_7306) ->
+      (br_main_7303 (n_1315 = 13) n_1315 m_1316 k_main_5376).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (n_1240 > 0) -> (lock_1235 st_1241 k_f13_4454).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (not (n_1240 > 0)) -> (k_f13_4454 st_1241).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (n_1269 > 0) -> (lock_1264 st_1270 k_f17_4795).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (not (n_1269 > 0)) -> (k_f17_4795 st_1270).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (x_1282 >= 0) -> (g_1281 x_1282 k_f19_4943).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (not (x_1282 >= 0)) -> (g_1281 x_1282 (f_f19_7267 x_1282 g_1281 k_f19_4943)).
+  f20_1216 x_2082 src_1218 des_1219 k_f20_4095 ->
+      (bcopy_1220 x_2082 src_1218 des_1219 0 (f_f20_7258 x_2082 des_1219 k_f20_4095)).
+  f_7286 main_5573 -> end.
+  f_ackermann_7268 m_1288 n_1289 k_ackermann_5048 x_5081 -> (ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048).
+  f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218 x_4151 ->
+      (des_1223 i_1224 (f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218)).
+  f_f19_7267 x_1282 g_1281 k_f19_4943 x_4987 -> (f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943).
+  f_f20_7258 x_2082 des_1219 k_f20_4095 array_4311 -> (print_array_1226 x_2082 des_1219 array_4311 0 k_f20_4095).
+  f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218 u_4066 ->
+      (f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218
+       (a_1212 i_1224 u_4066 x_2082 x_4151 des_1223)).
+  f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218 des_4184 ->
+      (bcopy_1220 x_2082 src_1218 des_4184 (i_1224 + 1) k_f20_bcopy_4105).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (x_5302 >= 1) -> (k_m21_5260 ()).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (not (x_5302 >= 1)) -> (fail_7314 true k_m21_5260).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (x_4501 = 0) -> (k_main_5376 ()).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (not (x_4501 = 0)) -> (fail_7316 true k_main_5376).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (x_4842 = 0) -> (k_main_5376 ()).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (not (x_4842 = 0)) -> (fail_7320 true k_main_5376).
+  f_f_main_7285 arg1_5572 k_main_5537 arg2_5571 -> (main_1314 arg1_5572 arg2_5571 k_main_5537).
+  f_lock_7259 st_1236 k_lock_4412 u_4426 -> (k_lock_4412 1).
+  f_lock_7264 st_1265 k_lock_4753 u_4767 -> (k_lock_4753 1).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (x_5100 >= n_1292) -> (k_m20_5097 ()).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (not (x_5100 >= n_1292)) -> (fail_7312 true k_m20_5097).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when ((0 <= i_1308) && (i_1308 < n_1307)) ->
+      (x_5332 i_1308 (f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260)).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when (not ((0 <= i_1308) && (i_1308 < n_1307))) -> (k_m21_5260 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (m_1316 <= x_3971) -> (k_main_5376 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (not (m_1316 <= x_3971)) -> (fail_7315 true k_main_5376).
+  f_main_7275 m_1316 n_1315 k_main_5376 x_4524 ->
+      (g13_1242 m_1316 x_4524 (f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376)).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (m_1316 <= x_4571) -> (k_main_5376 ()).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (not (m_1316 <= x_4571)) -> (fail_7317 true k_main_5376).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when ((m_1316 + 1) <= x_4630) -> (k_main_5376 ()).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when (not ((m_1316 + 1) <= x_4630)) -> (fail_7318 true k_main_5376).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (x_4716 > m_1316) -> (k_main_5376 ()).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (not (x_4716 > m_1316)) -> (fail_7319 true k_main_5376).
+  f_main_7280 m_1316 n_1315 k_main_5376 x_4865 ->
+      (g17_1271 m_1316 x_4865 (f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376)).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when ((m_1316 + 1) <= x_4912) -> (k_main_5376 ()).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when (not ((m_1316 + 1) <= x_4912)) -> (fail_7321 true k_main_5376).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (x_5012 >= 0) -> (k_main_5376 ()).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (not (x_5012 >= 0)) -> (fail_7322 true k_main_5376).
+  f_main_7284 k_main_5537 arg1_5572 -> (arg2_2606 arg1_5572 (f_f_main_7285 arg1_5572 k_main_5537)).
+  f_make_array21_7270 i_1295 n_1294 k_make_array21_5135 u_5149 -> (k_make_array21_5135 0).
+  f_make_array_7253 i_1206 n_1205 k_make_array_4000 u_4014 -> (k_make_array_4000 0).
+  f_mc91_7273 x_1311 k_mc91_5345 x_5365 -> (mc91_1310 x_5365 k_mc91_5345).
+  f_mult_7252 m_1201 n_1200 k_mult_3940 x_3944 -> (k_mult_3940 (n_1200 + x_3944)).
+  f_mult_7262 m_1253 n_1252 k_mult_4599 x_4603 -> (k_mult_4599 (n_1252 + x_4603)).
+  f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155 x_4230 ->
+      (print_array_1226 x_2082 des_1219 x_2155 (i_1229 + 1) k_f20_print_array_4208).
+  f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292 x_4697 -> (x_2292 x_4697 k_repeat_4669).
+  f_sum_7261 n_1248 k_sum_4542 x_4546 -> (k_sum_4542 (n_1248 + x_4546)).
+  f_sum_7266 n_1277 k_sum_4883 x_4887 -> (k_sum_4883 (n_1277 + x_4887)).
+  f_unlock_7260 st_1238 k_unlock_4433 u_4447 -> (k_unlock_4433 0).
+  f_unlock_7265 st_1267 k_unlock_4774 u_4788 -> (k_unlock_4774 0).
+  fail_7307 b k -> {fail} => (k ()).
+  fail_7308 b k -> {fail} => (k ()).
+  fail_7309 b k -> {fail} => (k ()).
+  fail_7310 b k -> {fail} => (k ()).
+  fail_7311 b k -> {fail} => (k ()).
+  fail_7312 b k -> {fail} => (k ()).
+  fail_7313 b k -> {fail} => (k ()).
+  fail_7314 b k -> {fail} => (k ()).
+  fail_7315 b k -> {fail} => (k ()).
+  fail_7316 b k -> {fail} => (k ()).
+  fail_7317 b k -> {fail} => (k ()).
+  fail_7318 b k -> {fail} => (k ()).
+  fail_7319 b k -> {fail} => (k ()).
+  fail_7320 b k -> {fail} => (k ()).
+  fail_7321 b k -> {fail} => (k ()).
+  fail_7322 b k -> {fail} => (k ()).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (n_1243 > 0) -> (unlock_1237 st_1244 k_g13_4476).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (not (n_1243 > 0)) -> (k_g13_4476 st_1244).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (n_1272 >= 0) -> (unlock_1266 st_1273 k_g17_4817).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (not (n_1272 >= 0)) -> (k_g17_4817 st_1273).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (i_1302 >= n_1303) -> (k_init_5193 a_1304).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (not (i_1302 >= n_1303)) ->
+      (init_1301 (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193).
+  lock_1235 st_1236 k_lock_4412 -> (u_2212 st_1236 (f_lock_7259 st_1236 k_lock_4412)).
+  lock_1264 st_1265 k_lock_4753 -> (u_2321 st_1265 (f_lock_7264 st_1265 k_lock_4753)).
+  m12_1231 n_1232 k_m12_4345 when (n_1232 > 0) ->
+      (f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345).
+  m12_1231 n_1232 k_m12_4345 when (not (n_1232 > 0)) -> (k_m12_4345 ()).
+  m20_1290 m_1291 n_1292 k_m20_5097 when ((m_1291 >= 0) && (n_1292 >= 0)) ->
+      (ackermann_1287 m_1291 n_1292 (f_m20_7269 m_1291 n_1292 k_m20_5097)).
+  m20_1290 m_1291 n_1292 k_m20_5097 when (not ((m_1291 >= 0) && (n_1292 >= 0))) -> (k_m20_5097 ()).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when ((k_1306 >= 0) && (k_1306 <= 0)) ->
+      (init_1301 k_1306 n_1307 (make_array21_1293 n_1307) (f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260)).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when (not ((k_1306 >= 0) && (k_1306 <= 0))) -> (k_m21_5260 ()).
+  main_1314 n_1315 m_1316 k_main_5376 when (n_1315 = 11) ->
+      (mult_1199 m_1316 m_1316 (f_main_7274 m_1316 n_1315 k_main_5376)).
+  main_1314 n_1315 m_1316 k_main_5376 when (not (n_1315 = 11)) ->
+      (br_main_7305 (n_1315 = 12) n_1315 m_1316 k_main_5376).
+  main_2608 k_main_5537 -> (arg1_2604 (f_main_7284 k_main_5537)).
+  make_array21_1293 n_1294 i_1295 k_make_array21_5135 ->
+      (u_2448 i_1295 n_1294 (f_make_array21_7270 i_1295 n_1294 k_make_array21_5135)).
+  make_array_1204 n_1205 i_1206 k_make_array_4000 ->
+      (u_2036 i_1206 n_1205 (f_make_array_7253 i_1206 n_1205 k_make_array_4000)).
+  mc91_1310 x_1311 k_mc91_5345 when (x_1311 > 100) -> (k_mc91_5345 (x_1311 - 10)).
+  mc91_1310 x_1311 k_mc91_5345 when (not (x_1311 > 100)) -> (mc91_1310 (x_1311 + 11) (f_mc91_7273 x_1311 k_mc91_5345)).
+  mult_1199 n_1200 m_1201 k_mult_3940 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_3940 0).
+  mult_1199 n_1200 m_1201 k_mult_3940 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_7252 m_1201 n_1200 k_mult_3940)).
+  mult_1251 n_1252 m_1253 k_mult_4599 when ((n_1252 <= 0) || (m_1253 <= 0)) -> (k_mult_4599 0).
+  mult_1251 n_1252 m_1253 k_mult_4599 when (not ((n_1252 <= 0) || (m_1253 <= 0))) ->
+      (mult_1251 n_1252 (m_1253 - 1) (f_mult_7262 m_1253 n_1252 k_mult_4599)).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (i_1229 >= x_2082) -> (k_f20_print_array_4208 ()).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (not (i_1229 >= x_2082)) ->
+      (des_1219 i_1229 (f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155)).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (n_1260 = 0) -> (k_repeat_4669 s_1261).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (not (n_1260 = 0)) ->
+      (repeat_1258 x_2292 (n_1260 - 1) s_1261 (f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292)).
+  succ_1256 x_1257 k_succ_4659 -> (k_succ_4659 (x_1257 + 1)).
+  succ_1283 x_1284 k_succ_5002 -> (k_succ_5002 (x_1284 + 1)).
+  sum_1247 n_1248 k_sum_4542 when (n_1248 <= 0) -> (k_sum_4542 0).
+  sum_1247 n_1248 k_sum_4542 when (not (n_1248 <= 0)) -> (sum_1247 (n_1248 - 1) (f_sum_7261 n_1248 k_sum_4542)).
+  sum_1276 n_1277 k_sum_4883 when (n_1277 <= 0) -> (k_sum_4883 0).
+  sum_1276 n_1277 k_sum_4883 when (not (n_1277 <= 0)) -> (sum_1276 (n_1277 - 1) (f_sum_7266 n_1277 k_sum_4883)).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when ((0 <= i_1206) && (i_1206 < n_1205)) -> (k_make_array_u_4011 ()).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when (not ((0 <= i_1206) && (i_1206 < n_1205))) ->
+      (fail_7307 true k_make_array_u_4011).
+  u_2212 st_1236 k_lock_u_4423 when (st_1236 = 0) -> (k_lock_u_4423 ()).
+  u_2212 st_1236 k_lock_u_4423 when (not (st_1236 = 0)) -> (fail_7308 true k_lock_u_4423).
+  u_2217 st_1238 k_unlock_u_4444 when (st_1238 = 1) -> (k_unlock_u_4444 ()).
+  u_2217 st_1238 k_unlock_u_4444 when (not (st_1238 = 1)) -> (fail_7309 true k_unlock_u_4444).
+  u_2321 st_1265 k_lock_u_4764 when (st_1265 = 0) -> (k_lock_u_4764 ()).
+  u_2321 st_1265 k_lock_u_4764 when (not (st_1265 = 0)) -> (fail_7310 true k_lock_u_4764).
+  u_2326 st_1267 k_unlock_u_4785 when (st_1267 = 1) -> (k_unlock_u_4785 ()).
+  u_2326 st_1267 k_unlock_u_4785 when (not (st_1267 = 1)) -> (fail_7311 true k_unlock_u_4785).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when ((0 <= i_1295) && (i_1295 < n_1294)) -> (k_make_array21_u_5146 ()).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when (not ((0 <= i_1295) && (i_1295 < n_1294))) ->
+      (fail_7313 true k_make_array21_u_5146).
+  unlock_1237 st_1238 k_unlock_4433 -> (u_2217 st_1238 (f_unlock_7260 st_1238 k_unlock_4433)).
+  unlock_1266 st_1267 k_unlock_4774 -> (u_2326 st_1267 (f_unlock_7265 st_1267 k_unlock_4774)).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297)) ->
+      (k_update21_5160 x_1299).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when (not ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297))) ->
+      (a_1298 j_1300 k_update21_5160).
+Types:
+  main_7251 : X
+  ackermann_1287 : (int -> int -> (int -> X) -> X)
+  bcopy_1220 : (int ->
+                (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> ((int -> (int -> X) -> X) -> X) -> X)
+  f19_1280 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7307 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7308 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7309 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7310 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7311 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7312 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7313 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7314 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7315 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7316 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7317 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7318 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7319 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7320 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7321 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7322 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1301 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1310 : (int -> (int -> X) -> X)
+  mult_1199 : (x_2:int -> x_3:int[x_3 <= x_2] -> (x_5:int[x_5 >= x_3] -> X) -> X)
+  mult_1251 : (int -> int -> (int -> X) -> X)
+  print_array_1226 : (int -> (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> (unit -> X) -> X)
+  repeat_1258 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  sum_1247 : (int -> (int -> X) -> X)
+  sum_1276 : (int -> (int -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7251 ... --> 
+  main_2608 ... --> 
+  arg1_2604 ... --> 
+  f_main_7284 ... --> 
+  arg2_2606 ... --> 
+  f_f_main_7285 ... --> 
+  main_1314 [2/2] ... --> 
+  br_main_7305 [1/2] ... --> 
+  m12_1231 [1/2] ... --> 
+  f20_1216 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_bcopy_7254 ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_f_bcopy_7255 ... --> 
+  f_f_f_bcopy_7256 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_bcopy_7254 ... --> 
+  a_1212 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [2/2] ... --> 
+  fail_7307 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0; 1; 0
+
+(2-3) Checking counterexample ... DONE!
+
+(2-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 3)::
+Main: main_7251
+  main_7251 -> (main_2608 f_7286).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (i_1224 = j_1213) -> (k_update_a_4048 x_4151).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (not (i_1224 = j_1213)) -> (des_1223 i_1224 k_update_a_4048).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (m_1288 = 0) -> (k_ackermann_5048 (n_1289 + 1)).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (not (m_1288 = 0)) ->
+      (br_ackermann_7287 (n_1289 = 0) m_1288 n_1289 k_ackermann_5048).
+  arg1_2604 k_main_arg1_5542 -> (rand_int k_main_arg1_5542).
+  arg2_2606 arg1_5572 k_main_arg2_5554 -> (rand_int k_main_arg2_5554).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (i_1224 >= x_2082) -> (k_f20_bcopy_4105 des_1223).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (not (i_1224 >= x_2082)) ->
+      (src_1218 i_1224 (f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218)).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when b_7288 ->
+      (ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when (not b_7288) ->
+      (ackermann_1287 m_1288 (n_1289 - 1) (f_ackermann_7268 m_1288 n_1289 k_ackermann_5048)).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when b_7290 -> (m20_1290 m_1316 m_1316 k_main_5376).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when (not b_7290) -> (m21_1305 m_1316 m_1316 m_1316 k_main_5376).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when b_7292 ->
+      (f19_1280 succ_1283 m_1316 (f_main_7283 m_1316 n_1315 k_main_5376)).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when (not b_7292) ->
+      (br_main_7289 (n_1315 = 20) n_1315 m_1316 k_main_5376).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when b_7294 ->
+      (sum_1276 m_1316 (f_main_7282 m_1316 n_1315 k_main_5376)).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when (not b_7294) ->
+      (br_main_7291 (n_1315 = 19) n_1315 m_1316 k_main_5376).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when b_7296 ->
+      (f17_1268 m_1316 0 (f_main_7280 m_1316 n_1315 k_main_5376)).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when (not b_7296) ->
+      (br_main_7293 (n_1315 = 18) n_1315 m_1316 k_main_5376).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when b_7298 ->
+      (repeat_1258 succ_1256 m_1316 0 (f_main_7279 m_1316 n_1315 k_main_5376)).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when (not b_7298) ->
+      (br_main_7295 (n_1315 = 17) n_1315 m_1316 k_main_5376).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when b_7300 ->
+      (mult_1251 m_1316 m_1316 (f_main_7278 m_1316 n_1315 k_main_5376)).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when (not b_7300) ->
+      (br_main_7297 (n_1315 = 16) n_1315 m_1316 k_main_5376).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when b_7302 ->
+      (sum_1247 m_1316 (f_main_7277 m_1316 n_1315 k_main_5376)).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when (not b_7302) ->
+      (br_main_7299 (n_1315 = 15) n_1315 m_1316 k_main_5376).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when b_7304 ->
+      (f13_1239 m_1316 0 (f_main_7275 m_1316 n_1315 k_main_5376)).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when (not b_7304) ->
+      (br_main_7301 (n_1315 = 14) n_1315 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when b_7306 -> (m12_1231 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when (not b_7306) ->
+      (br_main_7303 (n_1315 = 13) n_1315 m_1316 k_main_5376).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (n_1240 > 0) -> (lock_1235 st_1241 k_f13_4454).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (not (n_1240 > 0)) -> (k_f13_4454 st_1241).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (n_1269 > 0) -> (lock_1264 st_1270 k_f17_4795).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (not (n_1269 > 0)) -> (k_f17_4795 st_1270).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (x_1282 >= 0) -> (g_1281 x_1282 k_f19_4943).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (not (x_1282 >= 0)) -> (g_1281 x_1282 (f_f19_7267 x_1282 g_1281 k_f19_4943)).
+  f20_1216 x_2082 src_1218 des_1219 k_f20_4095 ->
+      (bcopy_1220 x_2082 src_1218 des_1219 0 (f_f20_7258 x_2082 des_1219 k_f20_4095)).
+  f_7286 main_5573 -> end.
+  f_ackermann_7268 m_1288 n_1289 k_ackermann_5048 x_5081 -> (ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048).
+  f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218 x_4151 ->
+      (des_1223 i_1224 (f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218)).
+  f_f19_7267 x_1282 g_1281 k_f19_4943 x_4987 -> (f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943).
+  f_f20_7258 x_2082 des_1219 k_f20_4095 array_4311 -> (print_array_1226 x_2082 des_1219 array_4311 0 k_f20_4095).
+  f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218 u_4066 ->
+      (f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218
+       (a_1212 i_1224 u_4066 x_2082 x_4151 des_1223)).
+  f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218 des_4184 ->
+      (bcopy_1220 x_2082 src_1218 des_4184 (i_1224 + 1) k_f20_bcopy_4105).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (x_5302 >= 1) -> (k_m21_5260 ()).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (not (x_5302 >= 1)) -> (fail_7314 true k_m21_5260).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (x_4501 = 0) -> (k_main_5376 ()).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (not (x_4501 = 0)) -> (fail_7316 true k_main_5376).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (x_4842 = 0) -> (k_main_5376 ()).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (not (x_4842 = 0)) -> (fail_7320 true k_main_5376).
+  f_f_main_7285 arg1_5572 k_main_5537 arg2_5571 -> (main_1314 arg1_5572 arg2_5571 k_main_5537).
+  f_lock_7259 st_1236 k_lock_4412 u_4426 -> (k_lock_4412 1).
+  f_lock_7264 st_1265 k_lock_4753 u_4767 -> (k_lock_4753 1).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (x_5100 >= n_1292) -> (k_m20_5097 ()).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (not (x_5100 >= n_1292)) -> (fail_7312 true k_m20_5097).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when ((0 <= i_1308) && (i_1308 < n_1307)) ->
+      (x_5332 i_1308 (f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260)).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when (not ((0 <= i_1308) && (i_1308 < n_1307))) -> (k_m21_5260 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (m_1316 <= x_3971) -> (k_main_5376 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (not (m_1316 <= x_3971)) -> (fail_7315 true k_main_5376).
+  f_main_7275 m_1316 n_1315 k_main_5376 x_4524 ->
+      (g13_1242 m_1316 x_4524 (f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376)).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (m_1316 <= x_4571) -> (k_main_5376 ()).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (not (m_1316 <= x_4571)) -> (fail_7317 true k_main_5376).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when ((m_1316 + 1) <= x_4630) -> (k_main_5376 ()).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when (not ((m_1316 + 1) <= x_4630)) -> (fail_7318 true k_main_5376).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (x_4716 > m_1316) -> (k_main_5376 ()).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (not (x_4716 > m_1316)) -> (fail_7319 true k_main_5376).
+  f_main_7280 m_1316 n_1315 k_main_5376 x_4865 ->
+      (g17_1271 m_1316 x_4865 (f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376)).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when ((m_1316 + 1) <= x_4912) -> (k_main_5376 ()).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when (not ((m_1316 + 1) <= x_4912)) -> (fail_7321 true k_main_5376).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (x_5012 >= 0) -> (k_main_5376 ()).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (not (x_5012 >= 0)) -> (fail_7322 true k_main_5376).
+  f_main_7284 k_main_5537 arg1_5572 -> (arg2_2606 arg1_5572 (f_f_main_7285 arg1_5572 k_main_5537)).
+  f_make_array21_7270 i_1295 n_1294 k_make_array21_5135 u_5149 -> (k_make_array21_5135 0).
+  f_make_array_7253 i_1206 n_1205 k_make_array_4000 u_4014 -> (k_make_array_4000 0).
+  f_mc91_7273 x_1311 k_mc91_5345 x_5365 -> (mc91_1310 x_5365 k_mc91_5345).
+  f_mult_7252 m_1201 n_1200 k_mult_3940 x_3944 -> (k_mult_3940 (n_1200 + x_3944)).
+  f_mult_7262 m_1253 n_1252 k_mult_4599 x_4603 -> (k_mult_4599 (n_1252 + x_4603)).
+  f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155 x_4230 ->
+      (print_array_1226 x_2082 des_1219 x_2155 (i_1229 + 1) k_f20_print_array_4208).
+  f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292 x_4697 -> (x_2292 x_4697 k_repeat_4669).
+  f_sum_7261 n_1248 k_sum_4542 x_4546 -> (k_sum_4542 (n_1248 + x_4546)).
+  f_sum_7266 n_1277 k_sum_4883 x_4887 -> (k_sum_4883 (n_1277 + x_4887)).
+  f_unlock_7260 st_1238 k_unlock_4433 u_4447 -> (k_unlock_4433 0).
+  f_unlock_7265 st_1267 k_unlock_4774 u_4788 -> (k_unlock_4774 0).
+  fail_7307 b k -> {fail} => (k ()).
+  fail_7308 b k -> {fail} => (k ()).
+  fail_7309 b k -> {fail} => (k ()).
+  fail_7310 b k -> {fail} => (k ()).
+  fail_7311 b k -> {fail} => (k ()).
+  fail_7312 b k -> {fail} => (k ()).
+  fail_7313 b k -> {fail} => (k ()).
+  fail_7314 b k -> {fail} => (k ()).
+  fail_7315 b k -> {fail} => (k ()).
+  fail_7316 b k -> {fail} => (k ()).
+  fail_7317 b k -> {fail} => (k ()).
+  fail_7318 b k -> {fail} => (k ()).
+  fail_7319 b k -> {fail} => (k ()).
+  fail_7320 b k -> {fail} => (k ()).
+  fail_7321 b k -> {fail} => (k ()).
+  fail_7322 b k -> {fail} => (k ()).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (n_1243 > 0) -> (unlock_1237 st_1244 k_g13_4476).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (not (n_1243 > 0)) -> (k_g13_4476 st_1244).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (n_1272 >= 0) -> (unlock_1266 st_1273 k_g17_4817).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (not (n_1272 >= 0)) -> (k_g17_4817 st_1273).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (i_1302 >= n_1303) -> (k_init_5193 a_1304).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (not (i_1302 >= n_1303)) ->
+      (init_1301 (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193).
+  lock_1235 st_1236 k_lock_4412 -> (u_2212 st_1236 (f_lock_7259 st_1236 k_lock_4412)).
+  lock_1264 st_1265 k_lock_4753 -> (u_2321 st_1265 (f_lock_7264 st_1265 k_lock_4753)).
+  m12_1231 n_1232 k_m12_4345 when (n_1232 > 0) ->
+      (f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345).
+  m12_1231 n_1232 k_m12_4345 when (not (n_1232 > 0)) -> (k_m12_4345 ()).
+  m20_1290 m_1291 n_1292 k_m20_5097 when ((m_1291 >= 0) && (n_1292 >= 0)) ->
+      (ackermann_1287 m_1291 n_1292 (f_m20_7269 m_1291 n_1292 k_m20_5097)).
+  m20_1290 m_1291 n_1292 k_m20_5097 when (not ((m_1291 >= 0) && (n_1292 >= 0))) -> (k_m20_5097 ()).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when ((k_1306 >= 0) && (k_1306 <= 0)) ->
+      (init_1301 k_1306 n_1307 (make_array21_1293 n_1307) (f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260)).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when (not ((k_1306 >= 0) && (k_1306 <= 0))) -> (k_m21_5260 ()).
+  main_1314 n_1315 m_1316 k_main_5376 when (n_1315 = 11) ->
+      (mult_1199 m_1316 m_1316 (f_main_7274 m_1316 n_1315 k_main_5376)).
+  main_1314 n_1315 m_1316 k_main_5376 when (not (n_1315 = 11)) ->
+      (br_main_7305 (n_1315 = 12) n_1315 m_1316 k_main_5376).
+  main_2608 k_main_5537 -> (arg1_2604 (f_main_7284 k_main_5537)).
+  make_array21_1293 n_1294 i_1295 k_make_array21_5135 ->
+      (u_2448 i_1295 n_1294 (f_make_array21_7270 i_1295 n_1294 k_make_array21_5135)).
+  make_array_1204 n_1205 i_1206 k_make_array_4000 ->
+      (u_2036 i_1206 n_1205 (f_make_array_7253 i_1206 n_1205 k_make_array_4000)).
+  mc91_1310 x_1311 k_mc91_5345 when (x_1311 > 100) -> (k_mc91_5345 (x_1311 - 10)).
+  mc91_1310 x_1311 k_mc91_5345 when (not (x_1311 > 100)) -> (mc91_1310 (x_1311 + 11) (f_mc91_7273 x_1311 k_mc91_5345)).
+  mult_1199 n_1200 m_1201 k_mult_3940 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_3940 0).
+  mult_1199 n_1200 m_1201 k_mult_3940 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_7252 m_1201 n_1200 k_mult_3940)).
+  mult_1251 n_1252 m_1253 k_mult_4599 when ((n_1252 <= 0) || (m_1253 <= 0)) -> (k_mult_4599 0).
+  mult_1251 n_1252 m_1253 k_mult_4599 when (not ((n_1252 <= 0) || (m_1253 <= 0))) ->
+      (mult_1251 n_1252 (m_1253 - 1) (f_mult_7262 m_1253 n_1252 k_mult_4599)).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (i_1229 >= x_2082) -> (k_f20_print_array_4208 ()).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (not (i_1229 >= x_2082)) ->
+      (des_1219 i_1229 (f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155)).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (n_1260 = 0) -> (k_repeat_4669 s_1261).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (not (n_1260 = 0)) ->
+      (repeat_1258 x_2292 (n_1260 - 1) s_1261 (f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292)).
+  succ_1256 x_1257 k_succ_4659 -> (k_succ_4659 (x_1257 + 1)).
+  succ_1283 x_1284 k_succ_5002 -> (k_succ_5002 (x_1284 + 1)).
+  sum_1247 n_1248 k_sum_4542 when (n_1248 <= 0) -> (k_sum_4542 0).
+  sum_1247 n_1248 k_sum_4542 when (not (n_1248 <= 0)) -> (sum_1247 (n_1248 - 1) (f_sum_7261 n_1248 k_sum_4542)).
+  sum_1276 n_1277 k_sum_4883 when (n_1277 <= 0) -> (k_sum_4883 0).
+  sum_1276 n_1277 k_sum_4883 when (not (n_1277 <= 0)) -> (sum_1276 (n_1277 - 1) (f_sum_7266 n_1277 k_sum_4883)).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when ((0 <= i_1206) && (i_1206 < n_1205)) -> (k_make_array_u_4011 ()).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when (not ((0 <= i_1206) && (i_1206 < n_1205))) ->
+      (fail_7307 true k_make_array_u_4011).
+  u_2212 st_1236 k_lock_u_4423 when (st_1236 = 0) -> (k_lock_u_4423 ()).
+  u_2212 st_1236 k_lock_u_4423 when (not (st_1236 = 0)) -> (fail_7308 true k_lock_u_4423).
+  u_2217 st_1238 k_unlock_u_4444 when (st_1238 = 1) -> (k_unlock_u_4444 ()).
+  u_2217 st_1238 k_unlock_u_4444 when (not (st_1238 = 1)) -> (fail_7309 true k_unlock_u_4444).
+  u_2321 st_1265 k_lock_u_4764 when (st_1265 = 0) -> (k_lock_u_4764 ()).
+  u_2321 st_1265 k_lock_u_4764 when (not (st_1265 = 0)) -> (fail_7310 true k_lock_u_4764).
+  u_2326 st_1267 k_unlock_u_4785 when (st_1267 = 1) -> (k_unlock_u_4785 ()).
+  u_2326 st_1267 k_unlock_u_4785 when (not (st_1267 = 1)) -> (fail_7311 true k_unlock_u_4785).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when ((0 <= i_1295) && (i_1295 < n_1294)) -> (k_make_array21_u_5146 ()).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when (not ((0 <= i_1295) && (i_1295 < n_1294))) ->
+      (fail_7313 true k_make_array21_u_5146).
+  unlock_1237 st_1238 k_unlock_4433 -> (u_2217 st_1238 (f_unlock_7260 st_1238 k_unlock_4433)).
+  unlock_1266 st_1267 k_unlock_4774 -> (u_2326 st_1267 (f_unlock_7265 st_1267 k_unlock_4774)).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297)) ->
+      (k_update21_5160 x_1299).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when (not ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297))) ->
+      (a_1298 j_1300 k_update21_5160).
+Types:
+  main_7251 : X
+  ackermann_1287 : (int -> int -> (int -> X) -> X)
+  bcopy_1220 : (x_2:int ->
+                (x_4:int[x_4 <= 0] -> (int[x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int -> X) -> X) ->
+                x_15:int[1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  f19_1280 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7307 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7308 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7309 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7310 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7311 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7312 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7313 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7314 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7315 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7316 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7317 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7318 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7319 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7320 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7321 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7322 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1301 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1310 : (int -> (int -> X) -> X)
+  mult_1199 : (x_2:int -> x_3:int[x_3 <= x_2] -> (x_5:int[x_5 >= x_3] -> X) -> X)
+  mult_1251 : (int -> int -> (int -> X) -> X)
+  print_array_1226 : (int -> (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> (unit -> X) -> X)
+  repeat_1258 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  sum_1247 : (int -> (int -> X) -> X)
+  sum_1276 : (int -> (int -> X) -> X)
+
+(3-1) Abstracting ... DONE!
+
+(3-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7251 ... --> 
+  main_2608 ... --> 
+  arg1_2604 ... --> 
+  f_main_7284 ... --> 
+  arg2_2606 ... --> 
+  f_f_main_7285 ... --> 
+  main_1314 [2/2] ... --> 
+  br_main_7305 [1/2] ... --> 
+  m12_1231 [1/2] ... --> 
+  f20_1216 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_bcopy_7254 ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_f_bcopy_7255 ... --> 
+  f_f_f_bcopy_7256 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_bcopy_7254 ... --> 
+  a_1212 [1/2] ... --> 
+  f_f_bcopy_7255 ... --> 
+  f_f_f_bcopy_7256 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [2/2] ... --> 
+  fail_7307 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1; 0
+
+(3-3) Checking counterexample ... DONE!
+
+(3-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 4)::
+Main: main_7251
+  main_7251 -> (main_2608 f_7286).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (i_1224 = j_1213) -> (k_update_a_4048 x_4151).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (not (i_1224 = j_1213)) -> (des_1223 i_1224 k_update_a_4048).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (m_1288 = 0) -> (k_ackermann_5048 (n_1289 + 1)).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (not (m_1288 = 0)) ->
+      (br_ackermann_7287 (n_1289 = 0) m_1288 n_1289 k_ackermann_5048).
+  arg1_2604 k_main_arg1_5542 -> (rand_int k_main_arg1_5542).
+  arg2_2606 arg1_5572 k_main_arg2_5554 -> (rand_int k_main_arg2_5554).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (i_1224 >= x_2082) -> (k_f20_bcopy_4105 des_1223).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (not (i_1224 >= x_2082)) ->
+      (src_1218 i_1224 (f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218)).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when b_7288 ->
+      (ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when (not b_7288) ->
+      (ackermann_1287 m_1288 (n_1289 - 1) (f_ackermann_7268 m_1288 n_1289 k_ackermann_5048)).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when b_7290 -> (m20_1290 m_1316 m_1316 k_main_5376).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when (not b_7290) -> (m21_1305 m_1316 m_1316 m_1316 k_main_5376).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when b_7292 ->
+      (f19_1280 succ_1283 m_1316 (f_main_7283 m_1316 n_1315 k_main_5376)).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when (not b_7292) ->
+      (br_main_7289 (n_1315 = 20) n_1315 m_1316 k_main_5376).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when b_7294 ->
+      (sum_1276 m_1316 (f_main_7282 m_1316 n_1315 k_main_5376)).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when (not b_7294) ->
+      (br_main_7291 (n_1315 = 19) n_1315 m_1316 k_main_5376).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when b_7296 ->
+      (f17_1268 m_1316 0 (f_main_7280 m_1316 n_1315 k_main_5376)).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when (not b_7296) ->
+      (br_main_7293 (n_1315 = 18) n_1315 m_1316 k_main_5376).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when b_7298 ->
+      (repeat_1258 succ_1256 m_1316 0 (f_main_7279 m_1316 n_1315 k_main_5376)).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when (not b_7298) ->
+      (br_main_7295 (n_1315 = 17) n_1315 m_1316 k_main_5376).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when b_7300 ->
+      (mult_1251 m_1316 m_1316 (f_main_7278 m_1316 n_1315 k_main_5376)).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when (not b_7300) ->
+      (br_main_7297 (n_1315 = 16) n_1315 m_1316 k_main_5376).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when b_7302 ->
+      (sum_1247 m_1316 (f_main_7277 m_1316 n_1315 k_main_5376)).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when (not b_7302) ->
+      (br_main_7299 (n_1315 = 15) n_1315 m_1316 k_main_5376).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when b_7304 ->
+      (f13_1239 m_1316 0 (f_main_7275 m_1316 n_1315 k_main_5376)).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when (not b_7304) ->
+      (br_main_7301 (n_1315 = 14) n_1315 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when b_7306 -> (m12_1231 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when (not b_7306) ->
+      (br_main_7303 (n_1315 = 13) n_1315 m_1316 k_main_5376).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (n_1240 > 0) -> (lock_1235 st_1241 k_f13_4454).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (not (n_1240 > 0)) -> (k_f13_4454 st_1241).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (n_1269 > 0) -> (lock_1264 st_1270 k_f17_4795).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (not (n_1269 > 0)) -> (k_f17_4795 st_1270).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (x_1282 >= 0) -> (g_1281 x_1282 k_f19_4943).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (not (x_1282 >= 0)) -> (g_1281 x_1282 (f_f19_7267 x_1282 g_1281 k_f19_4943)).
+  f20_1216 x_2082 src_1218 des_1219 k_f20_4095 ->
+      (bcopy_1220 x_2082 src_1218 des_1219 0 (f_f20_7258 x_2082 des_1219 k_f20_4095)).
+  f_7286 main_5573 -> end.
+  f_ackermann_7268 m_1288 n_1289 k_ackermann_5048 x_5081 -> (ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048).
+  f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218 x_4151 ->
+      (des_1223 i_1224 (f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218)).
+  f_f19_7267 x_1282 g_1281 k_f19_4943 x_4987 -> (f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943).
+  f_f20_7258 x_2082 des_1219 k_f20_4095 array_4311 -> (print_array_1226 x_2082 des_1219 array_4311 0 k_f20_4095).
+  f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218 u_4066 ->
+      (f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218
+       (a_1212 i_1224 u_4066 x_2082 x_4151 des_1223)).
+  f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218 des_4184 ->
+      (bcopy_1220 x_2082 src_1218 des_4184 (i_1224 + 1) k_f20_bcopy_4105).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (x_5302 >= 1) -> (k_m21_5260 ()).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (not (x_5302 >= 1)) -> (fail_7314 true k_m21_5260).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (x_4501 = 0) -> (k_main_5376 ()).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (not (x_4501 = 0)) -> (fail_7316 true k_main_5376).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (x_4842 = 0) -> (k_main_5376 ()).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (not (x_4842 = 0)) -> (fail_7320 true k_main_5376).
+  f_f_main_7285 arg1_5572 k_main_5537 arg2_5571 -> (main_1314 arg1_5572 arg2_5571 k_main_5537).
+  f_lock_7259 st_1236 k_lock_4412 u_4426 -> (k_lock_4412 1).
+  f_lock_7264 st_1265 k_lock_4753 u_4767 -> (k_lock_4753 1).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (x_5100 >= n_1292) -> (k_m20_5097 ()).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (not (x_5100 >= n_1292)) -> (fail_7312 true k_m20_5097).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when ((0 <= i_1308) && (i_1308 < n_1307)) ->
+      (x_5332 i_1308 (f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260)).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when (not ((0 <= i_1308) && (i_1308 < n_1307))) -> (k_m21_5260 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (m_1316 <= x_3971) -> (k_main_5376 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (not (m_1316 <= x_3971)) -> (fail_7315 true k_main_5376).
+  f_main_7275 m_1316 n_1315 k_main_5376 x_4524 ->
+      (g13_1242 m_1316 x_4524 (f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376)).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (m_1316 <= x_4571) -> (k_main_5376 ()).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (not (m_1316 <= x_4571)) -> (fail_7317 true k_main_5376).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when ((m_1316 + 1) <= x_4630) -> (k_main_5376 ()).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when (not ((m_1316 + 1) <= x_4630)) -> (fail_7318 true k_main_5376).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (x_4716 > m_1316) -> (k_main_5376 ()).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (not (x_4716 > m_1316)) -> (fail_7319 true k_main_5376).
+  f_main_7280 m_1316 n_1315 k_main_5376 x_4865 ->
+      (g17_1271 m_1316 x_4865 (f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376)).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when ((m_1316 + 1) <= x_4912) -> (k_main_5376 ()).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when (not ((m_1316 + 1) <= x_4912)) -> (fail_7321 true k_main_5376).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (x_5012 >= 0) -> (k_main_5376 ()).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (not (x_5012 >= 0)) -> (fail_7322 true k_main_5376).
+  f_main_7284 k_main_5537 arg1_5572 -> (arg2_2606 arg1_5572 (f_f_main_7285 arg1_5572 k_main_5537)).
+  f_make_array21_7270 i_1295 n_1294 k_make_array21_5135 u_5149 -> (k_make_array21_5135 0).
+  f_make_array_7253 i_1206 n_1205 k_make_array_4000 u_4014 -> (k_make_array_4000 0).
+  f_mc91_7273 x_1311 k_mc91_5345 x_5365 -> (mc91_1310 x_5365 k_mc91_5345).
+  f_mult_7252 m_1201 n_1200 k_mult_3940 x_3944 -> (k_mult_3940 (n_1200 + x_3944)).
+  f_mult_7262 m_1253 n_1252 k_mult_4599 x_4603 -> (k_mult_4599 (n_1252 + x_4603)).
+  f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155 x_4230 ->
+      (print_array_1226 x_2082 des_1219 x_2155 (i_1229 + 1) k_f20_print_array_4208).
+  f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292 x_4697 -> (x_2292 x_4697 k_repeat_4669).
+  f_sum_7261 n_1248 k_sum_4542 x_4546 -> (k_sum_4542 (n_1248 + x_4546)).
+  f_sum_7266 n_1277 k_sum_4883 x_4887 -> (k_sum_4883 (n_1277 + x_4887)).
+  f_unlock_7260 st_1238 k_unlock_4433 u_4447 -> (k_unlock_4433 0).
+  f_unlock_7265 st_1267 k_unlock_4774 u_4788 -> (k_unlock_4774 0).
+  fail_7307 b k -> {fail} => (k ()).
+  fail_7308 b k -> {fail} => (k ()).
+  fail_7309 b k -> {fail} => (k ()).
+  fail_7310 b k -> {fail} => (k ()).
+  fail_7311 b k -> {fail} => (k ()).
+  fail_7312 b k -> {fail} => (k ()).
+  fail_7313 b k -> {fail} => (k ()).
+  fail_7314 b k -> {fail} => (k ()).
+  fail_7315 b k -> {fail} => (k ()).
+  fail_7316 b k -> {fail} => (k ()).
+  fail_7317 b k -> {fail} => (k ()).
+  fail_7318 b k -> {fail} => (k ()).
+  fail_7319 b k -> {fail} => (k ()).
+  fail_7320 b k -> {fail} => (k ()).
+  fail_7321 b k -> {fail} => (k ()).
+  fail_7322 b k -> {fail} => (k ()).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (n_1243 > 0) -> (unlock_1237 st_1244 k_g13_4476).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (not (n_1243 > 0)) -> (k_g13_4476 st_1244).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (n_1272 >= 0) -> (unlock_1266 st_1273 k_g17_4817).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (not (n_1272 >= 0)) -> (k_g17_4817 st_1273).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (i_1302 >= n_1303) -> (k_init_5193 a_1304).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (not (i_1302 >= n_1303)) ->
+      (init_1301 (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193).
+  lock_1235 st_1236 k_lock_4412 -> (u_2212 st_1236 (f_lock_7259 st_1236 k_lock_4412)).
+  lock_1264 st_1265 k_lock_4753 -> (u_2321 st_1265 (f_lock_7264 st_1265 k_lock_4753)).
+  m12_1231 n_1232 k_m12_4345 when (n_1232 > 0) ->
+      (f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345).
+  m12_1231 n_1232 k_m12_4345 when (not (n_1232 > 0)) -> (k_m12_4345 ()).
+  m20_1290 m_1291 n_1292 k_m20_5097 when ((m_1291 >= 0) && (n_1292 >= 0)) ->
+      (ackermann_1287 m_1291 n_1292 (f_m20_7269 m_1291 n_1292 k_m20_5097)).
+  m20_1290 m_1291 n_1292 k_m20_5097 when (not ((m_1291 >= 0) && (n_1292 >= 0))) -> (k_m20_5097 ()).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when ((k_1306 >= 0) && (k_1306 <= 0)) ->
+      (init_1301 k_1306 n_1307 (make_array21_1293 n_1307) (f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260)).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when (not ((k_1306 >= 0) && (k_1306 <= 0))) -> (k_m21_5260 ()).
+  main_1314 n_1315 m_1316 k_main_5376 when (n_1315 = 11) ->
+      (mult_1199 m_1316 m_1316 (f_main_7274 m_1316 n_1315 k_main_5376)).
+  main_1314 n_1315 m_1316 k_main_5376 when (not (n_1315 = 11)) ->
+      (br_main_7305 (n_1315 = 12) n_1315 m_1316 k_main_5376).
+  main_2608 k_main_5537 -> (arg1_2604 (f_main_7284 k_main_5537)).
+  make_array21_1293 n_1294 i_1295 k_make_array21_5135 ->
+      (u_2448 i_1295 n_1294 (f_make_array21_7270 i_1295 n_1294 k_make_array21_5135)).
+  make_array_1204 n_1205 i_1206 k_make_array_4000 ->
+      (u_2036 i_1206 n_1205 (f_make_array_7253 i_1206 n_1205 k_make_array_4000)).
+  mc91_1310 x_1311 k_mc91_5345 when (x_1311 > 100) -> (k_mc91_5345 (x_1311 - 10)).
+  mc91_1310 x_1311 k_mc91_5345 when (not (x_1311 > 100)) -> (mc91_1310 (x_1311 + 11) (f_mc91_7273 x_1311 k_mc91_5345)).
+  mult_1199 n_1200 m_1201 k_mult_3940 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_3940 0).
+  mult_1199 n_1200 m_1201 k_mult_3940 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_7252 m_1201 n_1200 k_mult_3940)).
+  mult_1251 n_1252 m_1253 k_mult_4599 when ((n_1252 <= 0) || (m_1253 <= 0)) -> (k_mult_4599 0).
+  mult_1251 n_1252 m_1253 k_mult_4599 when (not ((n_1252 <= 0) || (m_1253 <= 0))) ->
+      (mult_1251 n_1252 (m_1253 - 1) (f_mult_7262 m_1253 n_1252 k_mult_4599)).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (i_1229 >= x_2082) -> (k_f20_print_array_4208 ()).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (not (i_1229 >= x_2082)) ->
+      (des_1219 i_1229 (f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155)).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (n_1260 = 0) -> (k_repeat_4669 s_1261).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (not (n_1260 = 0)) ->
+      (repeat_1258 x_2292 (n_1260 - 1) s_1261 (f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292)).
+  succ_1256 x_1257 k_succ_4659 -> (k_succ_4659 (x_1257 + 1)).
+  succ_1283 x_1284 k_succ_5002 -> (k_succ_5002 (x_1284 + 1)).
+  sum_1247 n_1248 k_sum_4542 when (n_1248 <= 0) -> (k_sum_4542 0).
+  sum_1247 n_1248 k_sum_4542 when (not (n_1248 <= 0)) -> (sum_1247 (n_1248 - 1) (f_sum_7261 n_1248 k_sum_4542)).
+  sum_1276 n_1277 k_sum_4883 when (n_1277 <= 0) -> (k_sum_4883 0).
+  sum_1276 n_1277 k_sum_4883 when (not (n_1277 <= 0)) -> (sum_1276 (n_1277 - 1) (f_sum_7266 n_1277 k_sum_4883)).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when ((0 <= i_1206) && (i_1206 < n_1205)) -> (k_make_array_u_4011 ()).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when (not ((0 <= i_1206) && (i_1206 < n_1205))) ->
+      (fail_7307 true k_make_array_u_4011).
+  u_2212 st_1236 k_lock_u_4423 when (st_1236 = 0) -> (k_lock_u_4423 ()).
+  u_2212 st_1236 k_lock_u_4423 when (not (st_1236 = 0)) -> (fail_7308 true k_lock_u_4423).
+  u_2217 st_1238 k_unlock_u_4444 when (st_1238 = 1) -> (k_unlock_u_4444 ()).
+  u_2217 st_1238 k_unlock_u_4444 when (not (st_1238 = 1)) -> (fail_7309 true k_unlock_u_4444).
+  u_2321 st_1265 k_lock_u_4764 when (st_1265 = 0) -> (k_lock_u_4764 ()).
+  u_2321 st_1265 k_lock_u_4764 when (not (st_1265 = 0)) -> (fail_7310 true k_lock_u_4764).
+  u_2326 st_1267 k_unlock_u_4785 when (st_1267 = 1) -> (k_unlock_u_4785 ()).
+  u_2326 st_1267 k_unlock_u_4785 when (not (st_1267 = 1)) -> (fail_7311 true k_unlock_u_4785).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when ((0 <= i_1295) && (i_1295 < n_1294)) -> (k_make_array21_u_5146 ()).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when (not ((0 <= i_1295) && (i_1295 < n_1294))) ->
+      (fail_7313 true k_make_array21_u_5146).
+  unlock_1237 st_1238 k_unlock_4433 -> (u_2217 st_1238 (f_unlock_7260 st_1238 k_unlock_4433)).
+  unlock_1266 st_1267 k_unlock_4774 -> (u_2326 st_1267 (f_unlock_7265 st_1267 k_unlock_4774)).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297)) ->
+      (k_update21_5160 x_1299).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when (not ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297))) ->
+      (a_1298 j_1300 k_update21_5160).
+Types:
+  main_7251 : X
+  ackermann_1287 : (int -> int -> (int -> X) -> X)
+  bcopy_1220 : (x_2:int ->
+                (x_4:int[x_4 = 0; x_4 <= 0] -> (int[x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int -> X) -> X) ->
+                x_15:int[x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  f19_1280 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7307 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7308 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7309 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7310 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7311 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7312 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7313 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7314 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7315 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7316 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7317 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7318 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7319 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7320 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7321 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7322 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1301 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1310 : (int -> (int -> X) -> X)
+  mult_1199 : (x_2:int -> x_3:int[x_3 <= x_2] -> (x_5:int[x_5 >= x_3] -> X) -> X)
+  mult_1251 : (int -> int -> (int -> X) -> X)
+  print_array_1226 : (int -> (int -> (int -> X) -> X) -> (int -> (int -> X) -> X) -> int -> (unit -> X) -> X)
+  repeat_1258 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  sum_1247 : (int -> (int -> X) -> X)
+  sum_1276 : (int -> (int -> X) -> X)
+
+(4-1) Abstracting ... DONE!
+
+(4-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7251 ... --> 
+  main_2608 ... --> 
+  arg1_2604 ... --> 
+  f_main_7284 ... --> 
+  arg2_2606 ... --> 
+  f_f_main_7285 ... --> 
+  main_1314 [2/2] ... --> 
+  br_main_7305 [1/2] ... --> 
+  m12_1231 [1/2] ... --> 
+  f20_1216 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_bcopy_7254 ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_f_bcopy_7255 ... --> 
+  f_f_f_bcopy_7256 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_bcopy_7254 ... --> 
+  a_1212 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_f_bcopy_7255 ... --> 
+  f_f_f_bcopy_7256 ... --> 
+  bcopy_1220 [1/2] ... --> 
+  f_f20_7258 ... --> 
+  print_array_1226 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [2/2] ... --> 
+  fail_7307 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1; 0
+
+(4-3) Checking counterexample ... DONE!
+
+(4-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 5)::
+Main: main_7251
+  main_7251 -> (main_2608 f_7286).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (i_1224 = j_1213) -> (k_update_a_4048 x_4151).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (not (i_1224 = j_1213)) -> (des_1223 i_1224 k_update_a_4048).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (m_1288 = 0) -> (k_ackermann_5048 (n_1289 + 1)).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (not (m_1288 = 0)) ->
+      (br_ackermann_7287 (n_1289 = 0) m_1288 n_1289 k_ackermann_5048).
+  arg1_2604 k_main_arg1_5542 -> (rand_int k_main_arg1_5542).
+  arg2_2606 arg1_5572 k_main_arg2_5554 -> (rand_int k_main_arg2_5554).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (i_1224 >= x_2082) -> (k_f20_bcopy_4105 des_1223).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (not (i_1224 >= x_2082)) ->
+      (src_1218 i_1224 (f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218)).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when b_7288 ->
+      (ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when (not b_7288) ->
+      (ackermann_1287 m_1288 (n_1289 - 1) (f_ackermann_7268 m_1288 n_1289 k_ackermann_5048)).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when b_7290 -> (m20_1290 m_1316 m_1316 k_main_5376).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when (not b_7290) -> (m21_1305 m_1316 m_1316 m_1316 k_main_5376).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when b_7292 ->
+      (f19_1280 succ_1283 m_1316 (f_main_7283 m_1316 n_1315 k_main_5376)).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when (not b_7292) ->
+      (br_main_7289 (n_1315 = 20) n_1315 m_1316 k_main_5376).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when b_7294 ->
+      (sum_1276 m_1316 (f_main_7282 m_1316 n_1315 k_main_5376)).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when (not b_7294) ->
+      (br_main_7291 (n_1315 = 19) n_1315 m_1316 k_main_5376).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when b_7296 ->
+      (f17_1268 m_1316 0 (f_main_7280 m_1316 n_1315 k_main_5376)).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when (not b_7296) ->
+      (br_main_7293 (n_1315 = 18) n_1315 m_1316 k_main_5376).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when b_7298 ->
+      (repeat_1258 succ_1256 m_1316 0 (f_main_7279 m_1316 n_1315 k_main_5376)).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when (not b_7298) ->
+      (br_main_7295 (n_1315 = 17) n_1315 m_1316 k_main_5376).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when b_7300 ->
+      (mult_1251 m_1316 m_1316 (f_main_7278 m_1316 n_1315 k_main_5376)).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when (not b_7300) ->
+      (br_main_7297 (n_1315 = 16) n_1315 m_1316 k_main_5376).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when b_7302 ->
+      (sum_1247 m_1316 (f_main_7277 m_1316 n_1315 k_main_5376)).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when (not b_7302) ->
+      (br_main_7299 (n_1315 = 15) n_1315 m_1316 k_main_5376).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when b_7304 ->
+      (f13_1239 m_1316 0 (f_main_7275 m_1316 n_1315 k_main_5376)).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when (not b_7304) ->
+      (br_main_7301 (n_1315 = 14) n_1315 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when b_7306 -> (m12_1231 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when (not b_7306) ->
+      (br_main_7303 (n_1315 = 13) n_1315 m_1316 k_main_5376).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (n_1240 > 0) -> (lock_1235 st_1241 k_f13_4454).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (not (n_1240 > 0)) -> (k_f13_4454 st_1241).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (n_1269 > 0) -> (lock_1264 st_1270 k_f17_4795).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (not (n_1269 > 0)) -> (k_f17_4795 st_1270).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (x_1282 >= 0) -> (g_1281 x_1282 k_f19_4943).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (not (x_1282 >= 0)) -> (g_1281 x_1282 (f_f19_7267 x_1282 g_1281 k_f19_4943)).
+  f20_1216 x_2082 src_1218 des_1219 k_f20_4095 ->
+      (bcopy_1220 x_2082 src_1218 des_1219 0 (f_f20_7258 x_2082 des_1219 k_f20_4095)).
+  f_7286 main_5573 -> end.
+  f_ackermann_7268 m_1288 n_1289 k_ackermann_5048 x_5081 -> (ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048).
+  f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218 x_4151 ->
+      (des_1223 i_1224 (f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218)).
+  f_f19_7267 x_1282 g_1281 k_f19_4943 x_4987 -> (f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943).
+  f_f20_7258 x_2082 des_1219 k_f20_4095 array_4311 -> (print_array_1226 x_2082 des_1219 array_4311 0 k_f20_4095).
+  f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218 u_4066 ->
+      (f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218
+       (a_1212 i_1224 u_4066 x_2082 x_4151 des_1223)).
+  f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218 des_4184 ->
+      (bcopy_1220 x_2082 src_1218 des_4184 (i_1224 + 1) k_f20_bcopy_4105).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (x_5302 >= 1) -> (k_m21_5260 ()).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (not (x_5302 >= 1)) -> (fail_7314 true k_m21_5260).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (x_4501 = 0) -> (k_main_5376 ()).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (not (x_4501 = 0)) -> (fail_7316 true k_main_5376).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (x_4842 = 0) -> (k_main_5376 ()).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (not (x_4842 = 0)) -> (fail_7320 true k_main_5376).
+  f_f_main_7285 arg1_5572 k_main_5537 arg2_5571 -> (main_1314 arg1_5572 arg2_5571 k_main_5537).
+  f_lock_7259 st_1236 k_lock_4412 u_4426 -> (k_lock_4412 1).
+  f_lock_7264 st_1265 k_lock_4753 u_4767 -> (k_lock_4753 1).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (x_5100 >= n_1292) -> (k_m20_5097 ()).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (not (x_5100 >= n_1292)) -> (fail_7312 true k_m20_5097).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when ((0 <= i_1308) && (i_1308 < n_1307)) ->
+      (x_5332 i_1308 (f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260)).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when (not ((0 <= i_1308) && (i_1308 < n_1307))) -> (k_m21_5260 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (m_1316 <= x_3971) -> (k_main_5376 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (not (m_1316 <= x_3971)) -> (fail_7315 true k_main_5376).
+  f_main_7275 m_1316 n_1315 k_main_5376 x_4524 ->
+      (g13_1242 m_1316 x_4524 (f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376)).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (m_1316 <= x_4571) -> (k_main_5376 ()).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (not (m_1316 <= x_4571)) -> (fail_7317 true k_main_5376).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when ((m_1316 + 1) <= x_4630) -> (k_main_5376 ()).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when (not ((m_1316 + 1) <= x_4630)) -> (fail_7318 true k_main_5376).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (x_4716 > m_1316) -> (k_main_5376 ()).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (not (x_4716 > m_1316)) -> (fail_7319 true k_main_5376).
+  f_main_7280 m_1316 n_1315 k_main_5376 x_4865 ->
+      (g17_1271 m_1316 x_4865 (f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376)).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when ((m_1316 + 1) <= x_4912) -> (k_main_5376 ()).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when (not ((m_1316 + 1) <= x_4912)) -> (fail_7321 true k_main_5376).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (x_5012 >= 0) -> (k_main_5376 ()).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (not (x_5012 >= 0)) -> (fail_7322 true k_main_5376).
+  f_main_7284 k_main_5537 arg1_5572 -> (arg2_2606 arg1_5572 (f_f_main_7285 arg1_5572 k_main_5537)).
+  f_make_array21_7270 i_1295 n_1294 k_make_array21_5135 u_5149 -> (k_make_array21_5135 0).
+  f_make_array_7253 i_1206 n_1205 k_make_array_4000 u_4014 -> (k_make_array_4000 0).
+  f_mc91_7273 x_1311 k_mc91_5345 x_5365 -> (mc91_1310 x_5365 k_mc91_5345).
+  f_mult_7252 m_1201 n_1200 k_mult_3940 x_3944 -> (k_mult_3940 (n_1200 + x_3944)).
+  f_mult_7262 m_1253 n_1252 k_mult_4599 x_4603 -> (k_mult_4599 (n_1252 + x_4603)).
+  f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155 x_4230 ->
+      (print_array_1226 x_2082 des_1219 x_2155 (i_1229 + 1) k_f20_print_array_4208).
+  f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292 x_4697 -> (x_2292 x_4697 k_repeat_4669).
+  f_sum_7261 n_1248 k_sum_4542 x_4546 -> (k_sum_4542 (n_1248 + x_4546)).
+  f_sum_7266 n_1277 k_sum_4883 x_4887 -> (k_sum_4883 (n_1277 + x_4887)).
+  f_unlock_7260 st_1238 k_unlock_4433 u_4447 -> (k_unlock_4433 0).
+  f_unlock_7265 st_1267 k_unlock_4774 u_4788 -> (k_unlock_4774 0).
+  fail_7307 b k -> {fail} => (k ()).
+  fail_7308 b k -> {fail} => (k ()).
+  fail_7309 b k -> {fail} => (k ()).
+  fail_7310 b k -> {fail} => (k ()).
+  fail_7311 b k -> {fail} => (k ()).
+  fail_7312 b k -> {fail} => (k ()).
+  fail_7313 b k -> {fail} => (k ()).
+  fail_7314 b k -> {fail} => (k ()).
+  fail_7315 b k -> {fail} => (k ()).
+  fail_7316 b k -> {fail} => (k ()).
+  fail_7317 b k -> {fail} => (k ()).
+  fail_7318 b k -> {fail} => (k ()).
+  fail_7319 b k -> {fail} => (k ()).
+  fail_7320 b k -> {fail} => (k ()).
+  fail_7321 b k -> {fail} => (k ()).
+  fail_7322 b k -> {fail} => (k ()).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (n_1243 > 0) -> (unlock_1237 st_1244 k_g13_4476).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (not (n_1243 > 0)) -> (k_g13_4476 st_1244).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (n_1272 >= 0) -> (unlock_1266 st_1273 k_g17_4817).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (not (n_1272 >= 0)) -> (k_g17_4817 st_1273).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (i_1302 >= n_1303) -> (k_init_5193 a_1304).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (not (i_1302 >= n_1303)) ->
+      (init_1301 (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193).
+  lock_1235 st_1236 k_lock_4412 -> (u_2212 st_1236 (f_lock_7259 st_1236 k_lock_4412)).
+  lock_1264 st_1265 k_lock_4753 -> (u_2321 st_1265 (f_lock_7264 st_1265 k_lock_4753)).
+  m12_1231 n_1232 k_m12_4345 when (n_1232 > 0) ->
+      (f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345).
+  m12_1231 n_1232 k_m12_4345 when (not (n_1232 > 0)) -> (k_m12_4345 ()).
+  m20_1290 m_1291 n_1292 k_m20_5097 when ((m_1291 >= 0) && (n_1292 >= 0)) ->
+      (ackermann_1287 m_1291 n_1292 (f_m20_7269 m_1291 n_1292 k_m20_5097)).
+  m20_1290 m_1291 n_1292 k_m20_5097 when (not ((m_1291 >= 0) && (n_1292 >= 0))) -> (k_m20_5097 ()).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when ((k_1306 >= 0) && (k_1306 <= 0)) ->
+      (init_1301 k_1306 n_1307 (make_array21_1293 n_1307) (f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260)).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when (not ((k_1306 >= 0) && (k_1306 <= 0))) -> (k_m21_5260 ()).
+  main_1314 n_1315 m_1316 k_main_5376 when (n_1315 = 11) ->
+      (mult_1199 m_1316 m_1316 (f_main_7274 m_1316 n_1315 k_main_5376)).
+  main_1314 n_1315 m_1316 k_main_5376 when (not (n_1315 = 11)) ->
+      (br_main_7305 (n_1315 = 12) n_1315 m_1316 k_main_5376).
+  main_2608 k_main_5537 -> (arg1_2604 (f_main_7284 k_main_5537)).
+  make_array21_1293 n_1294 i_1295 k_make_array21_5135 ->
+      (u_2448 i_1295 n_1294 (f_make_array21_7270 i_1295 n_1294 k_make_array21_5135)).
+  make_array_1204 n_1205 i_1206 k_make_array_4000 ->
+      (u_2036 i_1206 n_1205 (f_make_array_7253 i_1206 n_1205 k_make_array_4000)).
+  mc91_1310 x_1311 k_mc91_5345 when (x_1311 > 100) -> (k_mc91_5345 (x_1311 - 10)).
+  mc91_1310 x_1311 k_mc91_5345 when (not (x_1311 > 100)) -> (mc91_1310 (x_1311 + 11) (f_mc91_7273 x_1311 k_mc91_5345)).
+  mult_1199 n_1200 m_1201 k_mult_3940 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_3940 0).
+  mult_1199 n_1200 m_1201 k_mult_3940 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_7252 m_1201 n_1200 k_mult_3940)).
+  mult_1251 n_1252 m_1253 k_mult_4599 when ((n_1252 <= 0) || (m_1253 <= 0)) -> (k_mult_4599 0).
+  mult_1251 n_1252 m_1253 k_mult_4599 when (not ((n_1252 <= 0) || (m_1253 <= 0))) ->
+      (mult_1251 n_1252 (m_1253 - 1) (f_mult_7262 m_1253 n_1252 k_mult_4599)).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (i_1229 >= x_2082) -> (k_f20_print_array_4208 ()).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (not (i_1229 >= x_2082)) ->
+      (des_1219 i_1229 (f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155)).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (n_1260 = 0) -> (k_repeat_4669 s_1261).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (not (n_1260 = 0)) ->
+      (repeat_1258 x_2292 (n_1260 - 1) s_1261 (f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292)).
+  succ_1256 x_1257 k_succ_4659 -> (k_succ_4659 (x_1257 + 1)).
+  succ_1283 x_1284 k_succ_5002 -> (k_succ_5002 (x_1284 + 1)).
+  sum_1247 n_1248 k_sum_4542 when (n_1248 <= 0) -> (k_sum_4542 0).
+  sum_1247 n_1248 k_sum_4542 when (not (n_1248 <= 0)) -> (sum_1247 (n_1248 - 1) (f_sum_7261 n_1248 k_sum_4542)).
+  sum_1276 n_1277 k_sum_4883 when (n_1277 <= 0) -> (k_sum_4883 0).
+  sum_1276 n_1277 k_sum_4883 when (not (n_1277 <= 0)) -> (sum_1276 (n_1277 - 1) (f_sum_7266 n_1277 k_sum_4883)).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when ((0 <= i_1206) && (i_1206 < n_1205)) -> (k_make_array_u_4011 ()).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when (not ((0 <= i_1206) && (i_1206 < n_1205))) ->
+      (fail_7307 true k_make_array_u_4011).
+  u_2212 st_1236 k_lock_u_4423 when (st_1236 = 0) -> (k_lock_u_4423 ()).
+  u_2212 st_1236 k_lock_u_4423 when (not (st_1236 = 0)) -> (fail_7308 true k_lock_u_4423).
+  u_2217 st_1238 k_unlock_u_4444 when (st_1238 = 1) -> (k_unlock_u_4444 ()).
+  u_2217 st_1238 k_unlock_u_4444 when (not (st_1238 = 1)) -> (fail_7309 true k_unlock_u_4444).
+  u_2321 st_1265 k_lock_u_4764 when (st_1265 = 0) -> (k_lock_u_4764 ()).
+  u_2321 st_1265 k_lock_u_4764 when (not (st_1265 = 0)) -> (fail_7310 true k_lock_u_4764).
+  u_2326 st_1267 k_unlock_u_4785 when (st_1267 = 1) -> (k_unlock_u_4785 ()).
+  u_2326 st_1267 k_unlock_u_4785 when (not (st_1267 = 1)) -> (fail_7311 true k_unlock_u_4785).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when ((0 <= i_1295) && (i_1295 < n_1294)) -> (k_make_array21_u_5146 ()).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when (not ((0 <= i_1295) && (i_1295 < n_1294))) ->
+      (fail_7313 true k_make_array21_u_5146).
+  unlock_1237 st_1238 k_unlock_4433 -> (u_2217 st_1238 (f_unlock_7260 st_1238 k_unlock_4433)).
+  unlock_1266 st_1267 k_unlock_4774 -> (u_2326 st_1267 (f_unlock_7265 st_1267 k_unlock_4774)).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297)) ->
+      (k_update21_5160 x_1299).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when (not ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297))) ->
+      (a_1298 j_1300 k_update21_5160).
+Types:
+  main_7251 : X
+  ackermann_1287 : (int -> int -> (int -> X) -> X)
+  bcopy_1220 : (x_2:int ->
+                (x_4:int[x_4 = 0; x_4 <= 0] -> (int[x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int -> X) -> X) ->
+                x_15:int[x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  f19_1280 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7307 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7308 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7309 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7310 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7311 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7312 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7313 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7314 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7315 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7316 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7317 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7318 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7319 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7320 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7321 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7322 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1301 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1310 : (int -> (int -> X) -> X)
+  mult_1199 : (x_2:int -> x_3:int[x_3 <= x_2] -> (x_5:int[x_5 >= x_3] -> X) -> X)
+  mult_1251 : (int -> int -> (int -> X) -> X)
+  print_array_1226 : (x_2:int ->
+                      (x_4:int[x_4 >= 0 && 1 <= x_2 - x_4] -> (int -> X) -> X) ->
+                      (int -> (int -> X) -> X) -> x_15:int[x_15 >= 0] -> (unit -> X) -> X)
+  repeat_1258 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  sum_1247 : (int -> (int -> X) -> X)
+  sum_1276 : (int -> (int -> X) -> X)
+
+(5-1) Abstracting ... DONE!
+
+(5-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7251 ... --> 
+  main_2608 ... --> 
+  arg1_2604 ... --> 
+  f_main_7284 ... --> 
+  arg2_2606 ... --> 
+  f_f_main_7285 ... --> 
+  main_1314 [2/2] ... --> 
+  br_main_7305 [1/2] ... --> 
+  m12_1231 [1/2] ... --> 
+  f20_1216 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_bcopy_7254 ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_f_bcopy_7255 ... --> 
+  f_f_f_bcopy_7256 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [2/2] ... --> 
+  fail_7307 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1; 0
+
+(5-3) Checking counterexample ... DONE!
+
+(5-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 1
+
+Program with abstraction types (CEGAR-cycle 6)::
+Main: main_7251
+  main_7251 -> (main_2608 f_7286).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (i_1224 = j_1213) -> (k_update_a_4048 x_4151).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (not (i_1224 = j_1213)) -> (des_1223 i_1224 k_update_a_4048).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (m_1288 = 0) -> (k_ackermann_5048 (n_1289 + 1)).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (not (m_1288 = 0)) ->
+      (br_ackermann_7287 (n_1289 = 0) m_1288 n_1289 k_ackermann_5048).
+  arg1_2604 k_main_arg1_5542 -> (rand_int k_main_arg1_5542).
+  arg2_2606 arg1_5572 k_main_arg2_5554 -> (rand_int k_main_arg2_5554).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (i_1224 >= x_2082) -> (k_f20_bcopy_4105 des_1223).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (not (i_1224 >= x_2082)) ->
+      (src_1218 i_1224 (f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218)).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when b_7288 ->
+      (ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when (not b_7288) ->
+      (ackermann_1287 m_1288 (n_1289 - 1) (f_ackermann_7268 m_1288 n_1289 k_ackermann_5048)).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when b_7290 -> (m20_1290 m_1316 m_1316 k_main_5376).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when (not b_7290) -> (m21_1305 m_1316 m_1316 m_1316 k_main_5376).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when b_7292 ->
+      (f19_1280 succ_1283 m_1316 (f_main_7283 m_1316 n_1315 k_main_5376)).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when (not b_7292) ->
+      (br_main_7289 (n_1315 = 20) n_1315 m_1316 k_main_5376).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when b_7294 ->
+      (sum_1276 m_1316 (f_main_7282 m_1316 n_1315 k_main_5376)).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when (not b_7294) ->
+      (br_main_7291 (n_1315 = 19) n_1315 m_1316 k_main_5376).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when b_7296 ->
+      (f17_1268 m_1316 0 (f_main_7280 m_1316 n_1315 k_main_5376)).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when (not b_7296) ->
+      (br_main_7293 (n_1315 = 18) n_1315 m_1316 k_main_5376).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when b_7298 ->
+      (repeat_1258 succ_1256 m_1316 0 (f_main_7279 m_1316 n_1315 k_main_5376)).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when (not b_7298) ->
+      (br_main_7295 (n_1315 = 17) n_1315 m_1316 k_main_5376).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when b_7300 ->
+      (mult_1251 m_1316 m_1316 (f_main_7278 m_1316 n_1315 k_main_5376)).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when (not b_7300) ->
+      (br_main_7297 (n_1315 = 16) n_1315 m_1316 k_main_5376).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when b_7302 ->
+      (sum_1247 m_1316 (f_main_7277 m_1316 n_1315 k_main_5376)).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when (not b_7302) ->
+      (br_main_7299 (n_1315 = 15) n_1315 m_1316 k_main_5376).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when b_7304 ->
+      (f13_1239 m_1316 0 (f_main_7275 m_1316 n_1315 k_main_5376)).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when (not b_7304) ->
+      (br_main_7301 (n_1315 = 14) n_1315 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when b_7306 -> (m12_1231 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when (not b_7306) ->
+      (br_main_7303 (n_1315 = 13) n_1315 m_1316 k_main_5376).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (n_1240 > 0) -> (lock_1235 st_1241 k_f13_4454).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (not (n_1240 > 0)) -> (k_f13_4454 st_1241).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (n_1269 > 0) -> (lock_1264 st_1270 k_f17_4795).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (not (n_1269 > 0)) -> (k_f17_4795 st_1270).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (x_1282 >= 0) -> (g_1281 x_1282 k_f19_4943).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (not (x_1282 >= 0)) -> (g_1281 x_1282 (f_f19_7267 x_1282 g_1281 k_f19_4943)).
+  f20_1216 x_2082 src_1218 des_1219 k_f20_4095 ->
+      (bcopy_1220 x_2082 src_1218 des_1219 0 (f_f20_7258 x_2082 des_1219 k_f20_4095)).
+  f_7286 main_5573 -> end.
+  f_ackermann_7268 m_1288 n_1289 k_ackermann_5048 x_5081 -> (ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048).
+  f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218 x_4151 ->
+      (des_1223 i_1224 (f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218)).
+  f_f19_7267 x_1282 g_1281 k_f19_4943 x_4987 -> (f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943).
+  f_f20_7258 x_2082 des_1219 k_f20_4095 array_4311 -> (print_array_1226 x_2082 des_1219 array_4311 0 k_f20_4095).
+  f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218 u_4066 ->
+      (f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218
+       (a_1212 i_1224 u_4066 x_2082 x_4151 des_1223)).
+  f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218 des_4184 ->
+      (bcopy_1220 x_2082 src_1218 des_4184 (i_1224 + 1) k_f20_bcopy_4105).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (x_5302 >= 1) -> (k_m21_5260 ()).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (not (x_5302 >= 1)) -> (fail_7314 true k_m21_5260).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (x_4501 = 0) -> (k_main_5376 ()).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (not (x_4501 = 0)) -> (fail_7316 true k_main_5376).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (x_4842 = 0) -> (k_main_5376 ()).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (not (x_4842 = 0)) -> (fail_7320 true k_main_5376).
+  f_f_main_7285 arg1_5572 k_main_5537 arg2_5571 -> (main_1314 arg1_5572 arg2_5571 k_main_5537).
+  f_lock_7259 st_1236 k_lock_4412 u_4426 -> (k_lock_4412 1).
+  f_lock_7264 st_1265 k_lock_4753 u_4767 -> (k_lock_4753 1).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (x_5100 >= n_1292) -> (k_m20_5097 ()).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (not (x_5100 >= n_1292)) -> (fail_7312 true k_m20_5097).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when ((0 <= i_1308) && (i_1308 < n_1307)) ->
+      (x_5332 i_1308 (f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260)).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when (not ((0 <= i_1308) && (i_1308 < n_1307))) -> (k_m21_5260 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (m_1316 <= x_3971) -> (k_main_5376 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (not (m_1316 <= x_3971)) -> (fail_7315 true k_main_5376).
+  f_main_7275 m_1316 n_1315 k_main_5376 x_4524 ->
+      (g13_1242 m_1316 x_4524 (f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376)).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (m_1316 <= x_4571) -> (k_main_5376 ()).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (not (m_1316 <= x_4571)) -> (fail_7317 true k_main_5376).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when ((m_1316 + 1) <= x_4630) -> (k_main_5376 ()).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when (not ((m_1316 + 1) <= x_4630)) -> (fail_7318 true k_main_5376).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (x_4716 > m_1316) -> (k_main_5376 ()).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (not (x_4716 > m_1316)) -> (fail_7319 true k_main_5376).
+  f_main_7280 m_1316 n_1315 k_main_5376 x_4865 ->
+      (g17_1271 m_1316 x_4865 (f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376)).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when ((m_1316 + 1) <= x_4912) -> (k_main_5376 ()).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when (not ((m_1316 + 1) <= x_4912)) -> (fail_7321 true k_main_5376).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (x_5012 >= 0) -> (k_main_5376 ()).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (not (x_5012 >= 0)) -> (fail_7322 true k_main_5376).
+  f_main_7284 k_main_5537 arg1_5572 -> (arg2_2606 arg1_5572 (f_f_main_7285 arg1_5572 k_main_5537)).
+  f_make_array21_7270 i_1295 n_1294 k_make_array21_5135 u_5149 -> (k_make_array21_5135 0).
+  f_make_array_7253 i_1206 n_1205 k_make_array_4000 u_4014 -> (k_make_array_4000 0).
+  f_mc91_7273 x_1311 k_mc91_5345 x_5365 -> (mc91_1310 x_5365 k_mc91_5345).
+  f_mult_7252 m_1201 n_1200 k_mult_3940 x_3944 -> (k_mult_3940 (n_1200 + x_3944)).
+  f_mult_7262 m_1253 n_1252 k_mult_4599 x_4603 -> (k_mult_4599 (n_1252 + x_4603)).
+  f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155 x_4230 ->
+      (print_array_1226 x_2082 des_1219 x_2155 (i_1229 + 1) k_f20_print_array_4208).
+  f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292 x_4697 -> (x_2292 x_4697 k_repeat_4669).
+  f_sum_7261 n_1248 k_sum_4542 x_4546 -> (k_sum_4542 (n_1248 + x_4546)).
+  f_sum_7266 n_1277 k_sum_4883 x_4887 -> (k_sum_4883 (n_1277 + x_4887)).
+  f_unlock_7260 st_1238 k_unlock_4433 u_4447 -> (k_unlock_4433 0).
+  f_unlock_7265 st_1267 k_unlock_4774 u_4788 -> (k_unlock_4774 0).
+  fail_7307 b k -> {fail} => (k ()).
+  fail_7308 b k -> {fail} => (k ()).
+  fail_7309 b k -> {fail} => (k ()).
+  fail_7310 b k -> {fail} => (k ()).
+  fail_7311 b k -> {fail} => (k ()).
+  fail_7312 b k -> {fail} => (k ()).
+  fail_7313 b k -> {fail} => (k ()).
+  fail_7314 b k -> {fail} => (k ()).
+  fail_7315 b k -> {fail} => (k ()).
+  fail_7316 b k -> {fail} => (k ()).
+  fail_7317 b k -> {fail} => (k ()).
+  fail_7318 b k -> {fail} => (k ()).
+  fail_7319 b k -> {fail} => (k ()).
+  fail_7320 b k -> {fail} => (k ()).
+  fail_7321 b k -> {fail} => (k ()).
+  fail_7322 b k -> {fail} => (k ()).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (n_1243 > 0) -> (unlock_1237 st_1244 k_g13_4476).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (not (n_1243 > 0)) -> (k_g13_4476 st_1244).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (n_1272 >= 0) -> (unlock_1266 st_1273 k_g17_4817).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (not (n_1272 >= 0)) -> (k_g17_4817 st_1273).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (i_1302 >= n_1303) -> (k_init_5193 a_1304).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (not (i_1302 >= n_1303)) ->
+      (init_1301 (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193).
+  lock_1235 st_1236 k_lock_4412 -> (u_2212 st_1236 (f_lock_7259 st_1236 k_lock_4412)).
+  lock_1264 st_1265 k_lock_4753 -> (u_2321 st_1265 (f_lock_7264 st_1265 k_lock_4753)).
+  m12_1231 n_1232 k_m12_4345 when (n_1232 > 0) ->
+      (f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345).
+  m12_1231 n_1232 k_m12_4345 when (not (n_1232 > 0)) -> (k_m12_4345 ()).
+  m20_1290 m_1291 n_1292 k_m20_5097 when ((m_1291 >= 0) && (n_1292 >= 0)) ->
+      (ackermann_1287 m_1291 n_1292 (f_m20_7269 m_1291 n_1292 k_m20_5097)).
+  m20_1290 m_1291 n_1292 k_m20_5097 when (not ((m_1291 >= 0) && (n_1292 >= 0))) -> (k_m20_5097 ()).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when ((k_1306 >= 0) && (k_1306 <= 0)) ->
+      (init_1301 k_1306 n_1307 (make_array21_1293 n_1307) (f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260)).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when (not ((k_1306 >= 0) && (k_1306 <= 0))) -> (k_m21_5260 ()).
+  main_1314 n_1315 m_1316 k_main_5376 when (n_1315 = 11) ->
+      (mult_1199 m_1316 m_1316 (f_main_7274 m_1316 n_1315 k_main_5376)).
+  main_1314 n_1315 m_1316 k_main_5376 when (not (n_1315 = 11)) ->
+      (br_main_7305 (n_1315 = 12) n_1315 m_1316 k_main_5376).
+  main_2608 k_main_5537 -> (arg1_2604 (f_main_7284 k_main_5537)).
+  make_array21_1293 n_1294 i_1295 k_make_array21_5135 ->
+      (u_2448 i_1295 n_1294 (f_make_array21_7270 i_1295 n_1294 k_make_array21_5135)).
+  make_array_1204 n_1205 i_1206 k_make_array_4000 ->
+      (u_2036 i_1206 n_1205 (f_make_array_7253 i_1206 n_1205 k_make_array_4000)).
+  mc91_1310 x_1311 k_mc91_5345 when (x_1311 > 100) -> (k_mc91_5345 (x_1311 - 10)).
+  mc91_1310 x_1311 k_mc91_5345 when (not (x_1311 > 100)) -> (mc91_1310 (x_1311 + 11) (f_mc91_7273 x_1311 k_mc91_5345)).
+  mult_1199 n_1200 m_1201 k_mult_3940 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_3940 0).
+  mult_1199 n_1200 m_1201 k_mult_3940 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_7252 m_1201 n_1200 k_mult_3940)).
+  mult_1251 n_1252 m_1253 k_mult_4599 when ((n_1252 <= 0) || (m_1253 <= 0)) -> (k_mult_4599 0).
+  mult_1251 n_1252 m_1253 k_mult_4599 when (not ((n_1252 <= 0) || (m_1253 <= 0))) ->
+      (mult_1251 n_1252 (m_1253 - 1) (f_mult_7262 m_1253 n_1252 k_mult_4599)).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (i_1229 >= x_2082) -> (k_f20_print_array_4208 ()).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (not (i_1229 >= x_2082)) ->
+      (des_1219 i_1229 (f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155)).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (n_1260 = 0) -> (k_repeat_4669 s_1261).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (not (n_1260 = 0)) ->
+      (repeat_1258 x_2292 (n_1260 - 1) s_1261 (f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292)).
+  succ_1256 x_1257 k_succ_4659 -> (k_succ_4659 (x_1257 + 1)).
+  succ_1283 x_1284 k_succ_5002 -> (k_succ_5002 (x_1284 + 1)).
+  sum_1247 n_1248 k_sum_4542 when (n_1248 <= 0) -> (k_sum_4542 0).
+  sum_1247 n_1248 k_sum_4542 when (not (n_1248 <= 0)) -> (sum_1247 (n_1248 - 1) (f_sum_7261 n_1248 k_sum_4542)).
+  sum_1276 n_1277 k_sum_4883 when (n_1277 <= 0) -> (k_sum_4883 0).
+  sum_1276 n_1277 k_sum_4883 when (not (n_1277 <= 0)) -> (sum_1276 (n_1277 - 1) (f_sum_7266 n_1277 k_sum_4883)).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when ((0 <= i_1206) && (i_1206 < n_1205)) -> (k_make_array_u_4011 ()).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when (not ((0 <= i_1206) && (i_1206 < n_1205))) ->
+      (fail_7307 true k_make_array_u_4011).
+  u_2212 st_1236 k_lock_u_4423 when (st_1236 = 0) -> (k_lock_u_4423 ()).
+  u_2212 st_1236 k_lock_u_4423 when (not (st_1236 = 0)) -> (fail_7308 true k_lock_u_4423).
+  u_2217 st_1238 k_unlock_u_4444 when (st_1238 = 1) -> (k_unlock_u_4444 ()).
+  u_2217 st_1238 k_unlock_u_4444 when (not (st_1238 = 1)) -> (fail_7309 true k_unlock_u_4444).
+  u_2321 st_1265 k_lock_u_4764 when (st_1265 = 0) -> (k_lock_u_4764 ()).
+  u_2321 st_1265 k_lock_u_4764 when (not (st_1265 = 0)) -> (fail_7310 true k_lock_u_4764).
+  u_2326 st_1267 k_unlock_u_4785 when (st_1267 = 1) -> (k_unlock_u_4785 ()).
+  u_2326 st_1267 k_unlock_u_4785 when (not (st_1267 = 1)) -> (fail_7311 true k_unlock_u_4785).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when ((0 <= i_1295) && (i_1295 < n_1294)) -> (k_make_array21_u_5146 ()).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when (not ((0 <= i_1295) && (i_1295 < n_1294))) ->
+      (fail_7313 true k_make_array21_u_5146).
+  unlock_1237 st_1238 k_unlock_4433 -> (u_2217 st_1238 (f_unlock_7260 st_1238 k_unlock_4433)).
+  unlock_1266 st_1267 k_unlock_4774 -> (u_2326 st_1267 (f_unlock_7265 st_1267 k_unlock_4774)).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297)) ->
+      (k_update21_5160 x_1299).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when (not ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297))) ->
+      (a_1298 j_1300 k_update21_5160).
+Types:
+  main_7251 : X
+  ackermann_1287 : (int -> int -> (int -> X) -> X)
+  bcopy_1220 : (x_2:int ->
+                (x_4:int[1 <= x_4 && 1 <= x_2 - x_4; x_4 = 0; x_4 <= 0] -> (int[
+                 x_4 >= 0; x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int -> X) -> X) ->
+                x_15:int[x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  f19_1280 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7307 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7308 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7309 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7310 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7311 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7312 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7313 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7314 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7315 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7316 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7317 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7318 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7319 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7320 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7321 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7322 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1301 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1310 : (int -> (int -> X) -> X)
+  mult_1199 : (x_2:int -> x_3:int[x_3 <= x_2] -> (x_5:int[x_5 >= x_3] -> X) -> X)
+  mult_1251 : (int -> int -> (int -> X) -> X)
+  print_array_1226 : (x_2:int ->
+                      (x_4:int[x_4 >= 0 && 1 <= x_2 - x_4] -> (int -> X) -> X) ->
+                      (int -> (int -> X) -> X) -> x_15:int[x_15 >= 0] -> (unit -> X) -> X)
+  repeat_1258 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  sum_1247 : (int -> (int -> X) -> X)
+  sum_1276 : (int -> (int -> X) -> X)
+
+(6-1) Abstracting ... DONE!
+
+(6-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7251 ... --> 
+  main_2608 ... --> 
+  arg1_2604 ... --> 
+  f_main_7284 ... --> 
+  arg2_2606 ... --> 
+  f_f_main_7285 ... --> 
+  main_1314 [2/2] ... --> 
+  br_main_7305 [1/2] ... --> 
+  m12_1231 [1/2] ... --> 
+  f20_1216 ... --> 
+  bcopy_1220 [2/2] ... --> 
+  make_array_1204 ... --> 
+  u_2036 [1/2] ... --> 
+  f_make_array_7253 ... --> 
+  f_bcopy_7254 ... --> 
+  make_array_1204 ... --> 
+  u_2036 [2/2] ... --> 
+  fail_7307 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 1; 0
+
+(6-3) Checking counterexample ... DONE!
+
+(6-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 7)::
+Main: main_7251
+  main_7251 -> (main_2608 f_7286).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (i_1224 = j_1213) -> (k_update_a_4048 x_4151).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (not (i_1224 = j_1213)) -> (des_1223 i_1224 k_update_a_4048).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (m_1288 = 0) -> (k_ackermann_5048 (n_1289 + 1)).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (not (m_1288 = 0)) ->
+      (br_ackermann_7287 (n_1289 = 0) m_1288 n_1289 k_ackermann_5048).
+  arg1_2604 k_main_arg1_5542 -> (rand_int k_main_arg1_5542).
+  arg2_2606 arg1_5572 k_main_arg2_5554 -> (rand_int k_main_arg2_5554).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (i_1224 >= x_2082) -> (k_f20_bcopy_4105 des_1223).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (not (i_1224 >= x_2082)) ->
+      (src_1218 i_1224 (f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218)).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when b_7288 ->
+      (ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when (not b_7288) ->
+      (ackermann_1287 m_1288 (n_1289 - 1) (f_ackermann_7268 m_1288 n_1289 k_ackermann_5048)).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when b_7290 -> (m20_1290 m_1316 m_1316 k_main_5376).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when (not b_7290) -> (m21_1305 m_1316 m_1316 m_1316 k_main_5376).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when b_7292 ->
+      (f19_1280 succ_1283 m_1316 (f_main_7283 m_1316 n_1315 k_main_5376)).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when (not b_7292) ->
+      (br_main_7289 (n_1315 = 20) n_1315 m_1316 k_main_5376).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when b_7294 ->
+      (sum_1276 m_1316 (f_main_7282 m_1316 n_1315 k_main_5376)).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when (not b_7294) ->
+      (br_main_7291 (n_1315 = 19) n_1315 m_1316 k_main_5376).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when b_7296 ->
+      (f17_1268 m_1316 0 (f_main_7280 m_1316 n_1315 k_main_5376)).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when (not b_7296) ->
+      (br_main_7293 (n_1315 = 18) n_1315 m_1316 k_main_5376).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when b_7298 ->
+      (repeat_1258 succ_1256 m_1316 0 (f_main_7279 m_1316 n_1315 k_main_5376)).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when (not b_7298) ->
+      (br_main_7295 (n_1315 = 17) n_1315 m_1316 k_main_5376).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when b_7300 ->
+      (mult_1251 m_1316 m_1316 (f_main_7278 m_1316 n_1315 k_main_5376)).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when (not b_7300) ->
+      (br_main_7297 (n_1315 = 16) n_1315 m_1316 k_main_5376).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when b_7302 ->
+      (sum_1247 m_1316 (f_main_7277 m_1316 n_1315 k_main_5376)).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when (not b_7302) ->
+      (br_main_7299 (n_1315 = 15) n_1315 m_1316 k_main_5376).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when b_7304 ->
+      (f13_1239 m_1316 0 (f_main_7275 m_1316 n_1315 k_main_5376)).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when (not b_7304) ->
+      (br_main_7301 (n_1315 = 14) n_1315 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when b_7306 -> (m12_1231 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when (not b_7306) ->
+      (br_main_7303 (n_1315 = 13) n_1315 m_1316 k_main_5376).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (n_1240 > 0) -> (lock_1235 st_1241 k_f13_4454).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (not (n_1240 > 0)) -> (k_f13_4454 st_1241).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (n_1269 > 0) -> (lock_1264 st_1270 k_f17_4795).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (not (n_1269 > 0)) -> (k_f17_4795 st_1270).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (x_1282 >= 0) -> (g_1281 x_1282 k_f19_4943).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (not (x_1282 >= 0)) -> (g_1281 x_1282 (f_f19_7267 x_1282 g_1281 k_f19_4943)).
+  f20_1216 x_2082 src_1218 des_1219 k_f20_4095 ->
+      (bcopy_1220 x_2082 src_1218 des_1219 0 (f_f20_7258 x_2082 des_1219 k_f20_4095)).
+  f_7286 main_5573 -> end.
+  f_ackermann_7268 m_1288 n_1289 k_ackermann_5048 x_5081 -> (ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048).
+  f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218 x_4151 ->
+      (des_1223 i_1224 (f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218)).
+  f_f19_7267 x_1282 g_1281 k_f19_4943 x_4987 -> (f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943).
+  f_f20_7258 x_2082 des_1219 k_f20_4095 array_4311 -> (print_array_1226 x_2082 des_1219 array_4311 0 k_f20_4095).
+  f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218 u_4066 ->
+      (f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218
+       (a_1212 i_1224 u_4066 x_2082 x_4151 des_1223)).
+  f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218 des_4184 ->
+      (bcopy_1220 x_2082 src_1218 des_4184 (i_1224 + 1) k_f20_bcopy_4105).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (x_5302 >= 1) -> (k_m21_5260 ()).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (not (x_5302 >= 1)) -> (fail_7314 true k_m21_5260).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (x_4501 = 0) -> (k_main_5376 ()).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (not (x_4501 = 0)) -> (fail_7316 true k_main_5376).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (x_4842 = 0) -> (k_main_5376 ()).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (not (x_4842 = 0)) -> (fail_7320 true k_main_5376).
+  f_f_main_7285 arg1_5572 k_main_5537 arg2_5571 -> (main_1314 arg1_5572 arg2_5571 k_main_5537).
+  f_lock_7259 st_1236 k_lock_4412 u_4426 -> (k_lock_4412 1).
+  f_lock_7264 st_1265 k_lock_4753 u_4767 -> (k_lock_4753 1).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (x_5100 >= n_1292) -> (k_m20_5097 ()).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (not (x_5100 >= n_1292)) -> (fail_7312 true k_m20_5097).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when ((0 <= i_1308) && (i_1308 < n_1307)) ->
+      (x_5332 i_1308 (f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260)).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when (not ((0 <= i_1308) && (i_1308 < n_1307))) -> (k_m21_5260 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (m_1316 <= x_3971) -> (k_main_5376 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (not (m_1316 <= x_3971)) -> (fail_7315 true k_main_5376).
+  f_main_7275 m_1316 n_1315 k_main_5376 x_4524 ->
+      (g13_1242 m_1316 x_4524 (f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376)).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (m_1316 <= x_4571) -> (k_main_5376 ()).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (not (m_1316 <= x_4571)) -> (fail_7317 true k_main_5376).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when ((m_1316 + 1) <= x_4630) -> (k_main_5376 ()).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when (not ((m_1316 + 1) <= x_4630)) -> (fail_7318 true k_main_5376).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (x_4716 > m_1316) -> (k_main_5376 ()).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (not (x_4716 > m_1316)) -> (fail_7319 true k_main_5376).
+  f_main_7280 m_1316 n_1315 k_main_5376 x_4865 ->
+      (g17_1271 m_1316 x_4865 (f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376)).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when ((m_1316 + 1) <= x_4912) -> (k_main_5376 ()).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when (not ((m_1316 + 1) <= x_4912)) -> (fail_7321 true k_main_5376).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (x_5012 >= 0) -> (k_main_5376 ()).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (not (x_5012 >= 0)) -> (fail_7322 true k_main_5376).
+  f_main_7284 k_main_5537 arg1_5572 -> (arg2_2606 arg1_5572 (f_f_main_7285 arg1_5572 k_main_5537)).
+  f_make_array21_7270 i_1295 n_1294 k_make_array21_5135 u_5149 -> (k_make_array21_5135 0).
+  f_make_array_7253 i_1206 n_1205 k_make_array_4000 u_4014 -> (k_make_array_4000 0).
+  f_mc91_7273 x_1311 k_mc91_5345 x_5365 -> (mc91_1310 x_5365 k_mc91_5345).
+  f_mult_7252 m_1201 n_1200 k_mult_3940 x_3944 -> (k_mult_3940 (n_1200 + x_3944)).
+  f_mult_7262 m_1253 n_1252 k_mult_4599 x_4603 -> (k_mult_4599 (n_1252 + x_4603)).
+  f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155 x_4230 ->
+      (print_array_1226 x_2082 des_1219 x_2155 (i_1229 + 1) k_f20_print_array_4208).
+  f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292 x_4697 -> (x_2292 x_4697 k_repeat_4669).
+  f_sum_7261 n_1248 k_sum_4542 x_4546 -> (k_sum_4542 (n_1248 + x_4546)).
+  f_sum_7266 n_1277 k_sum_4883 x_4887 -> (k_sum_4883 (n_1277 + x_4887)).
+  f_unlock_7260 st_1238 k_unlock_4433 u_4447 -> (k_unlock_4433 0).
+  f_unlock_7265 st_1267 k_unlock_4774 u_4788 -> (k_unlock_4774 0).
+  fail_7307 b k -> {fail} => (k ()).
+  fail_7308 b k -> {fail} => (k ()).
+  fail_7309 b k -> {fail} => (k ()).
+  fail_7310 b k -> {fail} => (k ()).
+  fail_7311 b k -> {fail} => (k ()).
+  fail_7312 b k -> {fail} => (k ()).
+  fail_7313 b k -> {fail} => (k ()).
+  fail_7314 b k -> {fail} => (k ()).
+  fail_7315 b k -> {fail} => (k ()).
+  fail_7316 b k -> {fail} => (k ()).
+  fail_7317 b k -> {fail} => (k ()).
+  fail_7318 b k -> {fail} => (k ()).
+  fail_7319 b k -> {fail} => (k ()).
+  fail_7320 b k -> {fail} => (k ()).
+  fail_7321 b k -> {fail} => (k ()).
+  fail_7322 b k -> {fail} => (k ()).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (n_1243 > 0) -> (unlock_1237 st_1244 k_g13_4476).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (not (n_1243 > 0)) -> (k_g13_4476 st_1244).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (n_1272 >= 0) -> (unlock_1266 st_1273 k_g17_4817).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (not (n_1272 >= 0)) -> (k_g17_4817 st_1273).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (i_1302 >= n_1303) -> (k_init_5193 a_1304).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (not (i_1302 >= n_1303)) ->
+      (init_1301 (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193).
+  lock_1235 st_1236 k_lock_4412 -> (u_2212 st_1236 (f_lock_7259 st_1236 k_lock_4412)).
+  lock_1264 st_1265 k_lock_4753 -> (u_2321 st_1265 (f_lock_7264 st_1265 k_lock_4753)).
+  m12_1231 n_1232 k_m12_4345 when (n_1232 > 0) ->
+      (f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345).
+  m12_1231 n_1232 k_m12_4345 when (not (n_1232 > 0)) -> (k_m12_4345 ()).
+  m20_1290 m_1291 n_1292 k_m20_5097 when ((m_1291 >= 0) && (n_1292 >= 0)) ->
+      (ackermann_1287 m_1291 n_1292 (f_m20_7269 m_1291 n_1292 k_m20_5097)).
+  m20_1290 m_1291 n_1292 k_m20_5097 when (not ((m_1291 >= 0) && (n_1292 >= 0))) -> (k_m20_5097 ()).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when ((k_1306 >= 0) && (k_1306 <= 0)) ->
+      (init_1301 k_1306 n_1307 (make_array21_1293 n_1307) (f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260)).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when (not ((k_1306 >= 0) && (k_1306 <= 0))) -> (k_m21_5260 ()).
+  main_1314 n_1315 m_1316 k_main_5376 when (n_1315 = 11) ->
+      (mult_1199 m_1316 m_1316 (f_main_7274 m_1316 n_1315 k_main_5376)).
+  main_1314 n_1315 m_1316 k_main_5376 when (not (n_1315 = 11)) ->
+      (br_main_7305 (n_1315 = 12) n_1315 m_1316 k_main_5376).
+  main_2608 k_main_5537 -> (arg1_2604 (f_main_7284 k_main_5537)).
+  make_array21_1293 n_1294 i_1295 k_make_array21_5135 ->
+      (u_2448 i_1295 n_1294 (f_make_array21_7270 i_1295 n_1294 k_make_array21_5135)).
+  make_array_1204 n_1205 i_1206 k_make_array_4000 ->
+      (u_2036 i_1206 n_1205 (f_make_array_7253 i_1206 n_1205 k_make_array_4000)).
+  mc91_1310 x_1311 k_mc91_5345 when (x_1311 > 100) -> (k_mc91_5345 (x_1311 - 10)).
+  mc91_1310 x_1311 k_mc91_5345 when (not (x_1311 > 100)) -> (mc91_1310 (x_1311 + 11) (f_mc91_7273 x_1311 k_mc91_5345)).
+  mult_1199 n_1200 m_1201 k_mult_3940 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_3940 0).
+  mult_1199 n_1200 m_1201 k_mult_3940 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_7252 m_1201 n_1200 k_mult_3940)).
+  mult_1251 n_1252 m_1253 k_mult_4599 when ((n_1252 <= 0) || (m_1253 <= 0)) -> (k_mult_4599 0).
+  mult_1251 n_1252 m_1253 k_mult_4599 when (not ((n_1252 <= 0) || (m_1253 <= 0))) ->
+      (mult_1251 n_1252 (m_1253 - 1) (f_mult_7262 m_1253 n_1252 k_mult_4599)).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (i_1229 >= x_2082) -> (k_f20_print_array_4208 ()).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (not (i_1229 >= x_2082)) ->
+      (des_1219 i_1229 (f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155)).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (n_1260 = 0) -> (k_repeat_4669 s_1261).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (not (n_1260 = 0)) ->
+      (repeat_1258 x_2292 (n_1260 - 1) s_1261 (f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292)).
+  succ_1256 x_1257 k_succ_4659 -> (k_succ_4659 (x_1257 + 1)).
+  succ_1283 x_1284 k_succ_5002 -> (k_succ_5002 (x_1284 + 1)).
+  sum_1247 n_1248 k_sum_4542 when (n_1248 <= 0) -> (k_sum_4542 0).
+  sum_1247 n_1248 k_sum_4542 when (not (n_1248 <= 0)) -> (sum_1247 (n_1248 - 1) (f_sum_7261 n_1248 k_sum_4542)).
+  sum_1276 n_1277 k_sum_4883 when (n_1277 <= 0) -> (k_sum_4883 0).
+  sum_1276 n_1277 k_sum_4883 when (not (n_1277 <= 0)) -> (sum_1276 (n_1277 - 1) (f_sum_7266 n_1277 k_sum_4883)).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when ((0 <= i_1206) && (i_1206 < n_1205)) -> (k_make_array_u_4011 ()).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when (not ((0 <= i_1206) && (i_1206 < n_1205))) ->
+      (fail_7307 true k_make_array_u_4011).
+  u_2212 st_1236 k_lock_u_4423 when (st_1236 = 0) -> (k_lock_u_4423 ()).
+  u_2212 st_1236 k_lock_u_4423 when (not (st_1236 = 0)) -> (fail_7308 true k_lock_u_4423).
+  u_2217 st_1238 k_unlock_u_4444 when (st_1238 = 1) -> (k_unlock_u_4444 ()).
+  u_2217 st_1238 k_unlock_u_4444 when (not (st_1238 = 1)) -> (fail_7309 true k_unlock_u_4444).
+  u_2321 st_1265 k_lock_u_4764 when (st_1265 = 0) -> (k_lock_u_4764 ()).
+  u_2321 st_1265 k_lock_u_4764 when (not (st_1265 = 0)) -> (fail_7310 true k_lock_u_4764).
+  u_2326 st_1267 k_unlock_u_4785 when (st_1267 = 1) -> (k_unlock_u_4785 ()).
+  u_2326 st_1267 k_unlock_u_4785 when (not (st_1267 = 1)) -> (fail_7311 true k_unlock_u_4785).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when ((0 <= i_1295) && (i_1295 < n_1294)) -> (k_make_array21_u_5146 ()).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when (not ((0 <= i_1295) && (i_1295 < n_1294))) ->
+      (fail_7313 true k_make_array21_u_5146).
+  unlock_1237 st_1238 k_unlock_4433 -> (u_2217 st_1238 (f_unlock_7260 st_1238 k_unlock_4433)).
+  unlock_1266 st_1267 k_unlock_4774 -> (u_2326 st_1267 (f_unlock_7265 st_1267 k_unlock_4774)).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297)) ->
+      (k_update21_5160 x_1299).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when (not ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297))) ->
+      (a_1298 j_1300 k_update21_5160).
+Types:
+  main_7251 : X
+  ackermann_1287 : (int -> int -> (int -> X) -> X)
+  bcopy_1220 : (x_2:int ->
+                (x_4:int[1 <= x_4 && 1 <= x_2 - x_4; x_4 = 0; x_4 <= 0] -> (int[
+                 x_4 >= 0; x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[x_10 >= 0 && 1 <= x_2 - x_10; 1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int ->
+                 X) -> X) ->
+                x_15:int[x_15 >= 0; x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  f19_1280 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7307 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7308 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7309 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7310 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7311 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7312 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7313 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7314 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7315 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7316 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7317 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7318 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7319 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7320 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7321 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7322 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1301 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1310 : (int -> (int -> X) -> X)
+  mult_1199 : (x_2:int -> x_3:int[x_3 <= x_2] -> (x_5:int[x_5 >= x_3] -> X) -> X)
+  mult_1251 : (int -> int -> (int -> X) -> X)
+  print_array_1226 : (x_2:int ->
+                      (x_4:int[x_4 >= 0 && 1 <= x_2 - x_4] -> (int -> X) -> X) ->
+                      (int -> (int -> X) -> X) -> x_15:int[x_15 >= 0] -> (unit -> X) -> X)
+  repeat_1258 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  sum_1247 : (int -> (int -> X) -> X)
+  sum_1276 : (int -> (int -> X) -> X)
+
+(7-1) Abstracting ... DONE!
+
+(7-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7251 ... --> 
+  main_2608 ... --> 
+  arg1_2604 ... --> 
+  f_main_7284 ... --> 
+  arg2_2606 ... --> 
+  f_f_main_7285 ... --> 
+  main_1314 [2/2] ... --> 
+  br_main_7305 [2/2] ... --> 
+  br_main_7303 [2/2] ... --> 
+  br_main_7301 [1/2] ... --> 
+  sum_1247 [1/2] ... --> 
+  f_main_7277 [2/2] ... --> 
+  fail_7317 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 1; 0
+
+(7-3) Checking counterexample ... DONE!
+
+(7-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 8)::
+Main: main_7251
+  main_7251 -> (main_2608 f_7286).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (i_1224 = j_1213) -> (k_update_a_4048 x_4151).
+  a_1212 i_1224 u_4066 x_2082 x_4151 des_1223 j_1213 k_update_a_4048 when 
+      (not (i_1224 = j_1213)) -> (des_1223 i_1224 k_update_a_4048).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (m_1288 = 0) -> (k_ackermann_5048 (n_1289 + 1)).
+  ackermann_1287 m_1288 n_1289 k_ackermann_5048 when (not (m_1288 = 0)) ->
+      (br_ackermann_7287 (n_1289 = 0) m_1288 n_1289 k_ackermann_5048).
+  arg1_2604 k_main_arg1_5542 -> (rand_int k_main_arg1_5542).
+  arg2_2606 arg1_5572 k_main_arg2_5554 -> (rand_int k_main_arg2_5554).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (i_1224 >= x_2082) -> (k_f20_bcopy_4105 des_1223).
+  bcopy_1220 x_2082 src_1218 des_1223 i_1224 k_f20_bcopy_4105 when (not (i_1224 >= x_2082)) ->
+      (src_1218 i_1224 (f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218)).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when b_7288 ->
+      (ackermann_1287 (m_1288 - 1) 1 k_ackermann_5048).
+  br_ackermann_7287 b_7288 m_1288 n_1289 k_ackermann_5048 when (not b_7288) ->
+      (ackermann_1287 m_1288 (n_1289 - 1) (f_ackermann_7268 m_1288 n_1289 k_ackermann_5048)).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when b_7290 -> (m20_1290 m_1316 m_1316 k_main_5376).
+  br_main_7289 b_7290 n_1315 m_1316 k_main_5376 when (not b_7290) -> (m21_1305 m_1316 m_1316 m_1316 k_main_5376).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when b_7292 ->
+      (f19_1280 succ_1283 m_1316 (f_main_7283 m_1316 n_1315 k_main_5376)).
+  br_main_7291 b_7292 n_1315 m_1316 k_main_5376 when (not b_7292) ->
+      (br_main_7289 (n_1315 = 20) n_1315 m_1316 k_main_5376).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when b_7294 ->
+      (sum_1276 m_1316 (f_main_7282 m_1316 n_1315 k_main_5376)).
+  br_main_7293 b_7294 n_1315 m_1316 k_main_5376 when (not b_7294) ->
+      (br_main_7291 (n_1315 = 19) n_1315 m_1316 k_main_5376).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when b_7296 ->
+      (f17_1268 m_1316 0 (f_main_7280 m_1316 n_1315 k_main_5376)).
+  br_main_7295 b_7296 n_1315 m_1316 k_main_5376 when (not b_7296) ->
+      (br_main_7293 (n_1315 = 18) n_1315 m_1316 k_main_5376).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when b_7298 ->
+      (repeat_1258 succ_1256 m_1316 0 (f_main_7279 m_1316 n_1315 k_main_5376)).
+  br_main_7297 b_7298 n_1315 m_1316 k_main_5376 when (not b_7298) ->
+      (br_main_7295 (n_1315 = 17) n_1315 m_1316 k_main_5376).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when b_7300 ->
+      (mult_1251 m_1316 m_1316 (f_main_7278 m_1316 n_1315 k_main_5376)).
+  br_main_7299 b_7300 n_1315 m_1316 k_main_5376 when (not b_7300) ->
+      (br_main_7297 (n_1315 = 16) n_1315 m_1316 k_main_5376).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when b_7302 ->
+      (sum_1247 m_1316 (f_main_7277 m_1316 n_1315 k_main_5376)).
+  br_main_7301 b_7302 n_1315 m_1316 k_main_5376 when (not b_7302) ->
+      (br_main_7299 (n_1315 = 15) n_1315 m_1316 k_main_5376).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when b_7304 ->
+      (f13_1239 m_1316 0 (f_main_7275 m_1316 n_1315 k_main_5376)).
+  br_main_7303 b_7304 n_1315 m_1316 k_main_5376 when (not b_7304) ->
+      (br_main_7301 (n_1315 = 14) n_1315 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when b_7306 -> (m12_1231 m_1316 k_main_5376).
+  br_main_7305 b_7306 n_1315 m_1316 k_main_5376 when (not b_7306) ->
+      (br_main_7303 (n_1315 = 13) n_1315 m_1316 k_main_5376).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (n_1240 > 0) -> (lock_1235 st_1241 k_f13_4454).
+  f13_1239 n_1240 st_1241 k_f13_4454 when (not (n_1240 > 0)) -> (k_f13_4454 st_1241).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (n_1269 > 0) -> (lock_1264 st_1270 k_f17_4795).
+  f17_1268 n_1269 st_1270 k_f17_4795 when (not (n_1269 > 0)) -> (k_f17_4795 st_1270).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (x_1282 >= 0) -> (g_1281 x_1282 k_f19_4943).
+  f19_1280 g_1281 x_1282 k_f19_4943 when (not (x_1282 >= 0)) -> (g_1281 x_1282 (f_f19_7267 x_1282 g_1281 k_f19_4943)).
+  f20_1216 x_2082 src_1218 des_1219 k_f20_4095 ->
+      (bcopy_1220 x_2082 src_1218 des_1219 0 (f_f20_7258 x_2082 des_1219 k_f20_4095)).
+  f_7286 main_5573 -> end.
+  f_ackermann_7268 m_1288 n_1289 k_ackermann_5048 x_5081 -> (ackermann_1287 (m_1288 - 1) x_5081 k_ackermann_5048).
+  f_bcopy_7254 i_1224 x_2082 des_1223 k_f20_bcopy_4105 src_1218 x_4151 ->
+      (des_1223 i_1224 (f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218)).
+  f_f19_7267 x_1282 g_1281 k_f19_4943 x_4987 -> (f19_1280 (f19_1280 g_1281) x_4987 k_f19_4943).
+  f_f20_7258 x_2082 des_1219 k_f20_4095 array_4311 -> (print_array_1226 x_2082 des_1219 array_4311 0 k_f20_4095).
+  f_f_bcopy_7255 i_1224 x_2082 x_4151 des_1223 k_f20_bcopy_4105 src_1218 u_4066 ->
+      (f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218
+       (a_1212 i_1224 u_4066 x_2082 x_4151 des_1223)).
+  f_f_f_bcopy_7256 i_1224 u_4066 x_2082 x_4151 k_f20_bcopy_4105 src_1218 des_4184 ->
+      (bcopy_1220 x_2082 src_1218 des_4184 (i_1224 + 1) k_f20_bcopy_4105).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (x_5302 >= 1) -> (k_m21_5260 ()).
+  f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260 x_5302 when (not (x_5302 >= 1)) -> (fail_7314 true k_m21_5260).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (x_4501 = 0) -> (k_main_5376 ()).
+  f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376 x_4501 when (not (x_4501 = 0)) -> (fail_7316 true k_main_5376).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (x_4842 = 0) -> (k_main_5376 ()).
+  f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376 x_4842 when (not (x_4842 = 0)) -> (fail_7320 true k_main_5376).
+  f_f_main_7285 arg1_5572 k_main_5537 arg2_5571 -> (main_1314 arg1_5572 arg2_5571 k_main_5537).
+  f_lock_7259 st_1236 k_lock_4412 u_4426 -> (k_lock_4412 1).
+  f_lock_7264 st_1265 k_lock_4753 u_4767 -> (k_lock_4753 1).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (x_5100 >= n_1292) -> (k_m20_5097 ()).
+  f_m20_7269 m_1291 n_1292 k_m20_5097 x_5100 when (not (x_5100 >= n_1292)) -> (fail_7312 true k_m20_5097).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when ((0 <= i_1308) && (i_1308 < n_1307)) ->
+      (x_5332 i_1308 (f_f_m21_7272 i_1308 k_1306 n_1307 k_m21_5260)).
+  f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260 x_5332 when (not ((0 <= i_1308) && (i_1308 < n_1307))) -> (k_m21_5260 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (m_1316 <= x_3971) -> (k_main_5376 ()).
+  f_main_7274 m_1316 n_1315 k_main_5376 x_3971 when (not (m_1316 <= x_3971)) -> (fail_7315 true k_main_5376).
+  f_main_7275 m_1316 n_1315 k_main_5376 x_4524 ->
+      (g13_1242 m_1316 x_4524 (f_f_main_7276 m_1316 n_1315 x_4524 k_main_5376)).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (m_1316 <= x_4571) -> (k_main_5376 ()).
+  f_main_7277 m_1316 n_1315 k_main_5376 x_4571 when (not (m_1316 <= x_4571)) -> (fail_7317 true k_main_5376).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when ((m_1316 + 1) <= x_4630) -> (k_main_5376 ()).
+  f_main_7278 m_1316 n_1315 k_main_5376 x_4630 when (not ((m_1316 + 1) <= x_4630)) -> (fail_7318 true k_main_5376).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (x_4716 > m_1316) -> (k_main_5376 ()).
+  f_main_7279 m_1316 n_1315 k_main_5376 x_4716 when (not (x_4716 > m_1316)) -> (fail_7319 true k_main_5376).
+  f_main_7280 m_1316 n_1315 k_main_5376 x_4865 ->
+      (g17_1271 m_1316 x_4865 (f_f_main_7281 m_1316 n_1315 x_4865 k_main_5376)).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when ((m_1316 + 1) <= x_4912) -> (k_main_5376 ()).
+  f_main_7282 m_1316 n_1315 k_main_5376 x_4912 when (not ((m_1316 + 1) <= x_4912)) -> (fail_7321 true k_main_5376).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (x_5012 >= 0) -> (k_main_5376 ()).
+  f_main_7283 m_1316 n_1315 k_main_5376 x_5012 when (not (x_5012 >= 0)) -> (fail_7322 true k_main_5376).
+  f_main_7284 k_main_5537 arg1_5572 -> (arg2_2606 arg1_5572 (f_f_main_7285 arg1_5572 k_main_5537)).
+  f_make_array21_7270 i_1295 n_1294 k_make_array21_5135 u_5149 -> (k_make_array21_5135 0).
+  f_make_array_7253 i_1206 n_1205 k_make_array_4000 u_4014 -> (k_make_array_4000 0).
+  f_mc91_7273 x_1311 k_mc91_5345 x_5365 -> (mc91_1310 x_5365 k_mc91_5345).
+  f_mult_7252 m_1201 n_1200 k_mult_3940 x_3944 -> (k_mult_3940 (n_1200 + x_3944)).
+  f_mult_7262 m_1253 n_1252 k_mult_4599 x_4603 -> (k_mult_4599 (n_1252 + x_4603)).
+  f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155 x_4230 ->
+      (print_array_1226 x_2082 des_1219 x_2155 (i_1229 + 1) k_f20_print_array_4208).
+  f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292 x_4697 -> (x_2292 x_4697 k_repeat_4669).
+  f_sum_7261 n_1248 k_sum_4542 x_4546 -> (k_sum_4542 (n_1248 + x_4546)).
+  f_sum_7266 n_1277 k_sum_4883 x_4887 -> (k_sum_4883 (n_1277 + x_4887)).
+  f_unlock_7260 st_1238 k_unlock_4433 u_4447 -> (k_unlock_4433 0).
+  f_unlock_7265 st_1267 k_unlock_4774 u_4788 -> (k_unlock_4774 0).
+  fail_7307 b k -> {fail} => (k ()).
+  fail_7308 b k -> {fail} => (k ()).
+  fail_7309 b k -> {fail} => (k ()).
+  fail_7310 b k -> {fail} => (k ()).
+  fail_7311 b k -> {fail} => (k ()).
+  fail_7312 b k -> {fail} => (k ()).
+  fail_7313 b k -> {fail} => (k ()).
+  fail_7314 b k -> {fail} => (k ()).
+  fail_7315 b k -> {fail} => (k ()).
+  fail_7316 b k -> {fail} => (k ()).
+  fail_7317 b k -> {fail} => (k ()).
+  fail_7318 b k -> {fail} => (k ()).
+  fail_7319 b k -> {fail} => (k ()).
+  fail_7320 b k -> {fail} => (k ()).
+  fail_7321 b k -> {fail} => (k ()).
+  fail_7322 b k -> {fail} => (k ()).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (n_1243 > 0) -> (unlock_1237 st_1244 k_g13_4476).
+  g13_1242 n_1243 st_1244 k_g13_4476 when (not (n_1243 > 0)) -> (k_g13_4476 st_1244).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (n_1272 >= 0) -> (unlock_1266 st_1273 k_g17_4817).
+  g17_1271 n_1272 st_1273 k_g17_4817 when (not (n_1272 >= 0)) -> (k_g17_4817 st_1273).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (i_1302 >= n_1303) -> (k_init_5193 a_1304).
+  init_1301 i_1302 n_1303 a_1304 k_init_5193 when (not (i_1302 >= n_1303)) ->
+      (init_1301 (i_1302 + 1) n_1303 (update21_1296 i_1302 a_1304 1) k_init_5193).
+  lock_1235 st_1236 k_lock_4412 -> (u_2212 st_1236 (f_lock_7259 st_1236 k_lock_4412)).
+  lock_1264 st_1265 k_lock_4753 -> (u_2321 st_1265 (f_lock_7264 st_1265 k_lock_4753)).
+  m12_1231 n_1232 k_m12_4345 when (n_1232 > 0) ->
+      (f20_1216 n_1232 (make_array_1204 n_1232) (make_array_1204 n_1232) k_m12_4345).
+  m12_1231 n_1232 k_m12_4345 when (not (n_1232 > 0)) -> (k_m12_4345 ()).
+  m20_1290 m_1291 n_1292 k_m20_5097 when ((m_1291 >= 0) && (n_1292 >= 0)) ->
+      (ackermann_1287 m_1291 n_1292 (f_m20_7269 m_1291 n_1292 k_m20_5097)).
+  m20_1290 m_1291 n_1292 k_m20_5097 when (not ((m_1291 >= 0) && (n_1292 >= 0))) -> (k_m20_5097 ()).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when ((k_1306 >= 0) && (k_1306 <= 0)) ->
+      (init_1301 k_1306 n_1307 (make_array21_1293 n_1307) (f_m21_7271 i_1308 k_1306 n_1307 k_m21_5260)).
+  m21_1305 k_1306 n_1307 i_1308 k_m21_5260 when (not ((k_1306 >= 0) && (k_1306 <= 0))) -> (k_m21_5260 ()).
+  main_1314 n_1315 m_1316 k_main_5376 when (n_1315 = 11) ->
+      (mult_1199 m_1316 m_1316 (f_main_7274 m_1316 n_1315 k_main_5376)).
+  main_1314 n_1315 m_1316 k_main_5376 when (not (n_1315 = 11)) ->
+      (br_main_7305 (n_1315 = 12) n_1315 m_1316 k_main_5376).
+  main_2608 k_main_5537 -> (arg1_2604 (f_main_7284 k_main_5537)).
+  make_array21_1293 n_1294 i_1295 k_make_array21_5135 ->
+      (u_2448 i_1295 n_1294 (f_make_array21_7270 i_1295 n_1294 k_make_array21_5135)).
+  make_array_1204 n_1205 i_1206 k_make_array_4000 ->
+      (u_2036 i_1206 n_1205 (f_make_array_7253 i_1206 n_1205 k_make_array_4000)).
+  mc91_1310 x_1311 k_mc91_5345 when (x_1311 > 100) -> (k_mc91_5345 (x_1311 - 10)).
+  mc91_1310 x_1311 k_mc91_5345 when (not (x_1311 > 100)) -> (mc91_1310 (x_1311 + 11) (f_mc91_7273 x_1311 k_mc91_5345)).
+  mult_1199 n_1200 m_1201 k_mult_3940 when ((n_1200 <= 0) || (m_1201 <= 0)) -> (k_mult_3940 0).
+  mult_1199 n_1200 m_1201 k_mult_3940 when (not ((n_1200 <= 0) || (m_1201 <= 0))) ->
+      (mult_1199 n_1200 (m_1201 - 1) (f_mult_7252 m_1201 n_1200 k_mult_3940)).
+  mult_1251 n_1252 m_1253 k_mult_4599 when ((n_1252 <= 0) || (m_1253 <= 0)) -> (k_mult_4599 0).
+  mult_1251 n_1252 m_1253 k_mult_4599 when (not ((n_1252 <= 0) || (m_1253 <= 0))) ->
+      (mult_1251 n_1252 (m_1253 - 1) (f_mult_7262 m_1253 n_1252 k_mult_4599)).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (i_1229 >= x_2082) -> (k_f20_print_array_4208 ()).
+  print_array_1226 x_2082 des_1219 x_2155 i_1229 k_f20_print_array_4208 when 
+      (not (i_1229 >= x_2082)) ->
+      (des_1219 i_1229 (f_print_array_7257 i_1229 x_2082 des_1219 k_f20_print_array_4208 x_2155)).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (n_1260 = 0) -> (k_repeat_4669 s_1261).
+  repeat_1258 x_2292 n_1260 s_1261 k_repeat_4669 when (not (n_1260 = 0)) ->
+      (repeat_1258 x_2292 (n_1260 - 1) s_1261 (f_repeat_7263 n_1260 s_1261 k_repeat_4669 x_2292)).
+  succ_1256 x_1257 k_succ_4659 -> (k_succ_4659 (x_1257 + 1)).
+  succ_1283 x_1284 k_succ_5002 -> (k_succ_5002 (x_1284 + 1)).
+  sum_1247 n_1248 k_sum_4542 when (n_1248 <= 0) -> (k_sum_4542 0).
+  sum_1247 n_1248 k_sum_4542 when (not (n_1248 <= 0)) -> (sum_1247 (n_1248 - 1) (f_sum_7261 n_1248 k_sum_4542)).
+  sum_1276 n_1277 k_sum_4883 when (n_1277 <= 0) -> (k_sum_4883 0).
+  sum_1276 n_1277 k_sum_4883 when (not (n_1277 <= 0)) -> (sum_1276 (n_1277 - 1) (f_sum_7266 n_1277 k_sum_4883)).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when ((0 <= i_1206) && (i_1206 < n_1205)) -> (k_make_array_u_4011 ()).
+  u_2036 i_1206 n_1205 k_make_array_u_4011 when (not ((0 <= i_1206) && (i_1206 < n_1205))) ->
+      (fail_7307 true k_make_array_u_4011).
+  u_2212 st_1236 k_lock_u_4423 when (st_1236 = 0) -> (k_lock_u_4423 ()).
+  u_2212 st_1236 k_lock_u_4423 when (not (st_1236 = 0)) -> (fail_7308 true k_lock_u_4423).
+  u_2217 st_1238 k_unlock_u_4444 when (st_1238 = 1) -> (k_unlock_u_4444 ()).
+  u_2217 st_1238 k_unlock_u_4444 when (not (st_1238 = 1)) -> (fail_7309 true k_unlock_u_4444).
+  u_2321 st_1265 k_lock_u_4764 when (st_1265 = 0) -> (k_lock_u_4764 ()).
+  u_2321 st_1265 k_lock_u_4764 when (not (st_1265 = 0)) -> (fail_7310 true k_lock_u_4764).
+  u_2326 st_1267 k_unlock_u_4785 when (st_1267 = 1) -> (k_unlock_u_4785 ()).
+  u_2326 st_1267 k_unlock_u_4785 when (not (st_1267 = 1)) -> (fail_7311 true k_unlock_u_4785).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when ((0 <= i_1295) && (i_1295 < n_1294)) -> (k_make_array21_u_5146 ()).
+  u_2448 i_1295 n_1294 k_make_array21_u_5146 when (not ((0 <= i_1295) && (i_1295 < n_1294))) ->
+      (fail_7313 true k_make_array21_u_5146).
+  unlock_1237 st_1238 k_unlock_4433 -> (u_2217 st_1238 (f_unlock_7260 st_1238 k_unlock_4433)).
+  unlock_1266 st_1267 k_unlock_4774 -> (u_2326 st_1267 (f_unlock_7265 st_1267 k_unlock_4774)).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297)) ->
+      (k_update21_5160 x_1299).
+  update21_1296 i_1297 a_1298 x_1299 j_1300 k_update21_5160 when (not ((j_1300 > (i_1297 - 1)) && (j_1300 <= i_1297))) ->
+      (a_1298 j_1300 k_update21_5160).
+Types:
+  main_7251 : X
+  ackermann_1287 : (int -> int -> (int -> X) -> X)
+  bcopy_1220 : (x_2:int ->
+                (x_4:int[1 <= x_4 && 1 <= x_2 - x_4; x_4 = 0; x_4 <= 0] -> (int[
+                 x_4 >= 0; x_4 = 0 && x_4 >= 0] -> X) -> X) ->
+                (x_10:int[x_10 >= 0 && 1 <= x_2 - x_10; 1 <= x_10; 2 <= x_2; x_10 >= 0 && 2 <= x_2 - x_10] -> (int ->
+                 X) -> X) ->
+                x_15:int[x_15 >= 0; x_15 = 0; 1 <= x_15; x_15 <= 0] -> ((int -> (int -> X) -> X) -> X) -> X)
+  f19_1280 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7307 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7308 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7309 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7310 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7311 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7312 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7313 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7314 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7315 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7316 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7317 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7318 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7319 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7320 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7321 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7322 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init_1301 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1310 : (int -> (int -> X) -> X)
+  mult_1199 : (x_2:int -> x_3:int[x_3 <= x_2] -> (x_5:int[x_5 >= x_3] -> X) -> X)
+  mult_1251 : (int -> int -> (int -> X) -> X)
+  print_array_1226 : (x_2:int ->
+                      (x_4:int[x_4 >= 0 && 1 <= x_2 - x_4] -> (int -> X) -> X) ->
+                      (int -> (int -> X) -> X) -> x_15:int[x_15 >= 0] -> (unit -> X) -> X)
+  repeat_1258 : ((int -> (int -> X) -> X) -> int -> int -> (int -> X) -> X)
+  sum_1247 : (x_2:int -> (x_4:int[x_4 >= x_2] -> X) -> X)
+  sum_1276 : (int -> (int -> X) -> X)
+
+(8-1) Abstracting ... DONE!
+
+(8-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7251 ... --> 
+  main_2608 ... --> 
+  arg1_2604 ... --> 
+  f_main_7284 ... --> 
+  arg2_2606 ... --> 
+  f_f_main_7285 ... --> 
+  main_1314 [2/2] ... --> 
+  br_main_7305 [2/2] ... --> 
+  br_main_7303 [2/2] ... --> 
+  br_main_7301 [2/2] ... --> 
+  br_main_7299 [1/2] ... --> 
+  mult_1251 [1/2] ... --> 
+  f_main_7278 [2/2] ... --> 
+  fail_7318 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 1; 0
+
+(8-3) Checking counterexample ... DONE!
+
+
+========================================================================================================================
+
+Unsafe!
+
+Input for main:
+  15; 0
+Error trace:
+  main 15 0 ->
+    if false then ... ->
+    if false then ... ->
+    if false then ... ->
+    if false then ... ->
+    if true then ... ->
+    m15 0 ->
+      mult 0 0 ->
+        if true then ... ->
+      if false then ... ->
+  FAIL!
+
+CEGAR-cycles: 8
+total: 47.021 sec
+  abst: 40.249 sec
+  mc: 1.284 sec
+  refine: 3.782 sec
+47.022

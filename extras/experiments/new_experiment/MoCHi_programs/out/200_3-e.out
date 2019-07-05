@@ -1,0 +1,2318 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 200_3-e.ml
+
+parsed:
+ let lock_1199 st_1200 = assert (st_1200 = 0); 1 in
+ let unlock_1201 st_1202 = assert (st_1202 = 1); 0 in
+ let f17_1203 n_1204 st_1205 = if n_1204 > 0 then lock_1199 st_1205 else st_1205 in
+ let g17_1206 n_1207 st_1208 = if n_1207 >= 0 then unlock_1201 st_1208 else st_1208 in
+ let m17_1209 n_1210 = assert (g17_1206 n_1210 (f17_1203 n_1210 0) = 0) in
+ let rec sum_1211 n_1212 = if n_1212 <= 0 then 0 else n_1212 + sum_1211 (n_1212 - 1) in
+ let m18_1213 n_1214 = assert (n_1214 + 1 <= sum_1211 n_1214) in
+ let rec f19_1215 g_1216 x_1217 =
+   if x_1217 >= 0 then g_1216 x_1217 else f19_1215 (f19_1215 g_1216) (g_1216 x_1217)
+ in
+ let succ_1218 x_1219 = x_1219 + 1 in
+ let m19_1220 n_1221 = assert (f19_1215 succ_1218 n_1221 >= 0) in
+ let rec ackermann_1222 m_1223 n_1224 =
+   if m_1223 = 0
+   then
+     n_1224 + 1
+   else
+     if n_1224 = 0
+     then
+       ackermann_1222 (m_1223 - 1) 1
+     else
+       ackermann_1222 (m_1223 - 1) (ackermann_1222 m_1223 (n_1224 - 1))
+ in
+ let m20_1225 m_1226 n_1227 =
+   if m_1226 >= 0 && n_1227 >= 0 then assert (ackermann_1222 m_1226 n_1227 >= n_1227)
+ in
+ let make_array21_1228 n_1229 i_1230 = assert (0 <= i_1230 && i_1230 < n_1229); 0 in
+ let update21_1231 i_1232 a_1233 x_1234 j_1235 =
+   if j_1235 > i_1232 - 1 && j_1235 <= i_1232 then x_1234 else a_1233 j_1235
+ in
+ let rec init_1236 i_1237 n_1238 a_1239 =
+   if i_1237 >= n_1238
+   then
+     a_1239
+   else
+     init_1236 (i_1237 + 1) n_1238 (update21_1231 i_1237 a_1239 1)
+ in
+ let m21_1240 k_1241 n_1242 i_1243 =
+   if k_1241 >= 0 && k_1241 <= 0
+   then
+     let x_1244 = init_1236 k_1241 n_1242 (make_array21_1228 n_1242) in
+     if 0 <= i_1243 && i_1243 < n_1242 then assert (x_1244 i_1243 >= 1)
+ in
+ let rec mc91_1245 x_1246 =
+   if x_1246 > 100
+   then
+     x_1246 - 10
+   else
+     mc91_1245 (mc91_1245 (x_1246 + 11))
+ in
+ let m22_1247 n_1248 =
+   if n_1248 <= 102 then assert (mc91_1245 n_1248 = 91)
+ in
+ let make_array23_1249 n_1250 i_1251 = n_1250 - i_1251 in
+ let rec array_max23_1252 x_2266 i_1254 x_2273 m_1256 =
+   if i_1254 >= x_2266
+   then
+     m_1256
+   else
+     let x_1257 = x_2273 i_1254 in
+     let z_1258 = if x_1257 > m_1256 then x_1257 else m_1256 in
+     array_max23_1252 x_2266 (i_1254 + 1) x_2273 z_1258
+ in
+ let m23_1259 n_1260 i_1261 =
+   if n_1260 > 0 && (i_1261 >= 0 && i_1261 <= 0)
+   then
+     let m_1262 =
+       array_max23_1252
+         n_1260 i_1261 (make_array23_1249 n_1260) (-1)
+     in
+     assert (m_1262 >= n_1260)
+ in
+ let make_array24_1263 n_1264 i_1265 = n_1264 - i_1265 in
+ let rec array_max24_1266 x_2331 i_1268 x_2338 m_1270 =
+   if i_1268 >= x_2331
+   then
+     m_1270
+   else
+     let x_1271 = x_2338 i_1268 in
+     let z_1272 =
+       if x_1271 > m_1270 then x_1271 else m_1270
+     in
+     array_max24_1266
+       x_2331 (i_1268 + 1) x_2338 z_1272
+ in
+ let m24_1273 n_1274 i_1275 =
+   if n_1274 > 0 && (i_1275 >= 0 && i_1275 <= 0)
+   then
+     let m_1276 =
+       array_max24_1266
+         n_1274 i_1275 (make_array24_1263 n_1274) 
+         (-1)
+     in
+     assert (m_1276 <> n_1274)
+ in
+ let rec mult25_1277 n_1278 m_1279 =
+   if n_1278 <= 0 || m_1279 <= 0
+   then
+     0
+   else
+     n_1278 + mult25_1277 n_1278 (m_1279 - 1)
+ in
+ let m25_1280 n_1281 m_1282 =
+   assert (mult25_1277 m_1282 m_1282 <=
+           mult25_1277 n_1281 n_1281)
+ in
+ let rec mult26_1283 n_1284 m_1285 =
+   if n_1284 <= 0 || m_1285 <= 0
+   then
+     0
+   else
+     n_1284 + mult26_1283 n_1284 (m_1285 - 1)
+ in
+ let m26_1286 n_1287 m_1288 =
+   assert (n_1287 * 2 <= mult26_1283 n_1287 m_1288)
+ in
+ let make_array27_1289 n_1290 i_1291 =
+   assert (0 <= i_1291 && i_1291 < n_1290); 0
+ in
+ let update27_1292 i_1293 a_1294 x_1295 j_1296 =
+   if j_1296 > i_1293 - 1 && j_1296 <= i_1293
+   then
+     x_1295
+   else
+     a_1294 j_1296
+ in
+ let rec init27_1297 i_1298 n_1299 a_1300 =
+   if i_1298 >= n_1299
+   then
+     a_1300
+   else
+     init27_1297
+       (i_1298 + 1) n_1299 
+       (update27_1292 i_1298 a_1300 1)
+ in
+ let m27_1301 k_1302 n_1303 i_1304 =
+   if k_1302 >= 0 && k_1302 <= 0
+   then
+     let x_1305 =
+       init27_1297
+         k_1302 n_1303 (make_array27_1289 n_1303)
+     in
+     if 0 <= i_1304 && i_1304 < n_1303
+     then
+       assert (x_1305 i_1304 = 1)
+ in
+ let rec sum28_1306 n_1307 m_1308 =
+   if n_1307 <= 0
+   then
+     m_1308
+   else
+     1 + sum28_1306 (n_1307 - 1) m_1308
+ in
+ let rec mult_sum_1309 n_1310 m_1311 =
+   if n_1310 <= 0
+   then
+     0
+   else
+     if Pervasives.== n_1310 1
+     then
+       m_1311
+     else
+       sum28_1306
+         m_1311 (mult_sum_1309 (n_1310 - 1) m_1311)
+ in
+ let m28_1312 n_1313 m_1314 =
+   assert (Pervasives.==
+            (mult_sum_1309 n_1313 m_1314) 
+            (n_1313 * m_1314))
+ in
+ let main_1315 n_1316 m_1317 =
+   (if n_1316 = 17
+    then
+      m17_1209 m_1317
+    else
+      if n_1316 = 18
+      then
+        m18_1213 m_1317
+      else
+        if n_1316 = 19
+        then
+          m19_1220 m_1317
+        else
+          if n_1316 = 20
+          then
+            m20_1225 m_1317 m_1317
+          else
+            if n_1316 = 21
+            then
+              m21_1240 m_1317 m_1317 m_1317
+            else
+              if n_1316 = 22
+              then
+                m22_1247 m_1317
+              else
+                if n_1316 = 23
+                then
+                  m23_1259 m_1317 m_1317
+                else
+                  if n_1316 = 24
+                  then
+                    m24_1273 m_1317 m_1317
+                  else
+                    if n_1316 = 25
+                    then
+                      m25_1280 m_1317 m_1317
+                    else
+                      if n_1316 = 26
+                      then
+                        m26_1286 m_1317 m_1317
+                      else
+                        if n_1316 = 27
+                        then
+                          m27_1301
+                            m_1317 m_1317 m_1317
+                        else
+                          m28_1312 m_1317 m_1317);
+   ()
+ in
+ ()
+
+
+###set_main:
+ let lock_1199 (st_1200:int) = assert (st_1200 = 0); 1 in
+ let unlock_1201 (st_1202:int) = assert (st_1202 = 1); 0 in
+ let f17_1203 (n_1204:int) (st_1205:int) = if n_1204 > 0 then lock_1199 st_1205 else st_1205 in
+ let g17_1206 (n_1207:int) (st_1208:int) = if n_1207 >= 0 then unlock_1201 st_1208 else st_1208 in
+ let m17_1209 (n_1210:int) = assert (g17_1206 n_1210 (f17_1203 n_1210 0) = 0) in
+ let rec sum_1211 (n_1212:int) = if n_1212 <= 0 then 0 else n_1212 + sum_1211 (n_1212 - 1) in
+ let m18_1213 (n_1214:int) = assert (n_1214 + 1 <= sum_1211 n_1214) in
+ let rec f19_1215 (g_1216:(int -> int)) (x_1217:int) =
+   if x_1217 >= 0 then g_1216 x_1217 else f19_1215 (f19_1215 g_1216) (g_1216 x_1217)
+ in
+ let succ_1218 (x_1219:int) = x_1219 + 1 in
+ let m19_1220 (n_1221:int) = assert (f19_1215 succ_1218 n_1221 >= 0) in
+ let rec ackermann_1222 (m_1223:int) (n_1224:int) =
+   if m_1223 = 0
+   then
+     n_1224 + 1
+   else
+     if n_1224 = 0
+     then
+       ackermann_1222 (m_1223 - 1) 1
+     else
+       ackermann_1222 (m_1223 - 1) (ackermann_1222 m_1223 (n_1224 - 1))
+ in
+ let m20_1225 (m_1226:int) (n_1227:int) =
+   if m_1226 >= 0 && n_1227 >= 0 then assert (ackermann_1222 m_1226 n_1227 >= n_1227)
+ in
+ let make_array21_1228 (n_1229:int) (i_1230:int) =
+   assert (0 <= i_1230 && i_1230 < n_1229); 0
+ in
+ let update21_1231 (i_1232:int) (a_1233:(int -> int)) (x_1234:int) (j_1235:int) =
+   if j_1235 > i_1232 - 1 && j_1235 <= i_1232 then x_1234 else a_1233 j_1235
+ in
+ let rec init_1236 (i_1237:int) (n_1238:int) (a_1239:(int -> int)) =
+   if i_1237 >= n_1238
+   then
+     a_1239
+   else
+     init_1236 (i_1237 + 1) n_1238 (update21_1231 i_1237 a_1239 1)
+ in
+ let m21_1240 (k_1241:int) (n_1242:int) (i_1243:int) =
+   if k_1241 >= 0 && k_1241 <= 0
+   then
+     let x_1244 = init_1236 k_1241 n_1242 (make_array21_1228 n_1242) in
+     if 0 <= i_1243 && i_1243 < n_1242 then assert (x_1244 i_1243 >= 1)
+ in
+ let rec mc91_1245 (x_1246:int) =
+   if x_1246 > 100
+   then
+     x_1246 - 10
+   else
+     mc91_1245 (mc91_1245 (x_1246 + 11))
+ in
+ let m22_1247 (n_1248:int) =
+   if n_1248 <= 102 then assert (mc91_1245 n_1248 = 91)
+ in
+ let make_array23_1249 (n_1250:int) (i_1251:int) = n_1250 - i_1251 in
+ let rec array_max23_1252 (x_2266:int) (i_1254:int) 
+                         (x_2273:(int -> int)) (m_1256:int) =
+   if i_1254 >= x_2266
+   then
+     m_1256
+   else
+     let x_1257 = x_2273 i_1254 in
+     let z_1258 = if x_1257 > m_1256 then x_1257 else m_1256 in
+     array_max23_1252 x_2266 (i_1254 + 1) x_2273 z_1258
+ in
+ let m23_1259 (n_1260:int) (i_1261:int) =
+   if n_1260 > 0 && (i_1261 >= 0 && i_1261 <= 0)
+   then
+     let m_1262 =
+       array_max23_1252
+         n_1260 i_1261 (make_array23_1249 n_1260) (-1)
+     in
+     assert (m_1262 >= n_1260)
+ in
+ let make_array24_1263 (n_1264:int) (i_1265:int) =
+   n_1264 - i_1265
+ in
+ let rec array_max24_1266 (x_2331:int) (i_1268:int) 
+                         (x_2338:(int -> int)) (m_1270:int) =
+   if i_1268 >= x_2331
+   then
+     m_1270
+   else
+     let x_1271 = x_2338 i_1268 in
+     let z_1272 =
+       if x_1271 > m_1270 then x_1271 else m_1270
+     in
+     array_max24_1266
+       x_2331 (i_1268 + 1) x_2338 z_1272
+ in
+ let m24_1273 (n_1274:int) (i_1275:int) =
+   if n_1274 > 0 && (i_1275 >= 0 && i_1275 <= 0)
+   then
+     let m_1276 =
+       array_max24_1266
+         n_1274 i_1275 (make_array24_1263 n_1274) 
+         (-1)
+     in
+     assert (m_1276 <> n_1274)
+ in
+ let rec mult25_1277 (n_1278:int) (m_1279:int) =
+   if n_1278 <= 0 || m_1279 <= 0
+   then
+     0
+   else
+     n_1278 + mult25_1277 n_1278 (m_1279 - 1)
+ in
+ let m25_1280 (n_1281:int) (m_1282:int) =
+   assert (mult25_1277 m_1282 m_1282 <=
+           mult25_1277 n_1281 n_1281)
+ in
+ let rec mult26_1283 (n_1284:int) (m_1285:int) =
+   if n_1284 <= 0 || m_1285 <= 0
+   then
+     0
+   else
+     n_1284 + mult26_1283 n_1284 (m_1285 - 1)
+ in
+ let m26_1286 (n_1287:int) (m_1288:int) =
+   assert (n_1287 * 2 <= mult26_1283 n_1287 m_1288)
+ in
+ let make_array27_1289 (n_1290:int) (i_1291:int) =
+   assert (0 <= i_1291 && i_1291 < n_1290); 0
+ in
+ let update27_1292 (i_1293:int) 
+                  (a_1294:(int -> int)) 
+                  (x_1295:int) (j_1296:int) =
+   if j_1296 > i_1293 - 1 && j_1296 <= i_1293
+   then
+     x_1295
+   else
+     a_1294 j_1296
+ in
+ let rec init27_1297 (i_1298:int) (n_1299:int) 
+                    (a_1300:(int -> int)) =
+   if i_1298 >= n_1299
+   then
+     a_1300
+   else
+     init27_1297
+       (i_1298 + 1) n_1299 
+       (update27_1292 i_1298 a_1300 1)
+ in
+ let m27_1301 (k_1302:int) (n_1303:int) 
+             (i_1304:int) =
+   if k_1302 >= 0 && k_1302 <= 0
+   then
+     let x_1305 =
+       init27_1297
+         k_1302 n_1303 (make_array27_1289 n_1303)
+     in
+     if 0 <= i_1304 && i_1304 < n_1303
+     then
+       assert (x_1305 i_1304 = 1)
+ in
+ let rec sum28_1306 (n_1307:int) (m_1308:int) =
+   if n_1307 <= 0
+   then
+     m_1308
+   else
+     1 + sum28_1306 (n_1307 - 1) m_1308
+ in
+ let rec mult_sum_1309 (n_1310:int) (m_1311:int) =
+   if n_1310 <= 0
+   then
+     0
+   else
+     if Pervasives.== n_1310 1
+     then
+       m_1311
+     else
+       sum28_1306
+         m_1311 (mult_sum_1309 (n_1310 - 1) m_1311)
+ in
+ let m28_1312 (n_1313:int) (m_1314:int) =
+   assert (Pervasives.==
+            (mult_sum_1309 n_1313 m_1314) 
+            (n_1313 * m_1314))
+ in
+ let main_1315 (n_1316:int) (m_1317:int) =
+   (if n_1316 = 17
+    then
+      m17_1209 m_1317
+    else
+      if n_1316 = 18
+      then
+        m18_1213 m_1317
+      else
+        if n_1316 = 19
+        then
+          m19_1220 m_1317
+        else
+          if n_1316 = 20
+          then
+            m20_1225 m_1317 m_1317
+          else
+            if n_1316 = 21
+            then
+              m21_1240 m_1317 m_1317 m_1317
+            else
+              if n_1316 = 22
+              then
+                m22_1247 m_1317
+              else
+                if n_1316 = 23
+                then
+                  m23_1259 m_1317 m_1317
+                else
+                  if n_1316 = 24
+                  then
+                    m24_1273 m_1317 m_1317
+                  else
+                    if n_1316 = 25
+                    then
+                      m25_1280 m_1317 m_1317
+                    else
+                      if n_1316 = 26
+                      then
+                        m26_1286 m_1317 m_1317
+                      else
+                        if n_1316 = 27
+                        then
+                          m27_1301
+                            m_1317 m_1317 m_1317
+                        else
+                          m28_1312 m_1317 m_1317);
+   ()
+ in
+ (let arg1_2637 = rand_int () in
+  let arg2_2639 = rand_int () in
+  main_1315 arg1_2637 arg2_2639);
+ ()
+
+###Make_ext_funs:
+ let Pervasives.==_2910 (_:int) (_:int) = rand_bool () in
+ let lock_1199 (st_1200:int) = assert (st_1200 = 0); 1 in
+ let unlock_1201 (st_1202:int) = assert (st_1202 = 1); 0 in
+ let f17_1203 (n_1204:int) (st_1205:int) = if n_1204 > 0 then lock_1199 st_1205 else st_1205 in
+ let g17_1206 (n_1207:int) (st_1208:int) = if n_1207 >= 0 then unlock_1201 st_1208 else st_1208 in
+ let m17_1209 (n_1210:int) = assert (g17_1206 n_1210 (f17_1203 n_1210 0) = 0) in
+ let rec sum_1211 (n_1212:int) = if n_1212 <= 0 then 0 else n_1212 + sum_1211 (n_1212 - 1) in
+ let m18_1213 (n_1214:int) = assert (n_1214 + 1 <= sum_1211 n_1214) in
+ let rec f19_1215 (g_1216:(int -> int)) (x_1217:int) =
+   if x_1217 >= 0 then g_1216 x_1217 else f19_1215 (f19_1215 g_1216) (g_1216 x_1217)
+ in
+ let succ_1218 (x_1219:int) = x_1219 + 1 in
+ let m19_1220 (n_1221:int) = assert (f19_1215 succ_1218 n_1221 >= 0) in
+ let rec ackermann_1222 (m_1223:int) (n_1224:int) =
+   if m_1223 = 0
+   then
+     n_1224 + 1
+   else
+     if n_1224 = 0
+     then
+       ackermann_1222 (m_1223 - 1) 1
+     else
+       ackermann_1222 (m_1223 - 1) (ackermann_1222 m_1223 (n_1224 - 1))
+ in
+ let m20_1225 (m_1226:int) (n_1227:int) =
+   if m_1226 >= 0 && n_1227 >= 0 then assert (ackermann_1222 m_1226 n_1227 >= n_1227)
+ in
+ let make_array21_1228 (n_1229:int) (i_1230:int) =
+   assert (0 <= i_1230 && i_1230 < n_1229); 0
+ in
+ let update21_1231 (i_1232:int) (a_1233:(int -> int)) (x_1234:int) (j_1235:int) =
+   if j_1235 > i_1232 - 1 && j_1235 <= i_1232 then x_1234 else a_1233 j_1235
+ in
+ let rec init_1236 (i_1237:int) (n_1238:int) (a_1239:(int -> int)) =
+   if i_1237 >= n_1238
+   then
+     a_1239
+   else
+     init_1236 (i_1237 + 1) n_1238 (update21_1231 i_1237 a_1239 1)
+ in
+ let m21_1240 (k_1241:int) (n_1242:int) (i_1243:int) =
+   if k_1241 >= 0 && k_1241 <= 0
+   then
+     let x_1244 = init_1236 k_1241 n_1242 (make_array21_1228 n_1242) in
+     if 0 <= i_1243 && i_1243 < n_1242 then assert (x_1244 i_1243 >= 1)
+ in
+ let rec mc91_1245 (x_1246:int) =
+   if x_1246 > 100
+   then
+     x_1246 - 10
+   else
+     mc91_1245 (mc91_1245 (x_1246 + 11))
+ in
+ let m22_1247 (n_1248:int) =
+   if n_1248 <= 102 then assert (mc91_1245 n_1248 = 91)
+ in
+ let make_array23_1249 (n_1250:int) (i_1251:int) = n_1250 - i_1251 in
+ let rec array_max23_1252 (x_2266:int) (i_1254:int) 
+                         (x_2273:(int -> int)) (m_1256:int) =
+   if i_1254 >= x_2266
+   then
+     m_1256
+   else
+     let x_1257 = x_2273 i_1254 in
+     let z_1258 = if x_1257 > m_1256 then x_1257 else m_1256 in
+     array_max23_1252 x_2266 (i_1254 + 1) x_2273 z_1258
+ in
+ let m23_1259 (n_1260:int) (i_1261:int) =
+   if n_1260 > 0 && (i_1261 >= 0 && i_1261 <= 0)
+   then
+     let m_1262 =
+       array_max23_1252
+         n_1260 i_1261 (make_array23_1249 n_1260) (-1)
+     in
+     assert (m_1262 >= n_1260)
+ in
+ let make_array24_1263 (n_1264:int) (i_1265:int) =
+   n_1264 - i_1265
+ in
+ let rec array_max24_1266 (x_2331:int) (i_1268:int) 
+                         (x_2338:(int -> int)) (m_1270:int) =
+   if i_1268 >= x_2331
+   then
+     m_1270
+   else
+     let x_1271 = x_2338 i_1268 in
+     let z_1272 =
+       if x_1271 > m_1270 then x_1271 else m_1270
+     in
+     array_max24_1266
+       x_2331 (i_1268 + 1) x_2338 z_1272
+ in
+ let m24_1273 (n_1274:int) (i_1275:int) =
+   if n_1274 > 0 && (i_1275 >= 0 && i_1275 <= 0)
+   then
+     let m_1276 =
+       array_max24_1266
+         n_1274 i_1275 (make_array24_1263 n_1274) 
+         (-1)
+     in
+     assert (m_1276 <> n_1274)
+ in
+ let rec mult25_1277 (n_1278:int) (m_1279:int) =
+   if n_1278 <= 0 || m_1279 <= 0
+   then
+     0
+   else
+     n_1278 + mult25_1277 n_1278 (m_1279 - 1)
+ in
+ let m25_1280 (n_1281:int) (m_1282:int) =
+   assert (mult25_1277 m_1282 m_1282 <=
+           mult25_1277 n_1281 n_1281)
+ in
+ let rec mult26_1283 (n_1284:int) (m_1285:int) =
+   if n_1284 <= 0 || m_1285 <= 0
+   then
+     0
+   else
+     n_1284 + mult26_1283 n_1284 (m_1285 - 1)
+ in
+ let m26_1286 (n_1287:int) (m_1288:int) =
+   assert (n_1287 * 2 <= mult26_1283 n_1287 m_1288)
+ in
+ let make_array27_1289 (n_1290:int) (i_1291:int) =
+   assert (0 <= i_1291 && i_1291 < n_1290); 0
+ in
+ let update27_1292 (i_1293:int) 
+                  (a_1294:(int -> int)) 
+                  (x_1295:int) (j_1296:int) =
+   if j_1296 > i_1293 - 1 && j_1296 <= i_1293
+   then
+     x_1295
+   else
+     a_1294 j_1296
+ in
+ let rec init27_1297 (i_1298:int) (n_1299:int) 
+                    (a_1300:(int -> int)) =
+   if i_1298 >= n_1299
+   then
+     a_1300
+   else
+     init27_1297
+       (i_1298 + 1) n_1299 
+       (update27_1292 i_1298 a_1300 1)
+ in
+ let m27_1301 (k_1302:int) (n_1303:int) 
+             (i_1304:int) =
+   if k_1302 >= 0 && k_1302 <= 0
+   then
+     let x_1305 =
+       init27_1297
+         k_1302 n_1303 (make_array27_1289 n_1303)
+     in
+     if 0 <= i_1304 && i_1304 < n_1303
+     then
+       assert (x_1305 i_1304 = 1)
+ in
+ let rec sum28_1306 (n_1307:int) (m_1308:int) =
+   if n_1307 <= 0
+   then
+     m_1308
+   else
+     1 + sum28_1306 (n_1307 - 1) m_1308
+ in
+ let rec mult_sum_1309 (n_1310:int) (m_1311:int) =
+   if n_1310 <= 0
+   then
+     0
+   else
+     if Pervasives.==_2910 n_1310 1
+     then
+       m_1311
+     else
+       sum28_1306
+         m_1311 (mult_sum_1309 (n_1310 - 1) m_1311)
+ in
+ let m28_1312 (n_1313:int) (m_1314:int) =
+   assert (Pervasives.==_2910
+            (mult_sum_1309 n_1313 m_1314) 
+            (n_1313 * m_1314))
+ in
+ let main_1315 (n_1316:int) (m_1317:int) =
+   (if n_1316 = 17
+    then
+      m17_1209 m_1317
+    else
+      if n_1316 = 18
+      then
+        m18_1213 m_1317
+      else
+        if n_1316 = 19
+        then
+          m19_1220 m_1317
+        else
+          if n_1316 = 20
+          then
+            m20_1225 m_1317 m_1317
+          else
+            if n_1316 = 21
+            then
+              m21_1240 m_1317 m_1317 m_1317
+            else
+              if n_1316 = 22
+              then
+                m22_1247 m_1317
+              else
+                if n_1316 = 23
+                then
+                  m23_1259 m_1317 m_1317
+                else
+                  if n_1316 = 24
+                  then
+                    m24_1273 m_1317 m_1317
+                  else
+                    if n_1316 = 25
+                    then
+                      m25_1280 m_1317 m_1317
+                    else
+                      if n_1316 = 26
+                      then
+                        m26_1286 m_1317 m_1317
+                      else
+                        if n_1316 = 27
+                        then
+                          m27_1301
+                            m_1317 m_1317 m_1317
+                        else
+                          m28_1312 m_1317 m_1317);
+   ()
+ in
+ (let arg1_2637 = rand_int () in
+  let arg2_2639 = rand_int () in
+  main_1315 arg1_2637 arg2_2639);
+ ()
+
+###Beta_reduce_trivial:
+ let Pervasives.==_2910 (_:int) (_:int) = rand_bool () in
+ let lock_1199 (st_1200:int) = assert (st_1200 = 0); 1 in
+ let unlock_1201 (st_1202:int) = assert (st_1202 = 1); 0 in
+ let f17_1203 (n_1204:int) (st_1205:int) = if n_1204 > 0 then lock_1199 st_1205 else st_1205 in
+ let g17_1206 (n_1207:int) (st_1208:int) = if n_1207 >= 0 then unlock_1201 st_1208 else st_1208 in
+ let m17_1209 (n_1210:int) = assert (g17_1206 n_1210 (f17_1203 n_1210 0) = 0) in
+ let rec sum_1211 (n_1212:int) = if n_1212 <= 0 then 0 else n_1212 + sum_1211 (n_1212 - 1) in
+ let m18_1213 (n_1214:int) = assert (n_1214 + 1 <= sum_1211 n_1214) in
+ let rec f19_1215 (g_1216:(int -> int)) (x_1217:int) =
+   if x_1217 >= 0 then g_1216 x_1217 else f19_1215 (f19_1215 g_1216) (g_1216 x_1217)
+ in
+ let succ_1218 (x_1219:int) = x_1219 + 1 in
+ let m19_1220 (n_1221:int) = assert (f19_1215 succ_1218 n_1221 >= 0) in
+ let rec ackermann_1222 (m_1223:int) (n_1224:int) =
+   if m_1223 = 0
+   then
+     n_1224 + 1
+   else
+     if n_1224 = 0
+     then
+       ackermann_1222 (m_1223 - 1) 1
+     else
+       ackermann_1222 (m_1223 - 1) (ackermann_1222 m_1223 (n_1224 - 1))
+ in
+ let m20_1225 (m_1226:int) (n_1227:int) =
+   if m_1226 >= 0 && n_1227 >= 0 then assert (ackermann_1222 m_1226 n_1227 >= n_1227)
+ in
+ let make_array21_1228 (n_1229:int) (i_1230:int) =
+   assert (0 <= i_1230 && i_1230 < n_1229); 0
+ in
+ let update21_1231 (i_1232:int) (a_1233:(int -> int)) (x_1234:int) (j_1235:int) =
+   if j_1235 > i_1232 - 1 && j_1235 <= i_1232 then x_1234 else a_1233 j_1235
+ in
+ let rec init_1236 (i_1237:int) (n_1238:int) (a_1239:(int -> int)) =
+   if i_1237 >= n_1238
+   then
+     a_1239
+   else
+     init_1236 (i_1237 + 1) n_1238 (update21_1231 i_1237 a_1239 1)
+ in
+ let m21_1240 (k_1241:int) (n_1242:int) (i_1243:int) =
+   if k_1241 >= 0 && k_1241 <= 0
+   then
+     let x_1244 = init_1236 k_1241 n_1242 (make_array21_1228 n_1242) in
+     if 0 <= i_1243 && i_1243 < n_1242 then assert (x_1244 i_1243 >= 1)
+ in
+ let rec mc91_1245 (x_1246:int) =
+   if x_1246 > 100
+   then
+     x_1246 - 10
+   else
+     mc91_1245 (mc91_1245 (x_1246 + 11))
+ in
+ let m22_1247 (n_1248:int) =
+   if n_1248 <= 102 then assert (mc91_1245 n_1248 = 91)
+ in
+ let make_array23_1249 (n_1250:int) (i_1251:int) = n_1250 - i_1251 in
+ let rec array_max23_1252 (x_2266:int) (i_1254:int) 
+                         (x_2273:(int -> int)) (m_1256:int) =
+   if i_1254 >= x_2266
+   then
+     m_1256
+   else
+     let x_1257 = x_2273 i_1254 in
+     let z_1258 = if x_1257 > m_1256 then x_1257 else m_1256 in
+     array_max23_1252 x_2266 (i_1254 + 1) x_2273 z_1258
+ in
+ let m23_1259 (n_1260:int) (i_1261:int) =
+   if n_1260 > 0 && (i_1261 >= 0 && i_1261 <= 0)
+   then
+     let m_1262 =
+       array_max23_1252
+         n_1260 i_1261 (make_array23_1249 n_1260) (-1)
+     in
+     assert (m_1262 >= n_1260)
+ in
+ let make_array24_1263 (n_1264:int) (i_1265:int) =
+   n_1264 - i_1265
+ in
+ let rec array_max24_1266 (x_2331:int) (i_1268:int) 
+                         (x_2338:(int -> int)) (m_1270:int) =
+   if i_1268 >= x_2331
+   then
+     m_1270
+   else
+     let x_1271 = x_2338 i_1268 in
+     let z_1272 =
+       if x_1271 > m_1270 then x_1271 else m_1270
+     in
+     array_max24_1266
+       x_2331 (i_1268 + 1) x_2338 z_1272
+ in
+ let m24_1273 (n_1274:int) (i_1275:int) =
+   if n_1274 > 0 && (i_1275 >= 0 && i_1275 <= 0)
+   then
+     let m_1276 =
+       array_max24_1266
+         n_1274 i_1275 (make_array24_1263 n_1274) 
+         (-1)
+     in
+     assert (m_1276 <> n_1274)
+ in
+ let rec mult25_1277 (n_1278:int) (m_1279:int) =
+   if n_1278 <= 0 || m_1279 <= 0
+   then
+     0
+   else
+     n_1278 + mult25_1277 n_1278 (m_1279 - 1)
+ in
+ let m25_1280 (n_1281:int) (m_1282:int) =
+   assert (mult25_1277 m_1282 m_1282 <=
+           mult25_1277 n_1281 n_1281)
+ in
+ let rec mult26_1283 (n_1284:int) (m_1285:int) =
+   if n_1284 <= 0 || m_1285 <= 0
+   then
+     0
+   else
+     n_1284 + mult26_1283 n_1284 (m_1285 - 1)
+ in
+ let m26_1286 (n_1287:int) (m_1288:int) =
+   assert (n_1287 * 2 <= mult26_1283 n_1287 m_1288)
+ in
+ let make_array27_1289 (n_1290:int) (i_1291:int) =
+   assert (0 <= i_1291 && i_1291 < n_1290); 0
+ in
+ let update27_1292 (i_1293:int) 
+                  (a_1294:(int -> int)) 
+                  (x_1295:int) (j_1296:int) =
+   if j_1296 > i_1293 - 1 && j_1296 <= i_1293
+   then
+     x_1295
+   else
+     a_1294 j_1296
+ in
+ let rec init27_1297 (i_1298:int) (n_1299:int) 
+                    (a_1300:(int -> int)) =
+   if i_1298 >= n_1299
+   then
+     a_1300
+   else
+     init27_1297
+       (i_1298 + 1) n_1299 
+       (update27_1292 i_1298 a_1300 1)
+ in
+ let m27_1301 (k_1302:int) (n_1303:int) 
+             (i_1304:int) =
+   if k_1302 >= 0 && k_1302 <= 0
+   then
+     let x_1305 =
+       init27_1297
+         k_1302 n_1303 (make_array27_1289 n_1303)
+     in
+     if 0 <= i_1304 && i_1304 < n_1303
+     then
+       assert (x_1305 i_1304 = 1)
+ in
+ let rec sum28_1306 (n_1307:int) (m_1308:int) =
+   if n_1307 <= 0
+   then
+     m_1308
+   else
+     1 + sum28_1306 (n_1307 - 1) m_1308
+ in
+ let rec mult_sum_1309 (n_1310:int) (m_1311:int) =
+   if n_1310 <= 0
+   then
+     0
+   else
+     if (rand_bool ())
+     then
+       m_1311
+     else
+       sum28_1306
+         m_1311 (mult_sum_1309 (n_1310 - 1) m_1311)
+ in
+ let m28_1312 (n_1313:int) (m_1314:int) =
+   assert (Pervasives.==_2910
+            (mult_sum_1309 n_1313 m_1314) 
+            (n_1313 * m_1314))
+ in
+ let main_1315 (n_1316:int) (m_1317:int) =
+   (if n_1316 = 17
+    then
+      m17_1209 m_1317
+    else
+      if n_1316 = 18
+      then
+        m18_1213 m_1317
+      else
+        if n_1316 = 19
+        then
+          m19_1220 m_1317
+        else
+          if n_1316 = 20
+          then
+            m20_1225 m_1317 m_1317
+          else
+            if n_1316 = 21
+            then
+              m21_1240 m_1317 m_1317 m_1317
+            else
+              if n_1316 = 22
+              then
+                m22_1247 m_1317
+              else
+                if n_1316 = 23
+                then
+                  m23_1259 m_1317 m_1317
+                else
+                  if n_1316 = 24
+                  then
+                    m24_1273 m_1317 m_1317
+                  else
+                    if n_1316 = 25
+                    then
+                      m25_1280 m_1317 m_1317
+                    else
+                      if n_1316 = 26
+                      then
+                        m26_1286 m_1317 m_1317
+                      else
+                        if n_1316 = 27
+                        then
+                          m27_1301
+                            m_1317 m_1317 m_1317
+                        else
+                          m28_1312 m_1317 m_1317);
+   ()
+ in
+ (let arg1_2637 = rand_int () in
+  let arg2_2639 = rand_int () in
+  main_1315 arg1_2637 arg2_2639);
+ ()
+
+###Eliminate_redundant_arguments:
+ let Pervasives.==_2910 (_:int) (_:int) = rand_bool () in
+ let lock_1199 (st_1200:int) = assert (st_1200 = 0); 1 in
+ let unlock_1201 (st_1202:int) = assert (st_1202 = 1); 0 in
+ let f17_1203 (n_1204:int) (st_1205:int) = if n_1204 > 0 then lock_1199 st_1205 else st_1205 in
+ let g17_1206 (n_1207:int) (st_1208:int) = if n_1207 >= 0 then unlock_1201 st_1208 else st_1208 in
+ let m17_1209 (n_1210:int) = assert (g17_1206 n_1210 (f17_1203 n_1210 0) = 0) in
+ let rec sum_1211 (n_1212:int) = if n_1212 <= 0 then 0 else n_1212 + sum_1211 (n_1212 - 1) in
+ let m18_1213 (n_1214:int) = assert (n_1214 + 1 <= sum_1211 n_1214) in
+ let rec f19_1215 (g_1216:(int -> int)) (x_1217:int) =
+   if x_1217 >= 0 then g_1216 x_1217 else f19_1215 (f19_1215 g_1216) (g_1216 x_1217)
+ in
+ let succ_1218 (x_1219:int) = x_1219 + 1 in
+ let m19_1220 (n_1221:int) = assert (f19_1215 succ_1218 n_1221 >= 0) in
+ let rec ackermann_1222 (m_1223:int) (n_1224:int) =
+   if m_1223 = 0
+   then
+     n_1224 + 1
+   else
+     if n_1224 = 0
+     then
+       ackermann_1222 (m_1223 - 1) 1
+     else
+       ackermann_1222 (m_1223 - 1) (ackermann_1222 m_1223 (n_1224 - 1))
+ in
+ let m20_1225 (m_1226:int) (n_1227:int) =
+   if m_1226 >= 0 && n_1227 >= 0 then assert (ackermann_1222 m_1226 n_1227 >= n_1227)
+ in
+ let make_array21_1228 (n_1229:int) (i_1230:int) =
+   assert (0 <= i_1230 && i_1230 < n_1229); 0
+ in
+ let update21_1231 (i_1232:int) (a_1233:(int -> int)) (x_1234:int) (j_1235:int) =
+   if j_1235 > i_1232 - 1 && j_1235 <= i_1232 then x_1234 else a_1233 j_1235
+ in
+ let rec init_1236 (i_1237:int) (n_1238:int) (a_1239:(int -> int)) =
+   if i_1237 >= n_1238
+   then
+     a_1239
+   else
+     init_1236 (i_1237 + 1) n_1238 (update21_1231 i_1237 a_1239 1)
+ in
+ let m21_1240 (k_1241:int) (n_1242:int) (i_1243:int) =
+   if k_1241 >= 0 && k_1241 <= 0
+   then
+     let x_1244 = init_1236 k_1241 n_1242 (make_array21_1228 n_1242) in
+     if 0 <= i_1243 && i_1243 < n_1242 then assert (x_1244 i_1243 >= 1)
+ in
+ let rec mc91_1245 (x_1246:int) =
+   if x_1246 > 100
+   then
+     x_1246 - 10
+   else
+     mc91_1245 (mc91_1245 (x_1246 + 11))
+ in
+ let m22_1247 (n_1248:int) =
+   if n_1248 <= 102 then assert (mc91_1245 n_1248 = 91)
+ in
+ let make_array23_1249 (n_1250:int) (i_1251:int) = n_1250 - i_1251 in
+ let rec array_max23_1252 (x_2266:int) (i_1254:int) 
+                         (x_2273:(int -> int)) (m_1256:int) =
+   if i_1254 >= x_2266
+   then
+     m_1256
+   else
+     let x_1257 = x_2273 i_1254 in
+     let z_1258 = if x_1257 > m_1256 then x_1257 else m_1256 in
+     array_max23_1252 x_2266 (i_1254 + 1) x_2273 z_1258
+ in
+ let m23_1259 (n_1260:int) (i_1261:int) =
+   if n_1260 > 0 && (i_1261 >= 0 && i_1261 <= 0)
+   then
+     let m_1262 =
+       array_max23_1252
+         n_1260 i_1261 (make_array23_1249 n_1260) (-1)
+     in
+     assert (m_1262 >= n_1260)
+ in
+ let make_array24_1263 (n_1264:int) (i_1265:int) =
+   n_1264 - i_1265
+ in
+ let rec array_max24_1266 (x_2331:int) (i_1268:int) 
+                         (x_2338:(int -> int)) (m_1270:int) =
+   if i_1268 >= x_2331
+   then
+     m_1270
+   else
+     let x_1271 = x_2338 i_1268 in
+     let z_1272 =
+       if x_1271 > m_1270 then x_1271 else m_1270
+     in
+     array_max24_1266
+       x_2331 (i_1268 + 1) x_2338 z_1272
+ in
+ let m24_1273 (n_1274:int) (i_1275:int) =
+   if n_1274 > 0 && (i_1275 >= 0 && i_1275 <= 0)
+   then
+     let m_1276 =
+       array_max24_1266
+         n_1274 i_1275 (make_array24_1263 n_1274) 
+         (-1)
+     in
+     assert (m_1276 <> n_1274)
+ in
+ let rec mult25_1277 (n_1278:int) (m_1279:int) =
+   if n_1278 <= 0 || m_1279 <= 0
+   then
+     0
+   else
+     n_1278 + mult25_1277 n_1278 (m_1279 - 1)
+ in
+ let m25_1280 (n_1281:int) (m_1282:int) =
+   assert (mult25_1277 m_1282 m_1282 <=
+           mult25_1277 n_1281 n_1281)
+ in
+ let rec mult26_1283 (n_1284:int) (m_1285:int) =
+   if n_1284 <= 0 || m_1285 <= 0
+   then
+     0
+   else
+     n_1284 + mult26_1283 n_1284 (m_1285 - 1)
+ in
+ let m26_1286 (n_1287:int) (m_1288:int) =
+   assert (n_1287 * 2 <= mult26_1283 n_1287 m_1288)
+ in
+ let make_array27_1289 (n_1290:int) (i_1291:int) =
+   assert (0 <= i_1291 && i_1291 < n_1290); 0
+ in
+ let update27_1292 (i_1293:int) 
+                  (a_1294:(int -> int)) 
+                  (x_1295:int) (j_1296:int) =
+   if j_1296 > i_1293 - 1 && j_1296 <= i_1293
+   then
+     x_1295
+   else
+     a_1294 j_1296
+ in
+ let rec init27_1297 (i_1298:int) (n_1299:int) 
+                    (a_1300:(int -> int)) =
+   if i_1298 >= n_1299
+   then
+     a_1300
+   else
+     init27_1297
+       (i_1298 + 1) n_1299 
+       (update27_1292 i_1298 a_1300 1)
+ in
+ let m27_1301 (k_1302:int) (n_1303:int) 
+             (i_1304:int) =
+   if k_1302 >= 0 && k_1302 <= 0
+   then
+     let x_1305 =
+       init27_1297
+         k_1302 n_1303 (make_array27_1289 n_1303)
+     in
+     if 0 <= i_1304 && i_1304 < n_1303
+     then
+       assert (x_1305 i_1304 = 1)
+ in
+ let rec sum28_1306 (n_1307:int) (m_1308:int) =
+   if n_1307 <= 0
+   then
+     m_1308
+   else
+     1 + sum28_1306 (n_1307 - 1) m_1308
+ in
+ let rec mult_sum_1309 (n_1310:int) (m_1311:int) =
+   if n_1310 <= 0
+   then
+     0
+   else
+     if (rand_bool ())
+     then
+       m_1311
+     else
+       sum28_1306
+         m_1311 (mult_sum_1309 (n_1310 - 1) m_1311)
+ in
+ let m28_1312 (n_1313:int) (m_1314:int) =
+   assert (Pervasives.==_2910
+            (mult_sum_1309 n_1313 m_1314) 
+            (n_1313 * m_1314))
+ in
+ let main_1315 (n_1316:int) (m_1317:int) =
+   (if n_1316 = 17
+    then
+      m17_1209 m_1317
+    else
+      if n_1316 = 18
+      then
+        m18_1213 m_1317
+      else
+        if n_1316 = 19
+        then
+          m19_1220 m_1317
+        else
+          if n_1316 = 20
+          then
+            m20_1225 m_1317 m_1317
+          else
+            if n_1316 = 21
+            then
+              m21_1240 m_1317 m_1317 m_1317
+            else
+              if n_1316 = 22
+              then
+                m22_1247 m_1317
+              else
+                if n_1316 = 23
+                then
+                  m23_1259 m_1317 m_1317
+                else
+                  if n_1316 = 24
+                  then
+                    m24_1273 m_1317 m_1317
+                  else
+                    if n_1316 = 25
+                    then
+                      m25_1280 m_1317 m_1317
+                    else
+                      if n_1316 = 26
+                      then
+                        m26_1286 m_1317 m_1317
+                      else
+                        if n_1316 = 27
+                        then
+                          m27_1301
+                            m_1317 m_1317 m_1317
+                        else
+                          m28_1312 m_1317 m_1317);
+   ()
+ in
+ (let arg1_2637 = rand_int () in
+  let arg2_2639 = rand_int () in
+  main_1315 arg1_2637 arg2_2639);
+ ()
+
+###CPS:
+ (let Pervasives.==_2910 (_:int) (_:int) (k_Pervasives.==_4160:(bool -> X)) =
+    rand_int_cps () (fun (x_4163:int) -> k_Pervasives.==_4160 (x_4163 = 0))
+  in
+  let lock_1199 (st_1200:int) (k_lock_4182:(int -> X)) =
+    let u_2006 (k_lock_u_4193:(unit -> X)) = if st_1200 = 0 then k_lock_u_4193 () else <|fail|> () k_lock_u_4193 in
+    u_2006 (fun (():unit) -> k_lock_4182 1)
+  in
+  let unlock_1201 (st_1202:int) (k_unlock_4203:(int -> X)) =
+    let u_2011 (k_unlock_u_4214:(unit -> X)) =
+      if st_1202 = 1 then k_unlock_u_4214 () else <|fail|> () k_unlock_u_4214
+    in
+    u_2011 (fun (():unit) -> k_unlock_4203 0)
+  in
+  let f17_1203 (n_1204:int) (st_1205:int) (k_f17_4224:(int -> X)) =
+    if n_1204 > 0 then lock_1199 st_1205 k_f17_4224 else k_f17_4224 st_1205
+  in
+  let g17_1206 (n_1207:int) (st_1208:int) (k_g17_4246:(int -> X)) =
+    if n_1207 >= 0 then unlock_1201 st_1208 k_g17_4246 else k_g17_4246 st_1208
+  in
+  let rec sum_1211 (n_1212:int) (k_sum_4312:(int -> X)) =
+    if n_1212 <= 0
+    then
+      k_sum_4312 0
+    else
+      sum_1211 (n_1212 - 1) (fun (x_4316:int) -> k_sum_4312 (n_1212 + x_4316))
+  in
+  let rec f19_1215 (g_1216:(int -> (int -> X) -> X)) (x_1217:int) 
+                  (k_f19_4372:(int -> X)) =
+    if x_1217 >= 0
+    then
+      g_1216 x_1217 k_f19_4372
+    else
+      g_1216 x_1217 (fun (x_4416:int) -> f19_1215 (f19_1215 g_1216) x_4416 k_f19_4372)
+  in
+  let succ_1218 (x_1219:int) (k_succ_4431:(int -> X)) = k_succ_4431 (x_1219 + 1) in
+  let rec ackermann_1222 (m_1223:int) (n_1224:int) (k_ackermann_4477:(int -> X)) =
+    if m_1223 = 0
+    then
+      k_ackermann_4477 (n_1224 + 1)
+    else
+      if n_1224 = 0
+      then
+        ackermann_1222 (m_1223 - 1) 1 k_ackermann_4477
+      else
+        ackermann_1222
+          m_1223 (n_1224 - 1) 
+          (fun (x_4510:int) -> ackermann_1222 (m_1223 - 1) x_4510 k_ackermann_4477)
+  in
+  let m20_1225 (m_1226:int) (n_1227:int) (k_m20_4526:(unit -> X)) =
+    if m_1226 >= 0 && n_1227 >= 0
+    then
+      ackermann_1222
+        m_1226 n_1227 
+        (fun (x_4529:int) ->
+           if x_4529 >= n_1227 then k_m20_4526 () else <|fail|> () k_m20_4526)
+    else
+      k_m20_4526 ()
+  in
+  let make_array21_1228 (n_1229:int) (i_1230:int) 
+                       (k_make_array21_4564:(int -> X)) =
+    let u_2133 (k_make_array21_u_4575:(unit -> X)) =
+      if 0 <= i_1230 && i_1230 < n_1229
+      then
+        k_make_array21_u_4575 ()
+      else
+        <|fail|> () k_make_array21_u_4575
+    in
+    u_2133 (fun (():unit) -> k_make_array21_4564 0)
+  in
+  let update21_1231 (i_1232:int) (a_1233:(int -> (int -> X) -> X)) (x_1234:int) 
+                   (j_1235:int) (k_update21_4589:(int -> X)) =
+    if j_1235 > i_1232 - 1 && j_1235 <= i_1232
+    then
+      k_update21_4589 x_1234
+    else
+      a_1233 j_1235 k_update21_4589
+  in
+  let rec init_1236 (i_1237:int) (n_1238:int) (a_1239:(int -> (int -> X) -> X)) 
+                   (k_init_4622:((int -> (int -> X) -> X) -> X)) =
+    if i_1237 >= n_1238
+    then
+      k_init_4622 a_1239
+    else
+      init_1236 (i_1237 + 1) n_1238 (update21_1231 i_1237 a_1239 1) k_init_4622
+  in
+  let m21_1240 (k_1241:int) (n_1242:int) (i_1243:int) (k_m21_4689:(unit -> X)) =
+    if k_1241 >= 0 && k_1241 <= 0
+    then
+      init_1236
+        k_1241 n_1242 (make_array21_1228 n_1242) 
+        (fun (x_4761:(int -> (int -> X) -> X)) ->
+           if 0 <= i_1243 && i_1243 < n_1242
+           then
+             x_4761
+               i_1243 
+               (fun (x_4731:int) ->
+                  if x_4731 >= 1
+                  then
+                    k_m21_4689 ()
+                  else
+                    <|fail|> () k_m21_4689)
+           else
+             k_m21_4689 ())
+    else
+      k_m21_4689 ()
+  in
+  let rec mc91_1245 (x_1246:int) (k_mc91_4774:(int -> X)) =
+    if x_1246 > 100
+    then
+      k_mc91_4774 (x_1246 - 10)
+    else
+      mc91_1245
+        (x_1246 + 11) (fun (x_4794:int) -> mc91_1245 x_4794 k_mc91_4774)
+  in
+  let m22_1247 (n_1248:int) (k_m22_4805:(unit -> X)) =
+    if n_1248 <= 102
+    then
+      mc91_1245
+        n_1248 
+        (fun (x_4808:int) ->
+           if x_4808 = 91 then k_m22_4805 () else <|fail|> () k_m22_4805)
+    else
+      k_m22_4805 ()
+  in
+  let make_array23_1249 (n_1250:int) (i_1251:int) 
+                       (k_make_array23_4841:(int -> X)) =
+    k_make_array23_4841 (n_1250 - i_1251)
+  in
+  let rec array_max23_1252 (x_2266:int) (i_1254:int) 
+                          (x_2273:(int -> (int -> X) -> X)) 
+                          (m_1256:int) (k_array_max23_4852:(int -> X)) =
+    if i_1254 >= x_2266
+    then
+      k_array_max23_4852 m_1256
+    else
+      x_2273
+        i_1254 
+        (fun (x_4891:int) ->
+           let z_1258 (k_array_max23_z_4868:(int -> X)) =
+             if x_4891 > m_1256
+             then
+               k_array_max23_z_4868 x_4891
+             else
+               k_array_max23_z_4868 m_1256
+           in
+           z_1258
+             (fun (z_4890:int) ->
+                array_max23_1252
+                  x_2266 (i_1254 + 1) x_2273 z_4890 k_array_max23_4852))
+  in
+  let m23_1259 (n_1260:int) (i_1261:int) (k_m23_4908:(unit -> X)) =
+    if n_1260 > 0 && (i_1261 >= 0 && i_1261 <= 0)
+    then
+      array_max23_1252
+        n_1260 i_1261 (make_array23_1249 n_1260) (-1) 
+        (fun (m_4942:int) ->
+           if m_4942 >= n_1260
+           then
+             k_m23_4908 ()
+           else
+             <|fail|> () k_m23_4908)
+    else
+      k_m23_4908 ()
+  in
+  let make_array24_1263 (n_1264:int) (i_1265:int) 
+                       (k_make_array24_4954:(int -> X)) =
+    k_make_array24_4954 (n_1264 - i_1265)
+  in
+  let rec array_max24_1266 (x_2331:int) (i_1268:int) 
+                          (x_2338:(int -> (int -> X) -> X)) 
+                          (m_1270:int) (k_array_max24_4965:(int -> X)) =
+    if i_1268 >= x_2331
+    then
+      k_array_max24_4965 m_1270
+    else
+      x_2338
+        i_1268 
+        (fun (x_5004:int) ->
+           let z_1272 (k_array_max24_z_4981:(int -> X)) =
+             if x_5004 > m_1270
+             then
+               k_array_max24_z_4981 x_5004
+             else
+               k_array_max24_z_4981 m_1270
+           in
+           z_1272
+             (fun (z_5003:int) ->
+                array_max24_1266
+                  x_2331 (i_1268 + 1) x_2338 z_5003 k_array_max24_4965))
+  in
+  let m24_1273 (n_1274:int) (i_1275:int) (k_m24_5021:(unit -> X)) =
+    if n_1274 > 0 && (i_1275 >= 0 && i_1275 <= 0)
+    then
+      array_max24_1266
+        n_1274 i_1275 (make_array24_1263 n_1274) (-1) 
+        (fun (m_5055:int) ->
+           if m_5055 <> n_1274
+           then
+             k_m24_5021 ()
+           else
+             <|fail|> () k_m24_5021)
+    else
+      k_m24_5021 ()
+  in
+  let rec mult25_1277 (n_1278:int) (m_1279:int) 
+                     (k_mult25_5067:(int -> X)) =
+    if n_1278 <= 0 || m_1279 <= 0
+    then
+      k_mult25_5067 0
+    else
+      mult25_1277
+        n_1278 (m_1279 - 1) 
+        (fun (x_5071:int) -> k_mult25_5067 (n_1278 + x_5071))
+  in
+  let rec mult26_1283 (n_1284:int) (m_1285:int) 
+                     (k_mult26_5139:(int -> X)) =
+    if n_1284 <= 0 || m_1285 <= 0
+    then
+      k_mult26_5139 0
+    else
+      mult26_1283
+        n_1284 (m_1285 - 1) 
+        (fun (x_5143:int) -> k_mult26_5139 (n_1284 + x_5143))
+  in
+  let make_array27_1289 (n_1290:int) (i_1291:int) 
+                       (k_make_array27_5200:(int -> X)) =
+    let u_2448 (k_make_array27_u_5211:(unit -> X)) =
+      if 0 <= i_1291 && i_1291 < n_1290
+      then
+        k_make_array27_u_5211 ()
+      else
+        <|fail|> () k_make_array27_u_5211
+    in
+    u_2448 (fun (():unit) -> k_make_array27_5200 0)
+  in
+  let update27_1292 (i_1293:int) (a_1294:(int -> (int -> X) -> X)) 
+                   (x_1295:int) (j_1296:int) 
+                   (k_update27_5225:(int -> X)) =
+    if j_1296 > i_1293 - 1 && j_1296 <= i_1293
+    then
+      k_update27_5225 x_1295
+    else
+      a_1294 j_1296 k_update27_5225
+  in
+  let rec init27_1297 (i_1298:int) (n_1299:int) 
+                     (a_1300:(int -> (int -> X) -> X)) 
+                     (k_init27_5258:((int -> (int -> X) -> X) -> X)) =
+    if i_1298 >= n_1299
+    then
+      k_init27_5258 a_1300
+    else
+      init27_1297
+        (i_1298 + 1) n_1299 (update27_1292 i_1298 a_1300 1) 
+        k_init27_5258
+  in
+  let m27_1301 (k_1302:int) (n_1303:int) (i_1304:int) 
+              (k_m27_5325:(unit -> X)) =
+    if k_1302 >= 0 && k_1302 <= 0
+    then
+      init27_1297
+        k_1302 n_1303 (make_array27_1289 n_1303) 
+        (fun (x_5397:(int -> (int -> X) -> X)) ->
+           if 0 <= i_1304 && i_1304 < n_1303
+           then
+             x_5397
+               i_1304 
+               (fun (x_5367:int) ->
+                  if x_5367 = 1
+                  then
+                    k_m27_5325 ()
+                  else
+                    <|fail|> () k_m27_5325)
+           else
+             k_m27_5325 ())
+    else
+      k_m27_5325 ()
+  in
+  let rec sum28_1306 (n_1307:int) (m_1308:int) 
+                    (k_sum28_5410:(int -> X)) =
+    if n_1307 <= 0
+    then
+      k_sum28_5410 m_1308
+    else
+      sum28_1306
+        (n_1307 - 1) m_1308 
+        (fun (x_5414:int) -> k_sum28_5410 (1 + x_5414))
+  in
+  let rec mult_sum_1309 (n_1310:int) (m_1311:int) 
+                       (k_mult_sum_5437:(int -> X)) =
+    if n_1310 <= 0
+    then
+      k_mult_sum_5437 0
+    else
+      rand_int_cps
+        () 
+        (fun (x_5440:int) ->
+           if x_5440 = 0
+           then
+             k_mult_sum_5437 m_1311
+           else
+             mult_sum_1309
+               (n_1310 - 1) m_1311 
+               (fun (x_5473:int) ->
+                  sum28_1306 m_1311 x_5473 k_mult_sum_5437))
+  in
+  let main_1315 (n_1316:int) (m_1317:int) (k_main_5541:(unit -> X)) =
+    let u_2636 (k_main_u_5715:(unit -> X)) =
+      if n_1316 = 17
+      then
+        f17_1203
+          m_1317 0 
+          (fun (x_4294:int) ->
+             g17_1206
+               m_1317 x_4294 
+               (fun (x_4271:int) ->
+                  if x_4271 = 0
+                  then
+                    k_main_u_5715 ()
+                  else
+                    <|fail|> () k_main_u_5715))
+      else
+        if n_1316 = 18
+        then
+          sum_1211
+            m_1317 
+            (fun (x_4341:int) ->
+               if m_1317 + 1 <= x_4341
+               then
+                 k_main_u_5715 ()
+               else
+                 <|fail|> () k_main_u_5715)
+        else
+          if n_1316 = 19
+          then
+            f19_1215
+              succ_1218 m_1317 
+              (fun (x_4441:int) ->
+                 if x_4441 >= 0
+                 then
+                   k_main_u_5715 ()
+                 else
+                   <|fail|> () k_main_u_5715)
+          else
+            if n_1316 = 20
+            then
+              m20_1225 m_1317 m_1317 k_main_u_5715
+            else
+              if n_1316 = 21
+              then
+                m21_1240 m_1317 m_1317 m_1317 k_main_u_5715
+              else
+                if n_1316 = 22
+                then
+                  m22_1247 m_1317 k_main_u_5715
+                else
+                  if n_1316 = 23
+                  then
+                    m23_1259 m_1317 m_1317 k_main_u_5715
+                  else
+                    if n_1316 = 24
+                    then
+                      m24_1273 m_1317 m_1317 k_main_u_5715
+                    else
+                      if n_1316 = 25
+                      then
+                        mult25_1277
+                          m_1317 m_1317 
+                          (fun (x_5097:int) ->
+                             mult25_1277
+                               m_1317 m_1317 
+                               (fun (x_5098:int) ->
+                                  if x_5097 <= x_5098
+                                  then
+                                    k_main_u_5715 ()
+                                  else
+                                    <|fail|> () k_main_u_5715))
+                      else
+                        if n_1316 = 26
+                        then
+                          mult26_1283
+                            m_1317 m_1317 
+                            (fun (x_5170:int) ->
+                               if m_1317 * 2 <= x_5170
+                               then
+                                 k_main_u_5715 ()
+                               else
+                                 <|fail|> () k_main_u_5715)
+                        else
+                          if n_1316 = 27
+                          then
+                            m27_1301 m_1317 m_1317 m_1317 k_main_u_5715
+                          else
+                            mult_sum_1309
+                              m_1317 m_1317 
+                              (fun (x_5515:int) ->
+                                 Pervasives.==_2910
+                                   x_5515 (m_1317 * m_1317) 
+                                   (fun (x_5533:bool) ->
+                                      if x_5533
+                                      then
+                                        k_main_u_5715 ()
+                                      else
+                                        <|fail|> () k_main_u_5715))
+    in
+    u_2636 (fun (():unit) -> k_main_5541 ())
+  in
+  let main_2641 (k_main_5726:(unit -> X)) =
+    let arg1_2637 (k_main_arg1_5731:(int -> X)) =
+      rand_int_cps () k_main_arg1_5731
+    in
+    arg1_2637
+      (fun (arg1_5761:int) ->
+         let arg2_2639 (k_main_arg2_5743:(int -> X)) =
+           rand_int_cps () k_main_arg2_5743
+         in
+         arg2_2639
+           (fun (arg2_5760:int) ->
+              main_1315 arg1_5761 arg2_5760 k_main_5726))
+  in
+  main_2641 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let Pervasives.==_2910 (_:int) (_:int) (k_Pervasives.==_4160:(bool -> X)) =
+    rand_int_cps () (fun (x_4163:int) -> k_Pervasives.==_4160 (x_4163 = 0))
+  in
+  let lock_1199 (st_1200:int) (k_lock_4182:(int -> X)) =
+    let u_2006 (k_lock_u_4193:(unit -> X)) = if st_1200 = 0 then k_lock_u_4193 () else <|fail|> () k_lock_u_4193 in
+    u_2006 (fun (():unit) -> k_lock_4182 1)
+  in
+  let unlock_1201 (st_1202:int) (k_unlock_4203:(int -> X)) =
+    let u_2011 (k_unlock_u_4214:(unit -> X)) =
+      if st_1202 = 1 then k_unlock_u_4214 () else <|fail|> () k_unlock_u_4214
+    in
+    u_2011 (fun (():unit) -> k_unlock_4203 0)
+  in
+  let f17_1203 (n_1204:int) (st_1205:int) (k_f17_4224:(int -> X)) =
+    if n_1204 > 0 then lock_1199 st_1205 k_f17_4224 else k_f17_4224 st_1205
+  in
+  let g17_1206 (n_1207:int) (st_1208:int) (k_g17_4246:(int -> X)) =
+    if n_1207 >= 0 then unlock_1201 st_1208 k_g17_4246 else k_g17_4246 st_1208
+  in
+  let rec sum_1211 (n_1212:int) (k_sum_4312:(int -> X)) =
+    if n_1212 <= 0
+    then
+      k_sum_4312 0
+    else
+      sum_1211 (n_1212 - 1) (fun (x_4316:int) -> k_sum_4312 (n_1212 + x_4316))
+  in
+  let rec f19_1215 (g_1216:(int -> (int -> X) -> X)) (x_1217:int) 
+                  (k_f19_4372:(int -> X)) =
+    if x_1217 >= 0
+    then
+      g_1216 x_1217 k_f19_4372
+    else
+      g_1216 x_1217 (fun (x_4416:int) -> f19_1215 (f19_1215 g_1216) x_4416 k_f19_4372)
+  in
+  let succ_1218 (x_1219:int) (k_succ_4431:(int -> X)) = k_succ_4431 (x_1219 + 1) in
+  let rec ackermann_1222 (m_1223:int) (n_1224:int) (k_ackermann_4477:(int -> X)) =
+    if m_1223 = 0
+    then
+      k_ackermann_4477 (n_1224 + 1)
+    else
+      if n_1224 = 0
+      then
+        ackermann_1222 (m_1223 - 1) 1 k_ackermann_4477
+      else
+        ackermann_1222
+          m_1223 (n_1224 - 1) 
+          (fun (x_4510:int) -> ackermann_1222 (m_1223 - 1) x_4510 k_ackermann_4477)
+  in
+  let m20_1225 (m_1226:int) (n_1227:int) (k_m20_4526:(unit -> X)) =
+    if m_1226 >= 0 && n_1227 >= 0
+    then
+      ackermann_1222
+        m_1226 n_1227 
+        (fun (x_4529:int) ->
+           if x_4529 >= n_1227 then k_m20_4526 () else <|fail|> () k_m20_4526)
+    else
+      k_m20_4526 ()
+  in
+  let make_array21_1228 (n_1229:int) (i_1230:int) 
+                       (k_make_array21_4564:(int -> X)) =
+    let u_2133 (k_make_array21_u_4575:(unit -> X)) =
+      if 0 <= i_1230 && i_1230 < n_1229
+      then
+        k_make_array21_u_4575 ()
+      else
+        <|fail|> () k_make_array21_u_4575
+    in
+    u_2133 (fun (():unit) -> k_make_array21_4564 0)
+  in
+  let update21_1231 (i_1232:int) (a_1233:(int -> (int -> X) -> X)) (x_1234:int) 
+                   (j_1235:int) (k_update21_4589:(int -> X)) =
+    if j_1235 > i_1232 - 1 && j_1235 <= i_1232
+    then
+      k_update21_4589 x_1234
+    else
+      a_1233 j_1235 k_update21_4589
+  in
+  let rec init_1236 (i_1237:int) (n_1238:int) (a_1239:(int -> (int -> X) -> X)) 
+                   (k_init_4622:((int -> (int -> X) -> X) -> X)) =
+    if i_1237 >= n_1238
+    then
+      k_init_4622 a_1239
+    else
+      init_1236 (i_1237 + 1) n_1238 (update21_1231 i_1237 a_1239 1) k_init_4622
+  in
+  let m21_1240 (k_1241:int) (n_1242:int) (i_1243:int) (k_m21_4689:(unit -> X)) =
+    if k_1241 >= 0 && k_1241 <= 0
+    then
+      init_1236
+        k_1241 n_1242 (make_array21_1228 n_1242) 
+        (fun (x_4761:(int -> (int -> X) -> X)) ->
+           if 0 <= i_1243 && i_1243 < n_1242
+           then
+             x_4761
+               i_1243 
+               (fun (x_4731:int) ->
+                  if x_4731 >= 1
+                  then
+                    k_m21_4689 ()
+                  else
+                    <|fail|> () k_m21_4689)
+           else
+             k_m21_4689 ())
+    else
+      k_m21_4689 ()
+  in
+  let rec mc91_1245 (x_1246:int) (k_mc91_4774:(int -> X)) =
+    if x_1246 > 100
+    then
+      k_mc91_4774 (x_1246 - 10)
+    else
+      mc91_1245
+        (x_1246 + 11) (fun (x_4794:int) -> mc91_1245 x_4794 k_mc91_4774)
+  in
+  let m22_1247 (n_1248:int) (k_m22_4805:(unit -> X)) =
+    if n_1248 <= 102
+    then
+      mc91_1245
+        n_1248 
+        (fun (x_4808:int) ->
+           if x_4808 = 91 then k_m22_4805 () else <|fail|> () k_m22_4805)
+    else
+      k_m22_4805 ()
+  in
+  let make_array23_1249 (n_1250:int) (i_1251:int) 
+                       (k_make_array23_4841:(int -> X)) =
+    k_make_array23_4841 (n_1250 - i_1251)
+  in
+  let rec array_max23_1252 (x_2266:int) (i_1254:int) 
+                          (x_2273:(int -> (int -> X) -> X)) 
+                          (m_1256:int) (k_array_max23_4852:(int -> X)) =
+    if i_1254 >= x_2266
+    then
+      k_array_max23_4852 m_1256
+    else
+      x_2273
+        i_1254 
+        (fun (x_4891:int) ->
+           let z_1258 (k_array_max23_z_4868:(int -> X)) =
+             if x_4891 > m_1256
+             then
+               k_array_max23_z_4868 x_4891
+             else
+               k_array_max23_z_4868 m_1256
+           in
+           z_1258
+             (fun (z_4890:int) ->
+                array_max23_1252
+                  x_2266 (i_1254 + 1) x_2273 z_4890 k_array_max23_4852))
+  in
+  let m23_1259 (n_1260:int) (i_1261:int) (k_m23_4908:(unit -> X)) =
+    if n_1260 > 0 && (i_1261 >= 0 && i_1261 <= 0)
+    then
+      array_max23_1252
+        n_1260 i_1261 (make_array23_1249 n_1260) (-1) 
+        (fun (m_4942:int) ->
+           if m_4942 >= n_1260
+           then
+             k_m23_4908 ()
+           else
+             <|fail|> () k_m23_4908)
+    else
+      k_m23_4908 ()
+  in
+  let make_array24_1263 (n_1264:int) (i_1265:int) 
+                       (k_make_array24_4954:(int -> X)) =
+    k_make_array24_4954 (n_1264 - i_1265)
+  in
+  let rec array_max24_1266 (x_2331:int) (i_1268:int) 
+                          (x_2338:(int -> (int -> X) -> X)) 
+                          (m_1270:int) (k_array_max24_4965:(int -> X)) =
+    if i_1268 >= x_2331
+    then
+      k_array_max24_4965 m_1270
+    else
+      x_2338
+        i_1268 
+        (fun (x_5004:int) ->
+           let z_1272 (k_array_max24_z_4981:(int -> X)) =
+             if x_5004 > m_1270
+             then
+               k_array_max24_z_4981 x_5004
+             else
+               k_array_max24_z_4981 m_1270
+           in
+           z_1272
+             (fun (z_5003:int) ->
+                array_max24_1266
+                  x_2331 (i_1268 + 1) x_2338 z_5003 k_array_max24_4965))
+  in
+  let m24_1273 (n_1274:int) (i_1275:int) (k_m24_5021:(unit -> X)) =
+    if n_1274 > 0 && (i_1275 >= 0 && i_1275 <= 0)
+    then
+      array_max24_1266
+        n_1274 i_1275 (make_array24_1263 n_1274) (-1) 
+        (fun (m_5055:int) ->
+           if m_5055 <> n_1274
+           then
+             k_m24_5021 ()
+           else
+             <|fail|> () k_m24_5021)
+    else
+      k_m24_5021 ()
+  in
+  let rec mult25_1277 (n_1278:int) (m_1279:int) 
+                     (k_mult25_5067:(int -> X)) =
+    if n_1278 <= 0 || m_1279 <= 0
+    then
+      k_mult25_5067 0
+    else
+      mult25_1277
+        n_1278 (m_1279 - 1) 
+        (fun (x_5071:int) -> k_mult25_5067 (n_1278 + x_5071))
+  in
+  let rec mult26_1283 (n_1284:int) (m_1285:int) 
+                     (k_mult26_5139:(int -> X)) =
+    if n_1284 <= 0 || m_1285 <= 0
+    then
+      k_mult26_5139 0
+    else
+      mult26_1283
+        n_1284 (m_1285 - 1) 
+        (fun (x_5143:int) -> k_mult26_5139 (n_1284 + x_5143))
+  in
+  let make_array27_1289 (n_1290:int) (i_1291:int) 
+                       (k_make_array27_5200:(int -> X)) =
+    let u_2448 (k_make_array27_u_5211:(unit -> X)) =
+      if 0 <= i_1291 && i_1291 < n_1290
+      then
+        k_make_array27_u_5211 ()
+      else
+        <|fail|> () k_make_array27_u_5211
+    in
+    u_2448 (fun (():unit) -> k_make_array27_5200 0)
+  in
+  let update27_1292 (i_1293:int) (a_1294:(int -> (int -> X) -> X)) 
+                   (x_1295:int) (j_1296:int) 
+                   (k_update27_5225:(int -> X)) =
+    if j_1296 > i_1293 - 1 && j_1296 <= i_1293
+    then
+      k_update27_5225 x_1295
+    else
+      a_1294 j_1296 k_update27_5225
+  in
+  let rec init27_1297 (i_1298:int) (n_1299:int) 
+                     (a_1300:(int -> (int -> X) -> X)) 
+                     (k_init27_5258:((int -> (int -> X) -> X) -> X)) =
+    if i_1298 >= n_1299
+    then
+      k_init27_5258 a_1300
+    else
+      init27_1297
+        (i_1298 + 1) n_1299 (update27_1292 i_1298 a_1300 1) 
+        k_init27_5258
+  in
+  let m27_1301 (k_1302:int) (n_1303:int) (i_1304:int) 
+              (k_m27_5325:(unit -> X)) =
+    if k_1302 >= 0 && k_1302 <= 0
+    then
+      init27_1297
+        k_1302 n_1303 (make_array27_1289 n_1303) 
+        (fun (x_5397:(int -> (int -> X) -> X)) ->
+           if 0 <= i_1304 && i_1304 < n_1303
+           then
+             x_5397
+               i_1304 
+               (fun (x_5367:int) ->
+                  if x_5367 = 1
+                  then
+                    k_m27_5325 ()
+                  else
+                    <|fail|> () k_m27_5325)
+           else
+             k_m27_5325 ())
+    else
+      k_m27_5325 ()
+  in
+  let rec sum28_1306 (n_1307:int) (m_1308:int) 
+                    (k_sum28_5410:(int -> X)) =
+    if n_1307 <= 0
+    then
+      k_sum28_5410 m_1308
+    else
+      sum28_1306
+        (n_1307 - 1) m_1308 
+        (fun (x_5414:int) -> k_sum28_5410 (1 + x_5414))
+  in
+  let rec mult_sum_1309 (n_1310:int) (m_1311:int) 
+                       (k_mult_sum_5437:(int -> X)) =
+    if n_1310 <= 0
+    then
+      k_mult_sum_5437 0
+    else
+      rand_int_cps
+        () 
+        (fun (x_5440:int) ->
+           if x_5440 = 0
+           then
+             k_mult_sum_5437 m_1311
+           else
+             mult_sum_1309
+               (n_1310 - 1) m_1311 
+               (fun (x_5473:int) ->
+                  sum28_1306 m_1311 x_5473 k_mult_sum_5437))
+  in
+  let main_1315 (n_1316:int) (m_1317:int) (k_main_5541:(unit -> X)) =
+    let u_2636 (k_main_u_5715:(unit -> X)) =
+      if n_1316 = 17
+      then
+        f17_1203
+          m_1317 0 
+          (fun (x_4294:int) ->
+             g17_1206
+               m_1317 x_4294 
+               (fun (x_4271:int) ->
+                  if x_4271 = 0
+                  then
+                    k_main_u_5715 ()
+                  else
+                    <|fail|> () k_main_u_5715))
+      else
+        if n_1316 = 18
+        then
+          sum_1211
+            m_1317 
+            (fun (x_4341:int) ->
+               if m_1317 + 1 <= x_4341
+               then
+                 k_main_u_5715 ()
+               else
+                 <|fail|> () k_main_u_5715)
+        else
+          if n_1316 = 19
+          then
+            f19_1215
+              succ_1218 m_1317 
+              (fun (x_4441:int) ->
+                 if x_4441 >= 0
+                 then
+                   k_main_u_5715 ()
+                 else
+                   <|fail|> () k_main_u_5715)
+          else
+            if n_1316 = 20
+            then
+              m20_1225 m_1317 m_1317 k_main_u_5715
+            else
+              if n_1316 = 21
+              then
+                m21_1240 m_1317 m_1317 m_1317 k_main_u_5715
+              else
+                if n_1316 = 22
+                then
+                  m22_1247 m_1317 k_main_u_5715
+                else
+                  if n_1316 = 23
+                  then
+                    m23_1259 m_1317 m_1317 k_main_u_5715
+                  else
+                    if n_1316 = 24
+                    then
+                      m24_1273 m_1317 m_1317 k_main_u_5715
+                    else
+                      if n_1316 = 25
+                      then
+                        mult25_1277
+                          m_1317 m_1317 
+                          (fun (x_5097:int) ->
+                             mult25_1277
+                               m_1317 m_1317 
+                               (fun (x_5098:int) ->
+                                  if x_5097 <= x_5098
+                                  then
+                                    k_main_u_5715 ()
+                                  else
+                                    <|fail|> () k_main_u_5715))
+                      else
+                        if n_1316 = 26
+                        then
+                          mult26_1283
+                            m_1317 m_1317 
+                            (fun (x_5170:int) ->
+                               if m_1317 * 2 <= x_5170
+                               then
+                                 k_main_u_5715 ()
+                               else
+                                 <|fail|> () k_main_u_5715)
+                        else
+                          if n_1316 = 27
+                          then
+                            m27_1301 m_1317 m_1317 m_1317 k_main_u_5715
+                          else
+                            mult_sum_1309
+                              m_1317 m_1317 
+                              (fun (x_5515:int) ->
+                                 Pervasives.==_2910
+                                   x_5515 (m_1317 * m_1317) 
+                                   (fun (x_5533:bool) ->
+                                      if x_5533
+                                      then
+                                        k_main_u_5715 ()
+                                      else
+                                        <|fail|> () k_main_u_5715))
+    in
+    u_2636 (fun (():unit) -> k_main_5541 ())
+  in
+  let main_2641 (k_main_5726:(unit -> X)) =
+    let arg1_2637 (k_main_arg1_5731:(int -> X)) =
+      rand_int_cps () k_main_arg1_5731
+    in
+    arg1_2637
+      (fun (arg1_5761:int) ->
+         let arg2_2639 (k_main_arg2_5743:(int -> X)) =
+           rand_int_cps () k_main_arg2_5743
+         in
+         arg2_2639
+           (fun (arg2_5760:int) ->
+              main_1315 arg1_5761 arg2_5760 k_main_5726))
+  in
+  main_2641 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_7651
+  main_7651 -> (main_2641 f_7690).
+  Pervasives.==_2910 x_2911 x_2912 k_Pervasives.==_4160 ->
+      (rand_int (f_Pervasives.==_7652 x_2911 x_2912 k_Pervasives.==_4160)).
+  ackermann_1222 m_1223 n_1224 k_ackermann_4477 when (m_1223 = 0) -> (k_ackermann_4477 (n_1224 + 1)).
+  ackermann_1222 m_1223 n_1224 k_ackermann_4477 when (not (m_1223 = 0)) ->
+      (br_ackermann_7691 (n_1224 = 0) m_1223 n_1224 k_ackermann_4477).
+  arg1_2637 k_main_arg1_5731 -> (rand_int k_main_arg1_5731).
+  arg2_2639 arg1_5761 k_main_arg2_5743 -> (rand_int k_main_arg2_5743).
+  array_max23_1252 x_2266 i_1254 x_2273 m_1256 k_array_max23_4852 when 
+      (i_1254 >= x_2266) -> (k_array_max23_4852 m_1256).
+  array_max23_1252 x_2266 i_1254 x_2273 m_1256 k_array_max23_4852 when 
+      (not (i_1254 >= x_2266)) -> (x_2273 i_1254 (f_array_max23_7664 i_1254 m_1256 x_2266 k_array_max23_4852 x_2273)).
+  array_max24_1266 x_2331 i_1268 x_2338 m_1270 k_array_max24_4965 when 
+      (i_1268 >= x_2331) -> (k_array_max24_4965 m_1270).
+  array_max24_1266 x_2331 i_1268 x_2338 m_1270 k_array_max24_4965 when 
+      (not (i_1268 >= x_2331)) -> (x_2338 i_1268 (f_array_max24_7667 i_1268 m_1270 x_2331 k_array_max24_4965 x_2338)).
+  br_ackermann_7691 b_7692 m_1223 n_1224 k_ackermann_4477 when b_7692 ->
+      (ackermann_1222 (m_1223 - 1) 1 k_ackermann_4477).
+  br_ackermann_7691 b_7692 m_1223 n_1224 k_ackermann_4477 when (not b_7692) ->
+      (ackermann_1222 m_1223 (n_1224 - 1) (f_ackermann_7657 m_1223 n_1224 k_ackermann_4477)).
+  br_u_7693 b_7694 m_1317 n_1316 k_main_u_5715 when b_7694 -> (m27_1301 m_1317 m_1317 m_1317 k_main_u_5715).
+  br_u_7693 b_7694 m_1317 n_1316 k_main_u_5715 when (not b_7694) ->
+      (mult_sum_1309 m_1317 m_1317 (f_u_7685 m_1317 n_1316 k_main_u_5715)).
+  br_u_7695 b_7696 m_1317 n_1316 k_main_u_5715 when b_7696 ->
+      (mult26_1283 m_1317 m_1317 (f_u_7684 m_1317 n_1316 k_main_u_5715)).
+  br_u_7695 b_7696 m_1317 n_1316 k_main_u_5715 when (not b_7696) ->
+      (br_u_7693 (n_1316 = 27) m_1317 n_1316 k_main_u_5715).
+  br_u_7697 b_7698 m_1317 n_1316 k_main_u_5715 when b_7698 ->
+      (mult25_1277 m_1317 m_1317 (f_u_7682 m_1317 n_1316 k_main_u_5715)).
+  br_u_7697 b_7698 m_1317 n_1316 k_main_u_5715 when (not b_7698) ->
+      (br_u_7695 (n_1316 = 26) m_1317 n_1316 k_main_u_5715).
+  br_u_7699 b_7700 m_1317 n_1316 k_main_u_5715 when b_7700 -> (m24_1273 m_1317 m_1317 k_main_u_5715).
+  br_u_7699 b_7700 m_1317 n_1316 k_main_u_5715 when (not b_7700) ->
+      (br_u_7697 (n_1316 = 25) m_1317 n_1316 k_main_u_5715).
+  br_u_7701 b_7702 m_1317 n_1316 k_main_u_5715 when b_7702 -> (m23_1259 m_1317 m_1317 k_main_u_5715).
+  br_u_7701 b_7702 m_1317 n_1316 k_main_u_5715 when (not b_7702) ->
+      (br_u_7699 (n_1316 = 24) m_1317 n_1316 k_main_u_5715).
+  br_u_7703 b_7704 m_1317 n_1316 k_main_u_5715 when b_7704 -> (m22_1247 m_1317 k_main_u_5715).
+  br_u_7703 b_7704 m_1317 n_1316 k_main_u_5715 when (not b_7704) ->
+      (br_u_7701 (n_1316 = 23) m_1317 n_1316 k_main_u_5715).
+  br_u_7705 b_7706 m_1317 n_1316 k_main_u_5715 when b_7706 -> (m21_1240 m_1317 m_1317 m_1317 k_main_u_5715).
+  br_u_7705 b_7706 m_1317 n_1316 k_main_u_5715 when (not b_7706) ->
+      (br_u_7703 (n_1316 = 22) m_1317 n_1316 k_main_u_5715).
+  br_u_7707 b_7708 m_1317 n_1316 k_main_u_5715 when b_7708 -> (m20_1225 m_1317 m_1317 k_main_u_5715).
+  br_u_7707 b_7708 m_1317 n_1316 k_main_u_5715 when (not b_7708) ->
+      (br_u_7705 (n_1316 = 21) m_1317 n_1316 k_main_u_5715).
+  br_u_7709 b_7710 m_1317 n_1316 k_main_u_5715 when b_7710 ->
+      (f19_1215 succ_1218 m_1317 (f_u_7681 m_1317 n_1316 k_main_u_5715)).
+  br_u_7709 b_7710 m_1317 n_1316 k_main_u_5715 when (not b_7710) ->
+      (br_u_7707 (n_1316 = 20) m_1317 n_1316 k_main_u_5715).
+  br_u_7711 b_7712 m_1317 n_1316 k_main_u_5715 when b_7712 -> (sum_1211 m_1317 (f_u_7680 m_1317 n_1316 k_main_u_5715)).
+  br_u_7711 b_7712 m_1317 n_1316 k_main_u_5715 when (not b_7712) ->
+      (br_u_7709 (n_1316 = 19) m_1317 n_1316 k_main_u_5715).
+  f17_1203 n_1204 st_1205 k_f17_4224 when (n_1204 > 0) -> (lock_1199 st_1205 k_f17_4224).
+  f17_1203 n_1204 st_1205 k_f17_4224 when (not (n_1204 > 0)) -> (k_f17_4224 st_1205).
+  f19_1215 g_1216 x_1217 k_f19_4372 when (x_1217 >= 0) -> (g_1216 x_1217 k_f19_4372).
+  f19_1215 g_1216 x_1217 k_f19_4372 when (not (x_1217 >= 0)) -> (g_1216 x_1217 (f_f19_7656 x_1217 g_1216 k_f19_4372)).
+  f_7690 main_5762 -> end.
+  f_Pervasives.==_7652 x_2911 x_2912 k_Pervasives.==_4160 x_4163 -> (k_Pervasives.==_4160 (x_4163 = 0)).
+  f_ackermann_7657 m_1223 n_1224 k_ackermann_4477 x_4510 -> (ackermann_1222 (m_1223 - 1) x_4510 k_ackermann_4477).
+  f_array_max23_7664 i_1254 m_1256 x_2266 k_array_max23_4852 x_2273 x_4891 ->
+      (z_1258 i_1254 m_1256 x_2266 x_4891 (f_f_array_max23_7665 i_1254 m_1256 x_2266 x_4891 k_array_max23_4852 x_2273)).
+  f_array_max24_7667 i_1268 m_1270 x_2331 k_array_max24_4965 x_2338 x_5004 ->
+      (z_1272 i_1268 m_1270 x_2331 x_5004 (f_f_array_max24_7668 i_1268 m_1270 x_2331 x_5004 k_array_max24_4965 x_2338)).
+  f_f19_7656 x_1217 g_1216 k_f19_4372 x_4416 -> (f19_1215 (f19_1215 g_1216) x_4416 k_f19_4372).
+  f_f_array_max23_7665 i_1254 m_1256 x_2266 x_4891 k_array_max23_4852 x_2273 z_4890 ->
+      (array_max23_1252 x_2266 (i_1254 + 1) x_2273 z_4890 k_array_max23_4852).
+  f_f_array_max24_7668 i_1268 m_1270 x_2331 x_5004 k_array_max24_4965 x_2338 z_5003 ->
+      (array_max24_1266 x_2331 (i_1268 + 1) x_2338 z_5003 k_array_max24_4965).
+  f_f_m21_7661 i_1243 k_1241 n_1242 k_m21_4689 x_4731 when (x_4731 >= 1) -> (k_m21_4689 ()).
+  f_f_m21_7661 i_1243 k_1241 n_1242 k_m21_4689 x_4731 when (not (x_4731 >= 1)) -> (fail_7717 true k_m21_4689).
+  f_f_m27_7674 i_1304 k_1302 n_1303 k_m27_5325 x_5367 when (x_5367 = 1) -> (k_m27_5325 ()).
+  f_f_m27_7674 i_1304 k_1302 n_1303 k_m27_5325 x_5367 when (not (x_5367 = 1)) -> (fail_7722 true k_m27_5325).
+  f_f_main_7689 arg1_5761 k_main_5726 arg2_5760 -> (main_1315 arg1_5761 arg2_5760 k_main_5726).
+  f_f_mult_sum_7677 m_1311 n_1310 x_5440 k_mult_sum_5437 x_5473 -> (sum28_1306 m_1311 x_5473 k_mult_sum_5437).
+  f_f_u_7679 m_1317 n_1316 x_4294 k_main_u_5715 x_4271 when (x_4271 = 0) -> (k_main_u_5715 ()).
+  f_f_u_7679 m_1317 n_1316 x_4294 k_main_u_5715 x_4271 when (not (x_4271 = 0)) -> (fail_7723 true k_main_u_5715).
+  f_f_u_7683 m_1317 n_1316 x_5097 k_main_u_5715 x_5098 when (x_5097 <= x_5098) -> (k_main_u_5715 ()).
+  f_f_u_7683 m_1317 n_1316 x_5097 k_main_u_5715 x_5098 when (not (x_5097 <= x_5098)) -> (fail_7726 true k_main_u_5715).
+  f_f_u_7686 m_1317 n_1316 x_5515 k_main_u_5715 x_5533 when x_5533 -> (k_main_u_5715 ()).
+  f_f_u_7686 m_1317 n_1316 x_5515 k_main_u_5715 x_5533 when (not x_5533) -> (fail_7728 true k_main_u_5715).
+  f_lock_7653 st_1200 k_lock_4182 u_4196 -> (k_lock_4182 1).
+  f_m20_7658 m_1226 n_1227 k_m20_4526 x_4529 when (x_4529 >= n_1227) -> (k_m20_4526 ()).
+  f_m20_7658 m_1226 n_1227 k_m20_4526 x_4529 when (not (x_4529 >= n_1227)) -> (fail_7715 true k_m20_4526).
+  f_m21_7660 i_1243 k_1241 n_1242 k_m21_4689 x_4761 when ((0 <= i_1243) && (i_1243 < n_1242)) ->
+      (x_4761 i_1243 (f_f_m21_7661 i_1243 k_1241 n_1242 k_m21_4689)).
+  f_m21_7660 i_1243 k_1241 n_1242 k_m21_4689 x_4761 when (not ((0 <= i_1243) && (i_1243 < n_1242))) -> (k_m21_4689 ()).
+  f_m22_7663 n_1248 k_m22_4805 x_4808 when (x_4808 = 91) -> (k_m22_4805 ()).
+  f_m22_7663 n_1248 k_m22_4805 x_4808 when (not (x_4808 = 91)) -> (fail_7718 true k_m22_4805).
+  f_m23_7666 i_1261 n_1260 k_m23_4908 m_4942 when (m_4942 >= n_1260) -> (k_m23_4908 ()).
+  f_m23_7666 i_1261 n_1260 k_m23_4908 m_4942 when (not (m_4942 >= n_1260)) -> (fail_7719 true k_m23_4908).
+  f_m24_7669 i_1275 n_1274 k_m24_5021 m_5055 when (not (m_5055 = n_1274)) -> (k_m24_5021 ()).
+  f_m24_7669 i_1275 n_1274 k_m24_5021 m_5055 when (not (not (m_5055 = n_1274))) -> (fail_7720 true k_m24_5021).
+  f_m27_7673 i_1304 k_1302 n_1303 k_m27_5325 x_5397 when ((0 <= i_1304) && (i_1304 < n_1303)) ->
+      (x_5397 i_1304 (f_f_m27_7674 i_1304 k_1302 n_1303 k_m27_5325)).
+  f_m27_7673 i_1304 k_1302 n_1303 k_m27_5325 x_5397 when (not ((0 <= i_1304) && (i_1304 < n_1303))) -> (k_m27_5325 ()).
+  f_main_7687 m_1317 n_1316 k_main_5541 u_5718 -> (k_main_5541 ()).
+  f_main_7688 k_main_5726 arg1_5761 -> (arg2_2639 arg1_5761 (f_f_main_7689 arg1_5761 k_main_5726)).
+  f_make_array21_7659 i_1230 n_1229 k_make_array21_4564 u_4578 -> (k_make_array21_4564 0).
+  f_make_array27_7672 i_1291 n_1290 k_make_array27_5200 u_5214 -> (k_make_array27_5200 0).
+  f_mc91_7662 x_1246 k_mc91_4774 x_4794 -> (mc91_1245 x_4794 k_mc91_4774).
+  f_mult25_7670 m_1279 n_1278 k_mult25_5067 x_5071 -> (k_mult25_5067 (n_1278 + x_5071)).
+  f_mult26_7671 m_1285 n_1284 k_mult26_5139 x_5143 -> (k_mult26_5139 (n_1284 + x_5143)).
+  f_mult_sum_7676 m_1311 n_1310 k_mult_sum_5437 x_5440 when (x_5440 = 0) -> (k_mult_sum_5437 m_1311).
+  f_mult_sum_7676 m_1311 n_1310 k_mult_sum_5437 x_5440 when (not (x_5440 = 0)) ->
+      (mult_sum_1309 (n_1310 - 1) m_1311 (f_f_mult_sum_7677 m_1311 n_1310 x_5440 k_mult_sum_5437)).
+  f_sum28_7675 m_1308 n_1307 k_sum28_5410 x_5414 -> (k_sum28_5410 (1 + x_5414)).
+  f_sum_7655 n_1212 k_sum_4312 x_4316 -> (k_sum_4312 (n_1212 + x_4316)).
+  f_u_7678 m_1317 n_1316 k_main_u_5715 x_4294 ->
+      (g17_1206 m_1317 x_4294 (f_f_u_7679 m_1317 n_1316 x_4294 k_main_u_5715)).
+  f_u_7680 m_1317 n_1316 k_main_u_5715 x_4341 when ((m_1317 + 1) <= x_4341) -> (k_main_u_5715 ()).
+  f_u_7680 m_1317 n_1316 k_main_u_5715 x_4341 when (not ((m_1317 + 1) <= x_4341)) -> (fail_7724 true k_main_u_5715).
+  f_u_7681 m_1317 n_1316 k_main_u_5715 x_4441 when (x_4441 >= 0) -> (k_main_u_5715 ()).
+  f_u_7681 m_1317 n_1316 k_main_u_5715 x_4441 when (not (x_4441 >= 0)) -> (fail_7725 true k_main_u_5715).
+  f_u_7682 m_1317 n_1316 k_main_u_5715 x_5097 ->
+      (mult25_1277 m_1317 m_1317 (f_f_u_7683 m_1317 n_1316 x_5097 k_main_u_5715)).
+  f_u_7684 m_1317 n_1316 k_main_u_5715 x_5170 when ((m_1317 * 2) <= x_5170) -> (k_main_u_5715 ()).
+  f_u_7684 m_1317 n_1316 k_main_u_5715 x_5170 when (not ((m_1317 * 2) <= x_5170)) -> (fail_7727 true k_main_u_5715).
+  f_u_7685 m_1317 n_1316 k_main_u_5715 x_5515 ->
+      (Pervasives.==_2910 x_5515 (m_1317 * m_1317) (f_f_u_7686 m_1317 n_1316 x_5515 k_main_u_5715)).
+  f_unlock_7654 st_1202 k_unlock_4203 u_4217 -> (k_unlock_4203 0).
+  fail_7713 b k -> {fail} => (k ()).
+  fail_7714 b k -> {fail} => (k ()).
+  fail_7715 b k -> {fail} => (k ()).
+  fail_7716 b k -> {fail} => (k ()).
+  fail_7717 b k -> {fail} => (k ()).
+  fail_7718 b k -> {fail} => (k ()).
+  fail_7719 b k -> {fail} => (k ()).
+  fail_7720 b k -> {fail} => (k ()).
+  fail_7721 b k -> {fail} => (k ()).
+  fail_7722 b k -> {fail} => (k ()).
+  fail_7723 b k -> {fail} => (k ()).
+  fail_7724 b k -> {fail} => (k ()).
+  fail_7725 b k -> {fail} => (k ()).
+  fail_7726 b k -> {fail} => (k ()).
+  fail_7727 b k -> {fail} => (k ()).
+  fail_7728 b k -> {fail} => (k ()).
+  g17_1206 n_1207 st_1208 k_g17_4246 when (n_1207 >= 0) -> (unlock_1201 st_1208 k_g17_4246).
+  g17_1206 n_1207 st_1208 k_g17_4246 when (not (n_1207 >= 0)) -> (k_g17_4246 st_1208).
+  init27_1297 i_1298 n_1299 a_1300 k_init27_5258 when (i_1298 >= n_1299) -> (k_init27_5258 a_1300).
+  init27_1297 i_1298 n_1299 a_1300 k_init27_5258 when (not (i_1298 >= n_1299)) ->
+      (init27_1297 (i_1298 + 1) n_1299 (update27_1292 i_1298 a_1300 1) k_init27_5258).
+  init_1236 i_1237 n_1238 a_1239 k_init_4622 when (i_1237 >= n_1238) -> (k_init_4622 a_1239).
+  init_1236 i_1237 n_1238 a_1239 k_init_4622 when (not (i_1237 >= n_1238)) ->
+      (init_1236 (i_1237 + 1) n_1238 (update21_1231 i_1237 a_1239 1) k_init_4622).
+  lock_1199 st_1200 k_lock_4182 -> (u_2006 st_1200 (f_lock_7653 st_1200 k_lock_4182)).
+  m20_1225 m_1226 n_1227 k_m20_4526 when ((m_1226 >= 0) && (n_1227 >= 0)) ->
+      (ackermann_1222 m_1226 n_1227 (f_m20_7658 m_1226 n_1227 k_m20_4526)).
+  m20_1225 m_1226 n_1227 k_m20_4526 when (not ((m_1226 >= 0) && (n_1227 >= 0))) -> (k_m20_4526 ()).
+  m21_1240 k_1241 n_1242 i_1243 k_m21_4689 when ((k_1241 >= 0) && (k_1241 <= 0)) ->
+      (init_1236 k_1241 n_1242 (make_array21_1228 n_1242) (f_m21_7660 i_1243 k_1241 n_1242 k_m21_4689)).
+  m21_1240 k_1241 n_1242 i_1243 k_m21_4689 when (not ((k_1241 >= 0) && (k_1241 <= 0))) -> (k_m21_4689 ()).
+  m22_1247 n_1248 k_m22_4805 when (n_1248 <= 102) -> (mc91_1245 n_1248 (f_m22_7663 n_1248 k_m22_4805)).
+  m22_1247 n_1248 k_m22_4805 when (not (n_1248 <= 102)) -> (k_m22_4805 ()).
+  m23_1259 n_1260 i_1261 k_m23_4908 when ((n_1260 > 0) && ((i_1261 >= 0) && (i_1261 <= 0))) ->
+      (array_max23_1252 n_1260 i_1261 (make_array23_1249 n_1260) (-1) (f_m23_7666 i_1261 n_1260 k_m23_4908)).
+  m23_1259 n_1260 i_1261 k_m23_4908 when (not ((n_1260 > 0) && ((i_1261 >= 0) && (i_1261 <= 0)))) -> (k_m23_4908 ()).
+  m24_1273 n_1274 i_1275 k_m24_5021 when ((n_1274 > 0) && ((i_1275 >= 0) && (i_1275 <= 0))) ->
+      (array_max24_1266 n_1274 i_1275 (make_array24_1263 n_1274) (-1) (f_m24_7669 i_1275 n_1274 k_m24_5021)).
+  m24_1273 n_1274 i_1275 k_m24_5021 when (not ((n_1274 > 0) && ((i_1275 >= 0) && (i_1275 <= 0)))) -> (k_m24_5021 ()).
+  m27_1301 k_1302 n_1303 i_1304 k_m27_5325 when ((k_1302 >= 0) && (k_1302 <= 0)) ->
+      (init27_1297 k_1302 n_1303 (make_array27_1289 n_1303) (f_m27_7673 i_1304 k_1302 n_1303 k_m27_5325)).
+  m27_1301 k_1302 n_1303 i_1304 k_m27_5325 when (not ((k_1302 >= 0) && (k_1302 <= 0))) -> (k_m27_5325 ()).
+  main_1315 n_1316 m_1317 k_main_5541 -> (u_2636 m_1317 n_1316 (f_main_7687 m_1317 n_1316 k_main_5541)).
+  main_2641 k_main_5726 -> (arg1_2637 (f_main_7688 k_main_5726)).
+  make_array21_1228 n_1229 i_1230 k_make_array21_4564 ->
+      (u_2133 i_1230 n_1229 (f_make_array21_7659 i_1230 n_1229 k_make_array21_4564)).
+  make_array23_1249 n_1250 i_1251 k_make_array23_4841 -> (k_make_array23_4841 (n_1250 - i_1251)).
+  make_array24_1263 n_1264 i_1265 k_make_array24_4954 -> (k_make_array24_4954 (n_1264 - i_1265)).
+  make_array27_1289 n_1290 i_1291 k_make_array27_5200 ->
+      (u_2448 i_1291 n_1290 (f_make_array27_7672 i_1291 n_1290 k_make_array27_5200)).
+  mc91_1245 x_1246 k_mc91_4774 when (x_1246 > 100) -> (k_mc91_4774 (x_1246 - 10)).
+  mc91_1245 x_1246 k_mc91_4774 when (not (x_1246 > 100)) -> (mc91_1245 (x_1246 + 11) (f_mc91_7662 x_1246 k_mc91_4774)).
+  mult25_1277 n_1278 m_1279 k_mult25_5067 when ((n_1278 <= 0) || (m_1279 <= 0)) -> (k_mult25_5067 0).
+  mult25_1277 n_1278 m_1279 k_mult25_5067 when (not ((n_1278 <= 0) || (m_1279 <= 0))) ->
+      (mult25_1277 n_1278 (m_1279 - 1) (f_mult25_7670 m_1279 n_1278 k_mult25_5067)).
+  mult26_1283 n_1284 m_1285 k_mult26_5139 when ((n_1284 <= 0) || (m_1285 <= 0)) -> (k_mult26_5139 0).
+  mult26_1283 n_1284 m_1285 k_mult26_5139 when (not ((n_1284 <= 0) || (m_1285 <= 0))) ->
+      (mult26_1283 n_1284 (m_1285 - 1) (f_mult26_7671 m_1285 n_1284 k_mult26_5139)).
+  mult_sum_1309 n_1310 m_1311 k_mult_sum_5437 when (n_1310 <= 0) -> (k_mult_sum_5437 0).
+  mult_sum_1309 n_1310 m_1311 k_mult_sum_5437 when (not (n_1310 <= 0)) ->
+      (rand_int (f_mult_sum_7676 m_1311 n_1310 k_mult_sum_5437)).
+  succ_1218 x_1219 k_succ_4431 -> (k_succ_4431 (x_1219 + 1)).
+  sum28_1306 n_1307 m_1308 k_sum28_5410 when (n_1307 <= 0) -> (k_sum28_5410 m_1308).
+  sum28_1306 n_1307 m_1308 k_sum28_5410 when (not (n_1307 <= 0)) ->
+      (sum28_1306 (n_1307 - 1) m_1308 (f_sum28_7675 m_1308 n_1307 k_sum28_5410)).
+  sum_1211 n_1212 k_sum_4312 when (n_1212 <= 0) -> (k_sum_4312 0).
+  sum_1211 n_1212 k_sum_4312 when (not (n_1212 <= 0)) -> (sum_1211 (n_1212 - 1) (f_sum_7655 n_1212 k_sum_4312)).
+  u_2006 st_1200 k_lock_u_4193 when (st_1200 = 0) -> (k_lock_u_4193 ()).
+  u_2006 st_1200 k_lock_u_4193 when (not (st_1200 = 0)) -> (fail_7713 true k_lock_u_4193).
+  u_2011 st_1202 k_unlock_u_4214 when (st_1202 = 1) -> (k_unlock_u_4214 ()).
+  u_2011 st_1202 k_unlock_u_4214 when (not (st_1202 = 1)) -> (fail_7714 true k_unlock_u_4214).
+  u_2133 i_1230 n_1229 k_make_array21_u_4575 when ((0 <= i_1230) && (i_1230 < n_1229)) -> (k_make_array21_u_4575 ()).
+  u_2133 i_1230 n_1229 k_make_array21_u_4575 when (not ((0 <= i_1230) && (i_1230 < n_1229))) ->
+      (fail_7716 true k_make_array21_u_4575).
+  u_2448 i_1291 n_1290 k_make_array27_u_5211 when ((0 <= i_1291) && (i_1291 < n_1290)) -> (k_make_array27_u_5211 ()).
+  u_2448 i_1291 n_1290 k_make_array27_u_5211 when (not ((0 <= i_1291) && (i_1291 < n_1290))) ->
+      (fail_7721 true k_make_array27_u_5211).
+  u_2636 m_1317 n_1316 k_main_u_5715 when (n_1316 = 17) -> (f17_1203 m_1317 0 (f_u_7678 m_1317 n_1316 k_main_u_5715)).
+  u_2636 m_1317 n_1316 k_main_u_5715 when (not (n_1316 = 17)) -> (br_u_7711 (n_1316 = 18) m_1317 n_1316 k_main_u_5715).
+  unlock_1201 st_1202 k_unlock_4203 -> (u_2011 st_1202 (f_unlock_7654 st_1202 k_unlock_4203)).
+  update21_1231 i_1232 a_1233 x_1234 j_1235 k_update21_4589 when ((j_1235 > (i_1232 - 1)) && (j_1235 <= i_1232)) ->
+      (k_update21_4589 x_1234).
+  update21_1231 i_1232 a_1233 x_1234 j_1235 k_update21_4589 when (not ((j_1235 > (i_1232 - 1)) && (j_1235 <= i_1232))) ->
+      (a_1233 j_1235 k_update21_4589).
+  update27_1292 i_1293 a_1294 x_1295 j_1296 k_update27_5225 when ((j_1296 > (i_1293 - 1)) && (j_1296 <= i_1293)) ->
+      (k_update27_5225 x_1295).
+  update27_1292 i_1293 a_1294 x_1295 j_1296 k_update27_5225 when (not ((j_1296 > (i_1293 - 1)) && (j_1296 <= i_1293))) ->
+      (a_1294 j_1296 k_update27_5225).
+  z_1258 i_1254 m_1256 x_2266 x_4891 k_array_max23_z_4868 when (x_4891 > m_1256) -> (k_array_max23_z_4868 x_4891).
+  z_1258 i_1254 m_1256 x_2266 x_4891 k_array_max23_z_4868 when (not (x_4891 > m_1256)) ->
+      (k_array_max23_z_4868 m_1256).
+  z_1272 i_1268 m_1270 x_2331 x_5004 k_array_max24_z_4981 when (x_5004 > m_1270) -> (k_array_max24_z_4981 x_5004).
+  z_1272 i_1268 m_1270 x_2331 x_5004 k_array_max24_z_4981 when (not (x_5004 > m_1270)) ->
+      (k_array_max24_z_4981 m_1270).
+Types:
+  main_7651 : X
+  ackermann_1222 : (int -> int -> (int -> X) -> X)
+  array_max23_1252 : (int -> int -> (int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  array_max24_1266 : (int -> int -> (int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  f19_1215 : ((int -> (int -> X) -> X) -> int -> (int -> X) -> X)
+  fail_7713 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7714 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7715 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7716 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7717 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7718 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7719 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7720 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7721 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7722 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7723 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7724 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7725 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7726 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7727 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_7728 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  init27_1297 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  init_1236 : (int -> int -> (int -> (int -> X) -> X) -> ((int -> (int -> X) -> X) -> X) -> X)
+  mc91_1245 : (int -> (int -> X) -> X)
+  mult25_1277 : (int -> int -> (int -> X) -> X)
+  mult26_1283 : (int -> int -> (int -> X) -> X)
+  mult_sum_1309 : (int -> int -> (int -> X) -> X)
+  sum28_1306 : (int -> int -> (int -> X) -> X)
+  sum_1211 : (int -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_7651 ... --> 
+  main_2641 ... --> 
+  arg1_2637 ... --> 
+  f_main_7688 ... --> 
+  arg2_2639 ... --> 
+  f_f_main_7689 ... --> 
+  main_1315 ... --> 
+  u_2636 [1/2] ... --> 
+  f17_1203 [2/2] ... --> 
+  f_u_7678 ... --> 
+  g17_1206 [1/2] ... --> 
+  unlock_1201 ... --> 
+  u_2011 [2/2] ... --> 
+  fail_7714 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+
+========================================================================================================================
+
+Unsafe!
+
+Input for main:
+  17; 0
+Error trace:
+  main 17 0 ->
+    if true then ... ->
+    m17 0 ->
+      f17 0 0 ->
+        if false then ... ->
+      g17 0 0 ->
+        if true then ... ->
+        unlock 0 ->
+          if false then ... ->
+  FAIL!
+
+CEGAR-cycles: 1
+total: 1.740 sec
+  abst: 0.912 sec
+  mc: 0.005 sec
+  refine: 0.056 sec
+1.742

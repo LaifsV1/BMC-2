@@ -1,0 +1,250 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 sum-mult-e.ml
+
+parsed:
+ let rec sum_1199 n_1200 m_1201 = if n_1200 <= 0 then m_1201 else 1 + sum_1199 (n_1200 - 1) m_1201 in
+ let rec mult_sum_1202 n_1203 m_1204 =
+   if n_1203 <= 0
+   then
+     0
+   else
+     if Pervasives.== n_1203 1 then m_1204 else sum_1199 m_1204 (mult_sum_1202 (n_1203 - 1) m_1204)
+ in
+ let main_1205 n_1206 m_1207 = assert (Pervasives.== (mult_sum_1202 n_1206 m_1207) (n_1206 * m_1207)) in
+ ()
+
+
+###set_main:
+ let rec sum_1199 (n_1200:int) (m_1201:int) = if n_1200 <= 0 then m_1201 else 1 + sum_1199 (n_1200 - 1) m_1201 in
+ let rec mult_sum_1202 (n_1203:int) (m_1204:int) =
+   if n_1203 <= 0
+   then
+     0
+   else
+     if Pervasives.== n_1203 1 then m_1204 else sum_1199 m_1204 (mult_sum_1202 (n_1203 - 1) m_1204)
+ in
+ let main_1205 (n_1206:int) (m_1207:int) =
+   assert (Pervasives.== (mult_sum_1202 n_1206 m_1207) (n_1206 * m_1207))
+ in
+ (let arg1_2041 = rand_int () in
+  let arg2_2043 = rand_int () in
+  main_1205 arg1_2041 arg2_2043); ()
+
+###Make_ext_funs:
+ let Pervasives.==_2080 (_:int) (_:int) = rand_bool () in
+ let rec sum_1199 (n_1200:int) (m_1201:int) = if n_1200 <= 0 then m_1201 else 1 + sum_1199 (n_1200 - 1) m_1201 in
+ let rec mult_sum_1202 (n_1203:int) (m_1204:int) =
+   if n_1203 <= 0
+   then
+     0
+   else
+     if Pervasives.==_2080 n_1203 1 then m_1204 else sum_1199 m_1204 (mult_sum_1202 (n_1203 - 1) m_1204)
+ in
+ let main_1205 (n_1206:int) (m_1207:int) =
+   assert (Pervasives.==_2080 (mult_sum_1202 n_1206 m_1207) (n_1206 * m_1207))
+ in
+ (let arg1_2041 = rand_int () in
+  let arg2_2043 = rand_int () in
+  main_1205 arg1_2041 arg2_2043); ()
+
+###Beta_reduce_trivial:
+ let Pervasives.==_2080 (_:int) (_:int) = rand_bool () in
+ let rec sum_1199 (n_1200:int) (m_1201:int) = if n_1200 <= 0 then m_1201 else 1 + sum_1199 (n_1200 - 1) m_1201 in
+ let rec mult_sum_1202 (n_1203:int) (m_1204:int) =
+   if n_1203 <= 0
+   then
+     0
+   else
+     if (rand_bool ()) then m_1204 else sum_1199 m_1204 (mult_sum_1202 (n_1203 - 1) m_1204)
+ in
+ let main_1205 (n_1206:int) (m_1207:int) =
+   assert (Pervasives.==_2080 (mult_sum_1202 n_1206 m_1207) (n_1206 * m_1207))
+ in
+ (let arg1_2041 = rand_int () in
+  let arg2_2043 = rand_int () in
+  main_1205 arg1_2041 arg2_2043); ()
+
+###Eliminate_redundant_arguments:
+ let Pervasives.==_2080 (_:int) (_:int) = rand_bool () in
+ let rec sum_1199 (n_1200:int) (m_1201:int) = if n_1200 <= 0 then m_1201 else 1 + sum_1199 (n_1200 - 1) m_1201 in
+ let rec mult_sum_1202 (n_1203:int) (m_1204:int) =
+   if n_1203 <= 0
+   then
+     0
+   else
+     if (rand_bool ()) then m_1204 else sum_1199 m_1204 (mult_sum_1202 (n_1203 - 1) m_1204)
+ in
+ let main_1205 (n_1206:int) (m_1207:int) =
+   assert (Pervasives.==_2080 (mult_sum_1202 n_1206 m_1207) (n_1206 * m_1207))
+ in
+ (let arg1_2041 = rand_int () in
+  let arg2_2043 = rand_int () in
+  main_1205 arg1_2041 arg2_2043); ()
+
+###CPS:
+ (let Pervasives.==_2080 (_:int) (_:int) (k_Pervasives.==_2277:(bool -> X)) =
+    rand_int_cps () (fun (x_2280:int) -> k_Pervasives.==_2277 (x_2280 = 0))
+  in
+  let rec sum_1199 (n_1200:int) (m_1201:int) (k_sum_2299:(int -> X)) =
+    if n_1200 <= 0
+    then
+      k_sum_2299 m_1201
+    else
+      sum_1199 (n_1200 - 1) m_1201 (fun (x_2303:int) -> k_sum_2299 (1 + x_2303))
+  in
+  let rec mult_sum_1202 (n_1203:int) (m_1204:int) (k_mult_sum_2326:(int -> X)) =
+    if n_1203 <= 0
+    then
+      k_mult_sum_2326 0
+    else
+      rand_int_cps
+        () 
+        (fun (x_2329:int) ->
+           if x_2329 = 0
+           then
+             k_mult_sum_2326 m_1204
+           else
+             mult_sum_1202 (n_1203 - 1) m_1204 (fun (x_2362:int) -> sum_1199 m_1204 x_2362 k_mult_sum_2326))
+  in
+  let main_2045 (k_main_2430:(unit -> X)) =
+    let arg1_2041 (k_main_arg1_2435:(int -> X)) = rand_int_cps () k_main_arg1_2435 in
+    arg1_2041
+      (fun (arg1_2465:int) ->
+         let arg2_2043 (k_main_arg2_2447:(int -> X)) = rand_int_cps () k_main_arg2_2447 in
+         arg2_2043
+           (fun (arg2_2464:int) ->
+              mult_sum_1202
+                arg1_2465 arg2_2464 
+                (fun (x_2404:int) ->
+                   Pervasives.==_2080
+                     x_2404 (arg1_2465 * arg2_2464) 
+                     (fun (x_2422:bool) -> if x_2422 then k_main_2430 () else <|fail|> () k_main_2430))))
+  in
+  main_2045 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let Pervasives.==_2080 (_:int) (_:int) (k_Pervasives.==_2277:(bool -> X)) =
+    rand_int_cps () (fun (x_2280:int) -> k_Pervasives.==_2277 (x_2280 = 0))
+  in
+  let rec sum_1199 (n_1200:int) (m_1201:int) (k_sum_2299:(int -> X)) =
+    if n_1200 <= 0
+    then
+      k_sum_2299 m_1201
+    else
+      sum_1199 (n_1200 - 1) m_1201 (fun (x_2303:int) -> k_sum_2299 (1 + x_2303))
+  in
+  let rec mult_sum_1202 (n_1203:int) (m_1204:int) (k_mult_sum_2326:(int -> X)) =
+    if n_1203 <= 0
+    then
+      k_mult_sum_2326 0
+    else
+      rand_int_cps
+        () 
+        (fun (x_2329:int) ->
+           if x_2329 = 0
+           then
+             k_mult_sum_2326 m_1204
+           else
+             mult_sum_1202 (n_1203 - 1) m_1204 (fun (x_2362:int) -> sum_1199 m_1204 x_2362 k_mult_sum_2326))
+  in
+  let main_2045 (k_main_2430:(unit -> X)) =
+    let arg1_2041 (k_main_arg1_2435:(int -> X)) = rand_int_cps () k_main_arg1_2435 in
+    arg1_2041
+      (fun (arg1_2465:int) ->
+         let arg2_2043 (k_main_arg2_2447:(int -> X)) = rand_int_cps () k_main_arg2_2447 in
+         arg2_2043
+           (fun (arg2_2464:int) ->
+              mult_sum_1202
+                arg1_2465 arg2_2464 
+                (fun (x_2404:int) ->
+                   Pervasives.==_2080
+                     x_2404 (arg1_2465 * arg2_2464) 
+                     (fun (x_2422:bool) -> if x_2422 then k_main_2430 () else <|fail|> () k_main_2430))))
+  in
+  main_2045 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2732
+  main_2732 -> (main_2045 f_2741).
+  Pervasives.==_2080 x_2081 x_2082 k_Pervasives.==_2277 ->
+      (rand_int (f_Pervasives.==_2733 x_2081 x_2082 k_Pervasives.==_2277)).
+  arg1_2041 k_main_arg1_2435 -> (rand_int k_main_arg1_2435).
+  arg2_2043 arg1_2465 k_main_arg2_2447 -> (rand_int k_main_arg2_2447).
+  f_2741 main_2466 -> end.
+  f_Pervasives.==_2733 x_2081 x_2082 k_Pervasives.==_2277 x_2280 -> (k_Pervasives.==_2277 (x_2280 = 0)).
+  f_f_f_f_main_2740 arg1_2465 arg2_2464 x_2404 k_main_2430 x_2422 when x_2422 -> (k_main_2430 ()).
+  f_f_f_f_main_2740 arg1_2465 arg2_2464 x_2404 k_main_2430 x_2422 when (not x_2422) -> (fail_2742 true k_main_2430).
+  f_f_f_main_2739 arg1_2465 arg2_2464 k_main_2430 x_2404 ->
+      (Pervasives.==_2080 x_2404 (arg1_2465 * arg2_2464) (f_f_f_f_main_2740 arg1_2465 arg2_2464 x_2404 k_main_2430)).
+  f_f_main_2738 arg1_2465 k_main_2430 arg2_2464 ->
+      (mult_sum_1202 arg1_2465 arg2_2464 (f_f_f_main_2739 arg1_2465 arg2_2464 k_main_2430)).
+  f_f_mult_sum_2736 m_1204 n_1203 x_2329 k_mult_sum_2326 x_2362 -> (sum_1199 m_1204 x_2362 k_mult_sum_2326).
+  f_main_2737 k_main_2430 arg1_2465 -> (arg2_2043 arg1_2465 (f_f_main_2738 arg1_2465 k_main_2430)).
+  f_mult_sum_2735 m_1204 n_1203 k_mult_sum_2326 x_2329 when (x_2329 = 0) -> (k_mult_sum_2326 m_1204).
+  f_mult_sum_2735 m_1204 n_1203 k_mult_sum_2326 x_2329 when (not (x_2329 = 0)) ->
+      (mult_sum_1202 (n_1203 - 1) m_1204 (f_f_mult_sum_2736 m_1204 n_1203 x_2329 k_mult_sum_2326)).
+  f_sum_2734 m_1201 n_1200 k_sum_2299 x_2303 -> (k_sum_2299 (1 + x_2303)).
+  fail_2742 b k -> {fail} => (k ()).
+  main_2045 k_main_2430 -> (arg1_2041 (f_main_2737 k_main_2430)).
+  mult_sum_1202 n_1203 m_1204 k_mult_sum_2326 when (n_1203 <= 0) -> (k_mult_sum_2326 0).
+  mult_sum_1202 n_1203 m_1204 k_mult_sum_2326 when (not (n_1203 <= 0)) ->
+      (rand_int (f_mult_sum_2735 m_1204 n_1203 k_mult_sum_2326)).
+  sum_1199 n_1200 m_1201 k_sum_2299 when (n_1200 <= 0) -> (k_sum_2299 m_1201).
+  sum_1199 n_1200 m_1201 k_sum_2299 when (not (n_1200 <= 0)) ->
+      (sum_1199 (n_1200 - 1) m_1201 (f_sum_2734 m_1201 n_1200 k_sum_2299)).
+Types:
+  main_2732 : X
+  fail_2742 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  mult_sum_1202 : (int -> int -> (int -> X) -> X)
+  sum_1199 : (int -> int -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2732 ... --> 
+  main_2045 ... --> 
+  arg1_2041 ... --> 
+  f_main_2737 ... --> 
+  arg2_2043 ... --> 
+  f_f_main_2738 ... --> 
+  mult_sum_1202 [2/2] ... --> 
+  f_mult_sum_2735 [1/2] ... --> 
+  f_f_f_main_2739 ... --> 
+  Pervasives.==_2080 ... --> 
+  f_Pervasives.==_2733 ... --> 
+  f_f_f_f_main_2740 [2/2] ... --> 
+  fail_2742 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+
+========================================================================================================================
+
+Unsafe!
+
+Input for main:
+  1; 0
+Error trace:
+  main 1 0 ->
+    mult_sum 1 0 ->
+      if false then ... ->
+Unsupported: error trace with external funcitons
+
+CEGAR-cycles: 1
+total: 0.237 sec
+  abst: 0.063 sec
+  mc: 0.001 sec
+  refine: 0.063 sec
+0.238

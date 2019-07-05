@@ -1,0 +1,615 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 copy_intro.ml
+
+parsed:
+ let rec copy_1199 x_1200 = if x_1200 = 0 then 0 else 1 + copy_1199 (x_1200 - 1) in
+ let main_1201 n_1202 = assert (copy_1199 (copy_1199 n_1202) = n_1202) in
+ ()
+
+
+###set_main:
+ let rec copy_1199 (x_1200:int) = if x_1200 = 0 then 0 else 1 + copy_1199 (x_1200 - 1) in
+ let main_1201 (n_1202:int) = assert (copy_1199 (copy_1199 n_1202) = n_1202) in
+ (let arg1_2017 = rand_int () in
+  main_1201 arg1_2017); ()
+
+###CPS:
+ (let rec copy_1199 (x_1200:int) (k_copy_2124:(int -> X)) =
+    if x_1200 = 0 then k_copy_2124 0 else copy_1199 (x_1200 - 1) (fun (x_2128:int) -> k_copy_2124 (1 + x_2128))
+  in
+  let main_2019 (k_main_2191:(unit -> X)) =
+    let arg1_2017 (k_main_arg1_2196:(int -> X)) = rand_int_cps () k_main_arg1_2196 in
+    arg1_2017
+      (fun (arg1_2212:int) ->
+         copy_1199
+           arg1_2212 
+           (fun (x_2173:int) ->
+              copy_1199
+                x_2173 
+                (fun (x_2152:int) ->
+                   if x_2152 = arg1_2212 then k_main_2191 () else <|fail|> () k_main_2191)))
+  in
+  main_2019 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let rec copy_1199 (x_1200:int) (k_copy_2124:(int -> X)) =
+    if x_1200 = 0 then k_copy_2124 0 else copy_1199 (x_1200 - 1) (fun (x_2128:int) -> k_copy_2124 (1 + x_2128))
+  in
+  let main_2019 (k_main_2191:(unit -> X)) =
+    let arg1_2017 (k_main_arg1_2196:(int -> X)) = rand_int_cps () k_main_arg1_2196 in
+    arg1_2017
+      (fun (arg1_2212:int) ->
+         copy_1199
+           arg1_2212 
+           (fun (x_2173:int) ->
+              copy_1199
+                x_2173 
+                (fun (x_2152:int) ->
+                   if x_2152 = arg1_2212 then k_main_2191 () else <|fail|> () k_main_2191)))
+  in
+  main_2019 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (int -> (int -> X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [1/2] ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [1/2] ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int -> (x_4:int[x_4 = 0; x_2 = 0] -> X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 1; 0
+
+(2-3) Checking counterexample ... DONE!
+
+(2-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 0; 0; 0; 1; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 3)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int -> (x_4:int[1 = x_4; 1 = x_2; x_4 = 0; x_2 = 0] -> X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(3-1) Abstracting ... DONE!
+
+(3-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [1/2] ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 0; 0; 0; 0; 1; 0
+
+(3-3) Checking counterexample ... DONE!
+
+(3-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 4)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int[1 <= x_2] -> (x_4:int[x_4 >= 0; 1 <= x_4; 1 = x_4; 1 = x_2; x_4 = 0; x_2 = 0] -> X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(4-1) Abstracting ... DONE!
+
+(4-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1; 0
+
+(4-3) Checking counterexample ... DONE!
+
+(4-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 5)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int[1 <= x_2] ->
+               (x_4:int[2 = x_4; 3 = x_4; 2 = x_2; 3 = x_2; x_4 >= 0; 1 <= x_4; 1 = x_4; 1 = x_2; x_4 = 0; x_2 = 0] ->
+               X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(5-1) Abstracting ... DONE!
+
+(5-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 0; 1; 1; 0; 0; 0; 1; 0
+
+(5-3) Checking counterexample ... DONE!
+
+(5-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 0; 1; 1; 0
+
+Program with abstraction types (CEGAR-cycle 6)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int[2 <= x_2; 3 <= x_2; 1 <= x_2] ->
+               (x_4:int[2 <= x_4; 3 <= x_4; 2 = x_4; 3 = x_4; 2 = x_2; 
+                        3 = x_2; x_4 >= 0; 1 <= x_4; 1 = x_4; 1 = x_2; 
+                        x_4 = 0; x_2 = 0] ->
+               X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(6-1) Abstracting ... DONE!
+
+(6-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1; 0
+
+(6-3) Checking counterexample ... DONE!
+
+(6-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 1; 0
+
+Program with abstraction types (CEGAR-cycle 7)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int[4 <= x_2; 2 <= x_2; 3 <= x_2; 1 <= x_2] ->
+               (x_4:int[4 <= x_4; 2 <= x_4; 3 <= x_4; 2 = x_4; 3 = x_4; 
+                        2 = x_2; 3 = x_2; x_4 >= 0; 1 <= x_4; 1 = x_4; 
+                        1 = x_2; x_4 = 0; x_2 = 0] ->
+               X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(7-1) Abstracting ... DONE!
+
+(7-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+(7-3) Checking counterexample ... DONE!
+
+(7-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 8)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int[4 <= x_2; 2 <= x_2; 3 <= x_2; 1 <= x_2] ->
+               (x_4:int[4 = x_4; 4 = x_2; 4 <= x_4; 2 <= x_4; 3 <= x_4; 
+                        2 = x_4; 3 = x_4; 2 = x_2; 3 = x_2; x_4 >= 0; 
+                        1 <= x_4; 1 = x_4; 1 = x_2; x_4 = 0; x_2 = 0] ->
+               X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(8-1) Abstracting ... DONE!
+
+(8-2) Checking HORS ... Restart TRecS (param: 1000 -> 2000)
+DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+(8-3) Checking counterexample ... DONE!
+
+(8-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0
+
+Program with abstraction types (CEGAR-cycle 9)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int[5 <= x_2; 4 <= x_2; 2 <= x_2; 3 <= x_2; 1 <= x_2] ->
+               (x_4:int[5 <= x_4; 4 = x_4; 4 = x_2; 4 <= x_4; 2 <= x_4; 
+                        3 <= x_4; 2 = x_4; 3 = x_4; 2 = x_2; 3 = x_2; 
+                        x_4 >= 0; 1 <= x_4; 1 = x_4; 1 = x_2; x_4 = 0; 
+                        x_2 = 0] ->
+               X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(9-1) Abstracting ... DONE!
+
+(9-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2330 ... --> 
+  main_2019 ... --> 
+  arg1_2017 ... --> 
+  f_main_2332 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_main_2333 ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [2/2] ... --> 
+  copy_1199 [1/2] ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_copy_2331 ... --> 
+  f_f_f_main_2334 [2/2] ... --> 
+  fail_2336 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 0
+
+(9-3) Checking counterexample ... DONE!
+
+(9-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 10)::
+Main: main_2330
+  main_2330 -> (main_2019 f_2335).
+  arg1_2017 k_main_arg1_2196 -> (rand_int k_main_arg1_2196).
+  copy_1199 x_1200 k_copy_2124 when (x_1200 = 0) -> (k_copy_2124 0).
+  copy_1199 x_1200 k_copy_2124 when (not (x_1200 = 0)) -> (copy_1199 (x_1200 - 1) (f_copy_2331 x_1200 k_copy_2124)).
+  f_2335 main_2213 -> end.
+  f_copy_2331 x_1200 k_copy_2124 x_2128 -> (k_copy_2124 (1 + x_2128)).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (x_2152 = arg1_2212) -> (k_main_2191 ()).
+  f_f_f_main_2334 arg1_2212 x_2173 k_main_2191 x_2152 when (not (x_2152 = arg1_2212)) -> (fail_2336 true k_main_2191).
+  f_f_main_2333 arg1_2212 k_main_2191 x_2173 -> (copy_1199 x_2173 (f_f_f_main_2334 arg1_2212 x_2173 k_main_2191)).
+  f_main_2332 k_main_2191 arg1_2212 -> (copy_1199 arg1_2212 (f_f_main_2333 arg1_2212 k_main_2191)).
+  fail_2336 b k -> {fail} => (k ()).
+  main_2019 k_main_2191 -> (arg1_2017 (f_main_2332 k_main_2191)).
+Types:
+  main_2330 : X
+  copy_1199 : (x_2:int[5 <= x_2; 4 <= x_2; 2 <= x_2; 3 <= x_2; 1 <= x_2] ->
+               (x_4:int[5 = x_4; 5 = x_2; 5 <= x_4; 4 = x_4; 4 = x_2; 
+                        4 <= x_4; 2 <= x_4; 3 <= x_4; 2 = x_4; 3 = x_4; 
+                        2 = x_2; 3 = x_2; x_4 >= 0; 1 <= x_4; 1 = x_4; 
+                        1 = x_2; x_4 = 0; x_2 = 0] ->
+               X) -> X)
+  fail_2336 : (x_2:bool[x_2] -> (unit -> X) -> X)
+
+(10-1) Abstracting ... DONE!
+
+(10-2) Checking HORS ... Restart TRecS (param: 2000 -> 4000)
+138.467

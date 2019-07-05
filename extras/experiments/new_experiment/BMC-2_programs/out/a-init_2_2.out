@@ -1,0 +1,5 @@
+unsat
+(error "line 215 column 15: model is not available")
+(error "line 215 column 30: model is not available")
+(error "line 215 column 45: model is not available")
+0.009

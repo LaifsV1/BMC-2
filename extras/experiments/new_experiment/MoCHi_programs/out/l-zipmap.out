@@ -1,0 +1,1382 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 l-zipmap.ml
+
+parsed:
+ let rec zip_1199 x_1200 y_1201 =
+   if x_1200 = 0
+   then
+     if y_1201 = 0 then x_1200 else assert false
+   else
+     if y_1201 = 0 then assert false else 1 + zip_1199 (x_1200 - 1) (y_1201 - 1)
+ in
+ let rec map_1202 x_1203 = if x_1203 = 0 then x_1203 else 1 + map_1202 (x_1203 - 1) in
+ let main_1204 n_1205 = assert (map_1202 (zip_1199 n_1205 n_1205) = n_1205) in
+ ()
+
+
+###set_main:
+ let rec zip_1199 (x_1200:int) (y_1201:int) =
+   if x_1200 = 0
+   then
+     if y_1201 = 0 then x_1200 else assert false
+   else
+     if y_1201 = 0 then assert false else 1 + zip_1199 (x_1200 - 1) (y_1201 - 1)
+ in
+ let rec map_1202 (x_1203:int) = if x_1203 = 0 then x_1203 else 1 + map_1202 (x_1203 - 1) in
+ let main_1204 (n_1205:int) = assert (map_1202 (zip_1199 n_1205 n_1205) = n_1205) in
+ (let arg1_2039 = rand_int () in
+  main_1204 arg1_2039); ()
+
+###CPS:
+ (let rec zip_1199 (x_1200:int) (y_1201:int) (k_zip_2201:(int -> X)) =
+    if x_1200 = 0
+    then
+      if y_1201 = 0 then k_zip_2201 x_1200 else <|fail|> () (fun (():unit) -> _|_)
+    else
+      if y_1201 = 0
+      then
+        <|fail|> () (fun (():unit) -> _|_)
+      else
+        zip_1199 (x_1200 - 1) (y_1201 - 1) (fun (x_2233:int) -> k_zip_2201 (1 + x_2233))
+  in
+  let rec map_1202 (x_1203:int) (k_map_2260:(int -> X)) =
+    if x_1203 = 0
+    then
+      k_map_2260 x_1203
+    else
+      map_1202 (x_1203 - 1) (fun (x_2264:int) -> k_map_2260 (1 + x_2264))
+  in
+  let main_2041 (k_main_2328:(unit -> X)) =
+    let arg1_2039 (k_main_arg1_2333:(int -> X)) = rand_int_cps () k_main_arg1_2333 in
+    arg1_2039
+      (fun (arg1_2349:int) ->
+         zip_1199
+           arg1_2349 arg1_2349 
+           (fun (x_2310:int) ->
+              map_1202
+                x_2310 
+                (fun (x_2288:int) ->
+                   if x_2288 = arg1_2349 then k_main_2328 () else <|fail|> () k_main_2328)))
+  in
+  main_2041 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let rec zip_1199 (x_1200:int) (y_1201:int) (k_zip_2201:(int -> X)) =
+    if x_1200 = 0
+    then
+      if y_1201 = 0 then k_zip_2201 x_1200 else <|fail|> () (fun (():unit) -> _|_)
+    else
+      if y_1201 = 0
+      then
+        <|fail|> () (fun (():unit) -> _|_)
+      else
+        zip_1199 (x_1200 - 1) (y_1201 - 1) (fun (x_2233:int) -> k_zip_2201 (1 + x_2233))
+  in
+  let rec map_1202 (x_1203:int) (k_map_2260:(int -> X)) =
+    if x_1203 = 0
+    then
+      k_map_2260 x_1203
+    else
+      map_1202 (x_1203 - 1) (fun (x_2264:int) -> k_map_2260 (1 + x_2264))
+  in
+  let main_2041 (k_main_2328:(unit -> X)) =
+    let arg1_2039 (k_main_arg1_2333:(int -> X)) = rand_int_cps () k_main_arg1_2333 in
+    arg1_2039
+      (fun (arg1_2349:int) ->
+         zip_1199
+           arg1_2349 arg1_2349 
+           (fun (x_2310:int) ->
+              map_1202
+                x_2310 
+                (fun (x_2288:int) ->
+                   if x_2288 = arg1_2349 then k_main_2328 () else <|fail|> () k_main_2328)))
+  in
+  main_2041 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (int -> (int -> X) -> X)
+  zip_1199 : (int -> int -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [1/2] ... --> 
+  fail_2552 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 0; 0
+
+(1-3) Checking counterexample ... DONE!
+
+(1-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 0
+
+Program with abstraction types (CEGAR-cycle 2)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (int -> (int -> X) -> X)
+  zip_1199 : (x_2:int -> x_3:int[x_3 = x_2] -> (int -> X) -> X)
+
+(2-1) Abstracting ... DONE!
+
+(2-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [1/2] ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 0; 0; 0; 1; 0
+
+(2-3) Checking counterexample ... DONE!
+
+(2-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 3)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (int -> (x_4:int[x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int -> x_3:int[x_3 = x_2] -> (int[x_3 = 0] -> X) -> X)
+
+(3-1) Abstracting ... DONE!
+
+(3-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 0; 0; 0; 0; 1; 0; 0; 1; 0
+
+(3-3) Checking counterexample ... DONE!
+
+(3-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 0; 0; 0; 0; 1; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 4)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (int -> (x_4:int[1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int -> x_3:int[x_3 = x_2] -> (int[1 = x_3; x_3 = 0] -> X) -> X)
+
+(4-1) Abstracting ... DONE!
+
+(4-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [1/2] ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+(4-3) Checking counterexample ... DONE!
+
+(4-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 0; 0; 0; 0; 0
+
+Program with abstraction types (CEGAR-cycle 5)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[1 <= x_2] -> (x_4:int[1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int -> x_3:int[x_3 = x_2] -> (x_5:int[x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] -> X) -> X)
+
+(5-1) Abstracting ... DONE!
+
+(5-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1; 0
+
+(5-3) Checking counterexample ... DONE!
+
+(5-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 0; 0; 0; 0; 1; 1
+
+Program with abstraction types (CEGAR-cycle 6)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[x_2 = 0; 1 = x_2; 1 <= x_2] -> (x_4:int[1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] -> (x_5:int[x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] -> X) -> X)
+
+(6-1) Abstracting ... DONE!
+
+(6-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 0; 0; 1; 0
+
+(6-3) Checking counterexample ... DONE!
+
+(6-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+Program with abstraction types (CEGAR-cycle 7)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] -> (x_4:int[1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] -> (x_5:int[2 <= x_5; x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] -> X) ->
+              X)
+
+(7-1) Abstracting ... DONE!
+
+(7-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 1; 0; 0; 0; 1; 0
+
+(7-3) Checking counterexample ... DONE!
+
+(7-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 1; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 8)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] -> (x_4:int[2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[2 = x_3; 2 <= x_5; x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] -> X) -> X)
+
+(8-1) Abstracting ... DONE!
+
+(8-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1; 0
+
+(8-3) Checking counterexample ... DONE!
+
+(8-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 1; 1
+
+Program with abstraction types (CEGAR-cycle 9)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] -> (x_4:int[2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[2 = x_5; 2 = x_3; 2 <= x_5; x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] -> X) -> X)
+
+(9-1) Abstracting ... DONE!
+
+(9-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 0; 0; 0; 1; 0
+
+(9-3) Checking counterexample ... DONE!
+
+(9-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 0
+
+Program with abstraction types (CEGAR-cycle 10)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[3 <= x_2; 2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] ->
+              (x_4:int[2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[3 <= x_5; 2 = x_5; 2 = x_3; 2 <= x_5; x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] ->
+              X) -> X)
+
+(10-1) Abstracting ... DONE!
+
+(10-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1; 0
+
+(10-3) Checking counterexample ... DONE!
+
+(10-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 11)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[3 <= x_2; 2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] ->
+              (x_4:int[3 = x_4; 2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[3 = x_3; 3 <= x_5; 2 = x_5; 2 = x_3; 2 <= x_5; 
+                       x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; 
+                       x_3 = 0] ->
+              X) -> X)
+
+(11-1) Abstracting ... DONE!
+
+(11-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+(11-3) Checking counterexample ... DONE!
+
+(11-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1
+
+Program with abstraction types (CEGAR-cycle 12)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[3 = x_2; 3 <= x_2; 2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] ->
+              (x_4:int[3 = x_4; 2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[3 = x_5; 3 = x_3; 3 <= x_5; 2 = x_5; 2 = x_3; 
+                       2 <= x_5; x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 
+                       1 = x_3; x_3 = 0] ->
+              X) -> X)
+
+(12-1) Abstracting ... DONE!
+
+(12-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 0; 0; 0; 0; 1; 0
+
+(12-3) Checking counterexample ... DONE!
+
+(12-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 0
+
+Program with abstraction types (CEGAR-cycle 13)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[4 <= x_2; 3 = x_2; 3 <= x_2; 2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] ->
+              (x_4:int[3 = x_4; 2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[4 <= x_5; 3 = x_5; 3 = x_3; 3 <= x_5; 2 = x_5; 
+                       2 = x_3; 2 <= x_5; x_5 = 0; 1 = x_5; x_5 >= 0; 
+                       1 <= x_5; 1 = x_3; x_3 = 0] ->
+              X) -> X)
+
+(13-1) Abstracting ... DONE!
+
+(13-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+(13-3) Checking counterexample ... DONE!
+
+(13-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 14)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[4 <= x_2; 3 = x_2; 3 <= x_2; 2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] ->
+              (x_4:int[4 = x_4; 3 = x_4; 2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[4 = x_3; 4 <= x_5; 3 = x_5; 3 = x_3; 3 <= x_5; 
+                       2 = x_5; 2 = x_3; 2 <= x_5; x_5 = 0; 1 = x_5; 
+                       x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] ->
+              X) -> X)
+
+(14-1) Abstracting ... DONE!
+
+(14-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 0
+
+(14-3) Checking counterexample ... DONE!
+
+(14-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1
+
+Program with abstraction types (CEGAR-cycle 15)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[4 = x_2; 4 <= x_2; 3 = x_2; 3 <= x_2; 2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] ->
+              (x_4:int[4 = x_4; 3 = x_4; 2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[4 = x_5; 4 = x_3; 4 <= x_5; 3 = x_5; 3 = x_3; 
+                       3 <= x_5; 2 = x_5; 2 = x_3; 2 <= x_5; x_5 = 0; 
+                       1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; x_3 = 0] ->
+              X) -> X)
+
+(15-1) Abstracting ... DONE!
+
+(15-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0; 0; 0; 0; 0; 1; 0
+
+(15-3) Checking counterexample ... DONE!
+
+(15-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 0
+
+Program with abstraction types (CEGAR-cycle 16)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[5 <= x_2; 4 = x_2; 4 <= x_2; 3 = x_2; 3 <= x_2; 2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] ->
+              (x_4:int[4 = x_4; 3 = x_4; 2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[5 <= x_5; 4 = x_5; 4 = x_3; 4 <= x_5; 3 = x_5; 
+                       3 = x_3; 3 <= x_5; 2 = x_5; 2 = x_3; 2 <= x_5; 
+                       x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 1 = x_3; 
+                       x_3 = 0] ->
+              X) -> X)
+
+(16-1) Abstracting ... DONE!
+
+(16-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2538 ... --> 
+  main_2041 ... --> 
+  arg1_2039 ... --> 
+  f_main_2543 ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [2/2] ... --> 
+  br_zip_2549 [2/2] ... --> 
+  zip_1199 [1/2] ... --> 
+  br_zip_2547 [1/2] ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_zip_2541 ... --> 
+  f_f_main_2544 ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [2/2] ... --> 
+  map_1202 [1/2] ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_map_2542 ... --> 
+  f_f_f_main_2545 [2/2] ... --> 
+  fail_2553 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1; 0
+
+(16-3) Checking counterexample ... DONE!
+
+(16-4) Discovering predicates (infeasible case) ... 
+DONE!
+
+Prefix of spurious counterexample::
+0; 0; 0; 0; 1; 1; 1; 1; 1; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 0; 0; 1; 1; 1; 1; 1; 0; 0; 0; 0; 0; 0; 1
+
+Program with abstraction types (CEGAR-cycle 17)::
+Main: main_2538
+  main_2538 -> (main_2041 f_2546).
+  arg1_2039 k_main_arg1_2333 -> (rand_int k_main_arg1_2333).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when b_2548 -> (k_zip_2201 x_1200).
+  br_zip_2547 b_2548 x_1200 y_1201 k_zip_2201 when (not b_2548) -> (fail_2551 true (f_zip_2539 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when b_2550 -> (fail_2552 true (f_zip_2540 x_1200 y_1201)).
+  br_zip_2549 b_2550 x_1200 y_1201 k_zip_2201 when (not b_2550) ->
+      (zip_1199 (x_1200 - 1) (y_1201 - 1) (f_zip_2541 x_1200 y_1201 k_zip_2201)).
+  f_2546 main_2350 -> end.
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (x_2288 = arg1_2349) -> (k_main_2328 ()).
+  f_f_f_main_2545 arg1_2349 x_2310 k_main_2328 x_2288 when (not (x_2288 = arg1_2349)) -> (fail_2553 true k_main_2328).
+  f_f_main_2544 arg1_2349 k_main_2328 x_2310 -> (map_1202 x_2310 (f_f_f_main_2545 arg1_2349 x_2310 k_main_2328)).
+  f_main_2543 k_main_2328 arg1_2349 -> (zip_1199 arg1_2349 arg1_2349 (f_f_main_2544 arg1_2349 k_main_2328)).
+  f_map_2542 x_1203 k_map_2260 x_2264 -> (k_map_2260 (1 + x_2264)).
+  f_zip_2539 x_1200 y_1201 u_2213 -> _|_.
+  f_zip_2540 x_1200 y_1201 u_2229 -> _|_.
+  f_zip_2541 x_1200 y_1201 k_zip_2201 x_2233 -> (k_zip_2201 (1 + x_2233)).
+  fail_2551 b k -> {fail} => (k ()).
+  fail_2552 b k -> {fail} => (k ()).
+  fail_2553 b k -> {fail} => (k ()).
+  main_2041 k_main_2328 -> (arg1_2039 (f_main_2543 k_main_2328)).
+  map_1202 x_1203 k_map_2260 when (x_1203 = 0) -> (k_map_2260 x_1203).
+  map_1202 x_1203 k_map_2260 when (not (x_1203 = 0)) -> (map_1202 (x_1203 - 1) (f_map_2542 x_1203 k_map_2260)).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (x_1200 = 0) -> (br_zip_2547 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+  zip_1199 x_1200 y_1201 k_zip_2201 when (not (x_1200 = 0)) -> (br_zip_2549 (y_1201 = 0) x_1200 y_1201 k_zip_2201).
+Types:
+  main_2538 : X
+  fail_2551 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2552 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  fail_2553 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  map_1202 : (x_2:int[5 <= x_2; 4 = x_2; 4 <= x_2; 3 = x_2; 3 <= x_2; 2 = x_2; 2 <= x_2; x_2 = 0; 1 = x_2; 1 <= x_2] ->
+              (x_4:int[5 = x_4; 4 = x_4; 3 = x_4; 2 = x_4; 1 = x_4; x_4 = 0] -> X) -> X)
+  zip_1199 : (x_2:int ->
+              x_3:int[x_3 = x_2] ->
+              (x_5:int[5 = x_3; 5 <= x_5; 4 = x_5; 4 = x_3; 4 <= x_5; 
+                       3 = x_5; 3 = x_3; 3 <= x_5; 2 = x_5; 2 = x_3; 
+                       2 <= x_5; x_5 = 0; 1 = x_5; x_5 >= 0; 1 <= x_5; 
+                       1 = x_3; x_3 = 0] ->
+              X) -> X)
+
+(17-1) Abstracting ... DONE!
+
+(17-2) Checking HORS ... 142.232

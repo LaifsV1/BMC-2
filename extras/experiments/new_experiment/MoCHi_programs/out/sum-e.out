@@ -1,0 +1,108 @@
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+/bin/sh: 1: no: not found
+MoCHi: Model Checker for Higher-Order Programs
+  TRecS version: 1.35
+  OCaml version: 4.03.0
+  Command: bin/mochi.opt -limit 180 sum-e.ml
+
+parsed:
+ let rec sum_1199 n_1200 = if n_1200 <= 0 then 0 else n_1200 + sum_1199 (n_1200 - 1) in
+ let main_1201 n_1202 = assert (n_1202 + 1 <= sum_1199 n_1202) in
+ ()
+
+
+###set_main:
+ let rec sum_1199 (n_1200:int) = if n_1200 <= 0 then 0 else n_1200 + sum_1199 (n_1200 - 1) in
+ let main_1201 (n_1202:int) = assert (n_1202 + 1 <= sum_1199 n_1202) in
+ (let arg1_2018 = rand_int () in
+  main_1201 arg1_2018); ()
+
+###CPS:
+ (let rec sum_1199 (n_1200:int) (k_sum_2114:(int -> X)) =
+    if n_1200 <= 0 then k_sum_2114 0 else sum_1199 (n_1200 - 1) (fun (x_2118:int) -> k_sum_2114 (n_1200 + x_2118))
+  in
+  let main_2020 (k_main_2171:(unit -> X)) =
+    let arg1_2018 (k_main_arg1_2176:(int -> X)) = rand_int_cps () k_main_arg1_2176 in
+    arg1_2018
+      (fun (arg1_2192:int) ->
+         sum_1199
+           arg1_2192 
+           (fun (x_2143:int) ->
+              if arg1_2192 + 1 <= x_2143 then k_main_2171 () else <|fail|> () k_main_2171))
+  in
+  main_2020 (fun (():unit) -> {end}) # [ACPS])
+
+###Remove_pair:
+ (let rec sum_1199 (n_1200:int) (k_sum_2114:(int -> X)) =
+    if n_1200 <= 0 then k_sum_2114 0 else sum_1199 (n_1200 - 1) (fun (x_2118:int) -> k_sum_2114 (n_1200 + x_2118))
+  in
+  let main_2020 (k_main_2171:(unit -> X)) =
+    let arg1_2018 (k_main_arg1_2176:(int -> X)) = rand_int_cps () k_main_arg1_2176 in
+    arg1_2018
+      (fun (arg1_2192:int) ->
+         sum_1199
+           arg1_2192 
+           (fun (x_2143:int) ->
+              if arg1_2192 + 1 <= x_2143 then k_main_2171 () else <|fail|> () k_main_2171))
+  in
+  main_2020 (fun (():unit) -> {end}) # [ACPS])
+
+
+Program with abstraction types (CEGAR-cycle 1)::
+Main: main_2298
+  main_2298 -> (main_2020 f_2302).
+  arg1_2018 k_main_arg1_2176 -> (rand_int k_main_arg1_2176).
+  f_2302 main_2193 -> end.
+  f_f_main_2301 arg1_2192 k_main_2171 x_2143 when ((arg1_2192 + 1) <= x_2143) -> (k_main_2171 ()).
+  f_f_main_2301 arg1_2192 k_main_2171 x_2143 when (not ((arg1_2192 + 1) <= x_2143)) -> (fail_2303 true k_main_2171).
+  f_main_2300 k_main_2171 arg1_2192 -> (sum_1199 arg1_2192 (f_f_main_2301 arg1_2192 k_main_2171)).
+  f_sum_2299 n_1200 k_sum_2114 x_2118 -> (k_sum_2114 (n_1200 + x_2118)).
+  fail_2303 b k -> {fail} => (k ()).
+  main_2020 k_main_2171 -> (arg1_2018 (f_main_2300 k_main_2171)).
+  sum_1199 n_1200 k_sum_2114 when (n_1200 <= 0) -> (k_sum_2114 0).
+  sum_1199 n_1200 k_sum_2114 when (not (n_1200 <= 0)) -> (sum_1199 (n_1200 - 1) (f_sum_2299 n_1200 k_sum_2114)).
+Types:
+  main_2298 : X
+  fail_2303 : (x_2:bool[x_2] -> (unit -> X) -> X)
+  sum_1199 : (int -> (int -> X) -> X)
+
+(1-1) Abstracting ... DONE!
+
+(1-2) Checking HORS ... DONE!
+
+Error trace::
+  main_2298 ... --> 
+  main_2020 ... --> 
+  arg1_2018 ... --> 
+  f_main_2300 ... --> 
+  sum_1199 [1/2] ... --> 
+  f_f_main_2301 [2/2] ... --> 
+  fail_2303 ... --> fail -->
+  ERROR!
+
+Spurious counterexample::
+  0; 0; 0; 0; 0; 1; 0
+
+(1-3) Checking counterexample ... DONE!
+
+
+========================================================================================================================
+
+Unsafe!
+
+Input for main:
+  0
+Error trace:
+  main 0 ->
+    sum 0 ->
+      if true then ... ->
+    if false then ... ->
+  FAIL!
+
+CEGAR-cycles: 1
+total: 0.145 sec
+  abst: 0.035 sec
+  mc: 0.003 sec
+  refine: 0.034 sec
+0.145
