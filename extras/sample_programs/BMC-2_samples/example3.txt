@@ -1,12 +1,10 @@
 Store:
 r:Int := 0;
 
-Main (n:Int,r0:Int) :(Unit) :
-  let (u:Unit) = r := r0 in
-
-  let rec (f:Int->Int->Unit) = fun (x:Int) :(Int->Unit) -> 
-  if x then (let (u:Unit) = r:=(!r)+1 in f (x + -1))
-  else (fun (y:Int) :(Unit) -> assert(y == (!r) + x))
+Main (n:Int) :(Unit) :
+  let rec (f:Int->(Int->Unit)) = fun (x:Int) :(Int->Unit) -> 
+  if x then (let (u:Unit) = (r:= (!r + 1)) in (f (x + -1)))
+  else (fun (y:Int) :(Unit) -> assert(y == ((!r) + x)))
   in
 
   let (g:Int->Unit) = f n in g n
