@@ -13,12 +13,12 @@ You will need `ocamlbuild`, `menhir`, and an OCaml 4.04 compiler or above. Run t
 
 ## Checking a file
 
-To check a file `<somefile>`, use `TopLevel.native <somefile> <k>` where `<k>` is the desired depth for the analysis. The formula produced is satisfiable iff an assertion violation is reachable within `k`.
+To check a file `<somefile>`, use `TopLevel.native <somefile> <k> <mode>` where `<k>` is the desired depth for the analysis. The formula produced is satisfiable iff an assertion violation is reachable within `k` when `<mode>` is `0`, and satisfiable iff the bound is reachable when `<mode>` is otherwise.
 
 ### Example
 We check file `mc91-e.txt` with bound `4`.
 
-    time ./TopLevel.native ../extras/sample_programs/MoCHi_samples/mc91-e.txt 4 | z3 -in | grep -v "(error"
+    time ./TopLevel.native ../extras/sample_programs/MoCHi_samples/mc91-e.txt 4 1 | z3 -in | grep -v "(error"
 
 The command above prints the following
 

@@ -36,6 +36,7 @@ let _ =
     if Sys.argv.(1) = "--version" then (printf "    BMC-2 version: 0.0.0.0 \n";exit 0)
     else (
       (*assume param is a file path*)
+      let mode = if Sys.argv.(3)=="0" then "0" else "1" in
       print_newline ();
       let file = Sys.argv.(1) in
       let bound = int_of_string (Sys.argv.(2)) in
@@ -94,7 +95,7 @@ let _ =
         (* time print_z3_assertion (print_z3_of_proposition,opc) "GENERATING PROGRAM PATH CONDITIONS"; *)
         time print_z3_not_assertion (print_z3_of_proposition,oass) "GENERATING PROGRAM ASSERTIONS";
         print_newline ();
-        printf "(assert (= __nil 1))\n";  (* we THINK this changes
+        printf "(assert (= __nil %s))\n" mode;  (* we THINK this changes
                                  * modes: 1 for failures, 0 for
                                  * reaching nil *)
         print_newline ();
