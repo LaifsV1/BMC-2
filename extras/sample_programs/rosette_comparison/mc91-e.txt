@@ -1,0 +1,13 @@
+Methods:
+mc91 (x:Int) :(Int) =
+  if x >= 101 then
+    x + -10
+  else
+    mc91 (mc91 (x + 11));
+
+Main (n:Int) :Unit:
+if n <= 102 then
+  assert ((mc91 n) == 91)
+else skip
+
+(* this should fail with n=102 *)

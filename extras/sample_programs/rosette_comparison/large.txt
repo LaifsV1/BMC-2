@@ -1,0 +1,325 @@
+Store:
+r1:Int := 0;
+
+Methods:
+ref1 (n:Int) :(Unit) = let (x:Unit) = r1 := n in assert((!r1) == n);
+
+f (g:Int->Int) :(Int->Int) =
+  fun (x:Int) :(Int) ->
+    if x>=0 then
+      g x
+    else
+      let (f':Int->Int) = f (f g) in
+      f' (g x);
+
+succ (x:Int) :(Int) = x + 1;
+
+mc91 (x:Int) :(Int) =
+  if x >= 101 then
+    x + -10
+  else
+    mc91 (mc91 (x + 11));
+
+mc91m (n:Int) :(Unit) =
+ if n <= 102 then
+   assert ((mc91 n) == 91)
+ else skip;
+
+mult (n:Int,m:Int) :(Int) =
+  if (n <= 0) || (m <= 0) then
+    0
+  else
+    n + (mult (n,m + -1));
+
+multm (n:Int) :(Unit) =
+assert( (n+1) <= (mult(n,n)) ) ;
+
+repeat (f:Int->Int,n:Int,s:Int) :(Int) =
+  if n==0 then
+    s
+  else
+    f (repeat (f,n + -1,s));
+
+repeatm (n:Int) :(Unit) =
+if (repeat(succ,n,0)) <= n then assert(0) else skip;
+
+lock' (st:Int) :Int = 
+     let (u:Unit) = assert(st==0) in 1;
+unlock' (st:Int) :Int = 
+       let (u:Unit) = assert(st==0) in 0;
+f' (n:Int,st:Int) :Int = 
+   if n >= 1 then lock' st else st;
+g' (n:Int,st:Int) :Int = 
+   if n >= 0 then unlock' st else st;
+
+lockem (n:Int) :(Unit) = assert( (g'(n,f'(n,0)))==0 );
+
+lock (st:Int) :Int = let (u:Unit) = assert(st==0) in 1;
+unlock (st:Int) :Int = let (u:Unit) = assert(st==1) in 0;
+f'' (n:Int,st:Int) :Int = if n >= 1 then lock st else st;
+g'' (n:Int,st:Int) :Int = if n >= 1 then unlock st else st;
+
+lockm (n:Int) :(Unit) = assert( (g''(n,f''(n,0)))==0 ) ;
+
+sum (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum (n + -1));
+summ (n:Int) :(Unit) = assert( n <= (sum n) );
+
+sum1 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum1 (n + -1));
+summ1 (n:Int) :(Unit) = assert( n <= (sum1 n) );
+
+sum2 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum2 (n + -1));
+summ2 (n:Int) :(Unit) = assert( n <= (sum2 n) );
+
+sum3 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum3 (n + -1));
+summ3 (n:Int) :(Unit) = assert( n <= (sum3 n) );
+
+sum4 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum4 (n + -1));
+summ4 (n:Int) :(Unit) = assert( n <= (sum4 n) );
+
+sum5 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum5 (n + -1));
+summ5 (n:Int) :(Unit) = assert( n <= (sum5 n) );
+
+sum6 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum6 (n + -1));
+summ6 (n:Int) :(Unit) = assert( n <= (sum6 n) );
+
+sum7 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum7 (n + -1));
+summ7 (n:Int) :(Unit) = assert( n <= (sum7 n) );
+
+sum8 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum8 (n + -1));
+summ8 (n:Int) :(Unit) = assert( n <= (sum8 n) );
+
+sum9 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum9 (n + -1));
+summ9 (n:Int) :(Unit) = assert( n <= (sum9 n) );
+
+sum10 (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum10 (n + -1));
+summ10 (n:Int) :(Unit) = assert( n <= (sum10 n) );
+
+sum1a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum1a (n + -1));
+summ1a (n:Int) :(Unit) = assert( n <= (sum1a n) );
+
+sum2a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum2a (n + -1));
+summ2a (n:Int) :(Unit) = assert( n <= (sum2a n) );
+
+sum3a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum3a (n + -1));
+summ3a (n:Int) :(Unit) = assert( n <= (sum3a n) );
+
+sum4a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum4a (n + -1));
+summ4a (n:Int) :(Unit) = assert( n <= (sum4a n) );
+
+sum5a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum5a (n + -1));
+summ5a (n:Int) :(Unit) = assert( n <= (sum5a n) );
+
+sum6a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum6a (n + -1));
+summ6a (n:Int) :(Unit) = assert( n <= (sum6a n) );
+
+sum7a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum7a (n + -1));
+summ7a (n:Int) :(Unit) = assert( n <= (sum7a n) );
+
+sum8a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum8a (n + -1));
+summ8a (n:Int) :(Unit) = assert( n <= (sum8a n) );
+
+sum9a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum9a (n + -1));
+summ9a (n:Int) :(Unit) = assert( n <= (sum9a n) );
+
+sum10a (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum10a (n + -1));
+summ10a (n:Int) :(Unit) = assert( n <= (sum10a n) );
+
+
+
+
+
+
+sum1aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum1aa (n + -1));
+summ1aa (n:Int) :(Unit) = assert( n <= (sum1aa n) );
+
+sum2aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum2aa (n + -1));
+summ2aa (n:Int) :(Unit) = assert( n <= (sum2aa n) );
+
+sum3aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum3aa (n + -1));
+summ3aa (n:Int) :(Unit) = assert( n <= (sum3aa n) );
+
+sum4aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum4aa (n + -1));
+summ4aa (n:Int) :(Unit) = assert( n <= (sum4aa n) );
+
+sum5aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum5aa (n + -1));
+summ5aa (n:Int) :(Unit) = assert( n <= (sum5aa n) );
+
+sum6aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum6aa (n + -1));
+summ6aa (n:Int) :(Unit) = assert( n <= (sum6aa n) );
+
+sum7aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum7aa (n + -1));
+summ7aa (n:Int) :(Unit) = assert( n <= (sum7aa n) );
+
+sum8aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum8aa (n + -1));
+summ8aa (n:Int) :(Unit) = assert( n <= (sum8aa n) );
+
+sum9aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum9aa (n + -1));
+summ9aa (n:Int) :(Unit) = assert( n <= (sum9aa n) );
+
+sum10aa (n:Int) :(Int) =
+  if n <= 0 then
+    0
+  else
+    n + (sum10aa (n + -1));
+summ10aa (n:Int) :(Unit) = assert( n <= (sum10aa n) );
+
+
+Main (a:Int, b:Int) :Unit:
+if a==0 then (ref1 b) else 
+if a==1 then (mc91m b) else 
+if a==2 then (multm b) else 
+if a==3 then (repeatm b) else
+if a==4 then (lockem b) else 
+if a==5 then (lockm b) else 
+if a==6 then (summ b) else 
+if a==7 then (summ1 b) else 
+if a==8 then (summ2 b) else 
+if a==9 then (summ3 b) else 
+if a==10 then (summ4 b) else 
+if a==11 then (summ5 b) else 
+if a==12 then (summ6 b) else 
+if a==13 then (summ7 b) else 
+if a==14 then (summ8 b) else 
+if a==15 then (summ9 b) else 
+if a==16 then (summ10 b) else 
+if a==17 then (summ1a b) else 
+if a==18 then (summ2a b) else 
+if a==19 then (summ3a b) else 
+if a==20 then (summ4a b) else 
+if a==21 then (summ5a b) else 
+if a==22 then (summ6a b) else 
+if a==23 then (summ7a b) else 
+if a==24 then (summ8a b) else 
+if a==25 then (summ9a b) else 
+if a==26 then (summ10a b) else 
+if a==17 then (summ1aa b) else 
+if a==18 then (summ2aa b) else 
+if a==19 then (summ3aa b) else 
+if a==20 then (summ4aa b) else 
+if a==21 then (summ5aa b) else 
+if a==22 then (summ6aa b) else 
+if a==23 then (summ7aa b) else 
+if a==24 then (summ8aa b) else 
+if a==25 then (summ9aa b) else 
+if a==26 then (summ10aa b) else 
+skip
